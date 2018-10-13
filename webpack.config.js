@@ -20,6 +20,10 @@ module.exports = {
           "sass-loader", // compiles Sass to CSS, using Node Sass by default
         ],
       },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   resolve: {
@@ -32,7 +36,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Codamit [WDS] - [HMR]",
-      template: "src/index.html",
+      template: "src/assets/index.html",
     }),
   ],
 };
