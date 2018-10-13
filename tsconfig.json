@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "typeRoots": ["./node_modules", "./node_modules/@types"],
+    "pretty": true,
+    "allowSyntheticDefaultImports": false,
+    "alwaysStrict": true,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "noImplicitAny": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "allowJs": false,
+    "sourceMap": true,
+    "declaration": false,
+    "lib": ["es2017", "dom"],
+    "types": ["node"]
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}
