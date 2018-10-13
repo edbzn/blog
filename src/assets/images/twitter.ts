@@ -8,24 +8,7 @@ export default svg`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    version="1.1"
-   id="svg3626"
-   viewBox="0 0 300.00006 244.18703"
-   height="244.18703"
-   width="300.00006">
-  <defs
-     id="defs3628" />
-  <metadata
-     id="metadata3631">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+   viewBox="0 0 300.00006 244.18703">
   <g
      transform="translate(-539.17946,-568.85777)"
      id="layer1">

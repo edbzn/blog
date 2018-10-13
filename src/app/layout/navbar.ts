@@ -8,6 +8,7 @@ const twitterUrl = "https://twitter.com/edouardbozon";
 export const navbar = () => html`
 <style scoped>
   nav {
+    height: 64px;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -23,8 +24,8 @@ export const navbar = () => html`
 
   svg {
     display: inline-block;
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
   }
 
   .socials a {
@@ -32,7 +33,7 @@ export const navbar = () => html`
   }
 </style>
 <nav>
-  <h1>Codamit</h1>
+  Dave, I can't open the door.
   <span class="socials">
     <a title="Github profile" href="${githubUrl}">${github}</a>
     <a title="Twitter profile" href="${twitterUrl}">${twitter}</a>
