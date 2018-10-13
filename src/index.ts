@@ -4,4 +4,4 @@ import { render } from "lit-html";
 
 import home from "./app/home";
 
-export default render(home(), document.body);
+export default render(home, document.body);
