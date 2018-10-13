@@ -1,0 +1,24 @@
+{
+  "name": "codamit",
+  "version": "1.0.0",
+  "description": "My web page",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Edouardbozon/codamit.git"
+  },
+  "author": "edouardbozon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Edouardbozon/codamit/issues"
+  },
+  "homepage": "https://github.com/Edouardbozon/codamit#readme",
+  "dependencies": {
+    "lit-html": "^0.12.0",
+    "rxjs": "^6.3.3",
+    "webpack": "^4.20.2"
+  }
+}
