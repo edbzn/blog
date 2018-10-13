@@ -1,6 +1,9 @@
 html {
   background: #eee;
   color: rgb(49, 49, 49);
-
   font-family: "Courier New", Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
 }
