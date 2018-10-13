@@ -1,10 +1,8 @@
 import { html } from "lit-html";
-import { navbar } from "./layout/navbar";
+import page from "./layout/page";
 
-const home = () => html`<div>
-  ${navbar()}
-  <main>
-  </main>
-</div>`;
+const home = html`
+  Hello world
+`;
 
-export default home;
+export default page(home);
