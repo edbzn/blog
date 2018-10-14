@@ -13,11 +13,9 @@ const profileConfiguration = {
 };
 
 const home = html`
-<style scoped>
-</style>
-${profile(profileConfiguration)}
-${twitterFeed()}
-${articleFeed()}
+  ${profile(profileConfiguration)}
+  ${twitterFeed()}
+  ${articleFeed()}
 `;
 
 export default page(home);

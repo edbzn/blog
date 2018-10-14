@@ -1,4 +1,6 @@
 import { html } from "lit-html";
+import { showPlaceholder } from "./placeholder";
+import { until } from "lit-html/directives/until";
 
 async function getArticleList(): Promise<any> {
   const resp = await fetch(`http://localhost:8081/api/v1/article`, {
@@ -14,7 +16,7 @@ const showArticleList = (resp: any) => {
   if (resp.length === 0) {
     return html`
       <article>
-        <p>wip</p>
+        <p>Empty dude (wip)</p>
       </article>
     `;
   }
@@ -49,7 +51,11 @@ export const articleFeed = async () => {
       }
     </style>
     <section class="article-feed">
-      ${showArticleList(resp)}
+      <h4>ARTICLES</h4>
+      ${until(
+        getArticleList().then(resp => showArticleList(resp)),
+        showPlaceholder(2),
+      )}
     </section>
   `;
 };

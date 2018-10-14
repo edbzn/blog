@@ -1,6 +1,8 @@
 import { html } from "lit-html";
+import { until } from "lit-html/directives/until";
+import { showPlaceholder } from "./placeholder";
 
-async function getTweets(): Promise<any> {
+const getTweets = async (): Promise<{ statuses: any[] }> => {
   const resp = await fetch(`http://localhost:8081/api/v1/tweets`, {
     method: "GET",
     mode: "cors",
@@ -8,7 +10,7 @@ async function getTweets(): Promise<any> {
   });
 
   return resp.json();
-}
+};
 
 const showTweets = (resp: any) => {
   return resp.statuses.map(
@@ -19,8 +21,6 @@ const showTweets = (resp: any) => {
 };
 
 export const twitterFeed = async () => {
-  const resp = await getTweets();
-
   return html`
     <style scoped>
       .twitter-feed {
@@ -38,7 +38,8 @@ export const twitterFeed = async () => {
       }
     </style>
     <section class="twitter-feed">
-      ${showTweets(resp)}
+      <h4>TWEETS</h4>
+      ${until(getTweets().then(resp => showTweets(resp)), showPlaceholder())}
     </section>
   `;
 };
