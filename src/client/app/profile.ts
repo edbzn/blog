@@ -20,6 +20,7 @@ export const profile = ({
     height: 150px;
     overflow: hidden;
     border-radius: 100%;
+    box-shadow: 2px 2px 8px rgba(0,0,0, 0.1);
   }
 
   .avatar img {
@@ -29,6 +30,14 @@ export const profile = ({
 
   .presentation {
     padding-left: 1.4rem;
+  }
+
+  .presentation h1 {
+    font-size: 2.4rem;
+  }
+
+  .presentation p {
+    font-size: 1.2rem;
   }
 </style>
 <section class="profile">

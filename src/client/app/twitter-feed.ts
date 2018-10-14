@@ -21,22 +21,23 @@ export const twitterFeed = async () => {
   const resp = await getTweets();
 
   return html`
-  <style scoped>
-    .twitter-feed {
-      padding-top: 40px;
-      margin-top: 40px;
-      border-top: 2px solid #dfdfdf;
-    }
+    <style scoped>
+      .twitter-feed {
+        padding-top: 40px;
+        margin-top: 40px;
+        border-top: 2px solid #f8f8f8;
+      }
 
-    article {
-      padding: 1.4rem;
-      margin-bottom: 4px;
-      background: #dfdfdf;
-      border-radius: 2px;
-    }
-  </style>
-  <section class="twitter-feed">
-    ${showTweets(resp)}
-  </section>
-`;
+      article {
+        padding: 1.4rem;
+        margin-bottom: 4px;
+        background: #f8f8f8;
+        border-radius: 2px;
+        color: #585858;
+      }
+    </style>
+    <section class="twitter-feed">
+      ${showTweets(resp)}
+    </section>
+  `;
 };
