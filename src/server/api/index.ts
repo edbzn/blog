@@ -3,7 +3,7 @@ import { notFoundEffect$ } from "./common/effects/not-found.effect";
 import { getTweetsEffect$ } from "./tweet/effects/get-tweets.effect";
 import { article$ } from "./article";
 
-const getTweets$ = EffectFactory.matchPath("/tweets")
+const getTweets$ = EffectFactory.matchPath("/tweet")
   .matchType("*")
   .use(getTweetsEffect$);
 

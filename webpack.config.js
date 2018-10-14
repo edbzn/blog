@@ -5,6 +5,9 @@ module.exports = {
   entry: "./src/client/index",
   mode: "development",
   devtool: "inline-source-map",
+  devServer: {
+    historyApiFallback: true,
+  },
   module: {
     rules: [
       {

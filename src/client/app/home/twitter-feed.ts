@@ -3,7 +3,7 @@ import { until } from "lit-html/directives/until";
 import { showPlaceholder } from "./placeholder";
 
 const getTweets = async (): Promise<{ statuses: any[] }> => {
-  const resp = await fetch(`http://localhost:8081/api/v1/tweets`, {
+  const resp = await fetch(`http://localhost:8081/api/v1/tweet`, {
     method: "GET",
     mode: "cors",
     cache: "default",
@@ -20,7 +20,7 @@ const showTweets = (resp: any) => {
   );
 };
 
-export const twitterFeed = async () => {
+export const twitterFeed = () => {
   return html`
     <style scoped>
       .twitter-feed {

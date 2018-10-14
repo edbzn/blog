@@ -26,6 +26,7 @@
     "lit-html": "^0.12.0",
     "mongoose": "^5.3.3",
     "normalize.css": "^8.0.0",
+    "prouter": "^8.1.3",
     "rxjs": "^6.3.3",
     "typegoose": "^5.4.1",
     "uuid": "^3.3.2"
