@@ -16,15 +16,15 @@ export const profile = ({
   }
 
   .avatar {
-    min-width: 200px;
-    height: 200px;
+    min-width: 150px;
+    height: 150px;
     overflow: hidden;
     border-radius: 100%;
   }
 
   .avatar img {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
   }
 
   .presentation {

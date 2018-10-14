@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Edouardbozon/codamit#readme",
   "dependencies": {
+    "@akanass/rx-http-request": "^3.0.0",
     "@marblejs/core": "^1.1.0",
     "@marblejs/middleware-body": "^1.1.0",
     "@marblejs/middleware-logger": "^1.1.0",
