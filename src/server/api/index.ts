@@ -1,7 +1,8 @@
 import { combineRoutes, EffectFactory } from "@marblejs/core";
+
+import { article$ } from "./article";
 import { notFoundEffect$ } from "./common/effects/not-found.effect";
 import { getTweetsEffect$ } from "./tweet/effects/get-tweets.effect";
-import { article$ } from "./article";
 
 const getTweets$ = EffectFactory.matchPath("/tweet")
   .matchType("*")

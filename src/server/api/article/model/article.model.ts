@@ -19,4 +19,10 @@ export class Article extends Typegoose {
 
   @arrayProp({ itemsRef: Tag, required: true })
   tags: Ref<Tag>[] = [];
+
+  constructor(title: string, content: string) {
+    super();
+    this.title = title;
+    this.content = content;
+  }
 }

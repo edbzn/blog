@@ -5,6 +5,7 @@ import { render } from "lit-html";
 import home from "./app/home";
 import error from "./app/error";
 import login from "./app/login";
+import admin from "./app/admin";
 
 import { browserRouter } from "prouter";
 
@@ -17,6 +18,10 @@ router
   })
   .use("/login", (_req, resp) => {
     render(login, document.body);
+    resp.end();
+  })
+  .use("/admin", (_req, resp) => {
+    render(admin, document.body);
     resp.end();
   })
   .use("/error", (_req, resp) => {

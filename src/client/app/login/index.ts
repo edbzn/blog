@@ -48,9 +48,9 @@ const login = html`
         router.push("/error");
       }
     }}>
-      <label for="name">Name</name>
+      <label for="name">Name</label>
       <input id="name" name="name" type="text" required />
-      <label for="password">Password</name>
+      <label for="password">Password</label>
       <input id="password" name="password" type="password" required />
       <button type="submit">Login</button>
     </form>
