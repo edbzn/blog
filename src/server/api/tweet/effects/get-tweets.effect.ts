@@ -1,12 +1,12 @@
 import { RxHR } from "@akanass/rx-http-request";
 import { Effect } from "@marblejs/core";
-import { switchMap } from "rxjs/operators";
+import { mergeMap } from "rxjs/operators";
 
 import { Config } from "../../../config";
 
-export const getTweetsEffect$: Effect = (req$, _res) =>
+export const getTweetsEffect$: Effect = req$ =>
   req$.pipe(
-    switchMap(_ => {
+    mergeMap(_ => {
       const oauth = Config.twitter.oAuth;
       const headers = {
         "Content-Type": "application/json",

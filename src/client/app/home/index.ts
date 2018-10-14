@@ -1,7 +1,8 @@
 import { html } from "lit-html";
-import page from "./layout/page";
+import page from "../layout/page";
 import { profile } from "./profile";
 import { twitterFeed } from "./twitter-feed";
+import { articleFeed } from "./article-feed";
 
 const profileConfiguration = {
   name: "Edouard Bozon",
@@ -16,6 +17,7 @@ const home = html`
 </style>
 ${profile(profileConfiguration)}
 ${twitterFeed()}
+${articleFeed()}
 `;
 
 export default page(home);

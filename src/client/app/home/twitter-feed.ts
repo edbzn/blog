@@ -10,12 +10,13 @@ async function getTweets(): Promise<any> {
   return resp.json();
 }
 
-const showTweets = (resp: any) =>
-  resp.statuses.map(
+const showTweets = (resp: any) => {
+  return resp.statuses.map(
     (tweet: any) => html`
       <article>${tweet.text}</article>
     `,
   );
+};
 
 export const twitterFeed = async () => {
   const resp = await getTweets();

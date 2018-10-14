@@ -27,6 +27,7 @@
     "mongoose": "^5.3.3",
     "normalize.css": "^8.0.0",
     "rxjs": "^6.3.3",
+    "typegoose": "^5.4.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

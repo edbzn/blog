@@ -17,6 +17,8 @@
     "allowJs": false,
     "sourceMap": true,
     "declaration": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "lib": ["es2017", "dom"],
     "types": ["node", "express"]
   },
