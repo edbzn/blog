@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import { showPlaceholder } from "./placeholder";
 import { until } from "lit-html/directives/until";
 
-async function getArticleList(): Promise<any> {
+const getArticleList = async (): Promise<any> => {
   const resp = await fetch(`http://localhost:8081/api/v1/article`, {
     method: "GET",
     mode: "cors",
@@ -10,7 +10,7 @@ async function getArticleList(): Promise<any> {
   });
 
   return resp.json();
-}
+};
 
 const showArticleList = (resp: any) => {
   if (resp.length === 0) {
@@ -31,9 +31,7 @@ const showArticleList = (resp: any) => {
   );
 };
 
-export const articleFeed = async () => {
-  const resp = await getArticleList();
-
+export const articleFeed = () => {
   return html`
     <style scoped>
       .article-feed {
