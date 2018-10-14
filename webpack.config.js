@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index",
+  entry: "./src/client/index",
   mode: "development",
   devtool: "inline-source-map",
   module: {
@@ -40,7 +40,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Codamit [WDS] - [HMR]",
-      template: "src/assets/index.html",
+      template: path.resolve(__dirname, "src", "client", "index.html"),
     }),
   ],
 };

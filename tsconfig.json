@@ -18,8 +18,8 @@
     "sourceMap": true,
     "declaration": false,
     "lib": ["es2017", "dom"],
-    "types": ["node"]
+    "types": ["node", "express"]
   },
-  "include": ["./src/**/*", "custom.d"],
+  "include": ["./src/client/**/*", "custom.d"],
   "exclude": ["node_modules"]
 }
