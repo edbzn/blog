@@ -7,5 +7,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "es5"
-  }
+  },
+  "include": ["./src/api/**/*"],
+  "exclude": ["./src/client/**/*"]
 }

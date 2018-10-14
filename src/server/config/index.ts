@@ -16,6 +16,10 @@ interface IConfig {
   logger: {
     level: LoggerLevel;
   };
+  db: {
+    urlMain: string;
+    urlTest: string;
+  };
   twitter: {
     baseUrl: string;
     fromUserName: string;
@@ -37,6 +41,10 @@ export const Config: IConfig = {
   logger: {
     level:
       (process.env.LOG_LEVEL as LoggerLevel) || (ENV.LOG_LEVEL as LoggerLevel),
+  },
+  db: {
+    urlMain: process.env.DB_URL_MAIN || ENV.DB_URL_MAIN,
+    urlTest: process.env.DB_URL_TEST || ENV.DB_URL_TEST,
   },
   twitter: {
     baseUrl: "https://api.twitter.com/1.1/search/tweets.json",
