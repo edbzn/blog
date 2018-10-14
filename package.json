@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/Edouardbozon/codamit#readme",
   "dependencies": {
+    "@marblejs/core": "^1.1.0",
+    "@marblejs/middleware-body": "^1.1.0",
+    "@marblejs/middleware-logger": "^1.1.0",
+    "chalk": "^2.4.1",
     "express": "^4.16.4",
     "lit-html": "^0.12.0",
     "normalize.css": "^8.0.0",
