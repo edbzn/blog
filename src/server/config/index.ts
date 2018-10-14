@@ -16,9 +16,6 @@ interface IConfig {
   logger: {
     level: LoggerLevel;
   };
-  jwt: {
-    secret: string;
-  };
   twitter: {
     baseUrl: string;
     fromUserName: string;
@@ -41,15 +38,18 @@ export const Config: IConfig = {
     level:
       (process.env.LOG_LEVEL as LoggerLevel) || (ENV.LOG_LEVEL as LoggerLevel),
   },
-  jwt: { secret: ENV.JWT_SECRET },
   twitter: {
     baseUrl: "https://api.twitter.com/1.1/search/tweets.json",
     fromUserName: "edouardbozon",
     oAuth: {
-      token: "613241612-L1pKw6MILp4VBkI5V9vXlVY2QSsc4Sj8CtJZphQy",
-      token_secret: "qtKtvObgUkAdTQfAxjSXDBLaAnjQpBRrrpikNHInSxanZ",
-      consumer_key: "iSW1Uh8Zf0oqlj8UPiWQkaevj",
-      consumer_secret: "TLnXmPYsra4jflTC6fDXkkH3lGiDKszPkUrsrswAkXf84ekrN9",
+      token: process.env.TWITTER_TOKEN || ENV.TWITTER_TOKEN,
+      token_secret:
+        process.env.TWITTER_TOKEN_SECRET || ENV.TWITTER_TOKEN_SECRET,
+      consumer_key:
+        process.env.TWITTER_CONSUMER_KEY || ENV.TWITTER_CONSUMER_KEY,
+      consumer_secret:
+        process.env.TWITTER_CONSUMER_KEY_SECRET ||
+        ENV.TWITTER_CONSUMER_KEY_SECRET,
     },
   },
 };
