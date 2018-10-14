@@ -4,20 +4,13 @@ let items: any[] = [];
 
 export async function getTweets(fromUserName: string): Promise<Response> {
   const headers = new Headers();
-  headers.set("Authorization", "iSW1Uh8Zf0oqlj8UPiWQkaevj");
 
-  return await fetch(
-    `https://api.twitter.com/1.1/search/tweets.json?from=${fromUserName}`,
-    {
-      method: "GET",
-      headers,
-      mode: "cors",
-      cache: "default",
-    },
-  );
+  return await fetch(`http://localhost:8081`);
 }
 
-getTweets("edouardbozon");
+getTweets("edouardbozon").then(resp => {
+  console.log(resp);
+});
 
 export const twitterFeed = () => html`
 <style scoped>
