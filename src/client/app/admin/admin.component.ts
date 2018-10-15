@@ -24,7 +24,7 @@ export default class Admin extends LitElement {
         :host {
           display: block;
         }
-        
+
         form {
           margin-top: 20px;
         }
@@ -44,15 +44,15 @@ export default class Admin extends LitElement {
         <div>
           <form name="login" @submit=${async (e: Event) => {
             e.preventDefault();
-
-            const title = document.getElementById("title") as HTMLInputElement;
-            const content = document.getElementById("content") as HTMLInputElement;
+            const host = (this.shadowRoot as ShadowRoot);
+            const title = host.getElementById("title") as HTMLInputElement;
+            const content = host.getElementById("content") as HTMLInputElement;
             const article = { title: title.value, content: content.value };
 
             try {
               await this.postArticle(article);
 
-              const form = document.querySelector('form[name="login"]') as HTMLFormElement;
+              const form = host.querySelector('form[name="login"]') as HTMLFormElement;
               form.reset();
             } catch (e) {
               router.push("/error");

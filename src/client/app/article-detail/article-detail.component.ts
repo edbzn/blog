@@ -3,13 +3,14 @@ import { html, TemplateResult } from "lit-html";
 import { until } from "lit-html/directives/until";
 
 import { showPlaceholder } from "../home/placeholder.component";
+import { ArticleDocument } from "../../../server/api/article/model/article.model";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
   id: string;
 
-  getArticle = async (id: string): Promise<any> => {
-    const resp = await fetch(`http://localhost:8081/api/v1/article/${id}`, {
+  getArticle = async (): Promise<ArticleDocument> => {
+    const resp = await fetch(`http://localhost:8081/api/v1/article/${this.id}`, {
       method: "GET",
       mode: "cors",
       cache: "default",
@@ -41,7 +42,14 @@ export default class ArticleDetail extends LitElement {
           }
         </style>
         <section class="article">
-          ${until(this.getArticle(this.id).then((resp: any) => html`${resp}`), showPlaceholder(3))}
+          ${until(
+            this.getArticle()
+              .then((resp: ArticleDocument) => html`
+                <h1>${resp.title}</h1>
+                ${resp.content}
+              `),
+            showPlaceholder(10),
+          )}
         </section>
       </ez-page>
     `;

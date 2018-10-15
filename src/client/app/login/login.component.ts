@@ -1,7 +1,7 @@
-import { LitElement } from '@polymer/lit-element/lit-element';
-import { html, TemplateResult } from 'lit-html';
+import { LitElement } from "@polymer/lit-element/lit-element";
+import { html, TemplateResult } from "lit-html";
 
-import router from '../../app-router';
+import router from "../../app-router";
 
 export default class Login extends LitElement {
   logUser = async (credentials: {
@@ -38,19 +38,19 @@ export default class Login extends LitElement {
       <ez-page>
         <h1>Login</h1>
         <form name="login" @submit=${async (e: Event) => {
-            e.preventDefault();
+          e.preventDefault();
+          const host = this.shadowRoot as ShadowRoot;
+          const name = host.getElementById("name") as HTMLInputElement;
+          const password = host.getElementById("password") as HTMLInputElement;
+          const credentials = { name: name.value, password: password.value };
 
-            let name = document.getElementById("name") as HTMLInputElement;
-            let password = document.getElementById("password") as HTMLInputElement;
-            const credentials = { name: name.value, password: password.value };
-
-            try {
-              await this.logUser(credentials);
-              router.push("/admin");
-            } catch (e) {
-              router.push("/error");
-            }
-          }}>
+          try {
+            await this.logUser(credentials);
+            router.push("/admin");
+          } catch (e) {
+            router.push("/error");
+          }
+        }}>
           <label for="name">Name</label>
           <input id="name" name="name" type="text" required />
           <label for="password">Password</label>

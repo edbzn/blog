@@ -1,11 +1,12 @@
-import { prop, Typegoose, arrayProp, Ref } from "typegoose";
-import { MongooseDocument } from "mongoose";
-import { Tag } from "../../tag/model/tag.model";
+import { MongooseDocument } from 'mongoose';
+import { arrayProp, prop, Ref, Typegoose } from 'typegoose';
+
+import { Tag } from '../../tag/model/tag.model';
 
 export type ArticleDocument = Article & MongooseDocument;
 
 export class Article extends Typegoose {
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   title: string = "";
 
   @prop({ required: true })
@@ -22,6 +23,7 @@ export class Article extends Typegoose {
 
   constructor(title: string, content: string) {
     super();
+
     this.title = title;
     this.content = content;
   }

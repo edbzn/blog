@@ -3,8 +3,9 @@ import { until } from 'lit-html/directives/until';
 
 import router from '../../app-router';
 import { showPlaceholder } from './placeholder.component';
+import { ArticleDocument } from '../../../server/api/article/model/article.model';
 
-const getArticleList = async (): Promise<any> => {
+const getArticleList = async (): Promise<ArticleDocument[]> => {
   const resp = await fetch(`http://localhost:8081/api/v1/article`, {
     method: "GET",
     mode: "cors",
@@ -14,7 +15,7 @@ const getArticleList = async (): Promise<any> => {
   return resp.json();
 };
 
-const showArticleList = (resp: any) => {
+const showArticleList = (resp: ArticleDocument[]) => {
   if (resp.length === 0) {
     return html`
       <article>
@@ -24,9 +25,9 @@ const showArticleList = (resp: any) => {
   }
 
   return resp.map(
-    (article: any) => {
-      const articleUri = `/article/${article.id}`;
-      
+    (article: ArticleDocument) => {
+      const articleUri = `/article/${article._id}`;
+
       return html`
         <article>
           <h2>${article.title}</h2>

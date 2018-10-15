@@ -4,7 +4,7 @@
     "outDir": "./dist/",
     "typeRoots": ["./node_modules", "./node_modules/@types"],
     "pretty": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "strict": true,
     "strictFunctionTypes": true,
@@ -22,6 +22,6 @@
     "lib": ["es2017", "dom"],
     "types": ["node", "express"]
   },
-  "include": ["./src/client/**/*", "custom.d"],
+  "include": ["./src/**/*", "custom.d"],
   "exclude": ["node_modules"]
 }

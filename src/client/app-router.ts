@@ -15,7 +15,7 @@ router
   .use("/article/:id", (req, resp) => {
     const id = req.params.id;
     render(
-      html`<ez-article-detail @id="${id}"></ez-article-detail>`,
+      html`<ez-article-detail id="${id}"></ez-article-detail>`,
       document.body,
     );
     resp.end();
