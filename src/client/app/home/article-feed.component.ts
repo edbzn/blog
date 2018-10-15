@@ -1,6 +1,8 @@
-import { html } from "lit-html";
-import { showPlaceholder } from "./placeholder";
-import { until } from "lit-html/directives/until";
+import { html } from 'lit-html';
+import { until } from 'lit-html/directives/until';
+
+import router from '../../app-router';
+import { showPlaceholder } from './placeholder.component';
 
 const getArticleList = async (): Promise<any> => {
   const resp = await fetch(`http://localhost:8081/api/v1/article`, {
@@ -22,12 +24,21 @@ const showArticleList = (resp: any) => {
   }
 
   return resp.map(
-    (article: any) => html`
-      <article>
-        <h2>${article.title}</h2>
-        <p>${article.content}</p>
-      </article>
-    `,
+    (article: any) => {
+      const articleUri = `/article/${article.id}`;
+      
+      return html`
+        <article>
+          <h2>${article.title}</h2>
+          <p>${article.content}</p>
+          <a href=${articleUri} @click=${(e: Event) => {
+            e.preventDefault();
+
+            router.push(articleUri);
+          }} title="Article detail">Read</a>
+        </article>
+    `;
+    },
   );
 };
 

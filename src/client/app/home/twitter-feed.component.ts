@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 import { until } from "lit-html/directives/until";
-import { showPlaceholder } from "./placeholder";
+import { showPlaceholder } from "./placeholder.component";
 
 const getTweets = async (): Promise<{ statuses: any[] }> => {
   const resp = await fetch(`http://localhost:8081/api/v1/tweet`, {

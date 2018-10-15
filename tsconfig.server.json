@@ -8,6 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "target": "es6"
   },
-  "include": ["./src/api/**/*"],
-  "exclude": ["./src/client/**/*"]
+  "include": ["./src/server/**/*"],
+  "exclude": ["./src/client/**/*", "node_module"]
 }
