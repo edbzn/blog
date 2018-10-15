@@ -10,11 +10,14 @@ export default class ArticleDetail extends LitElement {
   id: string;
 
   getArticle = async (): Promise<ArticleDocument> => {
-    const resp = await fetch(`http://localhost:8081/api/v1/article/${this.id}`, {
-      method: "GET",
-      mode: "cors",
-      cache: "default",
-    });
+    const resp = await fetch(
+      `http://localhost:8081/api/v1/article/${this.id}`,
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "default",
+      },
+    );
 
     return resp.json();
   };
@@ -25,29 +28,29 @@ export default class ArticleDetail extends LitElement {
         :host {
           display: block;
         }
+        
+        .article-feed {
+          padding-top: 40px;
+          margin-top: 40px;
+          border-top: 2px solid #f8f8f8;
+        }
+
+        article {
+          margin-bottom: 4px;
+          background: #f8f8f8;
+          border-radius: 2px;
+          color: #585858;
+        }
       </style>
       <ez-page>
-        <style scoped>
-          .article-feed {
-            padding-top: 40px;
-            margin-top: 40px;
-            border-top: 2px solid #f8f8f8;
-          }
-
-          article {
-            margin-bottom: 4px;
-            background: #f8f8f8;
-            border-radius: 2px;
-            color: #585858;
-          }
-        </style>
         <section class="article">
           ${until(
-            this.getArticle()
-              .then((resp: ArticleDocument) => html`
+            this.getArticle().then(
+              (resp: ArticleDocument) => html`
                 <h1>${resp.title}</h1>
                 ${resp.content}
-              `),
+              `,
+            ),
             showPlaceholder(10),
           )}
         </section>

@@ -1,5 +1,5 @@
 import { render, html } from "lit-html";
-import { browserRouter } from "prouter";
+import { browserRouter, ProuterNavigationEvent } from "prouter";
 
 const router = browserRouter();
 
@@ -34,5 +34,9 @@ router
   });
 
 router.listen();
+
+router.on("navigation", (_e: ProuterNavigationEvent) => {
+  window.scrollTo({ top: 0 });
+});
 
 export default router;
