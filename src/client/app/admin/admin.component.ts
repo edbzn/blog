@@ -1,12 +1,11 @@
-import { LitElement } from '@polymer/lit-element/lit-element';
-import { html, TemplateResult } from 'lit-html';
+import { LitElement } from "@polymer/lit-element/lit-element";
+import { html, TemplateResult } from "lit-html";
 
-import router from '../../app-router';
+import router from "../../app-router";
 
 export default class Admin extends LitElement {
-  
-  postArticle = async (article: any): Promise<void> => {
-    await fetch(`http://localhost:8081/api/v1/article`, {
+  postArticle = async (article: any) => {
+    return await fetch(`http://localhost:8081/api/v1/article`, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -16,6 +15,17 @@ export default class Admin extends LitElement {
         "Content-Type": "application/json",
       },
     });
+  };
+
+  uploadPoster = async (file: File): Promise<string> => {
+    const response = await fetch(`http://localhost:8081/api/v1/gallery`, {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      body: file,
+    });
+
+    return response.json();
   };
 
   render(): TemplateResult {
@@ -44,24 +54,68 @@ export default class Admin extends LitElement {
         <div>
           <form name="login" @submit=${async (e: Event) => {
             e.preventDefault();
-            const host = (this.shadowRoot as ShadowRoot);
+            const host = this.shadowRoot as ShadowRoot;
             const title = host.getElementById("title") as HTMLInputElement;
             const content = host.getElementById("content") as HTMLInputElement;
-            const article = { title: title.value, content: content.value };
+            const posterUrl = host.getElementById(
+              "posterUrl",
+            ) as HTMLInputElement;
+
+            const article = {
+              title: title.value,
+              content: content.value,
+              posterUrl: posterUrl.value,
+            };
 
             try {
               await this.postArticle(article);
 
-              const form = host.querySelector('form[name="login"]') as HTMLFormElement;
+              const form = host.querySelector(
+                'form[name="login"]',
+              ) as HTMLFormElement;
               form.reset();
             } catch (e) {
               router.push("/error");
             }
           }}>
             <label for="title">Title</label>
-            <input id="title" name="title" type="text" required />
+            <input id="title"
+              name="title"
+              type="text"
+              required />
+
+            <label for="poster">Poster</label>
+            <input required
+              type="file"
+              id="poster"
+              name="poster"
+              accept="image/png, image/jpeg"
+              @change=${async (e: Event) => {
+                const target = e.target as HTMLInputElement;
+
+                if (target.files instanceof FileList) {
+                  const file = target.files.item(0) as File;
+
+                  const url = await this.uploadPoster(file);
+                  const posterUrlInput = (this
+                    .shadowRoot as ShadowRoot).getElementById(
+                    "posterUrl",
+                  ) as HTMLInputElement;
+
+                  posterUrlInput.setAttribute("value", url);
+                }
+              }} />
+            
+            <input type="hidden" id="posterUrl" name="posterUrl" />
+
             <label for="content">Content</label>
-            <textarea id="content" name="content" type="text" required rows="3" cols="60"></textarea>
+            <textarea id="content"
+              name="content"
+              type="text"
+              required
+              rows="3"
+              cols="60"></textarea>
+
             <button type="submit">Post</button>
           </form>
         </div>

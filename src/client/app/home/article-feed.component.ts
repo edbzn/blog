@@ -1,9 +1,9 @@
-import { html } from 'lit-html';
-import { until } from 'lit-html/directives/until';
+import { html } from "lit-html";
+import { until } from "lit-html/directives/until";
 
-import router from '../../app-router';
-import { showPlaceholder } from './placeholder.component';
-import { ArticleDocument } from '../../../server/api/article/model/article.model';
+import router from "../../app-router";
+import { showPlaceholder } from "./placeholder.component";
+import { ArticleDocument } from "../../../server/api/article/model/article.model";
 
 const getArticleList = async (): Promise<ArticleDocument[]> => {
   const resp = await fetch(`http://localhost:8081/api/v1/article`, {
@@ -19,28 +19,30 @@ const showArticleList = (resp: ArticleDocument[]) => {
   if (resp.length === 0) {
     return html`
       <article>
-        <p>Empty dude (wip)</p>
+        <p>It's empty dude...</p>
       </article>
     `;
   }
 
-  return resp.map(
-    (article: ArticleDocument) => {
-      const articleUri = `/article/${article._id}`;
+  return resp.map((article: ArticleDocument) => {
+    const articleUri = `/article/${article._id}`;
 
-      return html`
-        <article>
-          <h2>${article.title}</h2>
-          <p>${article.content}</p>
-          <a href=${articleUri} @click=${(e: Event) => {
+    return html`
+      <article>
+        <h2>${article.title}</h2>
+        <p>${article.content}</p>
+        <a href=${articleUri}
+          title="Read article"
+          @click=${(e: Event) => {
             e.preventDefault();
 
             router.push(articleUri);
-          }} title="Article detail">Read</a>
-        </article>
+          }}>
+          Read
+        </a>
+      </article>
     `;
-    },
-  );
+  });
 };
 
 export const articleFeed = () => {

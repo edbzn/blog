@@ -4,6 +4,7 @@ import { until } from "lit-html/directives/until";
 
 import { showPlaceholder } from "../home/placeholder.component";
 import { ArticleDocument } from "../../../server/api/article/model/article.model";
+import { empty } from "rxjs";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -21,6 +22,23 @@ export default class ArticleDetail extends LitElement {
 
     return resp.json();
   };
+
+  showArticleDetail(article: ArticleDocument): TemplateResult {
+    const nothing = html``;
+    const poster = html`
+      <div class="poster"
+        style="background: url('${article.posterUrl}') center cover">
+      </div>`;
+
+    return html`
+      <header>
+        ${article.posterUrl ? poster : nothing}
+      </header>
+      <h1>${article.title}</h1>
+      ${article.content}
+      <footer>By Edouard Bozon at ${article.createdAt}</footer
+    `;
+  }
 
   render(): TemplateResult {
     return html`
@@ -45,12 +63,7 @@ export default class ArticleDetail extends LitElement {
       <ez-page>
         <section class="article">
           ${until(
-            this.getArticle().then(
-              (resp: ArticleDocument) => html`
-                <h1>${resp.title}</h1>
-                ${resp.content}
-              `,
-            ),
+            this.getArticle().then(this.showArticleDetail),
             showPlaceholder(10),
           )}
         </section>

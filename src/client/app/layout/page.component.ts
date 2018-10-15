@@ -11,7 +11,7 @@ export default class Page extends LitElement {
 
         main {
           width: 600px;
-          min-height: calc(100vh - 156px);
+          min-height: calc(100vh - 186px);
           margin: 0 auto;
           margin-top: 40px;
         }
@@ -26,4 +26,3 @@ export default class Page extends LitElement {
     `;
   }
 }
-
