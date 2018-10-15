@@ -5,12 +5,8 @@ module.exports = {
   entry: "./src/client/index",
   mode: "development",
   devtool: "inline-source-map",
-  devServer: {
-    historyApiFallback: true,
-  },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.tsx?$/,
         use: "ts-loader",
         exclude: /node_modules/,
@@ -46,4 +42,7 @@ module.exports = {
       template: path.resolve(__dirname, "src", "client", "index.html"),
     }),
   ],
+  devServer: {
+    historyApiFallback: true
+  },
 };
