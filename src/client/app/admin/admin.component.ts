@@ -1,11 +1,12 @@
 import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
-import { showError } from "../utils/create-error-uri";
+import { showError } from "../utils/show-error";
+import _fetch from "../utils/fetch";
 
 export default class Admin extends LitElement {
-  postArticle = async (article: any) => {
-    return await fetch(`http://localhost:8081/api/v1/article`, {
+  async postArticle(article: any): Promise<Response> {
+    return await _fetch(`http://localhost:8081/api/v1/article`, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -17,18 +18,18 @@ export default class Admin extends LitElement {
     });
   };
 
-  uploadPoster = async (file: File): Promise<string> => {
-    const response = await fetch(`http://localhost:8081/api/v1/gallery`, {
+  async uploadPoster(file: File): Promise<string> {
+    const response = await _fetch(`http://localhost:8081/api/v1/gallery`, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
       body: file,
-    });
-    throw new Error('404 fils')
+    })
+
     return response.json();
   };
 
-  async handleSubmit(e: Event) {
+  async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
 
     const host = this.shadowRoot as ShadowRoot;
@@ -56,7 +57,7 @@ export default class Admin extends LitElement {
     form.reset();
   }
 
-  async handleFile(e: Event) {
+  async handleFile(e: Event): Promise<void> {
     const target = e.target as HTMLInputElement;
 
     if (target.files instanceof FileList) {

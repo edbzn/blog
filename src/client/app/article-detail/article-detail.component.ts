@@ -4,13 +4,14 @@ import { until } from 'lit-html/directives/until';
 
 import { ArticleDocument } from '../../../server/api/article/model/article.model';
 import { showPlaceholder } from '../home/placeholder';
+import _fetch from '../utils/fetch';
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
   id: string;
 
   getArticle = async (): Promise<ArticleDocument> => {
-    const resp = await fetch(
+    const resp = await _fetch(
       `http://localhost:8081/api/v1/article/${this.id}`,
       {
         method: "GET",

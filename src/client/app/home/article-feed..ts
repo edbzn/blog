@@ -4,9 +4,10 @@ import { until } from "lit-html/directives/until";
 import router from "../../app-router";
 import { showPlaceholder } from "./placeholder";
 import { ArticleDocument } from "../../../server/api/article/model/article.model";
+import _fetch from "../utils/fetch";
 
 const getArticleList = async (): Promise<ArticleDocument[]> => {
-  const resp = await fetch(`http://localhost:8081/api/v1/article`, {
+  const resp = await _fetch(`http://localhost:8081/api/v1/article`, {
     method: "GET",
     mode: "cors",
     cache: "default",

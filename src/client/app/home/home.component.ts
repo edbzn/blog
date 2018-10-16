@@ -1,5 +1,4 @@
 import { html, TemplateResult } from "lit-html";
-import page from "../layout/page.component";
 import { profile } from "./profile";
 import { twitterFeed } from "./twitter-feed";
 import { articleFeed } from "./article-feed.";

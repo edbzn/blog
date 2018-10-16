@@ -2,13 +2,15 @@ import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
 import router from "../../app-router";
+import { showError } from "../utils/show-error";
+import _fetch from "../utils/fetch";
 
 export default class Login extends LitElement {
   logUser = async (credentials: {
     name: string;
     password: string;
   }): Promise<any> => {
-    return await fetch(`http://localhost:8081/api/v1/login`, {
+    return await _fetch(`http://localhost:8081/api/v1/login`, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -39,6 +41,7 @@ export default class Login extends LitElement {
         <h1>Login</h1>
         <form name="login" @submit=${async (e: Event) => {
           e.preventDefault();
+
           const host = this.shadowRoot as ShadowRoot;
           const name = host.getElementById("name") as HTMLInputElement;
           const password = host.getElementById("password") as HTMLInputElement;
@@ -48,7 +51,7 @@ export default class Login extends LitElement {
             await this.logUser(credentials);
             router.push("/admin");
           } catch (e) {
-            router.push("/error");
+            showError(e);
           }
         }}>
           <label for="name">Name</label>
