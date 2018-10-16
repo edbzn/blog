@@ -28,6 +28,44 @@ export default class Admin extends LitElement {
     return response.json();
   };
 
+  async handleSubmit(e: Event) {
+    e.preventDefault();
+    const host = this.shadowRoot as ShadowRoot;
+    const title = host.getElementById("title") as HTMLInputElement;
+    const content = host.getElementById("content") as HTMLInputElement;
+    const posterUrl = host.getElementById("posterUrl") as HTMLInputElement;
+
+    const article = {
+      title: title.value,
+      content: content.value,
+      posterUrl: posterUrl.value,
+    };
+
+    try {
+      await this.postArticle(article);
+
+      const form = host.querySelector('form[name="login"]') as HTMLFormElement;
+      form.reset();
+    } catch (e) {
+      router.push("/error");
+    }
+  }
+
+  async handleFile(e: Event) {
+    const target = e.target as HTMLInputElement;
+
+    if (target.files instanceof FileList) {
+      const file = target.files.item(0) as File;
+
+      const url = await this.uploadPoster(file);
+      const posterUrlInput = (this.shadowRoot as ShadowRoot).getElementById(
+        "posterUrl",
+      ) as HTMLInputElement;
+
+      posterUrlInput.setAttribute("value", url);
+    }
+  }
+
   render(): TemplateResult {
     return html`
       <style scoped>
@@ -52,32 +90,7 @@ export default class Admin extends LitElement {
       <ez-page>
         <h1>Admin</h1>
         <div>
-          <form name="login" @submit=${async (e: Event) => {
-            e.preventDefault();
-            const host = this.shadowRoot as ShadowRoot;
-            const title = host.getElementById("title") as HTMLInputElement;
-            const content = host.getElementById("content") as HTMLInputElement;
-            const posterUrl = host.getElementById(
-              "posterUrl",
-            ) as HTMLInputElement;
-
-            const article = {
-              title: title.value,
-              content: content.value,
-              posterUrl: posterUrl.value,
-            };
-
-            try {
-              await this.postArticle(article);
-
-              const form = host.querySelector(
-                'form[name="login"]',
-              ) as HTMLFormElement;
-              form.reset();
-            } catch (e) {
-              router.push("/error");
-            }
-          }}>
+          <form name="login" @submit=${this.handleSubmit}>
             <label for="title">Title</label>
             <input id="title"
               name="title"
@@ -90,21 +103,7 @@ export default class Admin extends LitElement {
               id="poster"
               name="poster"
               accept="image/png, image/jpeg"
-              @change=${async (e: Event) => {
-                const target = e.target as HTMLInputElement;
-
-                if (target.files instanceof FileList) {
-                  const file = target.files.item(0) as File;
-
-                  const url = await this.uploadPoster(file);
-                  const posterUrlInput = (this
-                    .shadowRoot as ShadowRoot).getElementById(
-                    "posterUrl",
-                  ) as HTMLInputElement;
-
-                  posterUrlInput.setAttribute("value", url);
-                }
-              }} />
+              @change=${this.handleFile} />
             
             <input type="hidden" id="posterUrl" name="posterUrl" />
 
