@@ -2,7 +2,9 @@ import { from } from "rxjs";
 import { Article } from "./article.model";
 
 export namespace ArticleDao {
-  export const model = new Article("", "").getModelForClass(Article);
+  export const model = new Article("", "").getModelForClass(Article, {
+    schemaOptions: { timestamps: true },
+  });
 
   export const findAll = () => from(model.find().exec());
 

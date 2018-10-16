@@ -1,10 +1,9 @@
-import { LitElement, property } from "@polymer/lit-element";
-import { html, TemplateResult } from "lit-html";
-import { until } from "lit-html/directives/until";
+import { LitElement, property } from '@polymer/lit-element';
+import { html, TemplateResult } from 'lit-html';
+import { until } from 'lit-html/directives/until';
 
-import { showPlaceholder } from "../home/placeholder.component";
-import { ArticleDocument } from "../../../server/api/article/model/article.model";
-import { empty } from "rxjs";
+import { ArticleDocument } from '../../../server/api/article/model/article.model';
+import { showPlaceholder } from '../home/placeholder';
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })

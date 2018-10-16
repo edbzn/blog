@@ -12,17 +12,15 @@ export class Article extends Typegoose {
   @prop({ required: String })
   content: string = "";
 
-  @prop({ required: String, default: new Date() })
-  createdAt: Date = new Date();
-
-  @prop({ required: Date, default: new Date() })
-  updatedAt: Date = new Date();
-
   @arrayProp({ itemsRef: Tag, required: true })
   tags: Ref<Tag>[] = [];
 
   @prop({ required: String })
   posterUrl: string | null = null;
+
+  createdAt: Date;
+  
+  updatedAt: Date;
 
   constructor(title: string, content: string) {
     super();

@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import { until } from "lit-html/directives/until";
 
 import router from "../../app-router";
-import { showPlaceholder } from "./placeholder.component";
+import { showPlaceholder } from "./placeholder";
 import { ArticleDocument } from "../../../server/api/article/model/article.model";
 
 const getArticleList = async (): Promise<ArticleDocument[]> => {

@@ -1,8 +1,8 @@
 import { html, TemplateResult } from "lit-html";
 import page from "../layout/page.component";
-import { profile } from "./profile.component";
-import { twitterFeed } from "./twitter-feed.component";
-import { articleFeed } from "./article-feed.component";
+import { profile } from "./profile";
+import { twitterFeed } from "./twitter-feed";
+import { articleFeed } from "./article-feed.";
 import { LitElement } from "@polymer/lit-element/lit-element";
 
 export default class Home extends LitElement {

@@ -1,7 +1,7 @@
 import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
-import router from "../../app-router";
+import { showError } from "../utils/create-error-uri";
 
 export default class Admin extends LitElement {
   postArticle = async (article: any) => {
@@ -24,12 +24,13 @@ export default class Admin extends LitElement {
       cache: "no-cache",
       body: file,
     });
-
+    throw new Error('404 fils')
     return response.json();
   };
 
   async handleSubmit(e: Event) {
     e.preventDefault();
+
     const host = this.shadowRoot as ShadowRoot;
     const title = host.getElementById("title") as HTMLInputElement;
     const content = host.getElementById("content") as HTMLInputElement;
@@ -42,13 +43,17 @@ export default class Admin extends LitElement {
     };
 
     try {
-      await this.postArticle(article);
-
-      const form = host.querySelector('form[name="login"]') as HTMLFormElement;
-      form.reset();
-    } catch (e) {
-      router.push("/error");
+      await this.submit(article, host);
+    } catch (error) {
+      showError(error);
     }
+  }
+
+  async submit(article: any, host: ShadowRoot): Promise<void> {
+    await this.postArticle(article);
+
+    const form = host.querySelector('form[name="login"]') as HTMLFormElement;
+    form.reset();
   }
 
   async handleFile(e: Event) {
@@ -57,13 +62,21 @@ export default class Admin extends LitElement {
     if (target.files instanceof FileList) {
       const file = target.files.item(0) as File;
 
-      const url = await this.uploadPoster(file);
-      const posterUrlInput = (this.shadowRoot as ShadowRoot).getElementById(
-        "posterUrl",
-      ) as HTMLInputElement;
-
-      posterUrlInput.setAttribute("value", url);
+      try {
+        await this.uploadFile(file);
+      } catch (error) {
+        showError(error);
+      }
     }
+  }
+
+  async uploadFile(file: File): Promise<void> {
+    const url = await this.uploadPoster(file);
+    const posterUrlInput = (this.shadowRoot as ShadowRoot).getElementById(
+      "posterUrl",
+    ) as HTMLInputElement;
+
+    posterUrlInput.setAttribute("value", url);
   }
 
   render(): TemplateResult {

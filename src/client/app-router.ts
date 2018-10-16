@@ -1,5 +1,5 @@
-import { render, html } from "lit-html";
-import { browserRouter, ProuterNavigationEvent } from "prouter";
+import { html, render } from 'lit-html';
+import { browserRouter, ProuterNavigationEvent } from 'prouter';
 
 const router = browserRouter();
 
@@ -14,6 +14,7 @@ router
   })
   .use("/article/:id", (req, resp) => {
     const id = req.params.id;
+
     render(
       html`<ez-article-detail id="${id}"></ez-article-detail>`,
       document.body,
@@ -24,8 +25,10 @@ router
     render(html`<ez-admin></ez-admin>`, document.body);
     resp.end();
   })
-  .use("/error", (_req, resp) => {
-    render(html`<ez-error></ez-error>`, document.body);
+  .use("/error", (req, resp) => {
+    const message = req.query.message;
+
+    render(html`<ez-error message="${message}"></ez-error>`, document.body);
     resp.end();
   })
   .use("*", (_req, resp) => {
