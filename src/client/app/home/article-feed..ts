@@ -30,6 +30,8 @@ const showArticleList = (resp: ArticleDocument[]) => {
 
     return html`
       <article>
+        <img src="${"http://localhost:8081/api/v1/gallery" +
+          article.posterUrl}"/>
         <h2>${article.title}</h2>
         <p>${article.content}</p>
         <a href=${articleUri}
@@ -67,7 +69,7 @@ export const articleFeed = () => {
       <h4>ARTICLES</h4>
       ${until(
         getArticleList().then(resp => showArticleList(resp)),
-        showPlaceholder(2),
+        showPlaceholder(9),
       )}
     </section>
   `;

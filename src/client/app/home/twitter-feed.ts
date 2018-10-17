@@ -40,7 +40,7 @@ export const twitterFeed = () => {
     </style>
     <section class="twitter-feed">
       <h4>TWEETS</h4>
-      ${until(getTweets().then(resp => showTweets(resp)), showPlaceholder())}
+      ${until(getTweets().then(resp => showTweets(resp)), showPlaceholder(9))}
     </section>
   `;
 };

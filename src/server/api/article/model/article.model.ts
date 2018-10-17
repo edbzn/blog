@@ -19,13 +19,14 @@ export class Article extends Typegoose {
   posterUrl: string | null = null;
 
   createdAt: Date;
-  
+
   updatedAt: Date;
 
-  constructor(title: string, content: string) {
+  constructor(title: string, content: string, posterUrl: string) {
     super();
 
     this.title = title;
     this.content = content;
+    this.posterUrl = posterUrl;
   }
 }

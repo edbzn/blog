@@ -1,5 +1,5 @@
-import { html, render } from 'lit-html';
-import { browserRouter, ProuterNavigationEvent } from 'prouter';
+import { html, render } from "lit-html";
+import { browserRouter, ProuterNavigationEvent } from "prouter";
 
 const router = browserRouter();
 
