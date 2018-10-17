@@ -30,8 +30,7 @@ const showArticleList = (resp: ArticleDocument[]) => {
 
     return html`
       <article>
-        <img src="${"http://localhost:8081/api/v1/gallery" +
-          article.posterUrl}"/>
+        <img src="${article.posterUrl}"/>
         <h2>${article.title}</h2>
         <p>${article.content}</p>
         <a href=${articleUri}

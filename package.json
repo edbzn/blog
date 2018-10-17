@@ -4,7 +4,7 @@
   "description": "My web page",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"webpack-dev-server --inline --hot\" \"nodemon\""
+    "start": "concurrently \"webpack-dev-server --inline --hot\" \"nodemon --config nodemon.server.json\" \"nodemon --config nodemon.static-storage.json\""
   },
   "repository": {
     "type": "git",

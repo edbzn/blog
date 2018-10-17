@@ -1,0 +1,35 @@
+import { HttpStatus } from "@marblejs/core";
+import chalk from "chalk";
+import { readFile } from "fs";
+import * as http from "http";
+
+export function _readFile(
+  filePath: string,
+  response: http.ServerResponse,
+): void {
+  readFile(filePath, (error, content) => {
+    if (error) {
+      if (error.code === "ENOENT") {
+        console.log(chalk.red("[Storage]") + " File not found at " + filePath);
+
+        response.writeHead(HttpStatus.NOT_FOUND);
+        response.end("File not found");
+      } else {
+        console.log(`
+          ${chalk.red("[storage]")} Something went wrong: \n
+          ${chalk.gray(error.message)}
+        `);
+
+        response.writeHead(HttpStatus.INTERNAL_SERVER_ERROR);
+        response.end("Something went wrong");
+      }
+    } else {
+      console.log(
+        `${chalk.green("[Storage]")} successfully rendered [${filePath}]`,
+      );
+
+      response.writeHead(200);
+      response.end(content, "utf-8");
+    }
+  });
+}
