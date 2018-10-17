@@ -8,9 +8,9 @@ const imageValidator$ = validator$({
   body: Joi.binary(),
 });
 
-const upload$ = (file: any): Observable<string> =>
+const upload$ = (file: any, fileType: string): Observable<string> =>
   Observable.create((observer: Observer<string>) => {
-    const path = "/tmp/" + new Date().getTime();
+    const path = "/tmp/" + new Date().getTime() + fileType;
 
     writeFile(path, file, err => {
       if (err) {
@@ -25,12 +25,17 @@ const upload$ = (file: any): Observable<string> =>
 export const postImageEffect$: Effect = req$ =>
   req$.pipe(
     use(imageValidator$),
-    map(req => {
-      console.log(req.headers);
-      return req.body;
+
+    mergeMap(req =>
+      upload$(
+        req.body,
+        "." + (req.headers["content-type"] || "image/jpg").split("image/")[1],
+      ),
+    ),
+    catchError(err => {
+      console.log(err);
+      return throwError(err);
     }),
-    mergeMap(req => upload$(req.body)),
-    catchError(err => throwError(err)),
     map(fileUrl => {
       console.log(fileUrl);
       return { body: fileUrl };
