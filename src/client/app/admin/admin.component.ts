@@ -3,6 +3,7 @@ import { html, TemplateResult } from "lit-html";
 
 import { showError } from "../utils/show-error";
 import _fetch from "../utils/fetch";
+import { upload } from "../utils/upload";
 
 export default class Admin extends LitElement {
   async postArticle(article: any): Promise<Response> {
@@ -16,18 +17,11 @@ export default class Admin extends LitElement {
         "Content-Type": "application/json",
       },
     });
-  };
+  }
 
-  async uploadPoster(file: File): Promise<string> {
-    const response = await _fetch(`http://localhost:8081/api/v1/gallery`, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      body: file,
-    })
-
-    return response.json();
-  };
+  async uploadPoster(file: File): Promise<{ path: string }> {
+    return await upload(file);
+  }
 
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
@@ -72,12 +66,13 @@ export default class Admin extends LitElement {
   }
 
   async uploadFile(file: File): Promise<void> {
-    const url = await this.uploadPoster(file);
+    const { path } = await this.uploadPoster(file);
+
     const posterUrlInput = (this.shadowRoot as ShadowRoot).getElementById(
       "posterUrl",
     ) as HTMLInputElement;
 
-    posterUrlInput.setAttribute("value", url);
+    posterUrlInput.setAttribute("value", path);
   }
 
   render(): TemplateResult {

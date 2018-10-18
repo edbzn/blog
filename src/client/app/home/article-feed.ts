@@ -27,18 +27,15 @@ const showArticleList = (resp: ArticleDocument[]) => {
 
   return resp.map((article: ArticleDocument) => {
     const articleUri = `/article/${article._id}`;
-
     return html`
       <article>
-        <img src="${"http://localhost:8081/api/v1/gallery" +
-          article.posterUrl}"/>
+        <img src="${article.posterUrl}"/>
         <h2>${article.title}</h2>
         <p>${article.content}</p>
         <a href=${articleUri}
           title="Read article"
           @click=${(e: Event) => {
             e.preventDefault();
-
             router.push(articleUri);
           }}>
           Read
