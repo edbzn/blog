@@ -3,14 +3,11 @@ import chalk from "chalk";
 import { readFile } from "fs";
 import * as http from "http";
 
-export function _readFile(
-  filePath: string,
-  response: http.ServerResponse,
-): void {
-  readFile(filePath, (error, content) => {
+export function _readFile(path: string, response: http.ServerResponse): void {
+  readFile(path, (error, content) => {
     if (error) {
       if (error.code === "ENOENT") {
-        console.log(chalk.red("[Storage]") + " File not found at " + filePath);
+        console.log(chalk.red("[Storage]") + " File not found at " + path);
 
         response.writeHead(HttpStatus.NOT_FOUND);
         response.end("File not found");
@@ -25,7 +22,7 @@ export function _readFile(
       }
     } else {
       console.log(
-        `${chalk.green("[Storage]")} successfully rendered [${filePath}]`,
+        `${chalk.green("[Storage]")} successfully rendered [${path}]`,
       );
 
       response.writeHead(200);

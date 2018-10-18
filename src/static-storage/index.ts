@@ -3,9 +3,10 @@ import chalk from "chalk";
 import * as http from "http";
 import { v1 as uuid } from "uuid";
 
-import { allowCORSRequest } from "./middlewares";
-import { _readFile } from "./read";
-import { _writeFile } from "./write";
+import { allowCORSRequest } from "./core/cors";
+import { _readFile } from "./core/read";
+import { _writeFile } from "./core/write";
+import { getPublicPath, PUBLIC_PATH } from "./core/public-path";
 
 const port = process.env.PORT || 8082;
 
@@ -23,7 +24,19 @@ http
     }
 
     if (method === "GET") {
-      _readFile(request.url as string, response);
+      const { url } = request;
+      if (!url) {
+        console.log(`${chalk.red("[storage]")} Path not found`);
+        response.writeHead(HttpStatus.BAD_REQUEST);
+        response.end("No path was found in request url");
+        return;
+      }
+      // @todo security check if given url match the public path (with regex)
+      // otherwise early return
+      if (!url) {
+      }
+
+      _readFile(url, response);
     } else if (method === "POST") {
       let contentType = request.headers["content-type"];
 
@@ -34,7 +47,7 @@ http
         return;
       }
       const extname = "." + contentType.split("/").pop();
-      const filePath = uuid() + extname;
+      const filename = uuid() + extname;
 
       switch (extname) {
         case ".png":
@@ -50,7 +63,7 @@ http
           return;
       }
 
-      _writeFile(filePath, request, response);
+      _writeFile(getPublicPath(filename), request, response);
     } else {
       response.writeHead(HttpStatus.BAD_REQUEST);
       response.end("Unsupported Method");

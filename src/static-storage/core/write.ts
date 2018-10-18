@@ -1,15 +1,13 @@
 import { HttpStatus } from "@marblejs/core";
 import { createWriteStream, exists } from "fs";
 import * as http from "http";
-import { renderFileURI } from "./render-uri";
+import { renderFileURI } from "./file-uri";
 
 export function _writeFile(
-  filePath: string,
+  path: string,
   request: http.IncomingMessage,
   response: http.ServerResponse,
 ): void {
-  const path = "/tmp/" + filePath;
-
   request
     .pipe(
       createWriteStream(path),
@@ -23,8 +21,10 @@ export function _writeFile(
           response.writeHead(HttpStatus.INTERNAL_SERVER_ERROR);
           response.end("Something went wrong");
         }
-        
-        const responseData = JSON.stringify({ path: renderFileURI(request, path) });
+
+        const responseData = JSON.stringify({
+          path: renderFileURI(request, path),
+        });
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end(responseData);
       });
