@@ -4,8 +4,8 @@ import * as http from "http";
 import { v1 as uuid } from "uuid";
 
 import { allowCORSRequest } from "./core/cors";
-import { _readFile } from "./core/read";
-import { _writeFile } from "./core/write";
+import { _readFile as readFile } from "./core/read";
+import { _writeFile as writeFile } from "./core/write";
 import { getPublicPath, PUBLIC_PATH } from "./core/public-path";
 
 const port = process.env.PORT || 8082;
@@ -36,7 +36,7 @@ http
 
       if (filename) {
         const filePath = `${PUBLIC_PATH}${filename[0]}`;
-        _readFile(filePath, response);
+        readFile(filePath, response);
       }
     } else if (method === "POST") {
       let contentType = request.headers["content-type"];
@@ -64,7 +64,7 @@ http
           return;
       }
 
-      _writeFile(getPublicPath(filename), request, response);
+      writeFile(getPublicPath(filename), request, response);
     } else {
       response.writeHead(HttpStatus.BAD_REQUEST);
       response.end("Unsupported Method");
