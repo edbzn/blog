@@ -28,7 +28,7 @@ const showArticleList = (resp: ArticleDocument[]) => {
   return resp.map((article: ArticleDocument) => {
     const articleUri = `/article/${article._id}`;
     return html`
-      <article>
+      <article class="article">
         <img src="${article.posterUrl}"/>
         <h2>${article.title}</h2>
         <p>${article.content}</p>
@@ -54,12 +54,17 @@ export const articleFeed = () => {
         border-top: 2px solid #f8f8f8;
       }
 
-      article {
+      .article {
         padding: 1.4rem;
         margin-bottom: 4px;
         background: #f8f8f8;
         border-radius: 2px;
         color: #585858;
+      }
+
+      .article img {
+        display: block;
+        width: 100%;
       }
     </style>
     <section class="article-feed">

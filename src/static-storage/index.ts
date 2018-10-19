@@ -31,12 +31,13 @@ http
         response.end("No path was found in request url");
         return;
       }
-      // @todo security check if given url match the public path (with regex)
-      // otherwise early return
-      if (!url) {
-      }
 
-      _readFile(url, response);
+      const filename = /([^\/]+)(?=$)/.exec(url);
+
+      if (filename) {
+        const filePath = `${PUBLIC_PATH}${filename[0]}`;
+        _readFile(filePath, response);
+      }
     } else if (method === "POST") {
       let contentType = request.headers["content-type"];
 
