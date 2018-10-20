@@ -97,8 +97,6 @@ export default class Draft extends LitElement {
 
   async submitDraft(article: any): Promise<void> {
     await this.postDraft(article);
-
-    router.push("/admin");
   }
 
   async handleFile(e: Event): Promise<void> {
@@ -108,21 +106,18 @@ export default class Draft extends LitElement {
       const file = target.files.item(0) as File;
 
       try {
-        await this.uploadFile(file);
+        await this.uploadFileAndUpdateForm(file);
       } catch (error) {
         showError(error);
       }
     }
   }
 
-  async uploadFile(file: File): Promise<void> {
+  async uploadFileAndUpdateForm(file: File): Promise<void> {
     const { path } = await this.uploadPoster(file);
+    const { posterUrlCtrl } = this.getFormRefs();
 
-    const posterUrlInput = (this.shadowRoot as ShadowRoot).getElementById(
-      "posterUrl",
-    ) as HTMLInputElement;
-
-    posterUrlInput.setAttribute("value", path);
+    posterUrlCtrl.setAttribute("value", path);
     this.draft.posterUrl = path;
     this.update(new Map());
   }
@@ -219,7 +214,8 @@ export default class Draft extends LitElement {
               rows="20"
               cols="70"></textarea>
 
-            <button type="submit">Post</button>
+            <button type="submit">Save draft</button>
+            <button type="button">Publish @todo</button>
           </form>
         </div>
       </ez-page>
