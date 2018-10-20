@@ -19,6 +19,7 @@ export default class Draft extends LitElement {
   @property({ type: String })
   id: string;
 
+  @property({ type: Object })
   draft: ArticleDocument | IDraft = {
     title: "New draft",
     content: "",
@@ -39,7 +40,7 @@ export default class Draft extends LitElement {
   async init(): Promise<void> {
     // If an id is given we needs to fetch draft data
     // then hydrate the whole form
-    if (typeof this.id === "string") {
+    if (this.id !== "undefined") {
       this.draft = await this.getDraft();
       this.fillFormData();
     }
@@ -173,7 +174,16 @@ export default class Draft extends LitElement {
         }
       </style>
       <ez-page>
+        ${
+          this.draft.posterUrl
+            ? html`<img src="${this.draft.posterUrl}">`
+            : html``
+        }
         <h1>${this.draft.title}</h1>
+        <div>
+          Created at ${this.draft.createdAt} <br>
+          Updated at ${this.draft.updatedAt}
+        </div>
         <div>
           <form name="login" @submit=${this.handleSubmit}>
             <label for="title">Title</label>

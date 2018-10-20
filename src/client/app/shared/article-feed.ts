@@ -16,11 +16,25 @@ const getArticleList = async (): Promise<ArticleDocument[]> => {
   return resp.json();
 };
 
-const showArticleList = (resp: ArticleDocument[], showEdit: boolean) => {
+const showArticleList = (resp: ArticleDocument[], adminMode: boolean) => {
   if (resp.length === 0) {
     return html`
       <article>
         <p>It's empty dude...</p>
+
+        ${
+          adminMode
+            ? html`
+              <a href="/admin/draft"
+                title="Edit article"
+                @click=${(e: Event) => {
+                  e.preventDefault();
+                  router.push(`/admin/draft`);
+                }}>
+                Start a new draft
+              </a>`
+            : html``
+        }
       </article>
     `;
   }
@@ -44,9 +58,9 @@ const showArticleList = (resp: ArticleDocument[], showEdit: boolean) => {
         </a>
 
         ${
-          showEdit
+          adminMode
             ? html`
-              <a href=${articleUri}
+              <a href=${`/admin/draft?id=${article._id}`}
                 title="Edit article"
                 @click=${(e: Event) => {
                   e.preventDefault();
