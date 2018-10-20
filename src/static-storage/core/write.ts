@@ -1,4 +1,3 @@
-import { HttpStatus } from "@marblejs/core";
 import { createWriteStream, exists } from "fs";
 import * as http from "http";
 import { renderFileURI } from "./file-uri";
@@ -18,7 +17,7 @@ export function _writeFile(
         if (!exists) {
           // If file does not exists, it's not a 404 NOT FOUND error
           // but a fail while writing stream on the file system
-          response.writeHead(HttpStatus.INTERNAL_SERVER_ERROR);
+          response.writeHead(500);
           response.end("Something went wrong");
         }
 

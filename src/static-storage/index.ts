@@ -1,4 +1,3 @@
-import { HttpStatus } from "@marblejs/core";
 import chalk from "chalk";
 import * as http from "http";
 import { v1 as uuid } from "uuid";
@@ -27,7 +26,7 @@ http
       const { url } = request;
       if (!url) {
         console.log(`${chalk.red("[storage]")} Path not found`);
-        response.writeHead(HttpStatus.BAD_REQUEST);
+        response.writeHead(400);
         response.end("No path was found in request url");
         return;
       }
@@ -43,7 +42,7 @@ http
 
       if (!contentType) {
         console.log(`${chalk.red("[storage]")} No Content-Type found`);
-        response.writeHead(HttpStatus.BAD_REQUEST);
+        response.writeHead(400);
         response.end("No Content-Type was found in request Headers");
         return;
       }
@@ -59,14 +58,14 @@ http
           break;
         default:
           console.log(`${chalk.red("[storage]")} unsupported MIME-Type`);
-          response.writeHead(HttpStatus.BAD_REQUEST);
+          response.writeHead(400);
           response.end("Unsupported MIME-Type");
           return;
       }
 
       writeFile(getPublicPath(filename), request, response);
     } else {
-      response.writeHead(HttpStatus.BAD_REQUEST);
+      response.writeHead(400);
       response.end("Unsupported Method");
     }
   })
