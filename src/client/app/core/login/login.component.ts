@@ -1,9 +1,9 @@
 import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
-import router from "../../app-router";
-import { showError } from "../utils/show-error";
-import _fetch from "../utils/fetch";
+import router from "../../../app-router";
+import { showError } from "../../utils/show-error";
+import _fetch from "../../utils/fetch";
 
 export default class Login extends LitElement {
   logUser = async (credentials: {

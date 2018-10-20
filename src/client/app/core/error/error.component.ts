@@ -1,11 +1,11 @@
 import { LitElement, property } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
-import router from "../../app-router";
+import router from "../../../app-router";
 
 export default class Error extends LitElement {
   @property({ type: String })
-  message?: string;
+  message: string;
 
   render(): TemplateResult {
     return html`

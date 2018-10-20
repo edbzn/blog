@@ -1,16 +1,16 @@
-import { LitElement, property } from '@polymer/lit-element';
-import { html, TemplateResult } from 'lit-html';
-import { until } from 'lit-html/directives/until';
+import { LitElement, property } from "@polymer/lit-element";
+import { html, TemplateResult } from "lit-html";
+import { until } from "lit-html/directives/until";
 
-import { ArticleDocument } from '../../../server/api/article/model/article.model';
-import { showPlaceholder } from '../home/placeholder';
-import _fetch from '../utils/fetch';
+import { ArticleDocument } from "../../../../server/api/article/model/article.model";
+import { showPlaceholder } from "../../shared/placeholder";
+import _fetch from "../../utils/fetch";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
   id: string;
 
-  getArticle = async (): Promise<ArticleDocument> => {
+  async getArticle(): Promise<ArticleDocument> {
     const resp = await _fetch(
       `http://localhost:8081/api/v1/article/${this.id}`,
       {
@@ -21,7 +21,7 @@ export default class ArticleDetail extends LitElement {
     );
 
     return resp.json();
-  };
+  }
 
   showArticleDetail(article: ArticleDocument): TemplateResult {
     const nothing = html``;

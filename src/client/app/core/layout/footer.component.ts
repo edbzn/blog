@@ -1,8 +1,8 @@
-import { LitElement } from '@polymer/lit-element/lit-element';
-import { html, TemplateResult } from 'lit-html';
+import { LitElement } from "@polymer/lit-element/lit-element";
+import { html, TemplateResult } from "lit-html";
 
-import heart from '../../assets/images/heart';
-import router from '../../app-router';
+import heart from "../../../assets/images/heart";
+import router from "../../../app-router";
 
 export default class Footer extends LitElement {
   render(): TemplateResult {
@@ -31,7 +31,7 @@ export default class Footer extends LitElement {
         <a href="/login" @click=${(e: Event) => {
           e.preventDefault();
 
-          router.push("/login")
+          router.push("/login");
         }}>
           <i class="heart">${heart}</i>
         </a>
