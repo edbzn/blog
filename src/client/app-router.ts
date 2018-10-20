@@ -26,7 +26,6 @@ router
     resp.end();
   })
   .use("/admin/draft", (req, resp) => {
-    console.log(req);
     render(html`<ez-draft id=${req.query.id}></ez-draft>`, document.body);
     resp.end();
   })

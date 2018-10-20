@@ -5,12 +5,13 @@ import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { upload } from "../../utils/upload";
 import { ArticleDocument } from "../../../../server/api/article/model/article.model";
+import router from "../../../app-router";
 
 interface IDraft {
   title: string;
   content: string;
   tags: [];
-  posterUrl: string;
+  posterUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,7 +25,7 @@ export default class Draft extends LitElement {
     title: "New draft",
     content: "",
     tags: [],
-    posterUrl: "",
+    posterUrl: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -97,9 +98,7 @@ export default class Draft extends LitElement {
   async submitDraft(article: any): Promise<void> {
     await this.postDraft(article);
 
-    const host = this.shadowRoot as ShadowRoot;
-    const form = host.querySelector('form[name="login"]') as HTMLFormElement;
-    form.reset();
+    router.push("/admin");
   }
 
   async handleFile(e: Event): Promise<void> {
@@ -124,6 +123,8 @@ export default class Draft extends LitElement {
     ) as HTMLInputElement;
 
     posterUrlInput.setAttribute("value", path);
+    this.draft.posterUrl = path;
+    this.update(new Map());
   }
 
   private getFormRefs(): {
@@ -172,11 +173,19 @@ export default class Draft extends LitElement {
         form input, form textarea {
           margin-bottom: 10px;
         }
+
+        .poster {
+          height: 400px;
+          background-position: center center;
+          background-size: cover;
+        }
       </style>
       <ez-page>
         ${
           this.draft.posterUrl
-            ? html`<img src="${this.draft.posterUrl}">`
+            ? html`<div class="poster" style="background-image: url('${
+                this.draft.posterUrl
+              }')"></div>`
             : html``
         }
         <h1>${this.draft.title}</h1>
@@ -186,12 +195,6 @@ export default class Draft extends LitElement {
         </div>
         <div>
           <form name="login" @submit=${this.handleSubmit}>
-            <label for="title">Title</label>
-            <input id="title"
-              name="title"
-              type="text"
-              required />
-
             <label for="poster">Poster</label>
             <input required
               type="file"
@@ -199,6 +202,12 @@ export default class Draft extends LitElement {
               name="poster"
               accept="image/png, image/jpeg"
               @change=${this.handleFile} />
+
+            <label for="title">Title</label>
+            <input id="title"
+              name="title"
+              type="text"
+              required />
             
             <input type="hidden" id="posterUrl" name="posterUrl" />
 
@@ -207,8 +216,8 @@ export default class Draft extends LitElement {
               name="content"
               type="text"
               required
-              rows="3"
-              cols="60"></textarea>
+              rows="20"
+              cols="70"></textarea>
 
             <button type="submit">Post</button>
           </form>

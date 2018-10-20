@@ -21,20 +21,6 @@ const showArticleList = (resp: ArticleDocument[], adminMode: boolean) => {
     return html`
       <article>
         <p>It's empty dude...</p>
-
-        ${
-          adminMode
-            ? html`
-              <a href="/admin/draft"
-                title="Edit article"
-                @click=${(e: Event) => {
-                  e.preventDefault();
-                  router.push(`/admin/draft`);
-                }}>
-                Start a new draft
-              </a>`
-            : html``
-        }
       </article>
     `;
   }
@@ -44,7 +30,14 @@ const showArticleList = (resp: ArticleDocument[], adminMode: boolean) => {
 
     return html`
       <article class="article">
-        <img src="${article.posterUrl}"/>
+        ${
+          article.posterUrl
+            ? html`<div class="poster" style="background-image: url('${
+                article.posterUrl
+              }')"></div>`
+            : html``
+        }
+
         <h2>${article.title}</h2>
         <p>${article.content}</p>
         
@@ -75,7 +68,7 @@ const showArticleList = (resp: ArticleDocument[], adminMode: boolean) => {
   });
 };
 
-export const articleFeed = (options = { showEdit: false }) => {
+export const articleFeed = (options = { adminMode: false }) => {
   return html`
     <style scoped>
       .article-feed {
@@ -92,15 +85,16 @@ export const articleFeed = (options = { showEdit: false }) => {
         color: #585858;
       }
 
-      .article img {
-        display: block;
-        width: 100%;
+      .poster {
+        height: 200px;
+        background-position: center center;
+        background-size: cover;
       }
     </style>
     <section class="article-feed">
       <h4>ARTICLES</h4>
       ${until(
-        getArticleList().then(resp => showArticleList(resp, options.showEdit)),
+        getArticleList().then(resp => showArticleList(resp, options.adminMode)),
         showPlaceholder(9),
       )}
     </section>

@@ -28,10 +28,9 @@ export default class Footer extends LitElement {
       </style>
       <footer>
         <span>Made with</span>
-        <a href="/login" @click=${(e: Event) => {
+        <a href="/admin" @click=${(e: Event) => {
           e.preventDefault();
-
-          router.push("/login");
+          router.push("/admin");
         }}>
           <i class="heart">${heart}</i>
         </a>

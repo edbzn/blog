@@ -2,6 +2,7 @@ import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
 import { articleFeed } from "../../shared/article-feed";
+import router from "../../../app-router";
 
 export default class Admin extends LitElement {
   render(): TemplateResult {
@@ -28,7 +29,17 @@ export default class Admin extends LitElement {
       <ez-page>
         <h1>Admin</h1>
         <div>
-          ${articleFeed({ showEdit: true })}
+          <a href="/admin/draft"
+            title="Start writing"
+            @click=${(e: Event) => {
+              e.preventDefault();
+              router.push(`/admin/draft`);
+            }}>
+            Start a new draft
+          </a>
+        </div>
+        <div>
+          ${articleFeed({ adminMode: true })}
         </div>
       </ez-page>
     `;
