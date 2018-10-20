@@ -32,7 +32,7 @@ router
     resp.end();
   })
   .use("*", (_req, resp) => {
-    router.push("/error");
+    router.push(`/error?message=${encodeURIComponent("Page not found")}`);
     resp.end();
   });
 
