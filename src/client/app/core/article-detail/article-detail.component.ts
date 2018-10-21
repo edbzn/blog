@@ -2,7 +2,6 @@ import { LitElement, property } from "@polymer/lit-element";
 import { html, TemplateResult } from "lit-html";
 import { until } from "lit-html/directives/until";
 
-import { ArticleDocument } from "../../../../server/api/article/model/article.model";
 import { showPlaceholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
@@ -11,7 +10,7 @@ export default class ArticleDetail extends LitElement {
   @property({ type: String })
   id: string;
 
-  async getArticle(): Promise<ArticleDocument> {
+  async getArticle(): Promise<any> {
     const resp = await _fetch(
       `http://localhost:8081/api/v1/article/${this.id}`,
       {
@@ -24,7 +23,7 @@ export default class ArticleDetail extends LitElement {
     return resp.json();
   }
 
-  showArticleDetail(article: ArticleDocument): TemplateResult {
+  showArticleDetail(article: any): TemplateResult {
     const nothing = html``;
     const poster = html`
       <div class="poster"

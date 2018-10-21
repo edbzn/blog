@@ -4,7 +4,6 @@ import { html, TemplateResult } from "lit-html";
 import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { upload } from "../../utils/upload";
-import { ArticleDocument } from "../../../../server/api/article/model/article.model";
 
 interface IDraft {
   title: string;
@@ -72,6 +71,19 @@ export default class Draft extends LitElement {
     });
   }
 
+  async updateArticle(article: any): Promise<Response> {
+    return await _fetch(`http://localhost:8081/api/v1/article/${this.id}`, {
+      method: "PUT",
+      mode: "cors",
+      cache: "no-cache",
+      body: JSON.stringify({ ...article }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   async uploadPoster(file: File): Promise<{ path: string }> {
     return await upload(file);
   }
@@ -96,7 +108,11 @@ export default class Draft extends LitElement {
   }
 
   async submitDraft(article: any): Promise<void> {
-    await this.postDraft(article);
+    if (this.id === "undefined") {
+      await this.postDraft(article);
+    } else {
+      await this.updateArticle(article);
+    }
   }
 
   async handleFile(e: Event): Promise<void> {
@@ -132,27 +148,37 @@ export default class Draft extends LitElement {
     titleCtrl: HTMLInputElement;
     contentCtrl: HTMLTextAreaElement;
     posterUrlCtrl: HTMLInputElement;
+    posterCtrl: HTMLInputElement;
     tagsCtrl: HTMLInputElement;
   } {
     const host = this.shadowRoot as ShadowRoot;
     const titleCtrl = host.getElementById("title") as HTMLInputElement;
     const contentCtrl = host.getElementById("content") as HTMLTextAreaElement;
     const posterUrlCtrl = host.getElementById("posterUrl") as HTMLInputElement;
+    const posterCtrl = host.getElementById("posterUrl") as HTMLInputElement;
     const tagsCtrl = host.getElementById("tags") as HTMLInputElement;
 
-    return { titleCtrl, contentCtrl, posterUrlCtrl, tagsCtrl };
+    return { titleCtrl, contentCtrl, posterUrlCtrl, tagsCtrl, posterCtrl };
   }
 
   private fillFormData(): void {
     const draft = this.draft;
-    const { titleCtrl, contentCtrl, posterUrlCtrl } = this.getFormRefs();
+    const {
+      titleCtrl,
+      contentCtrl,
+      posterUrlCtrl,
+      posterCtrl,
+      tagsCtrl,
+    } = this.getFormRefs();
 
     titleCtrl.setAttribute("value", draft.title);
+    tagsCtrl.setAttribute("value", draft.tags.toString());
     contentCtrl.setAttribute("value", draft.content);
     contentCtrl.append(draft.content);
 
     if (draft.posterUrl) {
       posterUrlCtrl.setAttribute("value", draft.posterUrl);
+      posterCtrl.setAttribute("value", draft.posterUrl);
     }
   }
 
@@ -199,7 +225,7 @@ export default class Draft extends LitElement {
         <div>
           <form name="login" @submit=${this.handleSubmit}>
             <label for="poster">Poster</label>
-            <input required
+            <input
               type="file"
               id="poster"
               name="poster"

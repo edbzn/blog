@@ -3,7 +3,6 @@ import { until } from "lit-html/directives/until";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 import router from "../../app-router";
-import { ArticleDocument } from "../../../server/api/article/model/article.model";
 import _fetch from "../utils/fetch";
 import { showPlaceholder } from "./placeholder";
 import { showError } from "../utils/show-error";
@@ -23,9 +22,9 @@ export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
   adminMode = false;
 
-  articleList: ArticleDocument[] = [];
+  articleList: any[] = [];
 
-  async getArticleList(): Promise<ArticleDocument[]> {
+  async getArticleList(): Promise<any[]> {
     const resp = await _fetch(`http://localhost:8081/api/v1/article`, {
       method: "GET",
       mode: "cors",
@@ -35,7 +34,7 @@ export default class ArticleFeed extends LitElement {
     return resp.json();
   }
 
-  async removeArticle(article: ArticleDocument) {
+  async removeArticle(article: any) {
     const articleTitle = article.title.toLocaleLowerCase();
     if (
       prompt("Enter " + articleTitle + " to delete the article") ===
@@ -62,7 +61,7 @@ export default class ArticleFeed extends LitElement {
     `;
     }
 
-    return this.articleList.map((article: ArticleDocument) => {
+    return this.articleList.map((article: any) => {
       const articleUri = `/article/${article._id}`;
 
       return html`
@@ -74,7 +73,9 @@ export default class ArticleFeed extends LitElement {
               }')"></div>`
             : html``
         }
-
+        <ul>
+          ${article.tags.map((tag: any) => html`<li>${tag}</li>`)}
+        </ul>
         <h2>${article.title}</h2>
         <p>${unsafeHTML(article.content.slice(0, 80) + "...")}</p>
         

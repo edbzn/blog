@@ -11,7 +11,7 @@ export const updateArticleEffect$: Effect = req$ =>
     use(articleValidator$),
     mergeMap(req =>
       of(req.params.id).pipe(
-        mergeMap(ArticleDao.updateById),
+        mergeMap(() => ArticleDao.updateById(req.params.id, req.body)),
         mergeMap(neverNullable),
         map(article => ({ body: article })),
         catchError(err =>

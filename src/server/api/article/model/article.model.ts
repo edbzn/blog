@@ -12,8 +12,8 @@ export class Article extends Typegoose {
   @prop({ required: String })
   content: string = "";
 
-  @arrayProp({ itemsRef: Tag, required: true })
-  tags: Ref<Tag>[] = [];
+  @arrayProp({ items: String, required: true })
+  tags: string[] = [];
 
   @prop({ required: String })
   posterUrl: string | null = null;
