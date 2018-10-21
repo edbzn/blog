@@ -10,6 +10,8 @@ export interface IDraft {
   content: string;
   tags: string[];
   posterUrl: string | null;
+  published: boolean;
+  publishedAt: Date | null;
 }
 
 export interface IArticle extends IDraft {
@@ -28,8 +30,8 @@ export default class Draft extends LitElement {
     content: "",
     tags: [],
     posterUrl: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    published: false,
+    publishedAt: null,
   };
 
   constructor() {
@@ -62,8 +64,8 @@ export default class Draft extends LitElement {
     return resp.json();
   }
 
-  async postDraft(article: IDraft): Promise<Response> {
-    return await _fetch(`http://localhost:8081/api/v1/article`, {
+  async postDraft(article: IDraft): Promise<IArticle> {
+    const resp = await _fetch(`http://localhost:8081/api/v1/article`, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -73,19 +75,26 @@ export default class Draft extends LitElement {
         "Content-Type": "application/json",
       },
     });
+
+    return resp.json();
   }
 
-  async updateArticle(article: IArticle): Promise<Response> {
-    return await _fetch(`http://localhost:8081/api/v1/article/${this.id}`, {
-      method: "PUT",
-      mode: "cors",
-      cache: "no-cache",
-      body: JSON.stringify({ ...article }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+  async updateArticle(article: IArticle): Promise<IArticle> {
+    const resp = await _fetch(
+      `http://localhost:8081/api/v1/article/${this.id}`,
+      {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        body: JSON.stringify({ ...article }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
+
+    return resp.json();
   }
 
   async uploadPoster(file: File): Promise<{ path: string }> {
@@ -100,6 +109,8 @@ export default class Draft extends LitElement {
       content: contentCtrl.value,
       posterUrl: posterUrlCtrl.value,
       tags: this.draft.tags,
+      published: this.draft.published,
+      publishedAt: this.draft.publishedAt,
     };
 
     try {
@@ -109,11 +120,13 @@ export default class Draft extends LitElement {
     }
   }
 
-  async submitDraft(article: IDraft): Promise<void> {
+  async submitDraft(draft: IDraft): Promise<void> {
     if (this.isDraft()) {
-      await this.postDraft(article);
+      const article = await this.postDraft(draft);
+      this.id = article._id;
+      this.update(new Map());
     } else {
-      await this.updateArticle(article as IArticle);
+      await this.updateArticle(draft as IArticle);
     }
   }
 
@@ -186,6 +199,23 @@ export default class Draft extends LitElement {
 
   isDraft(): boolean {
     return this.id === "undefined";
+  }
+
+  async togglePublish(): Promise<void> {
+    this.draft.published = !this.draft.published;
+    if (this.draft.published === true) {
+      this.draft.publishedAt = new Date();
+    } else {
+      this.draft.publishedAt = null;
+    }
+
+    this.update(new Map());
+
+    try {
+      await this.updateArticle({ ...this.draft } as IArticle);
+    } catch (error) {
+      showError(error);
+    }
   }
 
   render(): TemplateResult {
@@ -273,7 +303,11 @@ export default class Draft extends LitElement {
               cols="70"></textarea>
 
             <button type="submit">Save draft</button>
-            <button type="button">Publish @todo</button>
+            <button type="button"
+              @click=${this.togglePublish} 
+                ?disabled="${this.isDraft()}">
+                ${this.draft.published ? "de publish" : "publish"}
+              </button>
           </form>
         </div>
       </ez-page>

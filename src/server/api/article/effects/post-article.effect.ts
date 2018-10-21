@@ -11,6 +11,12 @@ export const articleValidator$ = validator$({
     content: Joi.string().required(),
     posterUrl: Joi.string().required(),
     tags: Joi.array().required(),
+    published: Joi.boolean().required(),
+    publishedAt: Joi.required(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date(),
+    _id: Joi.string(),
+    __v: Joi.number(),
   }),
 });
 
