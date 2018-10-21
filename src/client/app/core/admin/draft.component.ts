@@ -5,11 +5,15 @@ import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { upload } from "../../utils/upload";
 
-interface IDraft {
+export interface IDraft {
   title: string;
   content: string;
   tags: string[];
   posterUrl: string | null;
+}
+
+export interface IArticle extends IDraft {
+  _id: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,7 +23,7 @@ export default class Draft extends LitElement {
   id: string;
 
   @property({ type: Object })
-  draft: IDraft = {
+  draft: IDraft | IArticle = {
     title: "New draft",
     content: "",
     tags: [],
@@ -39,13 +43,13 @@ export default class Draft extends LitElement {
   async init(): Promise<void> {
     // If an id is given we needs to fetch draft data
     // then hydrate the whole form
-    if (this.id !== "undefined") {
-      this.draft = await this.getDraft();
+    if (!this.isDraft()) {
+      this.draft = await this.getArticle();
       this.fillFormData();
     }
   }
 
-  async getDraft(): Promise<IDraft> {
+  async getArticle(): Promise<IArticle> {
     const resp = await _fetch(
       `http://localhost:8081/api/v1/article/${this.id}`,
       {
@@ -58,7 +62,7 @@ export default class Draft extends LitElement {
     return resp.json();
   }
 
-  async postDraft(article: any): Promise<Response> {
+  async postDraft(article: IDraft): Promise<Response> {
     return await _fetch(`http://localhost:8081/api/v1/article`, {
       method: "POST",
       mode: "cors",
@@ -71,7 +75,7 @@ export default class Draft extends LitElement {
     });
   }
 
-  async updateArticle(article: any): Promise<Response> {
+  async updateArticle(article: IArticle): Promise<Response> {
     return await _fetch(`http://localhost:8081/api/v1/article/${this.id}`, {
       method: "PUT",
       mode: "cors",
@@ -90,10 +94,8 @@ export default class Draft extends LitElement {
 
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
-
     const { titleCtrl, contentCtrl, posterUrlCtrl } = this.getFormRefs();
-
-    const article = {
+    const article: IDraft = {
       title: titleCtrl.value,
       content: contentCtrl.value,
       posterUrl: posterUrlCtrl.value,
@@ -107,11 +109,11 @@ export default class Draft extends LitElement {
     }
   }
 
-  async submitDraft(article: any): Promise<void> {
-    if (this.id === "undefined") {
+  async submitDraft(article: IDraft): Promise<void> {
+    if (this.isDraft()) {
       await this.postDraft(article);
     } else {
-      await this.updateArticle(article);
+      await this.updateArticle(article as IArticle);
     }
   }
 
@@ -144,7 +146,7 @@ export default class Draft extends LitElement {
     this.update(new Map());
   }
 
-  private getFormRefs(): {
+  getFormRefs(): {
     titleCtrl: HTMLInputElement;
     contentCtrl: HTMLTextAreaElement;
     posterUrlCtrl: HTMLInputElement;
@@ -161,7 +163,7 @@ export default class Draft extends LitElement {
     return { titleCtrl, contentCtrl, posterUrlCtrl, tagsCtrl, posterCtrl };
   }
 
-  private fillFormData(): void {
+  fillFormData(): void {
     const draft = this.draft;
     const {
       titleCtrl,
@@ -180,6 +182,10 @@ export default class Draft extends LitElement {
       posterUrlCtrl.setAttribute("value", draft.posterUrl);
       posterCtrl.setAttribute("value", draft.posterUrl);
     }
+  }
+
+  isDraft(): boolean {
+    return this.id === "undefined";
   }
 
   render(): TemplateResult {
@@ -218,19 +224,29 @@ export default class Draft extends LitElement {
             : html``
         }
         <h1>${this.draft.title}</h1>
-        <div>
-          Created at ${this.draft.createdAt} <br>
-          Updated at ${this.draft.updatedAt}
-        </div>
+
         <div>
           <form name="login" @submit=${this.handleSubmit}>
             <label for="poster">Poster</label>
-            <input
-              type="file"
-              id="poster"
-              name="poster"
-              accept="image/png, image/jpeg"
-              @change=${this.handleFile} />
+            ${
+              this.isDraft()
+                ? html`
+                <input required
+                  type="file"
+                  id="poster"
+                  name="poster"
+                  accept="image/png, image/jpeg"
+                  @change=${this.handleFile} />
+              `
+                : html`
+                <input
+                  type="file"
+                  id="poster"
+                  name="poster"
+                  accept="image/png, image/jpeg"
+                  @change=${this.handleFile} />
+              `
+            }
             
             <label for="tags">Tags (separated by a comma)</label>
             <input required

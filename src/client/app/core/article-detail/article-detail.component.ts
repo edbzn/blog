@@ -5,12 +5,13 @@ import { until } from "lit-html/directives/until";
 import { showPlaceholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { IArticle } from "../admin/draft.component";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
   id: string;
 
-  async getArticle(): Promise<any> {
+  async getArticle(): Promise<IArticle> {
     const resp = await _fetch(
       `http://localhost:8081/api/v1/article/${this.id}`,
       {
@@ -23,7 +24,7 @@ export default class ArticleDetail extends LitElement {
     return resp.json();
   }
 
-  showArticleDetail(article: any): TemplateResult {
+  showArticleDetail(article: IArticle): TemplateResult {
     const nothing = html``;
     const poster = html`
       <div class="poster"

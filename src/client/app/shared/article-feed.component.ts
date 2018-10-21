@@ -7,6 +7,7 @@ import _fetch from "../utils/fetch";
 import { showPlaceholder } from "./placeholder";
 import { showError } from "../utils/show-error";
 import { property, LitElement } from "@polymer/lit-element";
+import { IArticle } from "../core/admin/draft.component";
 
 const deleteArticle = async (id: string): Promise<void> => {
   const resp = await _fetch(`http://localhost:8081/api/v1/article/${id}`, {
@@ -22,9 +23,9 @@ export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
   adminMode = false;
 
-  articleList: any[] = [];
+  articleList: IArticle[] = [];
 
-  async getArticleList(): Promise<any[]> {
+  async getArticleList(): Promise<IArticle[]> {
     const resp = await _fetch(`http://localhost:8081/api/v1/article`, {
       method: "GET",
       mode: "cors",
@@ -34,7 +35,7 @@ export default class ArticleFeed extends LitElement {
     return resp.json();
   }
 
-  async removeArticle(article: any) {
+  async removeArticle(article: IArticle) {
     const articleTitle = article.title.toLocaleLowerCase();
     if (
       prompt("Enter " + articleTitle + " to delete the article") ===
@@ -61,7 +62,7 @@ export default class ArticleFeed extends LitElement {
     `;
     }
 
-    return this.articleList.map((article: any) => {
+    return this.articleList.map((article: IArticle) => {
       const articleUri = `/article/${article._id}`;
 
       return html`
@@ -74,7 +75,7 @@ export default class ArticleFeed extends LitElement {
             : html``
         }
         <ul>
-          ${article.tags.map((tag: any) => html`<li>${tag}</li>`)}
+          ${article.tags.map((tag: string) => html`<li>${tag}</li>`)}
         </ul>
         <h2>${article.title}</h2>
         <p>${unsafeHTML(article.content.slice(0, 80) + "...")}</p>
