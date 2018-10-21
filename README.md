@@ -1,6 +1,6 @@
 # Codamit
 
-![Spotted](https://media.giphy.com/media/F3iTD8JI4OPIs/giphy.gif)
+![Codamit](https://media.giphy.com/media/3o6Mb5ZXk5gzKggqBy/giphy.gif)
 
 [Browse to the site](https://codamit.com)
 
@@ -14,3 +14,7 @@
 
 Run `npm start` for a dev server. Navigate to `http://localhost:8080/`.
 The app will automatically reload if you change any of the source files.
+
+## :sos: Helpful links
+
+[Lit-HTML resources](https://github.com/web-padawan/awesome-lit-html)

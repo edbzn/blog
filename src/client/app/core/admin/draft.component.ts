@@ -5,12 +5,11 @@ import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { upload } from "../../utils/upload";
 import { ArticleDocument } from "../../../../server/api/article/model/article.model";
-import router from "../../../app-router";
 
 interface IDraft {
   title: string;
   content: string;
-  tags: [];
+  tags: string[];
   posterUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -21,7 +20,7 @@ export default class Draft extends LitElement {
   id: string;
 
   @property({ type: Object })
-  draft: ArticleDocument | IDraft = {
+  draft: IDraft = {
     title: "New draft",
     content: "",
     tags: [],
@@ -47,7 +46,7 @@ export default class Draft extends LitElement {
     }
   }
 
-  async getDraft(): Promise<ArticleDocument> {
+  async getDraft(): Promise<IDraft> {
     const resp = await _fetch(
       `http://localhost:8081/api/v1/article/${this.id}`,
       {
@@ -86,6 +85,7 @@ export default class Draft extends LitElement {
       title: titleCtrl.value,
       content: contentCtrl.value,
       posterUrl: posterUrlCtrl.value,
+      tags: this.draft.tags,
     };
 
     try {
@@ -122,21 +122,29 @@ export default class Draft extends LitElement {
     this.update(new Map());
   }
 
+  handleTags() {
+    const { tagsCtrl } = this.getFormRefs();
+    this.draft.tags = tagsCtrl.value.split(",");
+    this.update(new Map());
+  }
+
   private getFormRefs(): {
     titleCtrl: HTMLInputElement;
     contentCtrl: HTMLTextAreaElement;
     posterUrlCtrl: HTMLInputElement;
+    tagsCtrl: HTMLInputElement;
   } {
     const host = this.shadowRoot as ShadowRoot;
     const titleCtrl = host.getElementById("title") as HTMLInputElement;
     const contentCtrl = host.getElementById("content") as HTMLTextAreaElement;
     const posterUrlCtrl = host.getElementById("posterUrl") as HTMLInputElement;
+    const tagsCtrl = host.getElementById("tags") as HTMLInputElement;
 
-    return { titleCtrl, contentCtrl, posterUrlCtrl };
+    return { titleCtrl, contentCtrl, posterUrlCtrl, tagsCtrl };
   }
 
   private fillFormData(): void {
-    const draft = this.draft as ArticleDocument;
+    const draft = this.draft;
     const { titleCtrl, contentCtrl, posterUrlCtrl } = this.getFormRefs();
 
     titleCtrl.setAttribute("value", draft.title);
@@ -197,6 +205,14 @@ export default class Draft extends LitElement {
               name="poster"
               accept="image/png, image/jpeg"
               @change=${this.handleFile} />
+            
+            <label for="tags">Tags (separated by a comma)</label>
+            <input required
+              type="text"
+              id="tags"
+              name="tags"
+              placeholder="architecture, test"
+              @change=${this.handleTags} />
 
             <label for="title">Title</label>
             <input id="title"

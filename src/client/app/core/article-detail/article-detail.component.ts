@@ -5,6 +5,7 @@ import { until } from "lit-html/directives/until";
 import { ArticleDocument } from "../../../../server/api/article/model/article.model";
 import { showPlaceholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -35,7 +36,7 @@ export default class ArticleDetail extends LitElement {
         ${article.posterUrl ? poster : nothing}
       </header>
       <h1>${article.title}</h1>
-      ${article.content}
+      ${unsafeHTML(article.content)}
       <footer>By Edouard Bozon at ${article.createdAt}</footer
     `;
   }

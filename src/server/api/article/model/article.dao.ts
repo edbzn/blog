@@ -10,6 +10,12 @@ export namespace ArticleDao {
 
   export const findById = (id: string) => from(model.findById(id).exec());
 
+  export const removeById = (id: string) =>
+    from(model.findByIdAndDelete(id).exec());
+
+  export const updateById = (id: string, body: any) =>
+    from(model.findByIdAndUpdate(id, body).exec());
+
   export const create = (body: any) => {
     return from(
       model.create(new Article(body.title, body.content, body.posterUrl)),

@@ -1,7 +1,6 @@
 import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
-import { articleFeed } from "../../shared/article-feed";
 import router from "../../../app-router";
 
 export default class Admin extends LitElement {
@@ -39,7 +38,7 @@ export default class Admin extends LitElement {
           </a>
         </div>
         <div>
-          ${articleFeed({ adminMode: true })}
+          <ez-article-feed adminMode=${true}></ez-article-feed>
         </div>
       </ez-page>
     `;
