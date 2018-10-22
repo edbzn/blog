@@ -1,12 +1,18 @@
 import { combineRoutes, EffectFactory } from "@marblejs/core";
 
-import { article$ } from "./article";
+import { article$, authorizedArticle$, authorizedDraft$} from "./article";
 import { notFoundEffect$ } from "./common/effects/not-found.effect";
 import { getTweetsEffect$ } from "./tweet/effects/get-tweets.effect";
+import { getDocEffect$ } from "./common/effects/get-doc.effect";
 
 const getTweets$ = EffectFactory.matchPath("/tweet")
-  .matchType("*")
+  .matchType("GET")
   .use(getTweetsEffect$);
+
+const getDoc$ = EffectFactory
+  .matchPath('/doc')
+  .matchType('GET')
+  .use(getDocEffect$);
 
 const notFound$ = EffectFactory.matchPath("*")
   .matchType("*")
@@ -14,6 +20,9 @@ const notFound$ = EffectFactory.matchPath("*")
 
 export const api$ = combineRoutes("/api/v1", [
   article$,
+  authorizedArticle$,
+  authorizedDraft$,
   getTweets$,
+  getDoc$,
   notFound$,
 ]);

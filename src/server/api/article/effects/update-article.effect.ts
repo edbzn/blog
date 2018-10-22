@@ -4,7 +4,7 @@ import { catchError, map, mergeMap } from "rxjs/operators";
 
 import { neverNullable } from "../../../utils/never-nullable";
 import { ArticleDao } from "../model/article.dao";
-import { articleValidator$ } from "./post-article.effect";
+import { articleValidator$ } from "../helpers/article.validator";
 
 export const updateArticleEffect$: Effect = req$ =>
   req$.pipe(

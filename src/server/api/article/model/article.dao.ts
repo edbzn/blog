@@ -6,10 +6,10 @@ export namespace ArticleDao {
     schemaOptions: { timestamps: true },
   });
 
+  export const findAll = () => from(model.find().exec());
+
   export const findAllPublished = () =>
     from(model.find({ published: true }).exec());
-
-  export const findAll = () => from(model.find().exec());
 
   export const findById = (id: string) => from(model.findById(id).exec());
 

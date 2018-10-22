@@ -1,4 +1,5 @@
 import { ENV } from "./env";
+import { string } from "joi";
 
 export enum NodeEnv {
   PRODUCTION = "production",
@@ -30,10 +31,16 @@ interface IConfig {
       consumer_secret: string;
     };
   };
+  jwt: {
+    secret: string;
+  };
 }
 
 export const Config: IConfig = {
   env: (process.env.NODE_ENV as NodeEnv) || (ENV.NODE_ENV as NodeEnv),
+  jwt: {
+    secret: process.env.JWT_SECRET || ENV.JWT_SECRET,
+  },
   server: {
     host: process.env.HOST || ENV.SERVER_HOST,
     port: Number(process.env.PORT) || ENV.SERVER_PORT,
