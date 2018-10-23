@@ -1,4 +1,4 @@
-export interface LoginCredentials {
+export interface LoginPayload {
   login: string;
   password: string;
 }
