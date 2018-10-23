@@ -1,7 +1,6 @@
 import { Effect, HttpError, HttpStatus, use } from "@marblejs/core";
 import { generateToken } from "@marblejs/middleware-jwt";
-import * as bcrypt from "bcrypt";
-import { forkJoin, from, of, throwError } from "rxjs";
+import { forkJoin, of, throwError } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
 
 import { Config } from "../../../config";
@@ -9,11 +8,7 @@ import { UserDao } from "../../user/model/user.dao";
 import { SignupPayload } from "../helpers/signup-payload";
 import { generateTokenPayload } from "../helpers/token.helper";
 import { userValidator$ } from "../helpers/user.validator";
-
-const createHash = (password: string): Promise<string> =>
-  bcrypt.hash(password, 10);
-
-const hash$ = (password: string) => from(createHash(password));
+import { createHash$ } from "../helpers/hash";
 
 export const signupEffect$: Effect = req$ =>
   req$.pipe(
@@ -31,7 +26,7 @@ export const signupEffect$: Effect = req$ =>
                     HttpStatus.CONFLICT,
                   ),
                 )
-              : forkJoin(of(req.body), hash$(req.body.password)),
+              : forkJoin(of(req.body), createHash$(req.body.password)),
         ),
         mergeMap(payload =>
           UserDao.create({
