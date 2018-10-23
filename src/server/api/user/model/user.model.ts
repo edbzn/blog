@@ -12,7 +12,7 @@ export class User extends Typegoose {
   @prop({ required: true })
   lastName: string;
 
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   email: string;
 
   @prop({ required: true })

@@ -14,7 +14,7 @@ export const loginEffect$: Effect = req$ =>
     mergeMap(req =>
       of(req).pipe(
         map(req => req.body),
-        mergeMap(UserDao.findByCredentials),
+        mergeMap(UserDao.findByEmail),
         mergeMap(neverNullable),
         map(generateTokenPayload),
         map(generateToken({ secret: Config.jwt.secret })),

@@ -20,10 +20,10 @@ export namespace UserDao {
       ),
     );
 
-  export const findByCredentials = (credentials: LoginPayload) =>
+  export const findByEmail = (email: string) =>
     from(
       model
-        .findOne({ email: credentials.login, password: credentials.password })
+        .findOne({ email })
         .select(USER_SECURE_FIELDS)
         .exec(),
     );

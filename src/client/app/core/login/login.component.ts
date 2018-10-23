@@ -4,12 +4,10 @@ import { html, TemplateResult } from "lit-html";
 import router from "../../../app-router";
 import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
+import { LoginPayload } from "../../../../server/api/auth/helpers/login-payload";
 
 export default class Login extends LitElement {
-  logUser = async (credentials: {
-    name: string;
-    password: string;
-  }): Promise<any> => {
+  logUser = async (credentials: LoginPayload): Promise<any> => {
     return await _fetch(`http://localhost:8081/api/v1/login`, {
       method: "POST",
       mode: "cors",
@@ -43,9 +41,9 @@ export default class Login extends LitElement {
           e.preventDefault();
 
           const host = this.shadowRoot as ShadowRoot;
-          const name = host.getElementById("name") as HTMLInputElement;
+          const email = host.getElementById("email") as HTMLInputElement;
           const password = host.getElementById("password") as HTMLInputElement;
-          const credentials = { name: name.value, password: password.value };
+          const credentials = { email: email.value, password: password.value };
 
           try {
             await this.logUser(credentials);
@@ -55,7 +53,7 @@ export default class Login extends LitElement {
           }
         }}>
           <label for="name">Name</label>
-          <input id="name" name="name" type="text" required />
+          <input id="name" name="email" type="email" required />
           <label for="password">Password</label>
           <input id="password" name="password" type="password" required />
           <button type="submit">Login</button>
