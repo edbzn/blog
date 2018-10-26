@@ -36,18 +36,9 @@ export const signupEffect$: Effect = req$ =>
             lastName: payload[0].lastName,
           }),
         ),
-        mergeMap(user =>
-          forkJoin(
-            of(user),
-            of(user).pipe(
-              map(generateTokenPayload),
-              map(generateToken({ secret: Config.jwt.secret })),
-            ),
-          ),
-        ),
-        map(next => ({
-          body: { user: next[0], token: next[1] },
-        })),
+        map(generateTokenPayload),
+        map(generateToken({ secret: Config.jwt.secret })),
+        map(token => ({ body: { token } })),
         catchError(
           err =>
             err instanceof HttpError

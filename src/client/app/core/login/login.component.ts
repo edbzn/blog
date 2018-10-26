@@ -8,12 +8,17 @@ import { LoginPayload } from "../../../../server/api/auth/helpers/login-payload"
 import { SignupPayload } from "../../../../server/api/auth/helpers/signup-payload";
 import { apiClient } from "../../utils/api";
 import { IUser } from "./types";
+import { authService } from "../../utils/auth";
 
 export default class Login extends LitElement {
   showSignup = false;
 
   async logUser(credentials: LoginPayload): Promise<{ token: string }> {
     return apiClient.post<{ token: string }>("/api/v1/auth/login", credentials);
+  }
+
+  async getMe(): Promise<IUser> {
+    return apiClient.get<IUser>("/api/v1/user/me");
   }
 
   async signupUser(
@@ -71,9 +76,10 @@ export default class Login extends LitElement {
                 };
 
                 try {
-                  const { user, token } = await this.signupUser(signupPayload);
-                  apiClient.authenticateRequests(token);
-                  console.log(user, token);
+                  const { token } = await this.signupUser(signupPayload);
+                  authService.login(token);
+                  const user = await this.getMe();
+                  authService.setUser(user);
                   router.push("/admin");
                 } catch (e) {
                   showError(e);
@@ -106,7 +112,9 @@ export default class Login extends LitElement {
 
                 try {
                   const { token } = await this.logUser(credentials);
-                  apiClient.authenticateRequests(token);
+                  authService.login(token);
+                  const user = await this.getMe();
+                  authService.setUser(user);
                   router.push("/admin");
                 } catch (e) {
                   showError(e);
