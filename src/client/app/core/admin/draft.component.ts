@@ -4,21 +4,8 @@ import { html, TemplateResult } from "lit-html";
 import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { upload } from "../../utils/upload";
-
-export interface IDraft {
-  title: string;
-  content: string;
-  tags: string[];
-  posterUrl: string | null;
-  published: boolean;
-  publishedAt: Date | null;
-}
-
-export interface IArticle extends IDraft {
-  _id: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { apiClient } from "../../utils/api";
+import { IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: String })
@@ -52,49 +39,15 @@ export default class Draft extends LitElement {
   }
 
   async getArticle(): Promise<IArticle> {
-    const resp = await _fetch(
-      `http://localhost:8081/api/v1/article/${this.id}`,
-      {
-        method: "GET",
-        mode: "cors",
-        cache: "default",
-      },
-    );
-
-    return resp.json();
+    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
   }
 
   async postDraft(article: IDraft): Promise<IArticle> {
-    const resp = await _fetch(`http://localhost:8081/api/v1/article`, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      body: JSON.stringify({ ...article }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    return resp.json();
+    return apiClient.post<IArticle>("/api/v1/article", article);
   }
 
   async updateArticle(article: IArticle): Promise<IArticle> {
-    const resp = await _fetch(
-      `http://localhost:8081/api/v1/article/${this.id}`,
-      {
-        method: "PUT",
-        mode: "cors",
-        cache: "no-cache",
-        body: JSON.stringify({ ...article }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      },
-    );
-
-    return resp.json();
+    return apiClient.put<IArticle>(`/api/v1/article/${this.id}`, article);
   }
 
   async uploadPoster(file: File): Promise<{ path: string }> {

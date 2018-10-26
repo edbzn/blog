@@ -1,14 +1,29 @@
 import { from } from "rxjs";
 import { User, USER_SECURE_FIELDS, USER_PUBLIC_FIELDS } from "./user.model";
-import { LoginCredentials } from "../../auth/model/login.model";
+import { LoginPayload } from "../../auth/helpers/login-payload";
+import { SignupPayload } from "../../auth/helpers/signup-payload";
 
 export namespace UserDao {
-  export const model = new User().getModelForClass(User);
+  export const model = new User().getModelForClass(User, {
+    schemaOptions: { timestamps: true },
+  });
 
-  export const findByCredentials = (credentials: LoginCredentials) =>
+  export const create = (payload: SignupPayload) =>
+    from(
+      model.create(
+        new User({
+          email: payload.email,
+          password: payload.password,
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+        }),
+      ),
+    );
+
+  export const findByEmail = (email: string) =>
     from(
       model
-        .findOne({ email: credentials.login, password: credentials.password })
+        .findOne({ email })
         .select(USER_SECURE_FIELDS)
         .exec(),
     );

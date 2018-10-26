@@ -2,15 +2,10 @@ import { html } from "lit-html";
 import { until } from "lit-html/directives/until";
 import { showPlaceholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
+import { apiClient } from "../../utils/api";
 
 const getTweets = async (): Promise<{ statuses: any[] }> => {
-  const resp = await _fetch(`http://localhost:8081/api/v1/tweet`, {
-    method: "GET",
-    mode: "cors",
-    cache: "default",
-  });
-
-  return resp.json();
+  return apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
 };
 
 const showTweets = (resp: any) => {
