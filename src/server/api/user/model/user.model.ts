@@ -49,7 +49,7 @@ export class User extends Typegoose {
 }
 
 export const USER_SECURE_FIELDS = {
-  password: 0,
+  password: 1,
 };
 
 export const USER_PUBLIC_FIELDS = {

@@ -47,7 +47,7 @@ export default class Draft extends LitElement {
   }
 
   async updateArticle(article: IArticle): Promise<IArticle> {
-    return apiClient.put<IArticle>("/api/v1/article", article);
+    return apiClient.put<IArticle>(`/api/v1/article/${this.id}`, article);
   }
 
   async uploadPoster(file: File): Promise<{ path: string }> {

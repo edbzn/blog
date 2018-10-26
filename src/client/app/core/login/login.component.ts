@@ -7,6 +7,7 @@ import _fetch from "../../utils/fetch";
 import { LoginPayload } from "../../../../server/api/auth/helpers/login-payload";
 import { SignupPayload } from "../../../../server/api/auth/helpers/signup-payload";
 import { apiClient } from "../../utils/api";
+import { IUser } from "./types";
 
 export default class Login extends LitElement {
   showSignup = false;
@@ -15,8 +16,10 @@ export default class Login extends LitElement {
     return apiClient.post<string>("/api/v1/auth/login", credentials);
   }
 
-  async signupUser(user: SignupPayload): Promise<{ user: any; token: string }> {
-    return apiClient.post<{ user: any; token: string }>(
+  async signupUser(
+    user: SignupPayload,
+  ): Promise<{ user: IUser; token: string }> {
+    return apiClient.post<{ user: IUser; token: string }>(
       "/api/v1/auth/signup",
       user,
     );
@@ -60,7 +63,7 @@ export default class Login extends LitElement {
                 const lastName = host.getElementById(
                   "lastName",
                 ) as HTMLInputElement;
-                const user = {
+                const signupPayload: SignupPayload = {
                   email: email.value,
                   password: password.value,
                   firstName: firstName.value,
@@ -68,7 +71,9 @@ export default class Login extends LitElement {
                 };
 
                 try {
-                  await this.signupUser(user);
+                  const { user, token } = await this.signupUser(signupPayload);
+                  apiClient.authenticateRequests(token);
+                  console.log(user, token);
                   router.push("/admin");
                 } catch (e) {
                   showError(e);
@@ -94,13 +99,14 @@ export default class Login extends LitElement {
                 const password = host.getElementById(
                   "password",
                 ) as HTMLInputElement;
-                const credentials = {
+                const credentials: LoginPayload = {
                   email: email.value,
                   password: password.value,
                 };
 
                 try {
-                  await this.logUser(credentials);
+                  const token = await this.logUser(credentials);
+                  apiClient.authenticateRequests(token);
                   router.push("/admin");
                 } catch (e) {
                   showError(e);

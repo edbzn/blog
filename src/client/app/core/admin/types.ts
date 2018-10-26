@@ -1,3 +1,5 @@
+import { IResource } from "../../utils/resource";
+
 export interface IDraft {
   title: string;
   content: string;
@@ -7,8 +9,7 @@ export interface IDraft {
   publishedAt: Date | null;
 }
 
-export interface IArticle extends IDraft {
-  _id: string;
+export interface IArticle extends IResource, IDraft {
   createdAt: Date;
   updatedAt: Date;
 }
