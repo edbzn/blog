@@ -56,15 +56,7 @@ export default class Draft extends LitElement {
 
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
-    const { titleCtrl, contentCtrl, posterUrlCtrl } = this.getFormRefs();
-    const article: IDraft = {
-      title: titleCtrl.value,
-      content: contentCtrl.value,
-      posterUrl: posterUrlCtrl.value,
-      tags: this.draft.tags,
-      published: this.draft.published,
-      publishedAt: this.draft.publishedAt,
-    };
+    const article = this.buildData();
 
     try {
       await this.submitDraft(article);
@@ -155,20 +147,35 @@ export default class Draft extends LitElement {
   }
 
   async togglePublish(): Promise<void> {
-    this.draft.published = !this.draft.published;
-    if (this.draft.published === true) {
-      this.draft.publishedAt = new Date();
+    const article = this.buildData();
+
+    article.published = !article.published;
+    if (article.published === true) {
+      article.publishedAt = new Date();
     } else {
-      this.draft.publishedAt = null;
+      article.publishedAt = null;
     }
 
-    this.update(new Map());
-
     try {
-      await this.updateArticle({ ...this.draft } as IArticle);
+      await this.updateArticle(article as IArticle);
+      this.draft = article;
+      this.update(new Map());
     } catch (error) {
       showError(error);
     }
+  }
+
+  buildData(): IDraft | IArticle {
+    const { titleCtrl, contentCtrl, posterUrlCtrl } = this.getFormRefs();
+
+    return {
+      title: titleCtrl.value,
+      content: contentCtrl.value,
+      posterUrl: posterUrlCtrl.value,
+      tags: this.draft.tags,
+      published: this.draft.published,
+      publishedAt: this.draft.publishedAt,
+    };
   }
 
   render(): TemplateResult {
