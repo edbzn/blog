@@ -5,6 +5,10 @@ import {
   ProuterResponse,
 } from "prouter";
 import { authService } from "./app/utils/auth";
+import {
+  redirectAndShowError,
+  unAuthenticatedErrorMsg,
+} from "./app/utils/error-redirection";
 
 const router = browserRouter();
 
@@ -28,10 +32,7 @@ router
   })
   .use("/admin", (_req, resp) => {
     if (!authService.authenticated) {
-      errorRedirection(
-        "<strong>You're trying to access a private zone.</strong> <br> <br> If you find a security whole, you're a good person, please email me.",
-        resp,
-      );
+      redirectAndShowError(router, unAuthenticatedErrorMsg, resp);
     } else {
       render(html`<ez-admin></ez-admin>`, document.body);
       resp.end();
@@ -39,10 +40,7 @@ router
   })
   .use("/admin/draft", (req, resp) => {
     if (!authService.authenticated) {
-      errorRedirection(
-        "<strong>You're trying to access a private zone.</strong> <br> <br> If you find a security whole, you're a good person, please email me.",
-        resp,
-      );
+      redirectAndShowError(router, unAuthenticatedErrorMsg, resp);
     } else {
       render(html`<ez-draft id=${req.query.id}></ez-draft>`, document.body);
       resp.end();
@@ -55,15 +53,10 @@ router
     resp.end();
   })
   .use("*", (_req, resp) => {
-    errorRedirection("Page not found", resp);
+    redirectAndShowError(router, "Page not found", resp);
   });
 
 router.listen();
-
-function errorRedirection(error: string, resp: ProuterResponse): void {
-  router.push(`/error?message=${encodeURIComponent(error)}`);
-  resp.end();
-}
 
 router.on("navigation", (_e: ProuterNavigationEvent) => {
   window.scrollTo({ top: 0 });

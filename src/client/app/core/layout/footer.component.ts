@@ -3,6 +3,7 @@ import { html, TemplateResult } from "lit-html";
 
 import heart from "../../../assets/images/heart";
 import router from "../../../app-router";
+import { authService } from "../../utils/auth";
 
 export default class Footer extends LitElement {
   render(): TemplateResult {
@@ -30,7 +31,7 @@ export default class Footer extends LitElement {
         <span>Made with</span>
         <a href="/admin" @click=${(e: Event) => {
           e.preventDefault();
-          router.push("/admin");
+          router.push(authService.authenticated ? "/admin" : "/login");
         }}>
           <i class="heart">${heart}</i>
         </a>
