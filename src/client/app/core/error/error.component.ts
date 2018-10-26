@@ -2,6 +2,7 @@ import { LitElement, property } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
 import router from "../../../app-router";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 export default class Error extends LitElement {
   @property({ type: String })
@@ -25,17 +26,15 @@ export default class Error extends LitElement {
       </style>
       <ez-page>
         <h1>Something bad happened!</h1>
-        <div class="error-message">${this.message}</div>
+        <div class="error-message">${unsafeHTML(this.message)}</div>
         <a href="" @click=${(e: Event) => {
           e.preventDefault();
-
           window.history.back();
         }}>
           Back to previous page
         </a>
         <a href="/" @click=${(e: Event) => {
           e.preventDefault();
-
           router.push("/");
         }}>
           Back to home

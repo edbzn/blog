@@ -55,6 +55,10 @@ export class HttpClient {
     this.token = token;
   }
 
+  deAuthenticateRequests(): void {
+    this.token = null;
+  }
+
   private getOptions() {
     const options: RequestInit = this.options;
 

@@ -5,7 +5,7 @@ import { InstanceType } from "typegoose";
 export const generateTokenPayload = (user: InstanceType<User>) => ({
   _id: user.id,
   email: user.email,
-  exp: generateExpirationInHours(4),
+  exp: generateExpirationInHours(24),
 });
 
 export type Payload = ReturnType<typeof generateTokenPayload>;
