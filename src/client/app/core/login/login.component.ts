@@ -6,30 +6,20 @@ import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { LoginPayload } from "../../../../server/api/auth/helpers/login-payload";
 import { SignupPayload } from "../../../../server/api/auth/helpers/signup-payload";
+import { apiClient } from "../../utils/api";
 
 export default class Login extends LitElement {
   showSignup = false;
 
   async logUser(credentials: LoginPayload): Promise<string> {
-    const resp = await _fetch(`http://localhost:8081/api/v1/auth/login`, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      body: JSON.stringify({ ...credentials }),
-    });
-
-    return resp.json();
+    return apiClient.post<string>("/api/v1/auth/login", credentials);
   }
 
   async signupUser(user: SignupPayload): Promise<{ user: any; token: string }> {
-    const resp = await _fetch(`http://localhost:8081/api/v1/auth/signup`, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      body: JSON.stringify({ ...user }),
-    });
-
-    return resp.json();
+    return apiClient.post<{ user: any; token: string }>(
+      "/api/v1/auth/signup",
+      user,
+    );
   }
 
   render(): TemplateResult {

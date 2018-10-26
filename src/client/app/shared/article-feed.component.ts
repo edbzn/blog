@@ -7,17 +7,8 @@ import _fetch from "../utils/fetch";
 import { showPlaceholder } from "./placeholder";
 import { showError } from "../utils/show-error";
 import { property, LitElement } from "@polymer/lit-element";
-import { IArticle } from "../core/admin/draft.component";
-
-const deleteArticle = async (id: string): Promise<void> => {
-  const resp = await _fetch(`http://localhost:8081/api/v1/article/${id}`, {
-    method: "DELETE",
-    mode: "cors",
-    cache: "default",
-  });
-
-  return resp.json();
-};
+import { IArticle } from "../core/admin/types";
+import { apiClient } from "../utils/api";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
@@ -26,13 +17,11 @@ export default class ArticleFeed extends LitElement {
   articleList: IArticle[] = [];
 
   async getArticleList(): Promise<IArticle[]> {
-    const resp = await _fetch(`http://localhost:8081/api/v1/article`, {
-      method: "GET",
-      mode: "cors",
-      cache: "default",
-    });
+    return apiClient.get<IArticle[]>(`/api/v1/article`);
+  }
 
-    return resp.json();
+  async deleteArticle(id: string): Promise<void> {
+    return apiClient.delete(`/api/v1/article/${id}`);
   }
 
   async removeArticle(article: IArticle) {
@@ -42,7 +31,7 @@ export default class ArticleFeed extends LitElement {
       articleTitle
     ) {
       try {
-        await deleteArticle(article._id);
+        await this.deleteArticle(article._id);
         this.articleList = this.articleList.filter(
           _article => article._id !== _article._id,
         );
