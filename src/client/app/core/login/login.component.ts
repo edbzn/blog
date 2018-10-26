@@ -12,8 +12,8 @@ import { IUser } from "./types";
 export default class Login extends LitElement {
   showSignup = false;
 
-  async logUser(credentials: LoginPayload): Promise<string> {
-    return apiClient.post<string>("/api/v1/auth/login", credentials);
+  async logUser(credentials: LoginPayload): Promise<{ token: string }> {
+    return apiClient.post<{ token: string }>("/api/v1/auth/login", credentials);
   }
 
   async signupUser(
@@ -105,7 +105,7 @@ export default class Login extends LitElement {
                 };
 
                 try {
-                  const token = await this.logUser(credentials);
+                  const { token } = await this.logUser(credentials);
                   apiClient.authenticateRequests(token);
                   router.push("/admin");
                 } catch (e) {

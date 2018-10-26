@@ -1,17 +1,13 @@
 import _fetch from "./fetch";
 
-/**
- * Http client
- */
-class Api {
+export class HttpClient {
   private token: string | null = null;
 
-  private options: RequestInit = {
+  private readonly options: RequestInit = {
     mode: "cors",
     cache: "default",
     headers: {
       "Content-Type": "application/json",
-      Authentication: `Bearer ${this.token}`,
     },
   };
 
@@ -19,7 +15,7 @@ class Api {
 
   async get<T>(path: string): Promise<T> {
     const resp = await _fetch(this.baseUrl + path, {
-      ...this.options,
+      ...this.getOptions(),
       method: "GET",
     });
 
@@ -28,7 +24,7 @@ class Api {
 
   async post<T>(path: string, data: any): Promise<T> {
     const resp = await _fetch(this.baseUrl + path, {
-      ...this.options,
+      ...this.getOptions(),
       method: "POST",
       body: JSON.stringify({ ...data }),
     });
@@ -38,7 +34,7 @@ class Api {
 
   async put<T>(path: string, data: any): Promise<T> {
     const resp = await _fetch(this.baseUrl + path, {
-      ...this.options,
+      ...this.getOptions(),
       method: "PUT",
       body: JSON.stringify({ ...data }),
     });
@@ -48,7 +44,7 @@ class Api {
 
   async delete(path: string): Promise<void> {
     const resp = await _fetch(this.baseUrl + path, {
-      ...this.options,
+      ...this.getOptions(),
       method: "DELETE",
     });
 
@@ -58,6 +54,18 @@ class Api {
   authenticateRequests(token: string): void {
     this.token = token;
   }
+
+  private getOptions() {
+    const options: RequestInit = this.options;
+
+    if (typeof this.token === "string") {
+      const authorizedHeaders = new Headers(options.headers);
+      authorizedHeaders.set("Authorization", `Bearer ${this.token}`);
+      options.headers = authorizedHeaders;
+    }
+
+    return options;
+  }
 }
 
-export const apiClient = new Api("http://localhost:8081");
+export const apiClient = new HttpClient("http://localhost:8081");
