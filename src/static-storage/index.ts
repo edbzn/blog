@@ -54,7 +54,10 @@ http
           contentType = "image/png";
           break;
         case ".jpg":
+        case ".jpeg":
           contentType = "image/jpg";
+        case ".gif":
+          contentType = "image/gif";
           break;
         default:
           console.log(`${chalk.red("[storage]")} unsupported MIME-Type`);

@@ -4,13 +4,13 @@ function getExtname(filename: string): string | undefined {
   return filename.split(".").pop();
 }
 
-export async function upload(file: File): Promise<{ path: string}> {
+export async function upload(file: File): Promise<{ path: string }> {
   const extname = getExtname(file.name);
 
   if (!extname) {
     return Promise.reject("No extension file found");
   }
-  if (!["jpg", "png"].includes(extname)) {
+  if (!["jpg", "png", "jpeg", "gif"].includes(extname)) {
     return Promise.reject("Unsupported MIME-Type");
   }
 

@@ -38,22 +38,6 @@ export default class Draft extends LitElement {
     }
   }
 
-  async getArticle(): Promise<IArticle> {
-    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
-  }
-
-  async postDraft(article: IDraft): Promise<IArticle> {
-    return apiClient.post<IArticle>("/api/v1/article", article);
-  }
-
-  async updateArticle(article: IArticle): Promise<IArticle> {
-    return apiClient.put<IArticle>(`/api/v1/article/${this.id}`, article);
-  }
-
-  async uploadPoster(file: File): Promise<{ path: string }> {
-    return await upload(file);
-  }
-
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
     const article = this.buildData();
@@ -96,6 +80,25 @@ export default class Draft extends LitElement {
     posterUrlCtrl.setAttribute("value", path);
     this.draft.posterUrl = path;
     this.update(new Map());
+  }
+
+  async togglePublish(): Promise<void> {
+    const article = this.buildData();
+
+    article.published = !article.published;
+    if (article.published === true) {
+      article.publishedAt = new Date().toString();
+    } else {
+      article.publishedAt = null;
+    }
+
+    try {
+      await this.updateArticle(article as IArticle);
+      this.draft = article;
+      this.update(new Map());
+    } catch (error) {
+      showError(error);
+    }
   }
 
   handleTags() {
@@ -142,27 +145,24 @@ export default class Draft extends LitElement {
     }
   }
 
-  isDraft(): boolean {
-    return this.id === "undefined";
+  getArticle(): Promise<IArticle> {
+    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
   }
 
-  async togglePublish(): Promise<void> {
-    const article = this.buildData();
+  postDraft(article: IDraft): Promise<IArticle> {
+    return apiClient.post<IArticle>("/api/v1/article", article);
+  }
 
-    article.published = !article.published;
-    if (article.published === true) {
-      article.publishedAt = new Date().toString();
-    } else {
-      article.publishedAt = null;
-    }
+  updateArticle(article: IArticle): Promise<IArticle> {
+    return apiClient.put<IArticle>(`/api/v1/article/${this.id}`, article);
+  }
 
-    try {
-      await this.updateArticle(article as IArticle);
-      this.draft = article;
-      this.update(new Map());
-    } catch (error) {
-      showError(error);
-    }
+  uploadPoster(file: File): Promise<{ path: string }> {
+    return upload(file);
+  }
+
+  isDraft(): boolean {
+    return this.id === "undefined";
   }
 
   buildData(): IDraft | IArticle {
