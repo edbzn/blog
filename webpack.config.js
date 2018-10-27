@@ -6,13 +6,14 @@ module.exports = {
   mode: "development",
   devtool: "inline-source-map",
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.tsx?$/,
         use: "ts-loader",
         exclude: /node_modules/,
       },
       {
-        test: /\.scss$/,
+        test: /\.scss|sass$/,
         use: [
           "style-loader", // creates style nodes from JS strings
           "css-loader", // translates CSS into CommonJS
@@ -43,6 +44,6 @@ module.exports = {
     }),
   ],
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
   },
 };

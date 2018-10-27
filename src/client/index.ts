@@ -1,7 +1,6 @@
 import "@webcomponents/webcomponentsjs";
 
-import './assets/index.scss';
-import 'normalize.css';
+import "bulma";
 
-import './app-components';
-import './app-router';
+import "./app-components";
+import "./app-router";

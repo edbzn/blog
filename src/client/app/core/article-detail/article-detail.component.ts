@@ -29,7 +29,7 @@ export default class ArticleDetail extends LitElement {
       </header>
       <h1>${article.title}</h1>
       ${unsafeHTML(article.content)}
-      <footer>By Edouard Bozon at ${article.createdAt}</footer
+      <footer>By Edouard Bozon at ${article.createdAt}</footer>
     `;
   }
 
