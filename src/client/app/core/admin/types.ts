@@ -6,10 +6,10 @@ export interface IDraft {
   tags: string[];
   posterUrl: string | null;
   published: boolean;
-  publishedAt: Date | null;
+  publishedAt: string | null;
 }
 
 export interface IArticle extends IResource, IDraft {
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

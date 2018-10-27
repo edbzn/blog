@@ -1,7 +1,9 @@
 import { html } from "lit-html";
 
-export const showPlaceholder = (count: number = 5) => {
-  return Array(count)
+export const showPlaceholder = (
+  opt = { count: 5, minLines: 1, maxLines: 5, box: true },
+) => {
+  return Array(opt.count)
     .fill(true)
     .map(
       () => html`
@@ -12,8 +14,8 @@ export const showPlaceholder = (count: number = 5) => {
           background: #cdcdcd;
         }
       </style>
-      <article class="box">
-        ${Array(Math.floor(Math.random() * 3) + 1)
+      <article class="${opt.box ? "box" : ""}">
+        ${Array(Math.floor(Math.random() * opt.maxLines) + opt.minLines)
           .fill("")
           .map(
             () =>

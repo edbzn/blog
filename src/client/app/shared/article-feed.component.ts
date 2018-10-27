@@ -9,6 +9,7 @@ import { showError } from "../utils/show-error";
 import { property, LitElement } from "@polymer/lit-element";
 import { IArticle } from "../core/admin/types";
 import { apiClient } from "../utils/api";
+import { timeSince } from "../utils/time-since";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
@@ -25,7 +26,7 @@ export default class ArticleFeed extends LitElement {
   }
 
   async removeArticle(article: IArticle) {
-    const articleTitle = article.title.toLocaleLowerCase();
+    const articleTitle = article.title.toLowerCase();
     if (
       prompt("Enter " + articleTitle + " to delete the article") ===
       articleTitle
@@ -57,10 +58,17 @@ export default class ArticleFeed extends LitElement {
       return html`
         <article class="card">
           <header class="card-header">
-            <p class="card-header-title">${article.tags.map(
-              (tag: string) =>
-                html`<span class="article-tag tag is-dark">${tag}</span>`,
-            )}</p>
+            <p class="card-header-title">
+            <span class="article-date">Published ${timeSince(
+              new Date(article.publishedAt as string),
+            )} ago</span>
+            <span>
+              ${article.tags.map(
+                (tag: string) =>
+                  html`<span class="article-tag tag is-dark">${tag}</span>`,
+              )}
+            </span>
+            </p>
           </header>
           ${
             article.posterUrl
@@ -134,6 +142,12 @@ export default class ArticleFeed extends LitElement {
       .article-tag:last-child {
         margin-right: 0;
       }
+      .article-date {
+        float: right;
+      }
+      .card-header-title {
+        justify-content: space-between;
+      }
     </style>
     <section class="section">
       <h4 class="subtitle uppercase">articles</h4>
@@ -142,7 +156,7 @@ export default class ArticleFeed extends LitElement {
           this.articleList = articleList;
           return this.showArticleList();
         }),
-        showPlaceholder(4),
+        showPlaceholder({ count: 3, minLines: 1, maxLines: 3, box: true }),
       )}
     </section>
   `;

@@ -38,7 +38,10 @@ export const twitterFeed = () => {
     <style scoped>.uppercase { text-transform: uppercase; }</style>
     <section class="section">
       <h4 class="subtitle uppercase">tweets</h4>
-      ${until(getTweets().then(resp => showTweets(resp)), showPlaceholder(4))}
+      ${until(
+        getTweets().then(resp => showTweets(resp)),
+        showPlaceholder({ count: 4, minLines: 1, maxLines: 3, box: true }),
+      )}
     </section>
   `;
 };

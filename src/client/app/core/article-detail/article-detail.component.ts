@@ -35,29 +35,22 @@ export default class ArticleDetail extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <style scoped>
+      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <style>
         :host {
           display: block;
-        }
-        
-        .article-feed {
-          padding-top: 40px;
-          margin-top: 40px;
-          border-top: 2px solid #f8f8f8;
-        }
-
-        article {
-          margin-bottom: 4px;
-          background: #f8f8f8;
-          border-radius: 2px;
-          color: #585858;
         }
       </style>
       <ez-page>
         <section class="article">
           ${until(
             this.getArticle().then(this.showArticleDetail),
-            showPlaceholder(10),
+            showPlaceholder({
+              count: 1,
+              minLines: 30,
+              maxLines: 50,
+              box: false,
+            }),
           )}
         </section>
       </ez-page>

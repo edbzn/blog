@@ -13,6 +13,7 @@ export default class Home extends LitElement {
 
   render(): TemplateResult {
     return html`
+      <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>
         :host {
           display: block;

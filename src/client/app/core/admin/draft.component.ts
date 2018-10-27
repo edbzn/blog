@@ -151,7 +151,7 @@ export default class Draft extends LitElement {
 
     article.published = !article.published;
     if (article.published === true) {
-      article.publishedAt = new Date();
+      article.publishedAt = new Date().toString();
     } else {
       article.publishedAt = null;
     }
@@ -180,6 +180,7 @@ export default class Draft extends LitElement {
 
   render(): TemplateResult {
     return html`
+      <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>
         :host {
           display: block;

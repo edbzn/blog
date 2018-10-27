@@ -9,7 +9,7 @@ export default class Page extends LitElement {
   render(): TemplateResult {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet">
-      <style>.container { max-width: ${pageMaxWidth} !important; }</style>
+      <style>.container { max-width: ${pageMaxWidth} !important; margin: 0 auto; }</style>
       <div>
         ${this.navbar ? html`<ez-navbar></ez-navbar>` : html``}
         <main class="container">
