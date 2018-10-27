@@ -1,5 +1,7 @@
 const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WriteFilePlugin = require("write-file-webpack-plugin");
 
 module.exports = {
   entry: "./src/client/index",
@@ -42,6 +44,13 @@ module.exports = {
       title: "Codamit [WDS] - [HMR]",
       template: path.resolve(__dirname, "src", "client", "index.html"),
     }),
+    new WriteFilePlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: "node_modules/bulma/css/bulma.min.css",
+        to: "assets/css/bulma.min.css",
+      },
+    ]),
   ],
   devServer: {
     historyApiFallback: true,
