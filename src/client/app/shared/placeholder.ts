@@ -5,23 +5,24 @@ export const showPlaceholder = (count: number = 5) => {
     .fill(true)
     .map(
       () => html`
-      <style scoped>      
-        article.placeholder {
-          position: relative;
-        }
-
-        article.placeholder::after {
-          content: '';
-          display: block;
-          position: absolute;
-          left: 17px;
-          right: 17px;
-          top: 17px;
-          bottom: 17px;
+      <style>
+        .placeholder {
+          margin-top: 6px;
+          height: 12px;
           background: #cdcdcd;
         }
       </style>
-      <article class="placeholder"></article>
+      <article class="box">
+        ${Array(Math.floor(Math.random() * 3) + 1)
+          .fill("")
+          .map(
+            () =>
+              html`
+              <div class="placeholder"
+                style="width: ${Math.floor(Math.random() * 50) + 50}%">
+              </div>`,
+          )}
+      </article>
     `,
     );
 };

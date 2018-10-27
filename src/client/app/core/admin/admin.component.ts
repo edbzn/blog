@@ -6,7 +6,8 @@ import router from "../../../app-router";
 export default class Admin extends LitElement {
   render(): TemplateResult {
     return html`
-      <style scoped>
+      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <style>
         :host {
           display: block;
         }
@@ -26,9 +27,10 @@ export default class Admin extends LitElement {
         }
       </style>
       <ez-page>
-        <h1>Admin</h1>
-        <div>
-          <a href="/admin/draft"
+        <section class="section">
+          <h1 class="title">Admin</h1>
+          <a class="button is-primary block"
+            href="/admin/draft"
             title="Start writing"
             @click=${(e: Event) => {
               e.preventDefault();
@@ -36,10 +38,8 @@ export default class Admin extends LitElement {
             }}>
             Start a new draft
           </a>
-        </div>
-        <div>
-          <ez-article-feed adminMode=${true}></ez-article-feed>
-        </div>
+        </section>
+        <ez-article-feed adminMode=${true}></ez-article-feed>
       </ez-page>
     `;
   }

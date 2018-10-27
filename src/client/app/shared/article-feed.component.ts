@@ -45,7 +45,7 @@ export default class ArticleFeed extends LitElement {
   showArticleList(): TemplateResult | TemplateResult[] {
     if (this.articleList.length === 0) {
       return html`
-        <article>
+        <article class="box">
           <p>It's empty dude...</p>
         </article>
     `;
@@ -55,84 +55,94 @@ export default class ArticleFeed extends LitElement {
       const articleUri = `/article/${article._id}`;
 
       return html`
-      <article class="article">
-        ${
-          article.posterUrl
-            ? html`<div class="poster" style="background-image: url('${
-                article.posterUrl
-              }')"></div>`
-            : html``
-        }
-        <ul>
-          ${article.tags.map((tag: string) => html`<li>${tag}</li>`)}
-        </ul>
-        <h2>${article.title}</h2>
-        <p>${unsafeHTML(article.content.slice(0, 80) + "...")}</p>
-        
-        <a href=${articleUri}
-          title="Read article"
-          @click=${(e: Event) => {
-            e.preventDefault();
-            router.push(articleUri);
-          }}>
-          Read
-        </a>
-
-        ${
-          this.adminMode
-            ? html`
-              <a href=${`/admin/draft?id=${article._id}`}
-                title="Edit article"
-                @click=${(e: Event) => {
-                  e.preventDefault();
-                  router.push(`/admin/draft?id=${article._id}`);
-                }}>
-                Edit
-              </a>
-              <button type="button"
-                title="Delete article"
-                @click=${this.removeArticle.bind(this, article)}>
-                Delete
-              </button>
-            `
-            : html``
-        }
-      </article>
-    `;
+        <article class="card">
+          <header class="card-header">
+            <p class="card-header-title">${article.tags.map(
+              (tag: string) =>
+                html`<span class="article-tag tag is-dark">${tag}</span>`,
+            )}</p>
+          </header>
+          ${
+            article.posterUrl
+              ? html`
+                  <figure class="poster card-image"
+                    style="background: url('${article.posterUrl}') center">
+                  </figure>`
+              : html``
+          }
+          <div class="card-content">
+            <h3 class="title">${article.title}</h3>
+            <p>${unsafeHTML(article.content.slice(0, 80) + "...")}</p>
+          </div>
+          <footer class="card-footer">
+            <a class="card-footer-item"
+              href=${articleUri}
+              title="Read article"
+              @click=${(e: Event) => {
+                e.preventDefault();
+                router.push(articleUri);
+              }}>
+              Read
+            </a>
+            ${
+              this.adminMode
+                ? html`
+                  <a class="card-footer-item"
+                    href=${`/admin/draft?id=${article._id}`}
+                    title="Edit article"
+                    @click=${(e: Event) => {
+                      e.preventDefault();
+                      router.push(`/admin/draft?id=${article._id}`);
+                    }}>
+                    Edit
+                  </a>
+                  <a href 
+                    class="card-footer-item"
+                    type="button"
+                    title="Delete article"
+                    @click=${this.removeArticle.bind(this, article)}>
+                    Delete
+                  </a>
+                `
+                : html``
+            }
+          </footer>
+        </article>
+      `;
     });
   }
 
   render(): TemplateResult {
     return html`
-    <style scoped>
-      .article-feed {
-        padding-top: 40px;
-        margin-top: 40px;
-        border-top: 2px solid #f8f8f8;
-      }
-
-      .article {
-        padding: 1.4rem;
-        margin-bottom: 4px;
-        background: #f8f8f8;
-        border-radius: 2px;
-        color: #585858;
-      }
-
+    <link href="assets/css/bulma.min.css" rel="stylesheet">
+    <style>
+      .uppercase { text-transform: uppercase; }
       .poster {
         height: 200px;
-        background-position: center center;
+        background-color: #eee;
         background-size: cover;
       }
+      .card {
+        margin-bottom: 1.5rem;
+      }
+      .card:last-child {
+        margin-bottom: 0;
+      }
+      .article-tag {
+        margin-right: 4px;
+      }
+      .article-tag:last-child {
+        margin-right: 0;
+      }
     </style>
-    <section class="article-feed">
-      <h4>ARTICLES</h4>
+    <section class="section">
+      <h4 class="subtitle uppercase">articles</h4>
       ${until(
         this.getArticleList().then(articleList => {
           this.articleList = articleList;
           return this.showArticleList();
         }),
-        showPlaceholder(9),
+        showPlaceholder(4),
       )}
     </section>
   `;

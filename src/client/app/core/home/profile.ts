@@ -1,4 +1,6 @@
 import { html } from "lit-html";
+import { pageMaxWidth } from "../layout/variables";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 export const profile = ({
   name,
@@ -9,8 +11,11 @@ export const profile = ({
   description: string;
   avatarUrl: string;
 }) => html`
-<style scoped>
+<link href="assets/css/bulma.min.css" rel="stylesheet">
+<style>
   .profile {
+    max-width: ${pageMaxWidth};
+    margin: 0 auto;
     display: flex;
     align-items: center;
   }
@@ -29,24 +34,20 @@ export const profile = ({
   }
 
   .presentation {
-    padding-left: 1.4rem;
-  }
-
-  .presentation h1 {
-    font-size: 2.4rem;
-  }
-
-  .presentation p {
-    font-size: 1.2rem;
+    padding-left: 1.55rem;
   }
 </style>
-<section class="profile">
-  <div class="avatar">
-    <img src="${avatarUrl}">
-  </div>
-  <div class="presentation">
-    <h1>${name}</h1>
-    <p>${description}</p>
+<section class="hero is-light is-large">
+  <div class="hero-body">
+    <div class="profile">
+      <div class="avatar">
+        <img src="${avatarUrl}">
+      </div>
+      <div class="presentation">
+        <h1 class="title">${unsafeHTML(name)}</h1>
+        <h2 class="subtitle">${unsafeHTML(description)}</h2>
+      </div>
+    </div>
   </div>
 </section>
 `;

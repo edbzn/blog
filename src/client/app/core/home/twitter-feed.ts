@@ -3,6 +3,8 @@ import { until } from "lit-html/directives/until";
 import { showPlaceholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
 import { apiClient } from "../../utils/api";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { timeSince } from "../../utils/time-since";
 
 const getTweets = async (): Promise<{ statuses: any[] }> => {
   return apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
@@ -11,31 +13,32 @@ const getTweets = async (): Promise<{ statuses: any[] }> => {
 const showTweets = (resp: any) => {
   return resp.statuses.map(
     (tweet: any) => html`
-      <article>${tweet.text}</article>
+      <div class="box">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>${tweet.user.name}</strong>
+                <small>@${tweet.user.screen_name.toLowerCase()}</small> 
+                - <small>${timeSince(new Date(tweet.created_at))} ago</small>
+                <br>
+                ${unsafeHTML(tweet.text)}
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
     `,
   );
 };
 
 export const twitterFeed = () => {
   return html`
-    <style scoped>
-      .twitter-feed {
-        padding-top: 40px;
-        margin-top: 40px;
-        border-top: 2px solid #f8f8f8;
-      }
-
-      article {
-        padding: 1.4rem;
-        margin-bottom: 4px;
-        background: #f8f8f8;
-        border-radius: 2px;
-        color: #585858;
-      }
-    </style>
-    <section class="twitter-feed">
-      <h4>TWEETS</h4>
-      ${until(getTweets().then(resp => showTweets(resp)), showPlaceholder(9))}
+    <link href="assets/css/bulma.min.css" rel="stylesheet">
+    <style scoped>.uppercase { text-transform: uppercase; }</style>
+    <section class="section">
+      <h4 class="subtitle uppercase">tweets</h4>
+      ${until(getTweets().then(resp => showTweets(resp)), showPlaceholder(4))}
     </section>
   `;
 };

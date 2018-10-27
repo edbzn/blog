@@ -180,7 +180,7 @@ export default class Draft extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <style scoped>
+      <style>
         :host {
           display: block;
         }
