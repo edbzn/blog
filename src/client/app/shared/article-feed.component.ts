@@ -153,7 +153,13 @@ export default class ArticleFeed extends LitElement {
           this.articleList = articleList;
           return this.showArticleList();
         }),
-        showPlaceholder({ count: 3, minLines: 1, maxLines: 3, box: true }),
+        showPlaceholder({
+          count: 3,
+          minLines: 1,
+          maxLines: 3,
+          box: true,
+          image: true,
+        }),
       )}
       <button title="Load more articles" 
         class="button is-fullwidth">

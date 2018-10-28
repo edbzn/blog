@@ -40,7 +40,13 @@ export const twitterFeed = () => {
       <h4 class="subtitle uppercase">tweets</h4>
       ${until(
         getTweets().then(resp => showTweets(resp)),
-        showPlaceholder({ count: 4, minLines: 1, maxLines: 3, box: true }),
+        showPlaceholder({
+          count: 4,
+          minLines: 1,
+          maxLines: 3,
+          box: true,
+          image: false,
+        }),
       )}
     </section>
   `;

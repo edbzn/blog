@@ -86,6 +86,7 @@ export default class ArticleDetail extends LitElement {
               minLines: 30,
               maxLines: 50,
               box: false,
+              image: false,
             }),
           )}
         </section>
