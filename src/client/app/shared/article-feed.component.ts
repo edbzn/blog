@@ -31,7 +31,9 @@ export default class ArticleFeed extends LitElement {
 
   firstUpdated() {
     this.getArticleCollection().then(articleCollection => {
-      this.articleCollection = articleCollection.collection;
+      const { collection, total } = articleCollection;
+      this.articleCollection = collection;
+      this.articleRemaining = total > this.articleCollection.length;
       this.loading = false;
     });
   }
@@ -55,17 +57,23 @@ export default class ArticleFeed extends LitElement {
   }
 
   async loadMore(): Promise<void> {
+    if (!this.articleRemaining) {
+      return Promise.reject("All article are already loaded");
+    }
+
     this.loading = true;
+
     ++this.page;
-    const articleCollection = (await this.getArticleCollection()) as Collection<
-      IArticle
-    >;
+    const {
+      collection,
+      total,
+    } = (await this.getArticleCollection()) as Collection<IArticle>;
+
     this.articleCollection = [
       ...(this.articleCollection as IArticle[]),
-      ...articleCollection.collection,
+      ...collection,
     ];
-    this.articleRemaining =
-      articleCollection.total === this.articleCollection.length;
+    this.articleRemaining = total > this.articleCollection.length;
     this.loading = false;
   }
 
