@@ -11,6 +11,7 @@ import { IArticle } from "../core/admin/types";
 import { apiClient } from "../utils/api";
 import { timeSince } from "../utils/time-since";
 import { tags } from "./tags";
+import { Collection } from "../utils/collection";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
@@ -26,6 +27,8 @@ export default class ArticleFeed extends LitElement {
 
   limit = 2;
 
+  articleRemaining = true;
+
   firstUpdated() {
     this.getArticleCollection().then(articleCollection => {
       this.articleCollection = articleCollection.collection;
@@ -33,12 +36,12 @@ export default class ArticleFeed extends LitElement {
     });
   }
 
-  getArticleCollection(): Promise<{ collection: IArticle[] }> {
+  getArticleCollection(): Promise<Collection<IArticle>> {
     return this.adminMode
-      ? apiClient.get<{ collection: IArticle[] }>(
+      ? apiClient.get<Collection<IArticle>>(
           `/api/v1/draft?limit=${this.limit}&page=${this.page}`,
         )
-      : apiClient.get<{ collection: IArticle[] }>(
+      : apiClient.get<Collection<IArticle>>(
           `/api/v1/article?limit=${this.limit}&page=${this.page}`,
         );
   }
@@ -54,13 +57,15 @@ export default class ArticleFeed extends LitElement {
   async loadMore(): Promise<void> {
     this.loading = true;
     ++this.page;
-    const { collection } = (await this.getArticleCollection()) as {
-      collection: IArticle[];
-    };
+    const articleCollection = (await this.getArticleCollection()) as Collection<
+      IArticle
+    >;
     this.articleCollection = [
       ...(this.articleCollection as IArticle[]),
-      ...collection,
+      ...articleCollection.collection,
     ];
+    this.articleRemaining =
+      articleCollection.total === this.articleCollection.length;
     this.loading = false;
   }
 
@@ -180,7 +185,7 @@ export default class ArticleFeed extends LitElement {
       }
       .card-header-title {
         justify-content: space-between;
-      }
+      } 
     </style>
     <section class="section">
       <h4 class="subtitle uppercase">articles</h4>
@@ -197,8 +202,9 @@ export default class ArticleFeed extends LitElement {
       }
       <button title="Load more articles" 
         class="button is-fullwidth ${this.loading ? "is-loading" : ""}"
+        .disabled=${this.articleRemaining ? false : true}
         @click=${this.loadMore}>
-        View more
+        ${this.articleRemaining ? "View more" : "All stuff loaded"}
       </button>
     </section>
   `;
