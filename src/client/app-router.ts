@@ -5,10 +5,8 @@ import {
   ProuterResponse,
 } from "prouter";
 import { authService } from "./app/utils/auth";
-import {
-  redirectAndShowError,
-  unAuthenticatedErrorMsg,
-} from "./app/utils/error-redirection";
+import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
+import { showError, createErrorURI } from "./app/utils/show-error";
 
 const router = browserRouter();
 
@@ -32,19 +30,19 @@ router
   })
   .use("/admin", (_req, resp) => {
     if (!authService.authenticated) {
-      redirectAndShowError(router, unAuthenticatedErrorMsg, resp);
+      router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
       render(html`<ez-admin></ez-admin>`, document.body);
-      resp.end();
     }
+    resp.end();
   })
   .use("/admin/draft", (req, resp) => {
     if (!authService.authenticated) {
-      redirectAndShowError(router, unAuthenticatedErrorMsg, resp);
+      router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
       render(html`<ez-draft id=${req.query.id}></ez-draft>`, document.body);
-      resp.end();
     }
+    resp.end();
   })
   .use("/error", (req, resp) => {
     const message = req.query.message;
@@ -53,7 +51,8 @@ router
     resp.end();
   })
   .use("*", (_req, resp) => {
-    redirectAndShowError(router, "Page not found", resp);
+    router.push(createErrorURI(unAuthenticatedErrorMsg));
+    resp.end();
   });
 
 router.listen();
