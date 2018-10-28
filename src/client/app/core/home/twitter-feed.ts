@@ -19,7 +19,9 @@ const showTweets = (resp: any) => {
             <div class="content">
               <p>
                 <strong>${tweet.user.name}</strong>
-                <small>@${tweet.user.screen_name.toLowerCase()}</small> 
+                <a href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}">
+                  <small>@${tweet.user.screen_name.toLowerCase()}</small>
+                </a> 
                 - <small>${timeSince(new Date(tweet.created_at))} ago</small>
                 <br>
                 ${unsafeHTML(tweet.text)}

@@ -41,7 +41,7 @@ export const profile = ({
   }
 
   .presentation .subtitle {
-    font-size: 1.6em;
+    font-size: 1.2em;
   }
 </style>
 <section class="hero is-light is-medium">
