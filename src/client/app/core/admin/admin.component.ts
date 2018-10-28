@@ -11,20 +11,6 @@ export default class Admin extends LitElement {
         :host {
           display: block;
         }
-
-        form {
-          margin-top: 20px;
-        }
-
-        form input, 
-        form label,
-        form textarea {
-          display: block;
-        }
-
-        form input, form textarea {
-          margin-bottom: 10px;
-        }
       </style>
       <ez-page>
         <section class="section">

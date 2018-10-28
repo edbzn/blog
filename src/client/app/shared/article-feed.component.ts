@@ -10,6 +10,7 @@ import { property, LitElement } from "@polymer/lit-element";
 import { IArticle } from "../core/admin/types";
 import { apiClient } from "../utils/api";
 import { timeSince } from "../utils/time-since";
+import { tags } from "./tags";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
@@ -62,12 +63,7 @@ export default class ArticleFeed extends LitElement {
             <span class="article-date">Published ${timeSince(
               new Date(article.publishedAt as string),
             )} ago</span>
-            <span>
-              ${article.tags.map(
-                (tag: string) =>
-                  html`<span class="article-tag tag is-dark">${tag}</span>`,
-              )}
-            </span>
+              ${tags(article)}
             </p>
           </header>
           ${
@@ -138,14 +134,9 @@ export default class ArticleFeed extends LitElement {
       .card:last-child {
         margin-bottom: 0;
       }
-      .article-tag {
-        margin-right: 4px;
-      }
-      .article-tag:last-child {
-        margin-right: 0;
-      }
       .article-date {
         float: right;
+        font-weight: 100;
       }
       .card-header-title {
         justify-content: space-between;

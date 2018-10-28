@@ -8,6 +8,7 @@ import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { IArticle } from "../admin/types";
 import { apiClient } from "../../utils/api";
 import { timeSince } from "../../utils/time-since";
+import { tags } from "../../shared/tags";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -24,10 +25,7 @@ export default class ArticleDetail extends LitElement {
     return html`
       <article class="content is-medium">
         <header class="header">
-          <span>${article.tags.map(
-            (tag: string) =>
-              html`<span class="article-tag tag is-light">${tag}</span>`,
-          )}</span>
+          ${tags(article)}
           <small>
             Published ${timeSince(new Date(article.publishedAt as string))} ago
           </small>
@@ -53,6 +51,7 @@ export default class ArticleDetail extends LitElement {
 
         .poster {
           height: 50vh;
+          background-color: #eee;
           background-size: cover;
           background-position: center center;
         }
@@ -73,11 +72,7 @@ export default class ArticleDetail extends LitElement {
       </style>
       <ez-navbar></ez-navbar>
       <figure class="poster"
-        style="background-image: url('${
-          this.posterUrl
-            ? this.posterUrl
-            : "https://www.coved.com/wp-content/uploads/2016/11/orionthemes-placeholder-image-1.png"
-        }')">
+        style="background-image: url('${this.posterUrl}')">
       </figure>
       <ez-page .navbar=${false}>
         <section class="section">
