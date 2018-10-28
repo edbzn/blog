@@ -50,6 +50,10 @@ module.exports = {
         from: "node_modules/bulma/css/bulma.min.css",
         to: "assets/css/bulma.min.css",
       },
+      {
+        from: "src/client/assets",
+        to: "assets",
+      },
     ]),
   ],
   devServer: {

@@ -7,29 +7,39 @@ import _fetch from "../../utils/fetch";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { IArticle } from "../admin/types";
 import { apiClient } from "../../utils/api";
+import { timeSince } from "../../utils/time-since";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
   id: string;
 
-  async getArticle(): Promise<IArticle> {
+  @property({ type: String })
+  posterUrl: string | null = null;
+
+  getArticle(): Promise<IArticle> {
     return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
   }
 
   showArticleDetail(article: IArticle): TemplateResult {
-    const nothing = html``;
-    const poster = html`
-      <div class="poster"
-        style="background: url('${article.posterUrl}') center cover">
-      </div>`;
-
     return html`
-      <header>
-        ${article.posterUrl ? poster : nothing}
-      </header>
-      <h1>${article.title}</h1>
-      ${unsafeHTML(article.content)}
-      <footer>By Edouard Bozon at ${article.createdAt}</footer>
+      <article class="content is-medium">
+        <header class="header">
+          <span>${article.tags.map(
+            (tag: string) =>
+              html`<span class="article-tag tag is-light">${tag}</span>`,
+          )}</span>
+          <small>
+            Published ${timeSince(new Date(article.publishedAt as string))} ago
+          </small>
+        </header>
+        <h1 class="title">${article.title}</h1>
+        <div>${unsafeHTML(article.content)}</div>
+        <footer>
+          By Edouard Bozon - Published ${timeSince(
+            new Date(article.publishedAt as string),
+          )} ago
+        </footer>
+      </article>
     `;
   }
 
@@ -40,11 +50,42 @@ export default class ArticleDetail extends LitElement {
         :host {
           display: block;
         }
+
+        .poster {
+          height: 50vh;
+          background-size: cover;
+          background-position: center center;
+        }
+
+        .header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .header .tag {
+          margin-right: 4px;
+        }
+
+        .header .tag:last-child {
+          margin-right: 0;
+        }
       </style>
-      <ez-page>
-        <section class="article">
+      <ez-navbar></ez-navbar>
+      <figure class="poster"
+        style="background-image: url('${
+          this.posterUrl
+            ? this.posterUrl
+            : "https://www.coved.com/wp-content/uploads/2016/11/orionthemes-placeholder-image-1.png"
+        }')">
+      </figure>
+      <ez-page .navbar=${false}>
+        <section class="section">
           ${until(
-            this.getArticle().then(this.showArticleDetail),
+            this.getArticle().then(article => {
+              this.posterUrl = article.posterUrl;
+              return this.showArticleDetail(article);
+            }),
             showPlaceholder({
               count: 1,
               minLines: 30,

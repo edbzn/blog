@@ -2,8 +2,8 @@ import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
 import router from "../../../app-router";
-import github from "../../../assets/images/github";
-import twitter from "../../../assets/images/twitter";
+import github from "../../utils/icons/github";
+import twitter from "../../utils/icons/twitter";
 
 export default class NavBar extends LitElement {
   twitterUrl = "https://twitter.com/edouardbozon";

@@ -1,7 +1,7 @@
 import { LitElement } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
 
-import heart from "../../../assets/images/heart";
+import heart from "../../utils/icons/heart";
 import router from "../../../app-router";
 import { authService } from "../../utils/auth";
 

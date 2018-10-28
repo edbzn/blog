@@ -17,11 +17,11 @@ export default class ArticleFeed extends LitElement {
 
   articleList: IArticle[] = [];
 
-  async getArticleList(): Promise<IArticle[]> {
+  getArticleList(): Promise<IArticle[]> {
     return apiClient.get<IArticle[]>(`/api/v1/article`);
   }
 
-  async deleteArticle(id: string): Promise<void> {
+  deleteArticle(id: string): Promise<void> {
     return apiClient.delete(`/api/v1/article/${id}`);
   }
 
@@ -74,7 +74,7 @@ export default class ArticleFeed extends LitElement {
             article.posterUrl
               ? html`
                   <figure class="poster card-image"
-                    style="background: url('${article.posterUrl}') center">
+                    style="background-image: url('${article.posterUrl}')">
                   </figure>`
               : html``
           }
@@ -129,6 +129,8 @@ export default class ArticleFeed extends LitElement {
         height: 200px;
         background-color: #eee;
         background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
       }
       .card {
         margin-bottom: 1.5rem;
@@ -158,6 +160,7 @@ export default class ArticleFeed extends LitElement {
         }),
         showPlaceholder({ count: 3, minLines: 1, maxLines: 3, box: true }),
       )}
+      <button class="button is-fullwidth">View more</button>
     </section>
   `;
   }
