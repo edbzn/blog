@@ -4,9 +4,10 @@ import {
   CollectionQueryOptions,
   applyCollectionQuery,
 } from "../../../utils/collection";
+import { IArticlePayload } from "../helpers/article-payload";
 
 export namespace ArticleDao {
-  export const model = new Article("", "", "").getModelForClass(Article, {
+  export const model = new Article().getModelForClass(Article, {
     schemaOptions: { timestamps: true },
   });
 
@@ -23,12 +24,10 @@ export namespace ArticleDao {
   export const removeById = (id: string) =>
     from(model.findByIdAndDelete(id).exec());
 
-  export const updateById = (id: string, body: any) =>
+  export const updateById = (id: string, body: IArticlePayload) =>
     from(model.findByIdAndUpdate(id, body).exec());
 
-  export const create = (body: any) => {
-    return from(
-      model.create(new Article(body.title, body.content, body.posterUrl)),
-    );
+  export const create = (body: IArticlePayload) => {
+    return from(model.create(new Article(body)));
   };
 }

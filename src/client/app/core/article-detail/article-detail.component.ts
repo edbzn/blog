@@ -76,7 +76,7 @@ export default class ArticleDetail extends LitElement {
           </small>
         </header>
         <h1 class="title">${article.title}</h1>
-        <div>${unsafeHTML(article.content)}</div>
+        <div>${unsafeHTML(article.content.replace(/\\n/g, ""))}</div>
         <hr>
         <footer class="section profile">
           <figure class="avatar" style="background-image: url('${
