@@ -103,10 +103,16 @@ export default class ArticleFeed extends LitElement {
         <article class="card">
           <header class="card-header">
             <p class="card-header-title">
-            <span class="article-date">Published ${timeSince(
-              new Date(article.publishedAt as string),
-            )} ago</span>
-              ${tags(article, this.adminMode)}
+            <span class="article-date">
+            ${
+              article.published
+                ? `Published ${timeSince(
+                    new Date(article.publishedAt as string),
+                  )} ago`
+                : ``
+            }
+            </span>
+            ${tags(article, this.adminMode)}
             </p>
           </header>
           ${
