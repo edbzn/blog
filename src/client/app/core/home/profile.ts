@@ -49,7 +49,7 @@ export const profile = ({
     <div class="profile">
       <figure class="avatar" style="background-image: url('${avatarUrl}')"></figure>
       <div class="presentation">
-        <h1 class="title">${unsafeHTML(name)}</h1>
+        <h1 class="title">${name}</h1>
         <h2 class="subtitle">${unsafeHTML(description)}</h2>
       </div>
     </div>
