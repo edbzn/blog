@@ -70,7 +70,7 @@ export default class ArticleFeed extends LitElement {
   }
 
   async removeArticle(article: IArticle) {
-    const articleTitle = article.title.toLowerCase();
+    const articleTitle = article.title;
     if (
       prompt("Enter " + articleTitle + " to delete the article") ===
       articleTitle
@@ -149,7 +149,7 @@ export default class ArticleFeed extends LitElement {
                     }}>
                     Edit
                   </a>
-                  <a href 
+                  <a
                     class="card-footer-item"
                     type="button"
                     title="Delete article"
