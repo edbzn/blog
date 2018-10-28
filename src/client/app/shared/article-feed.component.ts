@@ -46,6 +46,10 @@ export default class ArticleFeed extends LitElement {
     }
   }
 
+  stripTagsAndTruncate(content: string): string {
+    return content.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 180);
+  }
+
   showArticleList(): TemplateResult | TemplateResult[] {
     if (this.articleList.length === 0) {
       return html`
@@ -78,7 +82,7 @@ export default class ArticleFeed extends LitElement {
           }
           <div class="card-content">
             <h3 class="title">${article.title}</h3>
-            <p>${unsafeHTML(article.content.slice(0, 140) + "...")}</p>
+            <p>${this.stripTagsAndTruncate(article.content) + "..."}</p>
           </div>
           <footer class="card-footer">
             <a class="card-footer-item"
