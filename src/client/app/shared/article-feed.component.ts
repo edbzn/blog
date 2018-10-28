@@ -19,7 +19,9 @@ export default class ArticleFeed extends LitElement {
   articleList: IArticle[] = [];
 
   getArticleList(): Promise<IArticle[]> {
-    return apiClient.get<IArticle[]>(`/api/v1/article`);
+    return this.adminMode
+      ? apiClient.get<IArticle[]>(`/api/v1/draft`)
+      : apiClient.get<IArticle[]>(`/api/v1/article`);
   }
 
   deleteArticle(id: string): Promise<void> {
@@ -63,7 +65,7 @@ export default class ArticleFeed extends LitElement {
             <span class="article-date">Published ${timeSince(
               new Date(article.publishedAt as string),
             )} ago</span>
-              ${tags(article)}
+              ${tags(article, this.adminMode)}
             </p>
           </header>
           ${
@@ -76,12 +78,12 @@ export default class ArticleFeed extends LitElement {
           }
           <div class="card-content">
             <h3 class="title">${article.title}</h3>
-            <p>${unsafeHTML(article.content.slice(0, 80) + "...")}</p>
+            <p>${unsafeHTML(article.content.slice(0, 140) + "...")}</p>
           </div>
           <footer class="card-footer">
             <a class="card-footer-item"
               href=${articleUri}
-              title="Read article"
+              title="Read ${article.title}"
               @click=${(e: Event) => {
                 e.preventDefault();
                 router.push(articleUri);
@@ -120,7 +122,9 @@ export default class ArticleFeed extends LitElement {
     return html`
     <link href="assets/css/bulma.min.css" rel="stylesheet">
     <style>
-      .uppercase { text-transform: uppercase; }
+      .uppercase {
+        text-transform: uppercase;
+      }
       .poster {
         height: 200px;
         background-color: #eee;
@@ -151,7 +155,10 @@ export default class ArticleFeed extends LitElement {
         }),
         showPlaceholder({ count: 3, minLines: 1, maxLines: 3, box: true }),
       )}
-      <button class="button is-fullwidth">View more</button>
+      <button title="Load more articles" 
+        class="button is-fullwidth">
+        View more
+      </button>
     </section>
   `;
   }
