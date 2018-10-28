@@ -4,7 +4,7 @@ import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 import router from "../../app-router";
 import _fetch from "../utils/fetch";
-import { showPlaceholder } from "./placeholder";
+import { placeholder } from "./placeholder";
 import { showError } from "../utils/show-error";
 import { property, LitElement } from "@polymer/lit-element";
 import { IArticle } from "../core/admin/types";
@@ -157,7 +157,7 @@ export default class ArticleFeed extends LitElement {
           this.articleList = articleList;
           return this.showArticleList();
         }),
-        showPlaceholder({
+        placeholder({
           count: 3,
           minLines: 1,
           maxLines: 3,

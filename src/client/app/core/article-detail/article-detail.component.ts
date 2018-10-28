@@ -2,7 +2,7 @@ import { LitElement, property } from "@polymer/lit-element";
 import { html, TemplateResult } from "lit-html";
 import { until } from "lit-html/directives/until";
 
-import { showPlaceholder } from "../../shared/placeholder";
+import { placeholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { IArticle } from "../admin/types";
@@ -10,6 +10,8 @@ import { apiClient } from "../../utils/api";
 import { timeSince } from "../../utils/time-since";
 import { tags } from "../../shared/tags";
 import { profileConfiguration } from "../../utils/profile-config";
+import { debounce } from "../../utils/debounce";
+import { showError } from "../../utils/show-error";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -18,11 +20,53 @@ export default class ArticleDetail extends LitElement {
   @property({ type: String })
   posterUrl: string | null = null;
 
+  @property({ type: String })
+  percentRemaining: string = "0";
+
+  @property({ type: Object })
+  article: IArticle | null = null;
+
+  calculateRemainingHandler: EventListenerOrEventListenerObject | null = null;
+
   getArticle(): Promise<IArticle> {
     return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
   }
 
-  showArticleDetail(article: IArticle): TemplateResult {
+  async init(): Promise<void> {
+    try {
+      this.article = await this.getArticle();
+      this.posterUrl = this.article.posterUrl as string;
+    } catch (error) {
+      showError(error);
+    }
+  }
+
+  firstUpdated() {
+    this.init().then(() => {
+      const body = document
+        .getElementsByTagName("body")
+        .item(0) as HTMLBodyElement;
+
+      this.calculateRemainingHandler = debounce(() => {
+        const currentPosition = window.scrollY;
+        const totalHeight = body.offsetHeight - window.innerHeight;
+
+        const percentRemaining = (currentPosition * 100) / totalHeight;
+        this.percentRemaining = percentRemaining.toFixed();
+      }, 30);
+
+      window.addEventListener("scroll", this.calculateRemainingHandler);
+    });
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("scroll", this
+      .calculateRemainingHandler as EventListenerOrEventListenerObject);
+  }
+
+  showArticleDetail(): TemplateResult {
+    const article = this.article as IArticle;
+
     return html`
       <article class="content is-medium">
         <header class="header">
@@ -52,6 +96,7 @@ export default class ArticleDetail extends LitElement {
       <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>
         :host {
+          position: relative;
           display: block;
         }
 
@@ -102,26 +147,35 @@ export default class ArticleDetail extends LitElement {
           padding-left: 1.55rem;
           font-size: 0.8em;
         }
+
+        .time-remaining {
+          height: 3px;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+          transition: width ease-in-out 100ms;
+        }
       </style>
       <ez-navbar></ez-navbar>
       <figure class="poster"
         style="background-image: url('${this.posterUrl}')">
       </figure>
+      <div class="time-remaining has-background-info"
+        style="width: ${this.percentRemaining + "%"};">
+      </div>
       <ez-page .navbar=${false}>
         <section class="section">
-          ${until(
-            this.getArticle().then(article => {
-              this.posterUrl = article.posterUrl;
-              return this.showArticleDetail(article);
-            }),
-            showPlaceholder({
-              count: 1,
-              minLines: 30,
-              maxLines: 50,
-              box: false,
-              image: false,
-            }),
-          )}
+          ${
+            this.article
+              ? this.showArticleDetail()
+              : placeholder({
+                  count: 1,
+                  minLines: 30,
+                  maxLines: 50,
+                  box: false,
+                  image: false,
+                })
+          }
         </section>
       </ez-page>
     `;

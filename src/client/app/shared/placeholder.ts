@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 
-export const showPlaceholder = (
+export const placeholder = (
   opt = { count: 5, minLines: 1, maxLines: 5, box: true, image: false },
 ) => {
   return Array(opt.count)

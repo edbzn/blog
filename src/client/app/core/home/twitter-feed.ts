@@ -1,6 +1,6 @@
 import { html } from "lit-html";
 import { until } from "lit-html/directives/until";
-import { showPlaceholder } from "../../shared/placeholder";
+import { placeholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
 import { apiClient } from "../../utils/api";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
@@ -40,7 +40,7 @@ export const twitterFeed = () => {
       <h4 class="subtitle uppercase">tweets</h4>
       ${until(
         getTweets().then(resp => showTweets(resp)),
-        showPlaceholder({
+        placeholder({
           count: 4,
           minLines: 1,
           maxLines: 3,

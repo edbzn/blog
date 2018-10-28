@@ -31,6 +31,12 @@ export default class Login extends LitElement {
   render(): TemplateResult {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <style>
+        .section {
+          max-width: 350px;
+          margin: 0 auto;
+        }
+      </style>
       <ez-page>
         <section class="section">
           ${
