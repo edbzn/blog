@@ -53,7 +53,7 @@ export default class ArticleDetail extends LitElement {
 
         const percentRemaining = (currentPosition * 100) / totalHeight;
         this.percentRemaining = percentRemaining.toFixed();
-      }, 30);
+      }, 50);
 
       window.addEventListener("scroll", this.calculateRemainingHandler);
     });
