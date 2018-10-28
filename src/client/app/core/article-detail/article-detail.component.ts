@@ -1,6 +1,5 @@
 import { LitElement, property } from "@polymer/lit-element";
 import { html, TemplateResult } from "lit-html";
-import { until } from "lit-html/directives/until";
 
 import { placeholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
@@ -76,7 +75,7 @@ export default class ArticleDetail extends LitElement {
           </small>
         </header>
         <h1 class="title">${article.title}</h1>
-        <div>${unsafeHTML(article.content.replace(/\\n/g, ""))}</div>
+        <pre>${unsafeHTML(article.html)}</pre>
         <hr>
         <footer class="section profile">
           <figure class="avatar" style="background-image: url('${
