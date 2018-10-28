@@ -16,5 +16,5 @@ export const collectionQueryValidator$ = (opts: CollectionQueryValidatorOpts) =>
         .default(SortDir.ASC),
       limit: Joi.number().min(0),
       page: Joi.number().min(1),
-    }),
+    }).required(),
   });

@@ -16,16 +16,52 @@ export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
   adminMode = false;
 
-  articleList: IArticle[] = [];
+  @property({ type: Array })
+  articleCollection: IArticle[] | null = null;
 
-  getArticleList(): Promise<IArticle[]> {
+  @property({ type: Boolean })
+  loading = true;
+
+  page = 1;
+
+  limit = 2;
+
+  firstUpdated() {
+    this.getArticleCollection().then(articleCollection => {
+      this.articleCollection = articleCollection.collection;
+      this.loading = false;
+    });
+  }
+
+  getArticleCollection(): Promise<{ collection: IArticle[] }> {
     return this.adminMode
-      ? apiClient.get<IArticle[]>(`/api/v1/draft`)
-      : apiClient.get<IArticle[]>(`/api/v1/article`);
+      ? apiClient.get<{ collection: IArticle[] }>(
+          `/api/v1/draft?limit=${this.limit}&page=${this.page}`,
+        )
+      : apiClient.get<{ collection: IArticle[] }>(
+          `/api/v1/article?limit=${this.limit}&page=${this.page}`,
+        );
   }
 
   deleteArticle(id: string): Promise<void> {
     return apiClient.delete(`/api/v1/article/${id}`);
+  }
+
+  stripTagsAndTruncate(content: string): string {
+    return content.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 180);
+  }
+
+  async loadMore(): Promise<void> {
+    this.loading = true;
+    ++this.page;
+    const { collection } = (await this.getArticleCollection()) as {
+      collection: IArticle[];
+    };
+    this.articleCollection = [
+      ...(this.articleCollection as IArticle[]),
+      ...collection,
+    ];
+    this.loading = false;
   }
 
   async removeArticle(article: IArticle) {
@@ -36,7 +72,7 @@ export default class ArticleFeed extends LitElement {
     ) {
       try {
         await this.deleteArticle(article._id);
-        this.articleList = this.articleList.filter(
+        this.articleCollection = (this.articleCollection || []).filter(
           _article => article._id !== _article._id,
         );
         this.update(new Map());
@@ -46,12 +82,8 @@ export default class ArticleFeed extends LitElement {
     }
   }
 
-  stripTagsAndTruncate(content: string): string {
-    return content.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 180);
-  }
-
-  showArticleList(): TemplateResult | TemplateResult[] {
-    if (this.articleList.length === 0) {
+  articleList(): TemplateResult | TemplateResult[] {
+    if (!this.articleCollection) {
       return html`
         <article class="box">
           <p>It's empty dude...</p>
@@ -59,7 +91,7 @@ export default class ArticleFeed extends LitElement {
     `;
     }
 
-    return this.articleList.map((article: IArticle) => {
+    return this.articleCollection.map((article: IArticle) => {
       const articleUri = `/article/${article._id}`;
 
       return html`
@@ -152,21 +184,20 @@ export default class ArticleFeed extends LitElement {
     </style>
     <section class="section">
       <h4 class="subtitle uppercase">articles</h4>
-      ${until(
-        this.getArticleList().then(articleList => {
-          this.articleList = articleList;
-          return this.showArticleList();
-        }),
-        placeholder({
-          count: 3,
-          minLines: 1,
-          maxLines: 3,
-          box: true,
-          image: true,
-        }),
-      )}
+      ${
+        this.articleCollection
+          ? this.articleList()
+          : placeholder({
+              count: 3,
+              minLines: 1,
+              maxLines: 3,
+              box: true,
+              image: true,
+            })
+      }
       <button title="Load more articles" 
-        class="button is-fullwidth">
+        class="button is-fullwidth ${this.loading ? "is-loading" : ""}"
+        @click=${this.loadMore}>
         View more
       </button>
     </section>

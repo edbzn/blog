@@ -1,15 +1,22 @@
 import { from } from "rxjs";
 import { Article } from "./article.model";
+import {
+  CollectionQueryOptions,
+  applyCollectionQuery,
+} from "../../../utils/collection";
 
 export namespace ArticleDao {
   export const model = new Article("", "", "").getModelForClass(Article, {
     schemaOptions: { timestamps: true },
   });
 
-  export const findAll = () => from(model.find().exec());
+  export const ARTICLE_SORTING_FIELDS = ["_id", "publishedAt"];
 
-  export const findAllPublished = () =>
-    from(model.find({ published: true }).exec());
+  export const findAll = (query: CollectionQueryOptions) =>
+    from(applyCollectionQuery(query)(() => model.find()));
+
+  export const findAllPublished = (query: CollectionQueryOptions) =>
+    from(applyCollectionQuery(query)(() => model.find({ published: true })));
 
   export const findById = (id: string) => from(model.findById(id).exec());
 
