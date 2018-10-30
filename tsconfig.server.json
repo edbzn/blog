@@ -6,8 +6,9 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es6"
+    "target": "es6",
+    "types": ["node", "express"]
   },
-  "include": ["./src/server/**/*"],
+  "include": ["./src/server/**/*", "./src/static-storage/**/*"],
   "exclude": ["./src/client/**/*", "node_module"]
 }

@@ -1,10 +1,11 @@
 import { LitElement, property } from "@polymer/lit-element/lit-element";
 import { html, TemplateResult } from "lit-html";
+import * as showdown from "showdown";
+import * as SimpleMDE from "simplemde";
 
-import { showError } from "../../utils/show-error";
-import _fetch from "../../utils/fetch";
-import { upload } from "../../utils/upload";
 import { apiClient } from "../../utils/api";
+import { showError } from "../../utils/show-error";
+import { upload } from "../../utils/upload";
 import { IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {
@@ -14,12 +15,15 @@ export default class Draft extends LitElement {
   @property({ type: Object })
   draft: IDraft | IArticle = {
     title: "New draft",
-    content: "",
+    markdown: "",
+    html: "",
     tags: [],
     posterUrl: null,
     published: false,
     publishedAt: null,
   };
+
+  editor: SimpleMDE;
 
   constructor() {
     super();
@@ -36,6 +40,26 @@ export default class Draft extends LitElement {
       this.draft = await this.getArticle();
       this.fillFormData();
     }
+
+    const { markdownCtrl } = this.getFormRefs();
+
+    this.editor = new SimpleMDE({
+      lineWrapping: true,
+      element: markdownCtrl,
+      initialValue: this.draft.markdown,
+      autoDownloadFontAwesome: true,
+      forceSync: false,
+      tabSize: 2,
+      autosave: {
+        enabled: false,
+        uniqueId: "editor",
+      },
+      autofocus: true,
+    });
+  }
+
+  disconnectedCallback() {
+    this.editor.toTextArea();
   }
 
   async handleSubmit(e: Event): Promise<void> {
@@ -109,26 +133,25 @@ export default class Draft extends LitElement {
 
   getFormRefs(): {
     titleCtrl: HTMLInputElement;
-    contentCtrl: HTMLTextAreaElement;
+    markdownCtrl: HTMLTextAreaElement;
     posterUrlCtrl: HTMLInputElement;
     posterCtrl: HTMLInputElement;
     tagsCtrl: HTMLInputElement;
   } {
     const host = this.shadowRoot as ShadowRoot;
     const titleCtrl = host.getElementById("title") as HTMLInputElement;
-    const contentCtrl = host.getElementById("content") as HTMLTextAreaElement;
+    const markdownCtrl = host.getElementById("markdown") as HTMLTextAreaElement;
     const posterUrlCtrl = host.getElementById("posterUrl") as HTMLInputElement;
     const posterCtrl = host.getElementById("posterUrl") as HTMLInputElement;
     const tagsCtrl = host.getElementById("tags") as HTMLInputElement;
 
-    return { titleCtrl, contentCtrl, posterUrlCtrl, tagsCtrl, posterCtrl };
+    return { titleCtrl, markdownCtrl, posterUrlCtrl, tagsCtrl, posterCtrl };
   }
 
   fillFormData(): void {
     const draft = this.draft;
     const {
       titleCtrl,
-      contentCtrl,
       posterUrlCtrl,
       posterCtrl,
       tagsCtrl,
@@ -136,8 +159,6 @@ export default class Draft extends LitElement {
 
     titleCtrl.setAttribute("value", draft.title);
     tagsCtrl.setAttribute("value", draft.tags.toString());
-    contentCtrl.setAttribute("value", draft.content);
-    contentCtrl.append(draft.content);
 
     if (draft.posterUrl) {
       posterUrlCtrl.setAttribute("value", draft.posterUrl);
@@ -166,11 +187,14 @@ export default class Draft extends LitElement {
   }
 
   buildData(): IDraft | IArticle {
-    const { titleCtrl, contentCtrl, posterUrlCtrl } = this.getFormRefs();
+    const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
+    const converter = new showdown.Converter();
+    const markdown = this.editor.value();
 
     return {
       title: titleCtrl.value,
-      content: contentCtrl.value,
+      markdown,
+      html: converter.makeHtml(markdown),
       posterUrl: posterUrlCtrl.value,
       tags: this.draft.tags,
       published: this.draft.published,
@@ -180,10 +204,16 @@ export default class Draft extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="assets/css/simplemde.css" rel="stylesheet">
+      <link href="assets/css/debug-simplemde.css" rel="stylesheet">
       <style>
         :host {
           display: block;
+        }
+
+        .CodeMirror, .CodeMirror-scroll {
+          min-height: 300px !important;
         }
 
         form {
@@ -254,12 +284,10 @@ export default class Draft extends LitElement {
               required />
             
             <input type="hidden" id="posterUrl" name="posterUrl" />
-
-            <label for="content">Content</label>
-            <textarea id="content"
-              name="content"
+            <label for="markdown">Content</label>
+            <textarea id="markdown"
+              name="markdown"
               type="text"
-              required
               rows="20"
               cols="70"></textarea>
 

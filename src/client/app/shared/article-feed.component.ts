@@ -1,17 +1,14 @@
+import { LitElement, property } from "@polymer/lit-element";
 import { html, TemplateResult } from "lit-html";
-import { until } from "lit-html/directives/until";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 import router from "../../app-router";
-import _fetch from "../utils/fetch";
-import { placeholder } from "./placeholder";
-import { showError } from "../utils/show-error";
-import { property, LitElement } from "@polymer/lit-element";
 import { IArticle } from "../core/admin/types";
 import { apiClient } from "../utils/api";
-import { timeSince } from "../utils/time-since";
-import { tags } from "./tags";
 import { Collection } from "../utils/collection";
+import { showError } from "../utils/show-error";
+import { timeSince } from "../utils/time-since";
+import { placeholder } from "./placeholder";
+import { tags } from "./tags";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Boolean })
@@ -31,7 +28,9 @@ export default class ArticleFeed extends LitElement {
 
   firstUpdated() {
     this.getArticleCollection().then(articleCollection => {
-      this.articleCollection = articleCollection.collection;
+      const { collection, total } = articleCollection;
+      this.articleCollection = collection;
+      this.articleRemaining = total > this.articleCollection.length;
       this.loading = false;
     });
   }
@@ -55,22 +54,28 @@ export default class ArticleFeed extends LitElement {
   }
 
   async loadMore(): Promise<void> {
+    if (!this.articleRemaining) {
+      return Promise.reject("All article are already loaded");
+    }
+
     this.loading = true;
+
     ++this.page;
-    const articleCollection = (await this.getArticleCollection()) as Collection<
-      IArticle
-    >;
+    const {
+      collection,
+      total,
+    } = (await this.getArticleCollection()) as Collection<IArticle>;
+
     this.articleCollection = [
       ...(this.articleCollection as IArticle[]),
-      ...articleCollection.collection,
+      ...collection,
     ];
-    this.articleRemaining =
-      articleCollection.total === this.articleCollection.length;
+    this.articleRemaining = total > this.articleCollection.length;
     this.loading = false;
   }
 
   async removeArticle(article: IArticle) {
-    const articleTitle = article.title.toLowerCase();
+    const articleTitle = article.title;
     if (
       prompt("Enter " + articleTitle + " to delete the article") ===
       articleTitle
@@ -88,7 +93,7 @@ export default class ArticleFeed extends LitElement {
   }
 
   articleList(): TemplateResult | TemplateResult[] {
-    if (!this.articleCollection) {
+    if (!this.articleCollection || this.articleCollection.length === 0) {
       return html`
         <article class="box">
           <p>It's empty dude...</p>
@@ -125,7 +130,7 @@ export default class ArticleFeed extends LitElement {
           }
           <div class="card-content">
             <h3 class="title">${article.title}</h3>
-            <p>${this.stripTagsAndTruncate(article.content) + "..."}</p>
+            <p>${this.stripTagsAndTruncate(article.html) + "..."}</p>
           </div>
           <footer class="card-footer">
             <a class="card-footer-item"
@@ -149,7 +154,7 @@ export default class ArticleFeed extends LitElement {
                     }}>
                     Edit
                   </a>
-                  <a href 
+                  <a
                     class="card-footer-item"
                     type="button"
                     title="Delete article"

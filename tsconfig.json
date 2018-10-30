@@ -1,8 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist/",
-    "typeRoots": ["./node_modules", "./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types"],
     "pretty": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
@@ -11,7 +12,7 @@
     "strictPropertyInitialization": false,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
     "allowJs": false,
@@ -19,9 +20,8 @@
     "declaration": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": ["es2017", "dom"],
-    "types": ["node", "express"]
+    "lib": ["es2017", "dom"]
   },
-  "include": ["./src/**/*", "custom.d"],
+  "include": ["./src/client/**/*", "./custom.d"],
   "exclude": ["node_modules"]
 }

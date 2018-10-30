@@ -1,4 +1,4 @@
-import { Document, DocumentQuery } from 'mongoose';
+import { Document, DocumentQuery } from "mongoose";
 
 export interface CollectionQueryOptions extends Record<string, any> {
   sortBy: string;
@@ -17,16 +17,19 @@ export enum SortDir {
   DESC = -1,
 }
 
-export const applyCollectionQuery = (queryOptions: CollectionQueryOptions) =>
-  async <T, U extends Document>(dbQuery: () => DocumentQuery<T, U>): Promise<CollectionQueryResult<T>> => {
-    const totalQuery = dbQuery().estimatedDocumentCount();
+export const applyCollectionQuery = (
+  queryOptions: CollectionQueryOptions,
+) => async <T, U extends Document>(
+  dbQuery: () => DocumentQuery<T, U>,
+): Promise<CollectionQueryResult<T>> => {
+  const totalQuery = dbQuery().estimatedDocumentCount();
 
-    const collectionQuery = dbQuery()
-      .limit(queryOptions.limit)
-      .skip((queryOptions.page - 1) * queryOptions.limit)
-      .sort({ [queryOptions.sortBy]: queryOptions.sortDir });
+  const collectionQuery = dbQuery()
+    .limit(queryOptions.limit)
+    .skip((queryOptions.page - 1) * queryOptions.limit)
+    .sort({ [queryOptions.sortBy]: queryOptions.sortDir });
 
-    const [total, collection] = [await totalQuery, await collectionQuery];
+  const [total, collection] = [await totalQuery, await collectionQuery];
 
-    return { collection, total };
-  };
+  return { collection, total };
+};

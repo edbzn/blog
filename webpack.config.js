@@ -51,6 +51,14 @@ module.exports = {
         to: "assets/css/bulma.min.css",
       },
       {
+        from: "node_modules/simplemde/src/css/simplemde.css",
+        to: "assets/css/simplemde.css",
+      },
+      {
+        from: "node_modules/simplemde/debug/simplemde.css",
+        to: "assets/css/debug-simplemde.css",
+      },
+      {
         from: "src/client/assets",
         to: "assets",
       },
