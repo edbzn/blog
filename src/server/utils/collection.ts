@@ -22,7 +22,7 @@ export const applyCollectionQuery = (
 ) => async <T, U extends Document>(
   dbQuery: () => DocumentQuery<T, U>,
 ): Promise<CollectionQueryResult<T>> => {
-  const totalQuery = dbQuery().estimatedDocumentCount();
+  const totalQuery = await dbQuery().countDocuments();
 
   const collectionQuery = dbQuery()
     .limit(queryOptions.limit)
