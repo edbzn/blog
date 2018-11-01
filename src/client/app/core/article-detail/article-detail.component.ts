@@ -155,6 +155,12 @@ export default class ArticleDetail extends LitElement {
           z-index: 10;
           transition: width ease-in-out 100ms;
         }
+
+        pre {
+          background-color: #202020 !important;
+          color: #5de561 !important;
+          font-size: 0.825em !important;
+        }
       </style>
       <ez-navbar></ez-navbar>
       <figure class="poster"

@@ -1,12 +1,8 @@
 import { html, render } from "lit-html";
-import {
-  browserRouter,
-  ProuterNavigationEvent,
-  ProuterResponse,
-} from "prouter";
+import { browserRouter, ProuterNavigationEvent } from "prouter";
 import { authService } from "./app/utils/auth";
 import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
-import { showError, createErrorURI } from "./app/utils/show-error";
+import { createErrorURI } from "./app/utils/show-error";
 
 const router = browserRouter();
 

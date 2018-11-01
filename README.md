@@ -8,7 +8,6 @@
 
 - Node >= 9.0.0
 - Npm >= 6.0.0
-- MongoDB == 4.0.3
 
 ## :rainbow: Development server
 
