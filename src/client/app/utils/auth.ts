@@ -3,12 +3,16 @@ import { apiClient } from "./api";
 import { showError } from "./show-error";
 
 class Authentication {
+  static readonly AUTHORIZATION = "authorization";
+
   user: IUser | null;
 
   authenticated = false;
 
   constructor() {
-    const token = this.getCookie("authorization");
+    const token = this.getCookie(Authentication.AUTHORIZATION);
+
+    console.log(token);
 
     if (token) {
       this.login(token);
@@ -23,7 +27,7 @@ class Authentication {
   }
 
   login(token: string): void {
-    this.createCookie(token);
+    this.createCookie(Authentication.AUTHORIZATION, token);
     apiClient.authenticateRequests(token);
     this.authenticated = true;
   }
@@ -38,8 +42,10 @@ class Authentication {
     this.user = user;
   }
 
-  private createCookie(token: string): void {
-    let cookie = "authorization=" + token;
+  private createCookie(name: string, value: string): void {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+
+    let cookie = `${name}=` + value;
     cookie += ";max-age=" + (60 * 60 * 24).toString(); // 24h
     document.cookie = cookie;
   }
@@ -47,12 +53,13 @@ class Authentication {
   private getCookie(name: string): string | undefined {
     const value = "; " + document.cookie;
     const parts = value.split("; " + name + "=");
+    const cookie = (parts.pop() || "").split(";").shift();
 
-    if (parts.length === 2) {
-      return (parts.pop() || "").split(";").shift();
+    if (!cookie) {
+      throw new Error("Cookie not found");
     }
 
-    return undefined;
+    return cookie;
   }
 }
 
