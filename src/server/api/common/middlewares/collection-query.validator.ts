@@ -13,7 +13,7 @@ export const collectionQueryValidator$ = (opts: CollectionQueryValidatorOpts) =>
         .default("_id"),
       sortDir: Joi.number()
         .valid(SortDir.DESC, SortDir.ASC)
-        .default(SortDir.ASC),
+        .default(SortDir.DESC),
       limit: Joi.number().min(0),
       page: Joi.number().min(1),
     }).required(),

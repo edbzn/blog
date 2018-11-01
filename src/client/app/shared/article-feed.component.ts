@@ -22,7 +22,7 @@ export default class ArticleFeed extends LitElement {
 
   page = 1;
 
-  limit = 2;
+  limit = 4;
 
   articleRemaining = true;
 
