@@ -204,30 +204,17 @@ export default class Draft extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
       <link href="assets/css/simplemde.css" rel="stylesheet">
       <link href="assets/css/debug-simplemde.css" rel="stylesheet">
+      <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>
         :host {
           display: block;
         }
 
-        .CodeMirror, .CodeMirror-scroll {
-          min-height: 300px !important;
-        }
-
-        form {
-          margin-top: 20px;
-        }
-
-        form input, 
-        form label,
-        form textarea {
-          display: block;
-        }
-
-        form input, form textarea {
-          margin-bottom: 10px;
+        .container {
+          margin-top: 40px !important;
         }
 
         .poster {
@@ -236,7 +223,8 @@ export default class Draft extends LitElement {
           background-size: cover;
         }
       </style>
-      <ez-page>
+      <ez-navbar></ez-navbar>
+      <div>
         ${
           this.draft.posterUrl
             ? html`<div class="poster" style="background-image: url('${
@@ -244,62 +232,74 @@ export default class Draft extends LitElement {
               }')"></div>`
             : html``
         }
-        <h1>${this.draft.title}</h1>
-
-        <div>
-          <form name="login" @submit=${this.handleSubmit}>
-            <label for="poster">Poster</label>
-            ${
-              this.isDraft()
-                ? html`
+        <div class="container is-fluid">
+          <form name="login"
+            class="columns"
+            @submit=${this.handleSubmit}>
+            <div class="column is-three-fifths">
+              <h1 class="title">${this.draft.title}</h1>
+              <input type="hidden" id="posterUrl" name="posterUrl" />
+              <label for="markdown">Content</label>
+              <textarea id="markdown"
+                name="markdown"
+                type="text"
+                rows="20"
+                cols="70"></textarea>
+            </div>
+            <div class="column">
+              <h2 class="subtitle">Configuration</h2>
+              <div class="field">
+                <label class="label" for="poster">Poster</label>
+                ${
+                  this.isDraft()
+                    ? html`
+                    <input required
+                      type="file"
+                      id="poster"
+                      class="input"
+                      name="poster"
+                      accept="image/png, image/jpeg"
+                      @change=${this.handleFile} />
+                  `
+                    : html`
+                    <input
+                      type="file"
+                      id="poster"
+                      class="input"
+                      name="poster"
+                      accept="image/png, image/jpeg"
+                      @change=${this.handleFile} />
+                  `
+                }
+              </div>
+              <div class="field">
+                <label class="label" for="tags">Tags (separated by a comma)</label>
                 <input required
-                  type="file"
-                  id="poster"
-                  name="poster"
-                  accept="image/png, image/jpeg"
-                  @change=${this.handleFile} />
-              `
-                : html`
-                <input
-                  type="file"
-                  id="poster"
-                  name="poster"
-                  accept="image/png, image/jpeg"
-                  @change=${this.handleFile} />
-              `
-            }
-            
-            <label for="tags">Tags (separated by a comma)</label>
-            <input required
-              type="text"
-              id="tags"
-              name="tags"
-              placeholder="architecture, test"
-              @change=${this.handleTags} />
-
-            <label for="title">Title</label>
-            <input id="title"
-              name="title"
-              type="text"
-              required />
-            
-            <input type="hidden" id="posterUrl" name="posterUrl" />
-            <label for="markdown">Content</label>
-            <textarea id="markdown"
-              name="markdown"
-              type="text"
-              rows="20"
-              cols="70"></textarea>
-
-            <button type="submit">Save draft</button>
-            <button type="button"
-              @click=${this.togglePublish} 
-                ?disabled="${this.isDraft()}">
-                ${this.draft.published ? "de publish" : "publish"}
+                  type="text"
+                  class="input"
+                  id="tags"
+                  name="tags"
+                  placeholder="architecture, test"
+                  @change=${this.handleTags} />
+              </div>
+              <div class="field">
+                <label class="label" for="title">Title</label>
+                <input id="title"
+                  name="title"
+                  class="input"
+                  type="text"
+                  required />
+              </div>
+              <button type="submit" class="button">Save draft</button>
+              <button type="button" class="button is-info"
+                @click=${this.togglePublish} 
+                  ?disabled="${this.isDraft()}">
+                  ${this.draft.published ? "de publish" : "publish"}
               </button>
+            </div>
           </form>
         </div>
-      </ez-page>
+      </div>
     `;
   }
 }
