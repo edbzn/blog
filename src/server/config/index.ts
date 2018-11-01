@@ -37,7 +37,7 @@ interface IConfig {
 }
 
 export const Config: IConfig = {
-  frontAppDomain: ENV.FRONT_APP_DOMAIN,
+  frontAppDomain: process.env.FRONT_APP_DOMAIN || ENV.FRONT_APP_DOMAIN,
   env: (process.env.NODE_ENV as NodeEnv) || (ENV.NODE_ENV as NodeEnv),
   jwt: { secret: process.env.JWT_SECRET || ENV.JWT_SECRET },
   server: {
