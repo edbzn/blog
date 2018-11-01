@@ -11,6 +11,7 @@ import { tags } from "../../shared/tags";
 import { profileConfiguration } from "../../utils/profile-config";
 import { debounce } from "../../utils/debounce";
 import { showError } from "../../utils/show-error";
+import router from "../../../app-router";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -75,7 +76,7 @@ export default class ArticleDetail extends LitElement {
           </small>
         </header>
         <h1 class="title">${article.title}</h1>
-        <pre>${unsafeHTML(article.html)}</pre>
+        <div>${unsafeHTML(article.html)}</div>
         <hr>
         <footer class="section profile">
           <figure class="avatar" style="background-image: url('${
@@ -176,6 +177,14 @@ export default class ArticleDetail extends LitElement {
                 })
           }
         </section>
+                <a href="/"
+          class="button is-block"
+          @click=${(e: Event) => {
+            e.preventDefault();
+            router.push("/");
+          }}>
+            Back to home
+        </a>
       </ez-page>
     `;
   }

@@ -16,9 +16,8 @@ export const getTweetsEffect$: Effect = req$ =>
         json: true,
         qs: {
           from: Config.twitter.fromUserName,
+          exclude: "replies",
           count: 5,
-          include_rts: false,
-          exclude_replies: true,
         },
         headers,
         oauth,
