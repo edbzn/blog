@@ -14,7 +14,12 @@ export const getTweetsEffect$: Effect = req$ =>
 
       return RxHR.get(Config.twitter.baseUrl, {
         json: true,
-        qs: { from: Config.twitter.fromUserName },
+        qs: {
+          from: Config.twitter.fromUserName,
+          count: 5,
+          include_rts: false,
+          exclude_replies: true,
+        },
         headers,
         oauth,
       });
