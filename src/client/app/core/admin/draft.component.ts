@@ -217,6 +217,11 @@ export default class Draft extends LitElement {
           margin-top: 40px !important;
         }
 
+        .sticky {
+          position: sticky;
+          top: 20px;
+        }
+
         .poster {
           height: 400px;
           background-position: center center;
@@ -247,55 +252,57 @@ export default class Draft extends LitElement {
                 cols="70"></textarea>
             </div>
             <div class="column">
-              <h2 class="subtitle">Configuration</h2>
-              <div class="field">
-                <label class="label" for="poster">Poster</label>
-                ${
-                  this.isDraft()
-                    ? html`
-                    <input required
-                      type="file"
-                      id="poster"
-                      class="input"
-                      name="poster"
-                      accept="image/png, image/jpeg"
-                      @change=${this.handleFile} />
-                  `
-                    : html`
-                    <input
-                      type="file"
-                      id="poster"
-                      class="input"
-                      name="poster"
-                      accept="image/png, image/jpeg"
-                      @change=${this.handleFile} />
-                  `
-                }
+              <div class="sticky">
+                <h2 class="subtitle">Configuration</h2>
+                <div class="field">
+                  <label class="label" for="poster">Poster</label>
+                  ${
+                    this.isDraft()
+                      ? html`
+                      <input required
+                        type="file"
+                        id="poster"
+                        class="input"
+                        name="poster"
+                        accept="image/png, image/jpeg"
+                        @change=${this.handleFile} />
+                    `
+                      : html`
+                      <input
+                        type="file"
+                        id="poster"
+                        class="input"
+                        name="poster"
+                        accept="image/png, image/jpeg"
+                        @change=${this.handleFile} />
+                    `
+                  }
+                </div>
+                <div class="field">
+                  <label class="label" for="tags">Tags (separated by a comma)</label>
+                  <input required
+                    type="text"
+                    class="input"
+                    id="tags"
+                    name="tags"
+                    placeholder="architecture, test"
+                    @change=${this.handleTags} />
+                </div>
+                <div class="field">
+                  <label class="label" for="title">Title</label>
+                  <input id="title"
+                    name="title"
+                    class="input"
+                    type="text"
+                    required />
+                </div>
+                <button type="submit" class="button">Save draft</button>
+                <button type="button" class="button is-info"
+                  @click=${this.togglePublish} 
+                    ?disabled="${this.isDraft()}">
+                    ${this.draft.published ? "de publish" : "publish"}
+                </button>
               </div>
-              <div class="field">
-                <label class="label" for="tags">Tags (separated by a comma)</label>
-                <input required
-                  type="text"
-                  class="input"
-                  id="tags"
-                  name="tags"
-                  placeholder="architecture, test"
-                  @change=${this.handleTags} />
-              </div>
-              <div class="field">
-                <label class="label" for="title">Title</label>
-                <input id="title"
-                  name="title"
-                  class="input"
-                  type="text"
-                  required />
-              </div>
-              <button type="submit" class="button">Save draft</button>
-              <button type="button" class="button is-info"
-                @click=${this.togglePublish} 
-                  ?disabled="${this.isDraft()}">
-                  ${this.draft.published ? "de publish" : "publish"}
-              </button>
             </div>
           </form>
         </div>
