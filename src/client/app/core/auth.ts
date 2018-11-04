@@ -55,10 +55,6 @@ class Authentication {
     const parts = value.split("; " + name + "=");
     const cookie = (parts.pop() || "").split(";").shift();
 
-    if (!cookie) {
-      throw new Error("Cookie not found");
-    }
-
     return cookie;
   }
 }
