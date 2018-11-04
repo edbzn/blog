@@ -5,7 +5,7 @@ import * as SimpleMDE from "simplemde";
 
 import { apiClient } from "../api";
 import { showError } from "../../utils/show-error";
-import { upload } from "../../utils/upload";
+import { upload } from "../upload";
 import { IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {

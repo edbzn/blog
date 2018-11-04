@@ -40,6 +40,8 @@ module.exports = merge(devConfig, {
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production"),
+        API_BASE_URL: JSON.stringify("https://api.codamit.com"),
+        STATIC_BASE_URL: JSON.stringify("https://static.codamit.com"),
       },
     }),
   ],

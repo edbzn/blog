@@ -1,4 +1,4 @@
-import _fetch from "./fetch";
+import _fetch from "../utils/fetch";
 
 function getExtname(filename: string): string | undefined {
   return filename.split(".").pop();
@@ -14,15 +14,18 @@ export async function upload(file: File): Promise<{ path: string }> {
     return Promise.reject("Unsupported MIME-Type");
   }
 
-  const response = await _fetch(`http://localhost:8082`, {
-    method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    body: file,
-    headers: {
-      "Content-Type": "image/" + extname,
+  const response = await _fetch(
+    (process.env.STATIC_BASE_URL as string) || "http://localhost:8082",
+    {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      body: file,
+      headers: {
+        "Content-Type": "image/" + extname,
+      },
     },
-  });
+  );
 
   return await response.json();
 }
