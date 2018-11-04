@@ -1,4 +1,4 @@
-import _fetch from "./fetch";
+import _fetch from "../utils/fetch";
 
 export class HttpClient {
   private token: string | null = null;

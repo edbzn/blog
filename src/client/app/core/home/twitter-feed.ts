@@ -2,7 +2,7 @@ import { html } from "lit-html";
 import { until } from "lit-html/directives/until";
 import { placeholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
-import { apiClient } from "../../utils/api";
+import { apiClient } from "../api";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { timeSince } from "../../utils/time-since";
 

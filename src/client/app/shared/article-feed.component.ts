@@ -3,7 +3,7 @@ import { html, TemplateResult } from "lit-html";
 
 import router from "../../app-router";
 import { IArticle } from "../core/admin/types";
-import { apiClient } from "../utils/api";
+import { apiClient } from "../core/api";
 import { Collection } from "../utils/collection";
 import { showError } from "../utils/show-error";
 import { timeSince } from "../utils/time-since";
