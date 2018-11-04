@@ -6,9 +6,9 @@ import { showError } from "../../utils/show-error";
 import _fetch from "../../utils/fetch";
 import { LoginPayload } from "../../../../server/api/auth/helpers/login-payload";
 import { SignupPayload } from "../../../../server/api/auth/helpers/signup-payload";
-import { apiClient } from "../../utils/api";
+import { apiClient } from "../api";
 import { IUser } from "./types";
-import { authService } from "../../utils/auth";
+import { authService } from "../auth";
 
 export default class Login extends LitElement {
   showSignup = false;

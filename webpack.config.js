@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
@@ -37,7 +38,7 @@ module.exports = {
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist", "client"),
   },
   plugins: [
     new HtmlWebpackPlugin({

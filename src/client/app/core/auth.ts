@@ -1,6 +1,6 @@
-import { IUser } from "../core/login/types";
+import { IUser } from "./login/types";
 import { apiClient } from "./api";
-import { showError } from "./show-error";
+import { showError } from "../utils/show-error";
 
 class Authentication {
   static readonly AUTHORIZATION = "authorization";
@@ -54,10 +54,6 @@ class Authentication {
     const value = "; " + document.cookie;
     const parts = value.split("; " + name + "=");
     const cookie = (parts.pop() || "").split(";").shift();
-
-    if (!cookie) {
-      throw new Error("Cookie not found");
-    }
 
     return cookie;
   }

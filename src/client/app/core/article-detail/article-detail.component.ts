@@ -5,7 +5,7 @@ import { placeholder } from "../../shared/placeholder";
 import _fetch from "../../utils/fetch";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { IArticle } from "../admin/types";
-import { apiClient } from "../../utils/api";
+import { apiClient } from "../api";
 import { timeSince } from "../../utils/time-since";
 import { tags } from "../../shared/tags";
 import { profileConfiguration } from "../../utils/profile-config";

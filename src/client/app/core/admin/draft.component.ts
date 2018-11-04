@@ -3,9 +3,9 @@ import { html, TemplateResult } from "lit-html";
 import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
 
-import { apiClient } from "../../utils/api";
+import { apiClient } from "../api";
 import { showError } from "../../utils/show-error";
-import { upload } from "../../utils/upload";
+import { upload } from "../upload";
 import { IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {

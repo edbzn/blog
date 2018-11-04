@@ -1,7 +1,9 @@
 import chalk from "chalk";
-import mongoose from "mongoose";
 import * as uuid from "uuid";
 import { Config } from "../config";
+import { Error } from "mongoose";
+
+const mongoose = require("mongoose");
 
 export namespace Database {
   const { urlMain, urlTest } = Config.db;
@@ -10,7 +12,7 @@ export namespace Database {
     console.info(chalk.green("[database] connected"));
   };
 
-  const onError = (error: mongoose.Error) => {
+  const onError = (error: Error) => {
     console.error(chalk.red(`[database] connection error: ${error.message}`));
     process.exit();
   };

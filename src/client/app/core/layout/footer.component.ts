@@ -3,7 +3,7 @@ import { html, TemplateResult } from "lit-html";
 
 import heart from "../../utils/icons/heart";
 import router from "../../../app-router";
-import { authService } from "../../utils/auth";
+import { authService } from "../auth";
 
 export default class Footer extends LitElement {
   render(): TemplateResult {

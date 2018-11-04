@@ -1,4 +1,4 @@
-import _fetch from "./fetch";
+import _fetch from "../utils/fetch";
 
 export class HttpClient {
   private token: string | null = null;
@@ -72,4 +72,6 @@ export class HttpClient {
   }
 }
 
-export const apiClient = new HttpClient("http://localhost:8081");
+export const apiClient = new HttpClient(
+  (process.env.API_BASE_URL as string) || "http://localhost:8081",
+);
