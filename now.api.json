@@ -1,0 +1,11 @@
+{
+  "name": "codamit-api",
+  "type": "npm",
+  "alias": "api.codamit.com",
+  "files": [
+    ".env.production",
+    "src/server",
+    "tsconfig.json",
+    "tsconfig.server.json"
+  ]
+}

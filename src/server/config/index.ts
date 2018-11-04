@@ -1,5 +1,3 @@
-import { ENV } from "./env";
-
 export enum NodeEnv {
   PRODUCTION = "production",
   DEVELOPMENT = "development",
@@ -37,33 +35,28 @@ interface IConfig {
 }
 
 export const Config: IConfig = {
-  frontAppDomain: process.env.FRONT_APP_DOMAIN || ENV.FRONT_APP_DOMAIN,
-  env: (process.env.NODE_ENV as NodeEnv) || (ENV.NODE_ENV as NodeEnv),
-  jwt: { secret: process.env.JWT_SECRET || ENV.JWT_SECRET },
+  frontAppDomain: process.env.FRONT_APP_DOMAIN as string,
+  env: process.env.NODE_ENV as NodeEnv,
+  jwt: { secret: process.env.JWT_SECRET as string },
   server: {
-    host: process.env.HOST || ENV.SERVER_HOST,
-    port: Number(process.env.PORT) || ENV.SERVER_PORT,
+    host: process.env.HOST as string,
+    port: Number(process.env.PORT as string),
   },
   logger: {
-    level:
-      (process.env.LOG_LEVEL as LoggerLevel) || (ENV.LOG_LEVEL as LoggerLevel),
+    level: process.env.LOG_LEVEL as LoggerLevel,
   },
   db: {
-    urlMain: process.env.DB_URL_MAIN || ENV.DB_URL_MAIN,
-    urlTest: process.env.DB_URL_TEST || ENV.DB_URL_TEST,
+    urlMain: process.env.DB_URL_MAIN as string,
+    urlTest: process.env.DB_URL_TEST as string,
   },
   twitter: {
     baseUrl: "https://api.twitter.com/1.1/search/tweets.json",
     fromUserName: "edouardbozon",
     oAuth: {
-      token: process.env.TWITTER_TOKEN || ENV.TWITTER_TOKEN,
-      token_secret:
-        process.env.TWITTER_TOKEN_SECRET || ENV.TWITTER_TOKEN_SECRET,
-      consumer_key:
-        process.env.TWITTER_CONSUMER_KEY || ENV.TWITTER_CONSUMER_KEY,
-      consumer_secret:
-        process.env.TWITTER_CONSUMER_KEY_SECRET ||
-        ENV.TWITTER_CONSUMER_KEY_SECRET,
+      token: process.env.TWITTER_TOKEN as string,
+      token_secret: process.env.TWITTER_TOKEN_SECRET as string,
+      consumer_key: process.env.TWITTER_CONSUMER_KEY as string,
+      consumer_secret: process.env.TWITTER_CONSUMER_KEY_SECRET as string,
     },
   },
 };

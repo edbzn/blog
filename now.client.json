@@ -1,0 +1,10 @@
+{
+  "name": "codamit-client",
+  "type": "static",
+  "static": {
+    "public": "dist/client",
+    "directoryListing": false
+  },
+  "alias": "codamit.com",
+  "files": ["dist/client"]
+}

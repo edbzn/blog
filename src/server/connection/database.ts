@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import * as uuid from "uuid";
 import { Config } from "../config";
 
