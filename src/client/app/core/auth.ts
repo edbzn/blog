@@ -12,8 +12,6 @@ class Authentication {
   constructor() {
     const token = this.getCookie(Authentication.AUTHORIZATION);
 
-    console.log(token);
-
     if (token) {
       this.login(token);
 

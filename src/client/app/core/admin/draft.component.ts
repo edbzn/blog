@@ -6,7 +6,7 @@ import * as SimpleMDE from "simplemde";
 import { apiClient } from "../api";
 import { showError } from "../../utils/show-error";
 import { upload } from "../upload";
-import { IArticle, IDraft } from "./types";
+import { IArticle, IDraft, IDraftFormRefs } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: String })
@@ -21,6 +21,8 @@ export default class Draft extends LitElement {
     posterUrl: null,
     published: false,
     publishedAt: null,
+    metaTitle: null,
+    metaDescription: null,
   };
 
   editor: SimpleMDE;
@@ -131,21 +133,27 @@ export default class Draft extends LitElement {
     this.update(new Map());
   }
 
-  getFormRefs(): {
-    titleCtrl: HTMLInputElement;
-    markdownCtrl: HTMLTextAreaElement;
-    posterUrlCtrl: HTMLInputElement;
-    posterCtrl: HTMLInputElement;
-    tagsCtrl: HTMLInputElement;
-  } {
+  getFormRefs(): IDraftFormRefs {
     const host = this.shadowRoot as ShadowRoot;
     const titleCtrl = host.getElementById("title") as HTMLInputElement;
     const markdownCtrl = host.getElementById("markdown") as HTMLTextAreaElement;
     const posterUrlCtrl = host.getElementById("posterUrl") as HTMLInputElement;
     const posterCtrl = host.getElementById("posterUrl") as HTMLInputElement;
     const tagsCtrl = host.getElementById("tags") as HTMLInputElement;
+    const metaTitleCtrl = host.getElementById("metaTitle") as HTMLInputElement;
+    const metaDescriptionCtrl = host.getElementById(
+      "metaDescription",
+    ) as HTMLInputElement;
 
-    return { titleCtrl, markdownCtrl, posterUrlCtrl, tagsCtrl, posterCtrl };
+    return {
+      titleCtrl,
+      markdownCtrl,
+      posterUrlCtrl,
+      tagsCtrl,
+      posterCtrl,
+      metaTitleCtrl,
+      metaDescriptionCtrl,
+    };
   }
 
   fillFormData(): void {
@@ -190,15 +198,20 @@ export default class Draft extends LitElement {
     const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
     const converter = new showdown.Converter();
     const markdown = this.editor.value();
+    const html = converter.makeHtml(markdown);
+    const posterUrl =
+      posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
 
     return {
       title: titleCtrl.value,
       markdown,
-      html: converter.makeHtml(markdown),
-      posterUrl: posterUrlCtrl.value,
+      html,
+      posterUrl,
       tags: this.draft.tags,
       published: this.draft.published,
       publishedAt: this.draft.publishedAt,
+      metaTitle: this.draft.metaTitle,
+      metaDescription: this.draft.metaDescription,
     };
   }
 
@@ -226,6 +239,7 @@ export default class Draft extends LitElement {
           height: 400px;
           background-position: center center;
           background-size: cover;
+          background-color: #eee;
         }
       </style>
       <ez-navbar></ez-navbar>
@@ -235,7 +249,7 @@ export default class Draft extends LitElement {
             ? html`<div class="poster" style="background-image: url('${
                 this.draft.posterUrl
               }')"></div>`
-            : html``
+            : html`<div class="poster"></div>`
         }
         <div class="container is-fluid">
           <form name="login"
@@ -244,7 +258,7 @@ export default class Draft extends LitElement {
             <div class="column is-three-fifths">
               <h1 class="title">${this.draft.title}</h1>
               <input type="hidden" id="posterUrl" name="posterUrl" />
-              <label for="markdown">Content</label>
+              <label class="label" for="markdown">Content</label>
               <textarea id="markdown"
                 name="markdown"
                 type="text"
@@ -256,27 +270,12 @@ export default class Draft extends LitElement {
                 <h2 class="subtitle">Configuration</h2>
                 <div class="field">
                   <label class="label" for="poster">Poster</label>
-                  ${
-                    this.isDraft()
-                      ? html`
-                      <input required
-                        type="file"
-                        id="poster"
-                        class="input"
-                        name="poster"
-                        accept="image/png, image/jpeg"
-                        @change=${this.handleFile} />
-                    `
-                      : html`
-                      <input
-                        type="file"
-                        id="poster"
-                        class="input"
-                        name="poster"
-                        accept="image/png, image/jpeg"
-                        @change=${this.handleFile} />
-                    `
-                  }
+                  <input type="file"
+                    id="poster"
+                    class="input"
+                    name="poster"
+                    accept="image/png, image/jpeg, image/gif"
+                    @change=${this.handleFile} />
                 </div>
                 <div class="field">
                   <label class="label" for="tags">Tags (separated by a comma)</label>
@@ -295,6 +294,20 @@ export default class Draft extends LitElement {
                     class="input"
                     type="text"
                     required />
+                </div>
+                <div class="field">
+                  <label class="label" for="title">Meta title</label>
+                  <input id="metaTitle"
+                    name="metaTitle"
+                    class="input"
+                    type="text" />
+                </div>
+                <div class="field">
+                  <label class="label" for="title">Meta description</label>
+                  <input id="metaDescription"
+                    name="metaDescription"
+                    class="input"
+                    type="text" />
                 </div>
                 <button type="submit" class="button">Save draft</button>
                 <button type="button" class="button is-info"
