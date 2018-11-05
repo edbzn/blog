@@ -198,12 +198,15 @@ export default class Draft extends LitElement {
     const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
     const converter = new showdown.Converter();
     const markdown = this.editor.value();
+    const html = converter.makeHtml(markdown);
+    const posterUrl =
+      posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
 
     return {
       title: titleCtrl.value,
       markdown,
-      html: converter.makeHtml(markdown),
-      posterUrl: posterUrlCtrl.value,
+      html,
+      posterUrl,
       tags: this.draft.tags,
       published: this.draft.published,
       publishedAt: this.draft.publishedAt,
@@ -236,6 +239,7 @@ export default class Draft extends LitElement {
           height: 400px;
           background-position: center center;
           background-size: cover;
+          background-color: #eee;
         }
       </style>
       <ez-navbar></ez-navbar>

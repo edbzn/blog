@@ -14,23 +14,23 @@ export class Article extends Typegoose {
   @prop({ required: String })
   html: string;
 
-  @prop({ required: String })
-  metaTitle?: string;
-
-  @prop({ required: String })
-  metaDescription?: string;
-
   @arrayProp({ items: String, required: true, default: [] })
   tags: string[] = [];
 
   @prop({ required: String })
-  posterUrl: string;
+  metaTitle: string | null = null;
 
-  @prop({ required: Boolean, default: false })
-  published = false;
+  @prop({ required: String })
+  metaDescription: string | null = null;
+
+  @prop({ required: String })
+  posterUrl: string | null = null;
 
   @prop({ default: null })
   publishedAt: Date | null = null;
+
+  @prop({ required: Boolean, default: false })
+  published = false;
 
   /**
    * Automatically mapped by mongoose
