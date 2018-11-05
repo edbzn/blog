@@ -231,11 +231,9 @@ export default class Draft extends LitElement {
       <ez-navbar></ez-navbar>
       <div>
         ${
-          this.draft.posterUrl
-            ? html`<div class="poster" style="background-image: url('${
-                this.draft.posterUrl
-              }')"></div>`
-            : html``
+          this.draft.posterUrl ?
+            html`<div class="poster" style="background-image: url('${this.draft.posterUrl}')"></div>` :
+            html`<div class="poster"></div>`
         }
         <div class="container is-fluid">
           <form name="login"
@@ -244,7 +242,7 @@ export default class Draft extends LitElement {
             <div class="column is-three-fifths">
               <h1 class="title">${this.draft.title}</h1>
               <input type="hidden" id="posterUrl" name="posterUrl" />
-              <label for="markdown">Content</label>
+              <label class="label" for="markdown">Content</label>
               <textarea id="markdown"
                 name="markdown"
                 type="text"
@@ -256,27 +254,12 @@ export default class Draft extends LitElement {
                 <h2 class="subtitle">Configuration</h2>
                 <div class="field">
                   <label class="label" for="poster">Poster</label>
-                  ${
-                    this.isDraft()
-                      ? html`
-                      <input required
-                        type="file"
-                        id="poster"
-                        class="input"
-                        name="poster"
-                        accept="image/png, image/jpeg"
-                        @change=${this.handleFile} />
-                    `
-                      : html`
-                      <input
-                        type="file"
-                        id="poster"
-                        class="input"
-                        name="poster"
-                        accept="image/png, image/jpeg"
-                        @change=${this.handleFile} />
-                    `
-                  }
+                  <input type="file"
+                    id="poster"
+                    class="input"
+                    name="poster"
+                    accept="image/png, image/jpeg, image/gif"
+                    @change=${this.handleFile} />
                 </div>
                 <div class="field">
                   <label class="label" for="tags">Tags (separated by a comma)</label>
