@@ -12,11 +12,5 @@
     "tsconfig.server.json",
     "package.json",
     "package-lock.json"
-  ],
-  "scale": {
-    "bru1": {
-      "min": 1,
-      "max": 1
-    }
-  }
+  ]
 }

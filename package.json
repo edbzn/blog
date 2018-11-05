@@ -9,11 +9,13 @@
     "build:client": "webpack ---progress --config=webpack.production.config.js --mode production",
     "start:api:dev": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env",
     "start:api:prod": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env.production",
-    "deploy:all": "concurrently \"npm run deploy:api && npm run ln:api\" \"npm run deploy:client && npm run ln:client\"",
-    "deploy:api": "now -A now.api.json",
+    "deploy:all": "concurrently \"npm run update:client\" \"npm run update:api\"",
+    "deploy:api": "now -A now.api.json && now scale api.codamit.com bru1 1",
     "deploy:client": "npm run build:client && now -A now.client.json",
-    "ln:api": "now ln -A now.api.json",
-    "ln:client": "now ln -A now.client.json"
+    "ln:api": "now ln -A now.api.json && now rm codamit-api --safe --yes",
+    "ln:client": "now ln -A now.client.json",
+    "update:client": "npm run deploy:client && npm run ln:client",
+    "update:api": "npm run deploy:api && npm run ln:api"
   },
   "repository": {
     "type": "git",
