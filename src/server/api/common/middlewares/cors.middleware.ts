@@ -5,7 +5,7 @@ import { Config } from "../../../config";
 export const cors$: Middleware = (req$, res) =>
   req$.pipe(
     tap(() => {
-      res.setHeader("Access-Control-Allow-Origin", [Config.frontAppDomain]);
+      res.setHeader("Access-Control-Allow-Origin", Config.frontAppDomains);
       res.setHeader("Access-Control-Allow-Headers", [
         "Content-Type",
         "Origin",

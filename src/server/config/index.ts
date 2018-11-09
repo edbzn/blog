@@ -31,11 +31,11 @@ interface IConfig {
   jwt: {
     secret: string;
   };
-  frontAppDomain: string;
+  frontAppDomains: string[];
 }
 
 export const Config: IConfig = {
-  frontAppDomain: process.env.FRONT_APP_DOMAIN as string,
+  frontAppDomains: (process.env.FRONT_APP_DOMAINS as string).split(" "),
   env: process.env.NODE_ENV as NodeEnv,
   jwt: { secret: process.env.JWT_SECRET as string },
   server: {
