@@ -1,6 +1,6 @@
 {
   "name": "codamit-api",
-  "type": "npm",
+  "version": 1,
   "alias": "api.codamit.com",
   "engines": {
     "node": "^8.11.3"
