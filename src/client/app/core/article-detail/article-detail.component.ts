@@ -161,6 +161,16 @@ export default class ArticleDetail extends LitElement {
           color: #5de561 !important;
           font-size: 0.825em !important;
         }
+
+        .content blockquote:not(:last-child),
+        .content dl:not(:last-child),
+        .content ol:not(:last-child),
+        .content p:not(:last-child),
+        .content pre:not(:last-child),
+        .content table:not(:last-child),
+        .content ul:not(:last-child) {
+          margin-bottom: 1.1em !important;
+        }
       </style>
       <ez-navbar></ez-navbar>
       <figure class="poster"
