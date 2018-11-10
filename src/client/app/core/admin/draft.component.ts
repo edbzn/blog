@@ -207,7 +207,7 @@ export default class Draft extends LitElement {
       markdown,
       html,
       posterUrl,
-      tags: this.draft.tags,
+      tags: this.draft.tags.map(tag => tag.replace(" ", "")),
       published: this.draft.published,
       publishedAt: this.draft.publishedAt,
       metaTitle: this.draft.metaTitle,
@@ -217,10 +217,13 @@ export default class Draft extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-      <link href="assets/css/simplemde.css" rel="stylesheet">
-      <link href="assets/css/debug-simplemde.css" rel="stylesheet">
-      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <link
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet"
+      />
+      <link href="assets/css/simplemde.css" rel="stylesheet" />
+      <link href="assets/css/debug-simplemde.css" rel="stylesheet" />
+      <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>
         :host {
           display: block;
@@ -246,74 +249,94 @@ export default class Draft extends LitElement {
       <div>
         ${
           this.draft.posterUrl
-            ? html`<div class="poster" style="background-image: url('${
-                this.draft.posterUrl
-              }')"></div>`
-            : html`<div class="poster"></div>`
+            ? html`
+                <div
+                  class="poster"
+                  style="background-image: url('${this.draft.posterUrl}')"
+                ></div>
+              `
+            : html`
+                <div class="poster"></div>
+              `
         }
         <div class="container is-fluid">
-          <form name="login"
-            class="columns"
-            @submit=${this.handleSubmit}>
+          <form name="login" class="columns" @submit="${this.handleSubmit}">
             <div class="column is-three-fifths">
               <h1 class="title">${this.draft.title}</h1>
               <input type="hidden" id="posterUrl" name="posterUrl" />
               <label class="label" for="markdown">Content</label>
-              <textarea id="markdown"
+              <textarea
+                id="markdown"
                 name="markdown"
                 type="text"
                 rows="20"
-                cols="70"></textarea>
+                cols="70"
+              ></textarea>
             </div>
             <div class="column">
               <div class="sticky">
                 <h2 class="subtitle">Configuration</h2>
                 <div class="field">
                   <label class="label" for="poster">Poster</label>
-                  <input type="file"
+                  <input
+                    type="file"
                     id="poster"
                     class="input"
                     name="poster"
                     accept="image/png, image/jpeg, image/gif"
-                    @change=${this.handleFile} />
+                    @change="${this.handleFile}"
+                  />
                 </div>
                 <div class="field">
-                  <label class="label" for="tags">Tags (separated by a comma)</label>
-                  <input required
+                  <label class="label" for="tags"
+                    >Tags (separated by a comma)</label
+                  >
+                  <input
+                    required
                     type="text"
                     class="input"
                     id="tags"
                     name="tags"
                     placeholder="architecture, test"
-                    @change=${this.handleTags} />
+                    @change="${this.handleTags}"
+                  />
                 </div>
                 <div class="field">
                   <label class="label" for="title">Title</label>
-                  <input id="title"
+                  <input
+                    id="title"
                     name="title"
                     class="input"
                     type="text"
-                    required />
+                    required
+                  />
                 </div>
                 <div class="field">
                   <label class="label" for="title">Meta title</label>
-                  <input id="metaTitle"
+                  <input
+                    id="metaTitle"
                     name="metaTitle"
                     class="input"
-                    type="text" />
+                    type="text"
+                  />
                 </div>
                 <div class="field">
                   <label class="label" for="title">Meta description</label>
-                  <input id="metaDescription"
+                  <input
+                    id="metaDescription"
                     name="metaDescription"
                     class="input"
-                    type="text" />
+                    type="text"
+                  />
                 </div>
                 <button type="submit" class="button">Save draft</button>
-                <button type="button" class="button is-info"
-                  @click=${this.togglePublish} 
-                    ?disabled="${this.isDraft()}">
-                    ${this.draft.published ? "de publish" : "publish"}
+                <button
+                  type="button"
+                  class="button is-info"
+                  @click="${this.togglePublish}"
+                  ?disabled="${this.isDraft()}"
+                >
+                  ${this.draft.published ? "de publish" : "publish"}
                 </button>
               </div>
             </div>
