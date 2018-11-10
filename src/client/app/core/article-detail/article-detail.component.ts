@@ -77,13 +77,14 @@ export default class ArticleDetail extends LitElement {
         </header>
         <h1 class="title">${article.title}</h1>
         <div>${unsafeHTML(article.html)}</div>
-        <hr>
+        <hr />
         <footer class="section profile">
-          <figure class="avatar" style="background-image: url('${
-            profileConfiguration.avatarUrl
-          }')"></figure>
+          <figure
+            class="avatar"
+            style="background-image: url('${profileConfiguration.avatarUrl}')"
+          ></figure>
           <div class="presentation has-text-dark">
-            <strong>${profileConfiguration.name}</strong><br>
+            <strong>${profileConfiguration.name}</strong><br />
             <span>${unsafeHTML(profileConfiguration.description)}</span>
           </div>
         </footer>
@@ -93,7 +94,7 @@ export default class ArticleDetail extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>
         :host {
           position: relative;
@@ -135,7 +136,7 @@ export default class ArticleDetail extends LitElement {
           height: 120px;
           overflow: hidden;
           border-radius: 100%;
-          box-shadow: 2px 2px 8px rgba(0,0,0, 0.1);
+          box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
           background-color: #eee;
           background-position: center center;
           background-repeat: no-repeat;
@@ -171,15 +172,29 @@ export default class ArticleDetail extends LitElement {
         .content ul:not(:last-child) {
           margin-bottom: 1.1em !important;
         }
+
+        .last {
+          padding-bottom: 0 !important;
+          padding-top: 0 !important;
+        }
       </style>
       <ez-navbar></ez-navbar>
-      <figure class="poster"
-        style="background-image: url('${this.posterUrl}')">
-      </figure>
-      <div class="time-remaining has-background-info"
-        style="width: ${this.percentRemaining + "%"};">
-      </div>
-      <ez-page .navbar=${false}>
+      ${
+        this.posterUrl
+          ? `
+          <figure
+            class="poster"
+            style="background-image: url('${this.posterUrl}')">
+            {" "}
+          </figure>
+          `
+          : null
+      }
+      <div
+        class="time-remaining has-background-info"
+        style="width: ${this.percentRemaining + "%"};"
+      ></div>
+      <ez-page .navbar="${false}">
         <section class="section">
           ${
             this.article
@@ -193,14 +208,20 @@ export default class ArticleDetail extends LitElement {
                 })
           }
         </section>
-                <a href="/"
-          class="button is-block"
-          @click=${(e: Event) => {
-            e.preventDefault();
-            router.push("/");
-          }}>
+        <section class="section last">
+          <a
+            href="/"
+            class="button is-block"
+            @click="${
+              (e: Event) => {
+                e.preventDefault();
+                router.push("/");
+              }
+            }"
+          >
             Back to home
-        </a>
+          </a>
+        </section>
       </ez-page>
     `;
   }
