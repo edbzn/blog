@@ -30,7 +30,7 @@ export default class Login extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>
         .section {
           max-width: 350px;
@@ -42,104 +42,162 @@ export default class Login extends LitElement {
           ${
             this.showSignup
               ? html`
-                <h1 class="title">Signup</h1>
-                <form class="box" name="signup" @submit=${async (e: Event) => {
-                  e.preventDefault();
+                  <h1 class="title">Signup</h1>
+                  <form
+                    class="box"
+                    name="signup"
+                    @submit="${
+                      async (e: Event) => {
+                        e.preventDefault();
 
-                  const host = this.shadowRoot as ShadowRoot;
-                  const email = host.getElementById(
-                    "email",
-                  ) as HTMLInputElement;
-                  const password = host.getElementById(
-                    "password",
-                  ) as HTMLInputElement;
-                  const firstName = host.getElementById(
-                    "firstName",
-                  ) as HTMLInputElement;
-                  const lastName = host.getElementById(
-                    "lastName",
-                  ) as HTMLInputElement;
-                  const signupPayload: SignupPayload = {
-                    email: email.value,
-                    password: password.value,
-                    firstName: firstName.value,
-                    lastName: lastName.value,
-                  };
+                        const host = this.shadowRoot as ShadowRoot;
+                        const email = host.getElementById(
+                          "email",
+                        ) as HTMLInputElement;
+                        const password = host.getElementById(
+                          "password",
+                        ) as HTMLInputElement;
+                        const firstName = host.getElementById(
+                          "firstName",
+                        ) as HTMLInputElement;
+                        const lastName = host.getElementById(
+                          "lastName",
+                        ) as HTMLInputElement;
+                        const signupPayload: SignupPayload = {
+                          email: email.value,
+                          password: password.value,
+                          firstName: firstName.value,
+                          lastName: lastName.value,
+                        };
 
-                  try {
-                    const { token } = await this.signupUser(signupPayload);
-                    authService.login(token);
-                    const user = await this.getMe();
-                    authService.setUser(user);
-                    router.push("/admin");
-                  } catch (e) {
-                    showError(e);
-                  }
-                }}>
-                  <div class="field">
-                    <label class="label" for="email">Email</label>
-                    <input class="input" id="email" name="email" type="email" required />
-                  </div>
-                  <div class="field">
-                    <label class="label" for="firstName">First name</label>
-                    <input class="input" id="firstName" name="firstName" type="string" required />
-                  </div>
-                  <div class="field">
-                    <label class="label" for="lastName">Last name</label>
-                    <input class="input" id="lastName" name="lastName" type="string" required />
-                  </div>
-                  <div class="field">
-                    <label class="label" for="password">Password</label>
-                    <input class="input" id="password" name="password" type="password" required />
-                  </div>
-                  <button class="button is-primary" type="submit">Signup</button>
-                  <button class="button" @click=${() => {
-                    this.showSignup = !this.showSignup;
-                    this.update(new Map());
-                  }}>Login</button>
-                </form>`
+                        try {
+                          const { token } = await this.signupUser(
+                            signupPayload,
+                          );
+                          authService.login(token);
+                          const user = await this.getMe();
+                          authService.setUser(user);
+                          router.push("/admin");
+                        } catch (e) {
+                          showError(e);
+                        }
+                      }
+                    }"
+                  >
+                    <div class="field">
+                      <label class="label" for="email">Email</label>
+                      <input
+                        class="input"
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                      />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="firstName">First name</label>
+                      <input
+                        class="input"
+                        id="firstName"
+                        name="firstName"
+                        type="string"
+                        required
+                      />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="lastName">Last name</label>
+                      <input
+                        class="input"
+                        id="lastName"
+                        name="lastName"
+                        type="string"
+                        required
+                      />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="password">Password</label>
+                      <input
+                        class="input"
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                      />
+                    </div>
+                    <button class="button is-primary" type="submit">
+                      Signup
+                    </button>
+                    <button
+                      class="button"
+                      @click="${
+                        () => {
+                          this.showSignup = !this.showSignup;
+                          this.update(new Map());
+                        }
+                      }"
+                    >
+                      Login
+                    </button>
+                  </form>
+                `
               : html`
-                <h1 class="title">Login</h1>
-                <form class="box" name="login" @submit=${async (e: Event) => {
-                  e.preventDefault();
+                  <h1 class="title">Login</h1>
+                  <form
+                    class="box"
+                    name="login"
+                    @submit="${
+                      async (e: Event) => {
+                        e.preventDefault();
 
-                  const host = this.shadowRoot as ShadowRoot;
-                  const email = host.getElementById(
-                    "email",
-                  ) as HTMLInputElement;
-                  const password = host.getElementById(
-                    "password",
-                  ) as HTMLInputElement;
-                  const credentials: LoginPayload = {
-                    email: email.value,
-                    password: password.value,
-                  };
+                        const host = this.shadowRoot as ShadowRoot;
+                        const email = host.getElementById(
+                          "email",
+                        ) as HTMLInputElement;
+                        const password = host.getElementById(
+                          "password",
+                        ) as HTMLInputElement;
+                        const credentials: LoginPayload = {
+                          email: email.value,
+                          password: password.value,
+                        };
 
-                  try {
-                    const { token } = await this.logUser(credentials);
-                    authService.login(token);
-                    const user = await this.getMe();
-                    authService.setUser(user);
-                    router.push("/admin");
-                  } catch (e) {
-                    showError(e);
-                  }
-                }}>
-                  <div class="field">
-                    <label class="label" for="email">Email</label>
-                    <input class="input" id="email" name="email" type="email" required />
-                  </div>
-                  <div class="field">
-                    <label class="label" for="password">Password</label>
-                    <input class="input" id="password" name="password" type="password" required />
-                  </div>
-                  <button class="button is-primary" type="submit">Login</button>
-                  <button class="button" @click=${() => {
-                    this.showSignup = !this.showSignup;
-                    this.update(new Map());
-                  }}>Signup</button>
-                </form>
-            `
+                        try {
+                          const { token } = await this.logUser(credentials);
+                          authService.login(token);
+                          const user = await this.getMe();
+                          authService.setUser(user);
+                          router.push("/admin");
+                        } catch (e) {
+                          showError(e);
+                        }
+                      }
+                    }"
+                  >
+                    <div class="field">
+                      <label class="label" for="email">Email</label>
+                      <input
+                        class="input"
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                      />
+                    </div>
+                    <div class="field">
+                      <label class="label" for="password">Password</label>
+                      <input
+                        class="input"
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                      />
+                    </div>
+                    <button class="button is-primary" type="submit">
+                      Login
+                    </button>
+                  </form>
+                `
           }
         </section>
       </ez-page>

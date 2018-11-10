@@ -181,13 +181,12 @@ export default class ArticleDetail extends LitElement {
       <ez-navbar></ez-navbar>
       ${
         this.posterUrl
-          ? `
-          <figure
-            class="poster"
-            style="background-image: url('${this.posterUrl}')">
-            {" "}
-          </figure>
-          `
+          ? html`
+              <figure
+                class="poster"
+                style="background-image: url('${this.posterUrl}')"
+              ></figure>
+            `
           : null
       }
       <div
