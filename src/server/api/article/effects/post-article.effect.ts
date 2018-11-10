@@ -8,7 +8,10 @@ import { articleValidator$ } from "../helpers/article.validator";
 export const postArticleEffect$: Effect = req$ =>
   req$.pipe(
     use(articleValidator$),
-    map(req => req.body),
+    map(req => ({
+      ...req.body,
+      tags: req.body.tags.map((tag: string) => tag.toLowerCase()),
+    })),
     mergeMap(ArticleDao.create),
     map(response => ({ body: response })),
     catchError(err => throwError(err)),

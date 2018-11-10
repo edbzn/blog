@@ -1,6 +1,6 @@
 import { Effect, HttpError, HttpStatus, use } from "@marblejs/core";
 import { of, throwError } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, mapTo } from "rxjs/operators";
 
 import { neverNullable } from "../../../utils/never-nullable";
 import { ArticleDao } from "../model/article.dao";
@@ -11,7 +11,11 @@ export const updateArticleEffect$: Effect = req$ =>
     use(articleValidator$),
     mergeMap(req =>
       of(req.params.id).pipe(
-        mergeMap(() => ArticleDao.updateById(req.params.id, req.body)),
+        mapTo({
+          ...req.body,
+          tags: req.body.tags.map((tag: string) => tag.toLowerCase()),
+        }),
+        mergeMap(article => ArticleDao.updateById(req.params.id, article)),
         mergeMap(neverNullable),
         map(article => ({ body: article })),
         catchError(err =>
