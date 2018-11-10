@@ -8,12 +8,14 @@ import NavBar from "./app/core/layout/navbar.component";
 import Page from "./app/core/layout/page.component";
 import Login from "./app/core/login/login.component";
 import ArticleFeed from "./app/shared/article-feed.component";
+import ProfileComponent from "./app/core/home/profile";
 
 /**
  * Shared components
  */
 customElements.define("ez-page", Page);
 customElements.define("ez-article-feed", ArticleFeed);
+customElements.define("ez-profile", ProfileComponent);
 
 /**
  * Layout components

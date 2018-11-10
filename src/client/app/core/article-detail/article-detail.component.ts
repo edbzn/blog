@@ -86,6 +86,13 @@ export default class ArticleDetail extends LitElement {
           <div class="presentation has-text-dark">
             <strong>${profileConfiguration.name}</strong><br />
             <span>${unsafeHTML(profileConfiguration.description)}</span>
+            <iframe
+              src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=true"
+              title="Follow me"
+              width="245"
+              height="26"
+              style="margin-top: 12px; border: 0; overflow: hidden;"
+            ></iframe>
           </div>
         </footer>
       </article>
