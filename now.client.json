@@ -1,5 +1,6 @@
 {
   "name": "codamit-client",
+  "version": 1,
   "type": "static",
   "static": {
     "public": "dist/client",
@@ -22,6 +23,6 @@
       }
     ]
   },
-  "alias": "codamit.com",
+  "alias": ["codamit.com", "www.codamit.com"],
   "files": ["dist/client"]
 }
