@@ -5,7 +5,9 @@ export interface CollectionQueryValidatorOpts {
   sortBy: string[];
 }
 
-export const collectionQueryValidator$ = (opts: CollectionQueryValidatorOpts) =>
+export const articleCollectionQueryValidator$ = (
+  opts: CollectionQueryValidatorOpts,
+) =>
   validator$({
     query: Joi.object({
       sortBy: Joi.string()
@@ -16,5 +18,13 @@ export const collectionQueryValidator$ = (opts: CollectionQueryValidatorOpts) =>
         .default(SortDir.DESC),
       limit: Joi.number().min(0),
       page: Joi.number().min(1),
+      tags: Joi.alternatives([
+        Joi.array()
+          .sparse()
+          .items(Joi.string()),
+        Joi.string()
+          .not()
+          .empty(),
+      ]),
     }).required(),
   });

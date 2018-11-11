@@ -6,7 +6,6 @@ import { IArticle } from "../core/admin/types";
 import { apiClient } from "../core/api";
 import { Collection } from "../utils/collection";
 import { showError } from "../utils/show-error";
-import { timeSince } from "../utils/time-since";
 import { placeholder } from "./placeholder";
 import { tags } from "./tags";
 

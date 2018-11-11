@@ -3,14 +3,16 @@ import { of } from "rxjs";
 import { mergeMap, map } from "rxjs/operators";
 import { ArticleDao } from "../model/article.dao";
 import { CollectionQueryOptions } from "../../../utils/collection";
-import { collectionQueryValidator$ } from "../../common/middlewares/collection-query.validator";
+import { articleCollectionQueryValidator$ } from "../helpers/article-collection-query.validator";
 
 type Query = CollectionQueryOptions;
 
 export const getDraftListEffect$: Effect = req$ =>
   req$.pipe(
     use(
-      collectionQueryValidator$({ sortBy: ArticleDao.ARTICLE_SORTING_FIELDS }),
+      articleCollectionQueryValidator$({
+        sortBy: ArticleDao.ARTICLE_SORTING_FIELDS,
+      }),
     ),
     mergeMap(req =>
       of(req).pipe(

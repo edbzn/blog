@@ -1,5 +1,6 @@
 import { IArticle } from "../core/admin/types";
 import { html } from "lit-html";
+import router from "../../app-router";
 
 export const tags = (article: IArticle, adminMode = false) => html`
   <style>
@@ -19,7 +20,18 @@ export const tags = (article: IArticle, adminMode = false) => html`
       article.tags.map(
         (tag: string) =>
           html`
-            <span class="article-tag tag is-info">${tag}</span>
+            <a
+              href="/tag/${tag}"
+              @click="${
+                (e: Event) => {
+                  e.preventDefault();
+                  router.push(`/tag/${tag}`);
+                }
+              }"
+              class="article-tag tag is-light"
+            >
+              ${tag}
+            </a>
           `,
       )
     }

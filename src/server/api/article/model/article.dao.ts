@@ -1,8 +1,8 @@
 import { from } from "rxjs";
 import { Article } from "./article.model";
 import {
-  CollectionQueryOptions,
   applyCollectionQuery,
+  ArticleCollectionQueryOptions,
 } from "../../../utils/collection";
 import { IArticlePayload } from "../helpers/article-payload";
 
@@ -13,11 +13,27 @@ export namespace ArticleDao {
 
   export const ARTICLE_SORTING_FIELDS = ["_id", "publishedAt"];
 
-  export const findAll = (query: CollectionQueryOptions) =>
+  export const findAll = (query: ArticleCollectionQueryOptions) =>
     from(applyCollectionQuery(query)(() => model.find()));
 
-  export const findAllPublished = (query: CollectionQueryOptions) =>
-    from(applyCollectionQuery(query)(() => model.find({ published: true })));
+  export const findAllPublished = (query: ArticleCollectionQueryOptions) =>
+    from(
+      applyCollectionQuery(query)(() => {
+        let qb: any = { published: true };
+
+        if (query.tags) {
+          if (typeof query.tags === "string") {
+            console.log(query.tags);
+            qb = { ...qb, tags: query.tags };
+          } else if (query.tags.length > 0) {
+            console.log(query.tags);
+            qb = { ...qb, tags: { $in: [...query.tags] } };
+          }
+        }
+
+        return model.find(qb);
+      }),
+    );
 
   export const findById = (id: string) => from(model.findById(id).exec());
 

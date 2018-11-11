@@ -7,6 +7,10 @@ export interface CollectionQueryOptions extends Record<string, any> {
   page: number;
 }
 
+export interface ArticleCollectionQueryOptions extends CollectionQueryOptions {
+  tags?: string[] | string;
+}
+
 export interface CollectionQueryResult<T> {
   collection: T;
   total: number;
