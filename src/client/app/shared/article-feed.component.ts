@@ -10,6 +10,9 @@ import { placeholder } from "./placeholder";
 import { tags } from "./tags";
 
 export default class ArticleFeed extends LitElement {
+  @property({ type: Array })
+  tags = [];
+
   @property({ type: Boolean })
   adminMode = false;
 
@@ -40,7 +43,10 @@ export default class ArticleFeed extends LitElement {
           `/api/v1/draft?limit=${this.limit}&page=${this.page}`,
         )
       : apiClient.get<Collection<IArticle>>(
-          `/api/v1/article?limit=${this.limit}&page=${this.page}`,
+          `/api/v1/article?limit=${this.limit}&page=${this.page}${this.tags
+            .map(tag => "&tags[]=" + tag)
+            .toString()
+            .replace(",", "")}`,
         );
   }
 

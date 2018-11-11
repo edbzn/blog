@@ -8,18 +8,63 @@ const router = browserRouter();
 
 router
   .use("/", (_req, resp) => {
-    render(html`<ez-home></ez-home>`, document.body);
+    render(
+      html`
+        <ez-home></ez-home>
+      `,
+      document.body,
+    );
     resp.end();
   })
   .use("/login", (_req, resp) => {
-    render(html`<ez-login></ez-login>`, document.body);
+    render(
+      html`
+        <ez-login></ez-login>
+      `,
+      document.body,
+    );
     resp.end();
   })
   .use("/article/:id", (req, resp) => {
     const id = req.params.id;
 
     render(
-      html`<ez-article-detail id="${id}"></ez-article-detail>`,
+      html`
+        <ez-article-detail id="${id}"></ez-article-detail>
+      `,
+      document.body,
+    );
+    resp.end();
+  })
+  .use("/tag/:tag", (req, resp) => {
+    const tag = req.params.tag;
+
+    render(
+      html`
+        <ez-page>
+          <style>
+            .last {
+              padding-top: 0 !important;
+              padding-bottom: 0 !important;
+            }
+          </style>
+          <ez-article-feed tags="${tag}"></ez-article-feed>
+          <section class="section last">
+            <a
+              href="/"
+              class="button is-block"
+              @click="${
+                (e: Event) => {
+                  e.preventDefault();
+                  router.push("/");
+                }
+              }"
+            >
+              Back to home
+            </a>
+          </section>
+        </ez-page>
+      `,
       document.body,
     );
     resp.end();
@@ -28,7 +73,12 @@ router
     if (!authService.authenticated) {
       router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
-      render(html`<ez-admin></ez-admin>`, document.body);
+      render(
+        html`
+          <ez-admin></ez-admin>
+        `,
+        document.body,
+      );
     }
     resp.end();
   })
@@ -36,18 +86,28 @@ router
     if (!authService.authenticated) {
       router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
-      render(html`<ez-draft id=${req.query.id}></ez-draft>`, document.body);
+      render(
+        html`
+          <ez-draft id="${req.query.id}"></ez-draft>
+        `,
+        document.body,
+      );
     }
     resp.end();
   })
   .use("/error", (req, resp) => {
     const message = req.query.message;
 
-    render(html`<ez-error message="${message}"></ez-error>`, document.body);
+    render(
+      html`
+        <ez-error message="${message}"></ez-error>
+      `,
+      document.body,
+    );
     resp.end();
   })
   .use("*", (_req, resp) => {
-    router.push(createErrorURI(unAuthenticatedErrorMsg));
+    router.push(createErrorURI("Page not Found"));
     resp.end();
   });
 
