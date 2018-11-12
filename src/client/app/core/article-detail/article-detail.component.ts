@@ -1,17 +1,16 @@
 import { LitElement, property } from "@polymer/lit-element";
 import { html, TemplateResult } from "lit-html";
-
-import { placeholder } from "../../shared/placeholder";
-import _fetch from "../../utils/fetch";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
+
+import router from "../../../app-router";
+import { placeholder } from "../../shared/placeholder";
+import { tags } from "../../shared/tags";
+import { debounce } from "../../utils/debounce";
+import { profileConfiguration } from "../../utils/profile-config";
+import { showError } from "../../utils/show-error";
+import { timeSince } from "../../utils/time-since";
 import { IArticle } from "../admin/types";
 import { apiClient } from "../api";
-import { timeSince } from "../../utils/time-since";
-import { tags } from "../../shared/tags";
-import { profileConfiguration } from "../../utils/profile-config";
-import { debounce } from "../../utils/debounce";
-import { showError } from "../../utils/show-error";
-import router from "../../../app-router";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -28,8 +27,10 @@ export default class ArticleDetail extends LitElement {
 
   calculateRemainingHandler: EventListenerOrEventListenerObject | null = null;
 
-  getArticle(): Promise<IArticle> {
-    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
+  firstUpdated() {
+    this.init().then(() => {
+      this.handleScrollChange();
+    });
   }
 
   async init(): Promise<void> {
@@ -41,22 +42,24 @@ export default class ArticleDetail extends LitElement {
     }
   }
 
-  firstUpdated() {
-    this.init().then(() => {
-      const body = document
-        .getElementsByTagName("body")
-        .item(0) as HTMLBodyElement;
+  getArticle(): Promise<IArticle> {
+    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
+  }
 
-      this.calculateRemainingHandler = debounce(() => {
-        const currentPosition = window.scrollY;
-        const totalHeight = body.offsetHeight - window.innerHeight;
+  handleScrollChange() {
+    const body = document
+      .getElementsByTagName("body")
+      .item(0) as HTMLBodyElement;
 
-        const percentRemaining = (currentPosition * 100) / totalHeight;
-        this.percentRemaining = percentRemaining.toFixed();
-      }, 50);
+    this.calculateRemainingHandler = debounce(() => {
+      const currentPosition = window.scrollY;
+      const totalHeight = body.offsetHeight - window.innerHeight;
 
-      window.addEventListener("scroll", this.calculateRemainingHandler);
-    });
+      const percentRemaining = (currentPosition * 100) / totalHeight;
+      this.percentRemaining = percentRemaining.toFixed();
+    }, 50);
+
+    window.addEventListener("scroll", this.calculateRemainingHandler);
   }
 
   disconnectedCallback() {
@@ -76,8 +79,7 @@ export default class ArticleDetail extends LitElement {
           </small>
         </header>
         <h1 class="title">${article.title}</h1>
-        <div>${unsafeHTML(article.html)}</div>
-        <hr />
+        <ez-article-content .content="${article.html}"></ez-article-content>
         <footer class="section profile">
           <figure
             class="avatar"
@@ -164,12 +166,6 @@ export default class ArticleDetail extends LitElement {
           top: 0;
           z-index: 10;
           transition: width ease-in-out 100ms;
-        }
-
-        pre {
-          background-color: #202020 !important;
-          color: #5de561 !important;
-          font-size: 0.825em !important;
         }
 
         .content blockquote:not(:last-child),
