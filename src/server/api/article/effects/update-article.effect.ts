@@ -17,7 +17,7 @@ export const updateArticleEffect$: Effect = req$ =>
         }),
         mergeMap(article => ArticleDao.updateById(req.params.id, article)),
         mergeMap(neverNullable),
-        map(article => ({ body: article })),
+        map(() => ({ body: null })),
         catchError(err =>
           throwError(new HttpError(err, HttpStatus.INTERNAL_SERVER_ERROR)),
         ),

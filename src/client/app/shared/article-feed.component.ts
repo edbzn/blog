@@ -228,7 +228,7 @@ export default class ArticleFeed extends LitElement {
         <button
           title="Load more articles"
           class="button is-fullwidth ${this.loading ? "is-loading" : ""}"
-          .disabled="${this.articleRemaining ? false : true}"
+          ?disabled=${this.articleRemaining ? false : true}
           @click="${this.loadMore}"
         >
           ${this.articleRemaining ? "View more" : "All stuff loaded"}

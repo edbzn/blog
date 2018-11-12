@@ -69,20 +69,23 @@ export default class Draft extends LitElement {
     const article = this.buildData();
 
     try {
-      await this.submitDraft(article);
+      await this.submitAndUpdateFields(article);
     } catch (error) {
       showError(error);
     }
   }
 
-  async submitDraft(draft: IDraft): Promise<void> {
+  async submitAndUpdateFields(draft: IDraft): Promise<void> {
     if (this.isDraft()) {
       const article = await this.postDraft(draft);
       this.id = article._id;
-      this.update(new Map());
+      this.draft = article;
     } else {
-      await this.updateArticle(draft as IArticle);
+      const article = await this.updateArticle(draft as IArticle);
+      this.draft = article;
     }
+
+    this.update(new Map());
   }
 
   async handleFile(e: Event): Promise<void> {
@@ -119,9 +122,7 @@ export default class Draft extends LitElement {
     }
 
     try {
-      await this.updateArticle(article as IArticle);
-      this.draft = article;
-      this.update(new Map());
+      await this.submitAndUpdateFields(article as IArticle);
     } catch (error) {
       showError(error);
     }
@@ -236,6 +237,7 @@ export default class Draft extends LitElement {
         .sticky {
           position: sticky;
           top: 20px;
+          padding-bottom: 2px;
         }
 
         .poster {
@@ -255,9 +257,7 @@ export default class Draft extends LitElement {
                   style="background-image: url('${this.draft.posterUrl}')"
                 ></div>
               `
-            : html`
-                <div class="poster"></div>
-              `
+            : html``
         }
         <div class="container is-fluid">
           <form name="login" class="columns" @submit="${this.handleSubmit}">
@@ -286,6 +286,24 @@ export default class Draft extends LitElement {
                     accept="image/png, image/jpeg, image/gif"
                     @change="${this.handleFile}"
                   />
+                </div>
+                <div class="field">
+                  <button
+                    class="button"
+                    ?disabled=${!!this.draft.posterUrl}
+                    @click="${
+                      async (e: Event) => {
+                        e.preventDefault();
+
+                        await this.submitAndUpdateFields({
+                          ...this.buildData(),
+                          posterUrl: null,
+                        });
+                      }
+                    }"
+                  >
+                    Remove poster
+                  </button>
                 </div>
                 <div class="field">
                   <label class="label" for="tags"
@@ -334,7 +352,7 @@ export default class Draft extends LitElement {
                   type="button"
                   class="button is-info"
                   @click="${this.togglePublish}"
-                  ?disabled="${this.isDraft()}"
+                  ?disabled=${this.isDraft()}
                 >
                   ${this.draft.published ? "de publish" : "publish"}
                 </button>

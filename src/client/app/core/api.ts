@@ -5,7 +5,7 @@ export class HttpClient {
 
   private readonly options: RequestInit = {
     mode: "cors",
-    cache: "default",
+    cache: "no-cache",
     headers: {
       "Content-Type": "application/json",
     },
@@ -33,13 +33,13 @@ export class HttpClient {
   }
 
   async put<T>(path: string, data: any): Promise<T> {
-    const resp = await _fetch(this.baseUrl + path, {
+    await _fetch(this.baseUrl + path, {
       ...this.getOptions(),
       method: "PUT",
       body: JSON.stringify({ ...data }),
     });
 
-    return resp.json();
+    return this.get<T>(path);
   }
 
   async delete(path: string): Promise<void> {
