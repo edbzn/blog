@@ -22,6 +22,7 @@ export const tags = (article: IArticle, adminMode = false) => html`
           html`
             <a
               href="/tag/${tag}"
+              ?title=${tag + ' articles'}
               @click="${
                 (e: Event) => {
                   e.preventDefault();

@@ -33,7 +33,7 @@ module.exports = merge(devConfig, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Codamit",
+      title: "Codamit - Tech Blog",
       template: path.resolve(__dirname, "src", "client", "index.html"),
       minify: true,
       hash: true,

@@ -3,11 +3,13 @@ import { browserRouter, ProuterNavigationEvent } from "prouter";
 import { authService } from "./app/core/auth";
 import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
 import { createErrorURI } from "./app/utils/show-error";
+import { setTitleAndMeta } from "./app/utils/set-document-meta";
 
 const router = browserRouter();
 
 router
   .use("/", (_req, resp) => {
+    setTitleAndMeta('Codamit', 'I share stuff about code, architecture and best practices');
     render(
       html`
         <ez-home></ez-home>
@@ -17,6 +19,7 @@ router
     resp.end();
   })
   .use("/login", (_req, resp) => {
+    setTitleAndMeta('Codamit - Connexion');
     render(
       html`
         <ez-login></ez-login>
@@ -27,6 +30,8 @@ router
   })
   .use("/article/:id", (req, resp) => {
     const id = req.params.id;
+    const title = req.query.title = req.query.title;
+    setTitleAndMeta(title);
 
     render(
       html`
@@ -38,6 +43,7 @@ router
   })
   .use("/tag/:tag", (req, resp) => {
     const tag = req.params.tag;
+    setTitleAndMeta(tag, "Tous les articles au sujet de " + tag);
 
     render(
       html`
@@ -73,6 +79,7 @@ router
     if (!authService.authenticated) {
       router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
+      setTitleAndMeta('Codamit - Admin');
       render(
         html`
           <ez-admin></ez-admin>
@@ -97,6 +104,7 @@ router
   })
   .use("/error", (req, resp) => {
     const message = req.query.message;
+    setTitleAndMeta('Codamit - Erreur');
 
     render(
       html`

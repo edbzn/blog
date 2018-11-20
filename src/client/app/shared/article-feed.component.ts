@@ -141,15 +141,17 @@ export default class ArticleFeed extends LitElement {
             <a
               class="card-footer-item"
               href="${articleUri}"
-              title="Read ${article.title}"
+              title="Lire ${article.title}"
               @click="${
                 (e: Event) => {
                   e.preventDefault();
-                  router.push(articleUri);
+                  router.push(
+                    `${articleUri}?title=${encodeURIComponent(article.title)}`,
+                  );
                 }
               }"
             >
-              Read
+              Lire
             </a>
             ${
               this.adminMode
@@ -157,15 +159,19 @@ export default class ArticleFeed extends LitElement {
                     <a
                       class="card-footer-item"
                       href="${`/admin/draft?id=${article._id}`}"
-                      title="Edit article"
+                      title="Editer l'article"
                       @click="${
                         (e: Event) => {
                           e.preventDefault();
-                          router.push(`/admin/draft?id=${article._id}`);
+                          router.push(
+                            `/admin/draft?id=${
+                              article._id
+                            }?title=${encodeURIComponent(article.title)}`,
+                          );
                         }
                       }"
                     >
-                      Edit
+                      Editer
                     </a>
                     <a
                       class="card-footer-item"
@@ -173,7 +179,7 @@ export default class ArticleFeed extends LitElement {
                       title="Delete article"
                       @click="${this.removeArticle.bind(this, article)}"
                     >
-                      Delete
+                      Supprimer
                     </a>
                   `
                 : html``
@@ -228,7 +234,7 @@ export default class ArticleFeed extends LitElement {
         <button
           title="Load more articles"
           class="button is-fullwidth ${this.loading ? "is-loading" : ""}"
-          ?disabled=${this.articleRemaining ? false : true}
+          ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >
           ${this.articleRemaining ? "View more" : "All stuff loaded"}
