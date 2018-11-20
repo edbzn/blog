@@ -9,7 +9,6 @@ export function setTitleAndMeta(
     for (let i = 0; i < meta.length; i++) {
       if (meta[i].name.toLowerCase().includes("description")) {
         if (meta.item(i) !== null) {
-          console.log(meta.item(i));
           (meta.item(i) as HTMLMetaElement).setAttribute(
             "content",
             description,

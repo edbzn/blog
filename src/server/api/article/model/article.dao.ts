@@ -23,10 +23,8 @@ export namespace ArticleDao {
 
         if (query.tags) {
           if (typeof query.tags === "string") {
-            console.log(query.tags);
             qb = { ...qb, tags: query.tags };
           } else if (query.tags.length > 0) {
-            console.log(query.tags);
             qb = { ...qb, tags: { $in: [...query.tags] } };
           }
         }

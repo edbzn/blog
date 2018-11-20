@@ -22,7 +22,6 @@ export const loginEffect$: Effect = req$ =>
           ),
         ),
         mergeMap(data => {
-          console.log(data);
           return compare$(data[1], data[0].password);
         }),
         mergeMap(isUser =>
@@ -37,7 +36,6 @@ export const loginEffect$: Effect = req$ =>
         map(generateToken({ secret: Config.jwt.secret })),
         map(token => ({ body: { token } })),
         catchError(err => {
-          console.log(err);
           return throwError(
             new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED),
           );
