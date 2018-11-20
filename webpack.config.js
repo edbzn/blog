@@ -43,7 +43,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Codamit [WDS] - [HMR]",
-      template: path.resolve(__dirname, "src", "client", "index.html"),
+      template: path.resolve(__dirname, "src", "client", "index.dev.html"),
     }),
     new WriteFilePlugin(),
     new CopyWebpackPlugin([
@@ -65,7 +65,6 @@ module.exports = {
       },
       {
         from: "src/client/robot.txt",
-        to: "",
       },
     ]),
   ],
