@@ -27,7 +27,7 @@ export default class ArticleDetail extends LitElement {
 
   calculateRemainingHandler: EventListenerOrEventListenerObject | null = null;
 
-  firstUpdated() {
+  firstUpdated(): void {
     this.init().then(() => {
       this.handleScrollChange();
     });
@@ -46,7 +46,7 @@ export default class ArticleDetail extends LitElement {
     return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
   }
 
-  handleScrollChange() {
+  handleScrollChange(): void {
     const body = document
       .getElementsByTagName("body")
       .item(0) as HTMLBodyElement;
@@ -62,7 +62,7 @@ export default class ArticleDetail extends LitElement {
     window.addEventListener("scroll", this.calculateRemainingHandler);
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     this.removeEventListener("scroll", this
       .calculateRemainingHandler as EventListenerOrEventListenerObject);
   }
@@ -205,8 +205,8 @@ export default class ArticleDetail extends LitElement {
               ? this.showArticleDetail()
               : placeholder({
                   count: 1,
-                  minLines: 30,
-                  maxLines: 50,
+                  minLines: 200,
+                  maxLines: 300,
                   box: false,
                   image: false,
                 })
