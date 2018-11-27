@@ -64,7 +64,7 @@ module.exports = {
         to: "assets",
       },
       {
-        from: "src/client/robot.txt",
+        from: "src/client/robots.txt",
       },
     ]),
   ],
