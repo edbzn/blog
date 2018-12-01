@@ -232,9 +232,28 @@ export default class ArticleFeed extends LitElement {
         .load-complete {
           width: 24px;
         }
+        .feed-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+        .feed-header h4 {
+          margin-bottom: 0 !important;
+        }
+        .feed-header .tag {
+          text-transform: capitalize;
+        }
       </style>
       <section class="section">
-        <h4 class="subtitle uppercase">articles</h4>
+        <header class="feed-header">
+          <h4 class="subtitle uppercase">articles</h4>
+          ${
+            this.tags.length > 0 ?
+            html`<span class="tag is-primary is-medium">${this.tags[0]}</span>` :
+            null
+          }
+        </header>
         ${
           this.articleCollection
             ? this.articleList()
