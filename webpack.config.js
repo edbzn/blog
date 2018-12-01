@@ -64,6 +64,9 @@ module.exports = {
         to: "assets",
       },
       {
+        from: "src/client/favicon.ico",
+      },
+      {
         from: "src/client/robots.txt",
       },
     ]),
