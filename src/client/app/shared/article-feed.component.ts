@@ -30,6 +30,17 @@ export default class ArticleFeed extends LitElement {
   articleRemaining = true;
 
   firstUpdated() {
+    this.updateArticleCollection();
+  }
+
+  updated(props: Map<string | number | symbol, unknown>) {
+    const oldTags = props.get('tags');
+    if (oldTags instanceof Array && oldTags !== this.tags) {
+      this.updateArticleCollection();
+    }
+  }
+
+  updateArticleCollection() {
     this.getArticleCollection().then(articleCollection => {
       const { collection, total } = articleCollection;
       this.articleCollection = collection;

@@ -54,7 +54,7 @@ router
               padding-bottom: 0 !important;
             }
           </style>
-          <ez-article-feed tags="${tag}"></ez-article-feed>
+          <ez-article-feed .tags=${[tag]}></ez-article-feed>
           <section class="section last">
             <a
               href="/"
