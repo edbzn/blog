@@ -33,13 +33,13 @@ export class HttpClient {
   }
 
   async put<T>(path: string, data: any): Promise<T> {
-    await _fetch(this.baseUrl + path, {
+    const resp = await _fetch(this.baseUrl + path, {
       ...this.getOptions(),
       method: "PUT",
       body: JSON.stringify({ ...data }),
     });
 
-    return this.get<T>(path);
+    return resp.json();
   }
 
   async delete(path: string): Promise<void> {

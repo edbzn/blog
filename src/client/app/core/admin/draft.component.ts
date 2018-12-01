@@ -49,6 +49,7 @@ export default class Draft extends LitElement {
       lineWrapping: true,
       element: markdownCtrl,
       initialValue: this.draft.markdown,
+      spellChecker: false,
       autoDownloadFontAwesome: true,
       forceSync: false,
       tabSize: 2,
@@ -71,7 +72,7 @@ export default class Draft extends LitElement {
     try {
       await this.submitAndUpdateFields(article);
     } catch (error) {
-      showError(error);
+      throw new Error(error);
     }
   }
 

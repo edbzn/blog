@@ -13,6 +13,6 @@ export const postArticleEffect$: Effect = req$ =>
       tags: req.body.tags.map((tag: string) => tag.toLowerCase()),
     })),
     mergeMap(ArticleDao.create),
-    map(() => ({ body: null })),
+    map(article => ({ body: article })),
     catchError(err => throwError(err)),
   );
