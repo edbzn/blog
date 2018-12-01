@@ -55,6 +55,14 @@ export default class ArticleContent extends LitElement {
           text-align: inherit;
           vertical-align: inherit;
         }
+
+        :not(pre) > code[class*="language-"] {
+          background:rgba(255,229,100,.2) !important;
+          text-shadow: none;
+          color: #1a1a1a;
+          padding: .15em .2em .05em;
+          border-radius: 0px !important;
+        }
       </style>
       <div class="content is-medium">${unsafeHTML(this.content)}</div>
     `;
