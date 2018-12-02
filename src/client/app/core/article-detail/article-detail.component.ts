@@ -1,4 +1,6 @@
 import { LitElement, property } from "@polymer/lit-element";
+import { format, distanceInWords } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
 import { html, TemplateResult } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
@@ -8,7 +10,6 @@ import { tags } from "../../shared/tags";
 import { debounce } from "../../utils/debounce";
 import { profileConfiguration } from "../../utils/profile-config";
 import { showError } from "../../utils/show-error";
-import { timeSince } from "../../utils/time-since";
 import { IArticle } from "../admin/types";
 import { apiClient } from "../api";
 
@@ -74,28 +75,49 @@ export default class ArticleDetail extends LitElement {
       <article class="content is-medium">
         <header class="header">
           ${tags(article)}
-          <small>
-            Published ${timeSince(new Date(article.publishedAt as string))} ago
-          </small>
+          <span class="article-date"
+            >${
+              format(
+                new Date(article.publishedAt as string),
+                "dddd DD MMMM YYYY",
+                { locale: frLocale },
+              )
+            }</span
+          >
         </header>
         <h1 class="title">${article.title}</h1>
         <ez-article-content .content="${article.html}"></ez-article-content>
-        <footer class="section profile">
-          <figure
-            class="avatar"
-            style="background-image: url('${profileConfiguration.avatarUrl}')"
-          ></figure>
-          <div class="presentation has-text-dark">
-            <strong>${profileConfiguration.name}</strong><br />
-            <span>${unsafeHTML(profileConfiguration.description)}</span>
-            <div>
-              <iframe
-                src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
-                title="Follow me"
-                width="148"
-                height="26"
-                style="margin-top: 12px; border: 0; overflow: hidden;"
-              ></iframe>
+        <footer class="section article-footer">
+          <div class="publication">
+            ${tags(article)}
+            <span class="article-date"
+              >Publié il y a
+              ${
+                distanceInWords(
+                  new Date(article.publishedAt as string),
+                  new Date(),
+                  { locale: frLocale },
+                )
+              }</span
+            >
+          </div>
+          <div class="profile">
+            <figure
+              class="avatar"
+              style="background-image: url('${profileConfiguration.avatarUrl}')"
+            ></figure>
+            <div class="presentation has-text-dark">
+              <strong>${profileConfiguration.name}</strong><br />
+              <span>${unsafeHTML(profileConfiguration.description)}</span>
+              <div>
+                <iframe
+                  src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
+                  title="Follow me"
+                  width="148"
+                  height="26"
+                  style="margin-top: 12px; border: 0; overflow: hidden;"
+                ></iframe>
+              </div>
             </div>
           </div>
         </footer>
@@ -137,9 +159,6 @@ export default class ArticleDetail extends LitElement {
           margin: 0 auto;
           display: flex;
           align-items: center;
-          padding-bottom: 0 !important;
-          padding-left: 0 !important;
-          padding-right: 0 !important;
         }
 
         .avatar {
@@ -158,6 +177,29 @@ export default class ArticleDetail extends LitElement {
         .presentation {
           padding-left: 1.55rem;
           font-size: 0.8em;
+        }
+
+        .article-date {
+          text-transform: capitalize;
+          font-weight: 100;
+          font-size: 14px;
+        }
+
+        .content .publication {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 3rem;
+        }
+
+        .content .publication .article-date {
+          text-transform: initial;
+        }
+
+        .content .article-footer {
+          padding-bottom: 0;
+          padding-left: 0;
+          padding-right: 0;
         }
 
         .time-remaining {
@@ -223,7 +265,7 @@ export default class ArticleDetail extends LitElement {
               }
             }"
           >
-            Back to home
+            Accueil
           </a>
         </section>
       </ez-page>

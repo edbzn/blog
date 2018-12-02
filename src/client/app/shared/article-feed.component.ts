@@ -1,5 +1,7 @@
 import { LitElement, property } from "@polymer/lit-element";
 import { html, TemplateResult } from "lit-html";
+import { format } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
 
 import router from "../../app-router";
 import { IArticle } from "../core/admin/types";
@@ -34,7 +36,7 @@ export default class ArticleFeed extends LitElement {
   }
 
   updated(props: Map<string | number | symbol, unknown>) {
-    const oldTags = props.get('tags');
+    const oldTags = props.get("tags");
     if (oldTags instanceof Array && oldTags !== this.tags) {
       this.updateArticleCollection();
     }
@@ -126,9 +128,11 @@ export default class ArticleFeed extends LitElement {
               <span class="article-date">
                 ${
                   article.published
-                    ? new Date(
-                        article.publishedAt as string,
-                      ).toLocaleDateString()
+                    ? format(
+                        new Date(article.publishedAt as string),
+                        "dddd DD MMMM YYYY",
+                        { locale: frLocale },
+                      )
                     : ``
                 }
               </span>
@@ -225,6 +229,7 @@ export default class ArticleFeed extends LitElement {
         .article-date {
           margin-right: 12px;
           font-weight: 100;
+          text-transform: capitalize;
         }
         .card-header-title {
           justify-content: space-between;
@@ -249,9 +254,11 @@ export default class ArticleFeed extends LitElement {
         <header class="feed-header">
           <h4 class="subtitle uppercase">articles</h4>
           ${
-            this.tags.length > 0 ?
-            html`<span class="tag is-primary is-medium">${this.tags[0]}</span>` :
-            null
+            this.tags.length > 0
+              ? html`
+                  <span class="tag is-primary is-medium">${this.tags[0]}</span>
+                `
+              : null
           }
         </header>
         ${

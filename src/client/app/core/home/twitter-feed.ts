@@ -1,13 +1,14 @@
-import anchorme from 'anchorme';
-import { html } from 'lit-html';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { until } from 'lit-html/directives/until';
+import anchorme from "anchorme";
+import { distanceInWords } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
+import { html } from "lit-html";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { until } from "lit-html/directives/until";
 
-import { placeholder } from '../../shared/placeholder';
-import like from '../../utils/icons/like';
-import retweet from '../../utils/icons/retweet';
-import { timeSince } from '../../utils/time-since';
-import { apiClient } from '../api';
+import { placeholder } from "../../shared/placeholder";
+import like from "../../utils/icons/like";
+import retweet from "../../utils/icons/retweet";
+import { apiClient } from "../api";
 
 const getTweets = async (): Promise<{ statuses: any[] }> => {
   return apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
@@ -29,7 +30,15 @@ const showTweets = (resp: any) => {
                 >
                   <small>@${tweet.user.screen_name.toLowerCase()}</small>
                 </a>
-                - <small>${timeSince(new Date(tweet.created_at))} ago</small>
+                -
+                <small>
+                  Il y a ${
+                    distanceInWords(new Date(tweet.created_at), new Date(), {
+                      locale: frLocale,
+                    })
+                  }
+                </small
+                >
               </header>
               <div class="content">${unsafeHTML(anchorme(tweet.text))}</div>
               <footer>
