@@ -3,6 +3,8 @@ import { LitElement, property } from "@polymer/lit-element";
 import { IComment } from "./types";
 import { apiClient } from "../api";
 import { ResourceCollection } from "../../utils/collection";
+import { distanceInWordsToNow, format } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
 
 export class ArticleCommentComponent extends LitElement {
   @property({ type: String })
@@ -100,6 +102,17 @@ export class ArticleCommentComponent extends LitElement {
         .button {
           width: 100%;
         }
+
+        .comments {
+          margin-top: 2rem;
+          font-size: 1rem;
+        }
+
+        .message header em {
+          font-weight: 100;
+          font-size: 14px;
+          text-transform: capitalize;
+        }
       </style>
       <div>
         <button
@@ -175,15 +188,32 @@ export class ArticleCommentComponent extends LitElement {
               `
             : null
         }
+        <section class="comments">
         ${
           this.commentCollection !== null
             ? this.commentCollection.collection.map(
                 comment => html`
-                  ${comment.createdAt} ${comment.author} ${comment.text}
+                  <article class="message">
+                    <div class="message-body is-dark">
+                      <header>
+                        <strong>${comment.author}</strong>
+                        <em>
+                          -
+                          ${
+                            format(new Date(comment.createdAt), "ddd DD MMM YYYY",{
+                              locale: frLocale,
+                            })
+                          }
+                        </em>
+                      </header>
+                      ${comment.comment}
+                    </div>
+                  </article>
                 `,
               )
             : null
         }
+        </section>
       </div>
     `;
   }

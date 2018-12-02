@@ -16,7 +16,7 @@ export const commentCollectionQueryValidator$ = (
       sortDir: Joi.number()
         .valid(SortDir.DESC, SortDir.ASC)
         .default(SortDir.DESC),
-      limit: Joi.number().min(0).default(10),
+      limit: Joi.number().min(0).default(5),
       page: Joi.number().min(1).default(1),
     }).required(),
   });
