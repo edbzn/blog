@@ -26,8 +26,45 @@ export class ArticleCommentComponent extends LitElement {
       });
   }
 
+  isFormValid(): boolean {
+    if (!this.showEditor) {
+      return false;
+    }
+
+    const nameCtrl = this.shadowRoot!.querySelector(
+      "#name",
+    ) as HTMLInputElement;
+    const commentCtrl = this.shadowRoot!.querySelector(
+      "#comment",
+    ) as HTMLTextAreaElement;
+
+    if (!nameCtrl || !commentCtrl) {
+      return false;
+    }
+
+    const name = nameCtrl.value;
+    const comment = commentCtrl.value;
+
+    return !!name && !!comment;
+  }
+
   postComment(event: Event) {
     event.preventDefault();
+    const name = (this.shadowRoot!.querySelector("#name") as HTMLInputElement)
+      .value;
+    const comment = (this.shadowRoot!.querySelector(
+      "#comment",
+    ) as HTMLTextAreaElement).value;
+    const formData = { author: name, comment, articleId: this.articleId };
+
+    apiClient
+      .post<ResourceCollection<IComment>>(
+        `/api/v1/article/${this.articleId}/comment`,
+        formData,
+      )
+      .then(commentCollection => {
+        this.commentCollection = commentCollection;
+      });
   }
 
   render(): TemplateResult {
@@ -79,7 +116,9 @@ export class ArticleCommentComponent extends LitElement {
         ${
           this.showEditor
             ? html`
-                <form name="postComment" @submit=${this.postComment}>
+                <form name="postComment" @submit=${
+                  this.postComment
+                } @input=${() => this.update(new Map())}>
                   <div class="field">
                     <label for="name">Nom</label
                     <div class="control">
@@ -92,7 +131,7 @@ export class ArticleCommentComponent extends LitElement {
                       <textarea class="textarea" name="comment" id="comment" required></textarea>
                     </div>
                   </div>
-                  <button type="submit" class="button">Commenter</button>
+                  <button type="submit" ?disabled=${!this.isFormValid()} class="button">Commenter</button>
                 </form>
               `
             : null
