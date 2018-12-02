@@ -6,7 +6,7 @@ import * as frLocale from "date-fns/locale/fr";
 import router from "../../app-router";
 import { IArticle } from "../core/admin/types";
 import { apiClient } from "../core/api";
-import { Collection } from "../utils/collection";
+import { ResourceCollection } from "../utils/collection";
 import { showError } from "../utils/show-error";
 import { placeholder } from "./placeholder";
 import { tags } from "./tags";
@@ -51,12 +51,12 @@ export default class ArticleFeed extends LitElement {
     });
   }
 
-  getArticleCollection(): Promise<Collection<IArticle>> {
+  getArticleCollection(): Promise<ResourceCollection<IArticle>> {
     return this.adminMode
-      ? apiClient.get<Collection<IArticle>>(
+      ? apiClient.get<ResourceCollection<IArticle>>(
           `/api/v1/draft?limit=${this.limit}&page=${this.page}`,
         )
-      : apiClient.get<Collection<IArticle>>(
+      : apiClient.get<ResourceCollection<IArticle>>(
           `/api/v1/article?limit=${this.limit}&page=${this.page}${this.tags
             .map(tag => "&tags[]=" + tag)
             .toString()
@@ -83,7 +83,7 @@ export default class ArticleFeed extends LitElement {
     const {
       collection,
       total,
-    } = (await this.getArticleCollection()) as Collection<IArticle>;
+    } = (await this.getArticleCollection()) as ResourceCollection<IArticle>;
 
     this.articleCollection = [
       ...(this.articleCollection as IArticle[]),

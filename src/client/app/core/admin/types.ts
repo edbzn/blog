@@ -1,4 +1,4 @@
-import { IResource } from "../../utils/resource";
+import { IResource, ITimeStampableResource } from "../../utils/resource";
 
 export interface IDraft {
   title: string;
@@ -12,10 +12,7 @@ export interface IDraft {
   publishedAt: string | null;
 }
 
-export interface IArticle extends IResource, IDraft {
-  createdAt: string;
-  updatedAt: string;
-}
+export interface IArticle extends IDraft, IResource, ITimeStampableResource {}
 
 export interface IDraftFormRefs {
   titleCtrl: HTMLInputElement;
