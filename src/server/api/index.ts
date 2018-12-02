@@ -6,6 +6,7 @@ import { getTweetsEffect$ } from "./tweet/effects/get-tweets.effect";
 import { getDocEffect$ } from "./common/effects/get-doc.effect";
 import { auth$ } from "./auth";
 import { user$ } from "./user";
+import { comment$ } from "./comment";
 
 const getTweets$ = EffectFactory.matchPath("/tweet")
   .matchType("GET")
@@ -21,6 +22,7 @@ const notFound$ = EffectFactory.matchPath("*")
 
 export const api$ = combineRoutes("/api/v1", [
   article$,
+  comment$,
   authorizedArticle$,
   authorizedDraft$,
   auth$,
