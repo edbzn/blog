@@ -1,4 +1,4 @@
-export interface Collection<T> {
+export interface ResourceCollection<T> {
   collection: T[];
   total: number;
 }

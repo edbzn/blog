@@ -5,10 +5,11 @@ import {
   ArticleCollectionQueryOptions,
 } from "../../../utils/collection";
 import { IArticlePayload } from "../helpers/article-payload";
+import { FilterQuery } from "mongodb";
 
 export namespace ArticleDao {
   export const model = new Article().getModelForClass(Article, {
-    schemaOptions: { timestamps: true },
+    schemaOptions: { timestamps: true, emitIndexErrors: true },
   });
 
   export const ARTICLE_SORTING_FIELDS = ["_id", "publishedAt"];
@@ -19,7 +20,7 @@ export namespace ArticleDao {
   export const findAllPublished = (query: ArticleCollectionQueryOptions) =>
     from(
       applyCollectionQuery(query)(() => {
-        let qb: any = { published: true };
+        let qb: FilterQuery<Article> = { published: true };
 
         if (query.tags) {
           if (typeof query.tags === "string") {

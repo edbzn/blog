@@ -1,9 +1,17 @@
 import { MongooseDocument } from "mongoose";
-import { arrayProp, prop, Typegoose } from "typegoose";
+import { arrayProp, prop, Typegoose, post } from "typegoose";
 import { IArticlePayload } from "../helpers/article-payload";
+import { MongoError } from "mongodb";
 
 export type ArticleDocument = Article & MongooseDocument;
 
+@post<Article>('save', (error: MongoError, _doc: any, next: any) => {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(new Error('There was a duplicate key error'));
+  } else {
+    next();
+  }
+})
 export class Article extends Typegoose {
   @prop({ required: String, unique: true })
   title: string;

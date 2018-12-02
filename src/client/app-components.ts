@@ -10,6 +10,7 @@ import ArticleFeed from "./app/shared/article-feed.component";
 import ProfileComponent from "./app/core/home/profile";
 import ArticleDetail from "./app/core/article-detail/article-detail.component";
 import ArticleContent from "./app/core/article-detail/article-content.component";
+import "./app/core/article-detail/article-comment.component";
 
 /**
  * Shared components

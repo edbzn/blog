@@ -1,6 +1,17 @@
-function handleErrors(response: Response) {
+async function handleErrors(response: Response) {
   if (!response.ok) {
-    throw Error(response.statusText);
+    let error = response.statusText;
+
+    try {
+      let serverError = await response.json();
+      if (serverError.error.message) {
+        error = serverError.error.message;
+      }
+    } catch (error) {
+      // do nothing
+    }
+
+    throw Error(error);
   }
   return response;
 }

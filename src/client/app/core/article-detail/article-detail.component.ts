@@ -101,6 +101,19 @@ export default class ArticleDetail extends LitElement {
               }</span
             >
           </div>
+          <a
+            href="/"
+            class="button is-block back-to-home"
+            @click="${
+              (e: Event) => {
+                e.preventDefault();
+                router.push("/");
+              }
+            }"
+          >
+            Accueil
+          </a>
+          <ez-comment .articleId="${article._id}"></ez-comment>
           <div class="profile">
             <figure
               class="avatar"
@@ -219,11 +232,6 @@ export default class ArticleDetail extends LitElement {
         .content ul:not(:last-child) {
           margin-bottom: 1.1em !important;
         }
-
-        .last {
-          padding-bottom: 0 !important;
-          padding-top: 0 !important;
-        }
       </style>
       <ez-navbar></ez-navbar>
       ${
@@ -253,20 +261,6 @@ export default class ArticleDetail extends LitElement {
                   image: false,
                 })
           }
-        </section>
-        <section class="section last">
-          <a
-            href="/"
-            class="button is-block"
-            @click="${
-              (e: Event) => {
-                e.preventDefault();
-                router.push("/");
-              }
-            }"
-          >
-            Accueil
-          </a>
         </section>
       </ez-page>
     `;
