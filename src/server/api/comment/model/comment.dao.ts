@@ -8,7 +8,7 @@ import { Comment } from "./comment.model";
 
 export namespace CommentDao {
   export const model = new Comment().getModelForClass(Comment, {
-    schemaOptions: { timestamps: true },
+    schemaOptions: { timestamps: true, emitIndexErrors: true },
   });
 
   export const COMMENT_SORTING_FIELDS = ["_id", "createdAt"];

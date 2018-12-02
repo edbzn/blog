@@ -12,18 +12,22 @@ export class ArticleCommentComponent extends LitElement {
 
   showEditor = false;
 
+  loading = true;
+
+  error: string | null = null;
+
   firstUpdated() {
     this.fetch();
   }
 
-  fetch(): void {
-    apiClient
-      .get<ResourceCollection<IComment>>(
-        `/api/v1/article/${this.articleId}/comment`,
-      )
-      .then(commentCollection => {
-        this.commentCollection = commentCollection;
-      });
+  async fetch(): Promise<void> {
+    const commentCollection = await apiClient.get<ResourceCollection<IComment>>(
+      `/api/v1/article/${this.articleId}/comment`,
+    );
+
+    this.commentCollection = commentCollection;
+    this.loading = false;
+    this.update(new Map());
   }
 
   isFormValid(): boolean {
@@ -48,8 +52,11 @@ export class ArticleCommentComponent extends LitElement {
     return !!name && !!comment;
   }
 
-  postComment(event: Event) {
+  postComment(event: Event): void {
     event.preventDefault();
+    this.loading = true;
+    this.update(new Map());
+
     const name = (this.shadowRoot!.querySelector("#name") as HTMLInputElement)
       .value;
     const comment = (this.shadowRoot!.querySelector(
@@ -62,8 +69,16 @@ export class ArticleCommentComponent extends LitElement {
         `/api/v1/article/${this.articleId}/comment`,
         formData,
       )
-      .then(commentCollection => {
-        this.commentCollection = commentCollection;
+      .then(() => this.fetch())
+      .then(() => {
+        this.showEditor = false;
+        this.loading = false;
+        this.update(new Map());
+      })
+      .catch(err => {
+        this.error = err.message ? err.message : err;
+        this.loading = false;
+        this.update(new Map());
       });
   }
 
@@ -119,6 +134,24 @@ export class ArticleCommentComponent extends LitElement {
                 <form name="postComment" @submit=${
                   this.postComment
                 } @input=${() => this.update(new Map())}>
+                  ${
+                    this.error
+                      ? html`
+                          <div class="notification is-danger">
+                            <button
+                              class="delete"
+                              @click="${
+                                () => {
+                                  this.error = null;
+                                  this.update(new Map());
+                                }
+                              }"
+                            ></button>
+                            ${this.error}
+                          </div>
+                        `
+                      : null
+                  }
                   <div class="field">
                     <label for="name">Nom</label
                     <div class="control">
@@ -128,7 +161,13 @@ export class ArticleCommentComponent extends LitElement {
                   <div class="field">
                     <label for="comment">Commentaire</label
                     <div class="control">
-                      <textarea class="textarea" name="comment" id="comment" required></textarea>
+                      <textarea class="textarea ${
+                        this.loading
+                          ? html`
+                              is-loading
+                            `
+                          : null
+                      }" name="comment" id="comment" required></textarea>
                     </div>
                   </div>
                   <button type="submit" ?disabled=${!this.isFormValid()} class="button">Commenter</button>

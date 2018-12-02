@@ -9,7 +9,7 @@ import { FilterQuery } from "mongodb";
 
 export namespace ArticleDao {
   export const model = new Article().getModelForClass(Article, {
-    schemaOptions: { timestamps: true },
+    schemaOptions: { timestamps: true, emitIndexErrors: true },
   });
 
   export const ARTICLE_SORTING_FIELDS = ["_id", "publishedAt"];
