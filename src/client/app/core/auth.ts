@@ -44,7 +44,7 @@ class Authentication {
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 
     let cookie = `${name}=` + value;
-    cookie += ";max-age=" + (60 * 60 * 24).toString(); // 24h
+    cookie += ";max-age=" + (60 * 60 * 24).toString() + ";"; // 24h
     document.cookie = cookie;
   }
 
