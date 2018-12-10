@@ -6,6 +6,7 @@ import { createErrorURI } from "./app/utils/show-error";
 import { setTitleAndMeta } from "./app/utils/set-document-meta";
 
 const router = browserRouter();
+const app = document.getElementById('app')!;
 
 router
   .use("/", (_req, resp) => {
@@ -14,7 +15,7 @@ router
       html`
         <ez-home></ez-home>
       `,
-      document.body,
+      app,
     );
     resp.end();
   })
@@ -24,7 +25,7 @@ router
       html`
         <ez-login></ez-login>
       `,
-      document.body,
+      app,
     );
     resp.end();
   })
@@ -37,7 +38,7 @@ router
       html`
         <ez-article-detail id="${id}"></ez-article-detail>
       `,
-      document.body,
+      app,
     );
     resp.end();
   })
@@ -71,7 +72,7 @@ router
           </section>
         </ez-page>
       `,
-      document.body,
+      app,
     );
     resp.end();
   })
@@ -84,7 +85,7 @@ router
         html`
           <ez-admin></ez-admin>
         `,
-        document.body,
+        app,
       );
     }
     resp.end();
@@ -97,7 +98,7 @@ router
         html`
           <ez-draft id="${req.query.id}"></ez-draft>
         `,
-        document.body,
+        app,
       );
     }
     resp.end();
@@ -110,7 +111,7 @@ router
       html`
         <ez-error message="${message}"></ez-error>
       `,
-      document.body,
+      app,
     );
     resp.end();
   })
