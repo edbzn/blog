@@ -60,7 +60,7 @@ const showTweets = (resp: any) => {
 export const twitterFeed = () => {
   return html`
     <link href="assets/css/bulma.min.css" rel="stylesheet" />
-    <style scoped>
+    <style>
       .uppercase {
         text-transform: uppercase;
       }

@@ -11,7 +11,7 @@ export default class Error extends LitElement {
   render(): TemplateResult {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet">
-      <style scoped>
+      <style>
         a {
           display: inline-block;
           margin-right: 8px;
@@ -33,13 +33,13 @@ export default class Error extends LitElement {
             e.preventDefault();
             window.history.back();
           }}>
-            Back to previous page
+            Page précédente
           </a>
           <a class="button" href="/" @click=${(e: Event) => {
             e.preventDefault();
             router.push("/");
           }}>
-            Back to home
+            Accueil
           </a>
         </section>
       </ez-page>

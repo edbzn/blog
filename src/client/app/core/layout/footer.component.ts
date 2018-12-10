@@ -8,7 +8,7 @@ import { authService } from "../auth";
 export default class Footer extends LitElement {
   render(): TemplateResult {
     return html`
-      <style scoped>
+      <style>
         footer {
           display: flex;
           align-items: center;
@@ -29,7 +29,7 @@ export default class Footer extends LitElement {
       </style>
       <footer>
         <span>Made with</span>
-        <a href="/admin" @click=${(e: Event) => {
+        <a href="/admin" title="Zone privilégiée" @click=${(e: Event) => {
           e.preventDefault();
           router.push(authService.authenticated ? "/admin" : "/login");
         }}>

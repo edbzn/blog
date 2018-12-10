@@ -11,7 +11,7 @@ export default class NavBar extends LitElement {
 
   render(): TemplateResult {
     return html`
-      <style scoped>
+      <style>
         :host {
           display: block;
         }

@@ -69,6 +69,12 @@ module.exports = {
       {
         from: "src/client/robots.txt",
       },
+      {
+        from: "src/client/manifest.json",
+      },
+      {
+        from: "src/client/sw.js",
+      },
     ]),
   ],
   devServer: {
