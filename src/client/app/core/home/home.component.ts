@@ -1,5 +1,4 @@
 import { html, TemplateResult } from "lit-html";
-import { twitterFeed } from "./twitter-feed";
 import { LitElement } from "@polymer/lit-element/lit-element";
 import { profileConfiguration } from "../../utils/profile-config";
 
@@ -19,7 +18,7 @@ export default class Home extends LitElement {
       <ez-profile .profile="${profileConfiguration}"></ez-profile>
       <ez-page .navbar="${false}">
         <ez-article-feed></ez-article-feed>
-        ${twitterFeed()}
+        <ez-twitter-feed></ez-twitter-feed>
       </ez-page>
     `;
   }

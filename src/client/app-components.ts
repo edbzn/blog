@@ -11,6 +11,7 @@ import ProfileComponent from "./app/core/home/profile";
 import ArticleDetail from "./app/core/article-detail/article-detail.component";
 import ArticleContent from "./app/core/article-detail/article-content.component";
 import "./app/core/article-detail/article-comment.component";
+import "./app/core/home/twitter-feed.component";
 
 /**
  * Shared components
