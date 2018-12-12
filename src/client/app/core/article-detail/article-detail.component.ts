@@ -245,7 +245,7 @@ export default class ArticleDetail extends LitElement {
           .article-date {
             margin-bottom: 4px;
           }
-          .container.section {
+          .meta-container.section {
             padding: 3rem 0.8rem;
           }
         }
@@ -266,7 +266,7 @@ export default class ArticleDetail extends LitElement {
         style="width: ${this.percentRemaining + "%"};"
       ></div>
       <ez-page .navbar="${false}">
-        <section class="section container">
+        <section class="section meta-container">
           ${
             this.article
               ? this.showArticleDetail()

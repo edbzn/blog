@@ -1,1 +1,1 @@
-export const pageMaxWidth = "720px";
+export const pageMaxWidth = "780px";
