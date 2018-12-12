@@ -87,6 +87,12 @@ export class TwitterFeedComponent extends LitElement {
         .section.twitter {
           padding-top: 0;
         }
+
+        @media screen and (max-width: 600px) {
+          .twitter.section {
+            padding: 1rem 0.8rem;
+          }
+        }
       </style>
       <section class="section twitter">
         <h4 class="subtitle uppercase">tweets</h4>

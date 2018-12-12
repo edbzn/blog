@@ -58,7 +58,7 @@ export default class ArticleDetail extends LitElement {
 
       const percentRemaining = (currentPosition * 100) / totalHeight;
       this.percentRemaining = percentRemaining.toFixed();
-    }, 50);
+    }, 10);
 
     window.addEventListener("scroll", this.calculateRemainingHandler);
   }
@@ -232,6 +232,23 @@ export default class ArticleDetail extends LitElement {
         .content ul:not(:last-child) {
           margin-bottom: 1.1em !important;
         }
+
+        @media screen and (max-width: 600px) {
+          .header {
+            align-items: initial;
+            flex-direction: column-reverse;
+          }
+          .content .publication {
+            align-items: initial;
+            flex-direction: column-reverse;
+          }
+          .article-date {
+            margin-bottom: 4px;
+          }
+          .container.section {
+            padding: 3rem 0.8rem;
+          }
+        }
       </style>
       <ez-navbar></ez-navbar>
       ${
@@ -249,7 +266,7 @@ export default class ArticleDetail extends LitElement {
         style="width: ${this.percentRemaining + "%"};"
       ></div>
       <ez-page .navbar="${false}">
-        <section class="section">
+        <section class="section container">
           ${
             this.article
               ? this.showArticleDetail()

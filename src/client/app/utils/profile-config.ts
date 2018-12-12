@@ -1,5 +1,5 @@
 export const profileConfiguration = {
   name: "Edouard Bozon",
-  description: `Web developer from French Alps. I play every day with #TypeScript and #PHP. Driven by the obsession of growing my knowledge.`,
+  description: `I'm a web expert ; that means I know nothing about absolutely everything. #TypeScript #JavaScript #PHP #Linux`,
   avatarUrl: "assets/images/portrait.jpg",
 };

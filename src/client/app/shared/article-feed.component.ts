@@ -114,7 +114,7 @@ export default class ArticleFeed extends LitElement {
   articleList(): TemplateResult | TemplateResult[] {
     if (!this.articleCollection || this.articleCollection.length === 0) {
       return html`
-        <article class="box"><p>It's empty dude...</p></article>
+        <article class="box"><p>C'est vide copain...</p></article>
       `;
     }
 
@@ -249,8 +249,20 @@ export default class ArticleFeed extends LitElement {
         .feed-header .tag {
           text-transform: capitalize;
         }
+        @media screen and (max-width: 600px) {
+          .feed .card-header-title {
+            align-items: initial;
+            flex-direction: column;
+          }
+          .card-header-title .article-date {
+            margin-bottom: 4px;
+          }
+          .feed.section {
+            padding: 2rem 0.8rem;
+          }
+        }
       </style>
-      <section class="section">
+      <section class="section feed">
         <header class="feed-header">
           <h4 class="subtitle uppercase">articles</h4>
           ${

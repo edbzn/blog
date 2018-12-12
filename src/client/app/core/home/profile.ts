@@ -40,6 +40,12 @@ export default class ProfileComponent extends LitElement {
         .presentation .subtitle {
           font-size: 1.2em;
         }
+
+        @media screen and (max-width: 600px) {
+          .hero .hero-body {
+            padding: 1rem 0.4rem;
+          }
+        }
       </style>
       <section class="hero is-light is-medium">
         <div class="hero-body">

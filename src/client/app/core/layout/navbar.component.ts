@@ -51,7 +51,7 @@ export default class NavBar extends LitElement {
         <a href="/" @click=${(e: Event) => {
           e.preventDefault();
           router.push("/");
-        }}>I'm a web expert ; that means I know nothing about absolutely everything.</a>
+        }}>Codamit - @edouardbozon</a>
         <span class="socials">
           <a title="Github profile" href="${this.githubUrl}">${github}</a>
           <a title="Twitter profile" href="${this.twitterUrl}">${twitter}</a>
