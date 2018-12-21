@@ -1,5 +1,4 @@
-import { LitElement } from "@polymer/lit-element/lit-element";
-import { html, TemplateResult } from "lit-html";
+import { LitElement, html } from "@polymer/lit-element/lit-element";
 
 import router from "../../../app-router";
 import github from "../../utils/icons/github";
@@ -9,7 +8,7 @@ export default class NavBar extends LitElement {
   twitterUrl = "https://twitter.com/edouardbozon";
   githubUrl = "https://github.com/edouardbozon";
 
-  render(): TemplateResult {
+  render() {
     return html`
       <style>
         :host {

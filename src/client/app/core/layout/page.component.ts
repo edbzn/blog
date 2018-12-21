@@ -1,12 +1,11 @@
-import { html, TemplateResult } from "lit-html";
-import { LitElement, property } from "@polymer/lit-element/lit-element";
+import { LitElement, property, html } from "@polymer/lit-element/lit-element";
 import { pageMaxWidth } from "./variables";
 
 export default class Page extends LitElement {
   @property({ type: Boolean })
   navbar = true;
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>.page-wrapper { max-width: ${pageMaxWidth} !important; margin: 0 auto; }</style>

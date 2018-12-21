@@ -1,6 +1,5 @@
-import { html } from "lit-html";
+import { LitElement, property, html } from "@polymer/lit-element";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { LitElement, property } from "@polymer/lit-element";
 
 export default class ProfileComponent extends LitElement {
   @property({ type: Object })

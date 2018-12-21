@@ -1,16 +1,15 @@
-import { LitElement, property } from "@polymer/lit-element";
-import { html, TemplateResult } from "lit-html";
-import { format } from "date-fns";
-import * as frLocale from "date-fns/locale/fr";
+import { html, LitElement, property } from '@polymer/lit-element';
+import { format } from 'date-fns';
+import * as frLocale from 'date-fns/locale/fr';
 
-import router from "../../app-router";
-import { IArticle } from "../core/admin/types";
-import { apiClient } from "../core/api";
-import { ResourceCollection } from "../utils/collection";
-import { showError } from "../utils/show-error";
-import { placeholder } from "./placeholder";
-import { tags } from "./tags";
-import check from "../utils/icons/check";
+import router from '../../app-router';
+import { IArticle } from '../core/admin/types';
+import { apiClient } from '../core/api';
+import { ResourceCollection } from '../utils/collection';
+import check from '../utils/icons/check';
+import { showError } from '../utils/show-error';
+import { placeholder } from './placeholder';
+import { tags } from './tags';
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Array })
@@ -111,7 +110,7 @@ export default class ArticleFeed extends LitElement {
     }
   }
 
-  articleList(): TemplateResult | TemplateResult[] {
+  articleList() {
     if (!this.articleCollection || this.articleCollection.length === 0) {
       return html`
         <article class="box"><p>C'est vide copain...</p></article>
@@ -206,7 +205,7 @@ export default class ArticleFeed extends LitElement {
     });
   }
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>

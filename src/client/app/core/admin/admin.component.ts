@@ -1,10 +1,9 @@
-import { LitElement } from "@polymer/lit-element/lit-element";
-import { html, TemplateResult } from "lit-html";
+import { LitElement, html } from "@polymer/lit-element/lit-element";
 
 import router from "../../../app-router";
 
 export default class Admin extends LitElement {
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>

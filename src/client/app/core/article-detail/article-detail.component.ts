@@ -1,17 +1,16 @@
-import { LitElement, property } from "@polymer/lit-element";
-import { format, distanceInWords } from "date-fns";
-import * as frLocale from "date-fns/locale/fr";
-import { html, TemplateResult } from "lit-html";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { html, LitElement, property } from '@polymer/lit-element';
+import { distanceInWords, format } from 'date-fns';
+import * as frLocale from 'date-fns/locale/fr';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import router from "../../../app-router";
-import { placeholder } from "../../shared/placeholder";
-import { tags } from "../../shared/tags";
-import { debounce } from "../../utils/debounce";
-import { profileConfiguration } from "../../utils/profile-config";
-import { showError } from "../../utils/show-error";
-import { IArticle } from "../admin/types";
-import { apiClient } from "../api";
+import router from '../../../app-router';
+import { placeholder } from '../../shared/placeholder';
+import { tags } from '../../shared/tags';
+import { debounce } from '../../utils/debounce';
+import { profileConfiguration } from '../../utils/profile-config';
+import { showError } from '../../utils/show-error';
+import { IArticle } from '../admin/types';
+import { apiClient } from '../api';
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -68,7 +67,7 @@ export default class ArticleDetail extends LitElement {
       .calculateRemainingHandler as EventListenerOrEventListenerObject);
   }
 
-  showArticleDetail(): TemplateResult {
+  showArticleDetail() {
     const article = this.article as IArticle;
 
     return html`
@@ -138,7 +137,7 @@ export default class ArticleDetail extends LitElement {
     `;
   }
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>

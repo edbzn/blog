@@ -1,7 +1,6 @@
 import anchorme from "anchorme";
 import { distanceInWords } from "date-fns";
 import * as frLocale from "date-fns/locale/fr";
-import { html, TemplateResult } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { until } from "lit-html/directives/until";
 
@@ -9,7 +8,7 @@ import { placeholder } from "../../shared/placeholder";
 import like from "../../utils/icons/like";
 import retweet from "../../utils/icons/retweet";
 import { apiClient } from "../api";
-import { LitElement } from "@polymer/lit-element";
+import { LitElement, html } from "@polymer/lit-element";
 
 export class TwitterFeedComponent extends LitElement {
 
@@ -17,7 +16,7 @@ export class TwitterFeedComponent extends LitElement {
     return apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
   }
 
-  showTweets(resp: any): TemplateResult {
+  showTweets(resp: any) {
     return resp.statuses.map(
       (tweet: any) => html`
         <div class="box">
@@ -60,7 +59,7 @@ export class TwitterFeedComponent extends LitElement {
     );
   }
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>

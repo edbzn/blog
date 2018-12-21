@@ -1,9 +1,8 @@
-import { html, TemplateResult } from "lit-html";
-import { LitElement } from "@polymer/lit-element/lit-element";
+import { LitElement, html } from "@polymer/lit-element/lit-element";
 import { profileConfiguration } from "../../utils/profile-config";
 
 export default class Home extends LitElement {
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>

@@ -1,12 +1,11 @@
-import { LitElement } from "@polymer/lit-element/lit-element";
-import { html, TemplateResult } from "lit-html";
+import { LitElement, html } from "@polymer/lit-element/lit-element";
 
 import heart from "../../utils/icons/heart";
 import router from "../../../app-router";
 import { authService } from "../auth";
 
 export default class Footer extends LitElement {
-  render(): TemplateResult {
+  render() {
     return html`
       <style>
         footer {

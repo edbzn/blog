@@ -1,5 +1,4 @@
-import { LitElement, property } from "@polymer/lit-element/lit-element";
-import { html, TemplateResult } from "lit-html";
+import { LitElement, property, html } from "@polymer/lit-element/lit-element";
 import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
 
@@ -217,7 +216,7 @@ export default class Draft extends LitElement {
     };
   }
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link
         href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"

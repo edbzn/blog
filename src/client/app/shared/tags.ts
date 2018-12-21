@@ -1,6 +1,6 @@
 import { IArticle } from "../core/admin/types";
-import { html } from "lit-html";
 import router from "../../app-router";
+import { html } from "@polymer/lit-element";
 
 export const tags = (article: IArticle, adminMode = false) => html`
   <style>

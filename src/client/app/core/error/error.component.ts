@@ -1,5 +1,4 @@
-import { LitElement, property } from "@polymer/lit-element/lit-element";
-import { html, TemplateResult } from "lit-html";
+import { LitElement, property, html } from "@polymer/lit-element/lit-element";
 
 import router from "../../../app-router";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
@@ -8,7 +7,7 @@ export default class Error extends LitElement {
   @property({ type: String })
   message: string;
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet">
       <style>

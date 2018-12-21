@@ -1,10 +1,10 @@
-import { html, TemplateResult } from "lit-html";
-import { LitElement, property } from "@polymer/lit-element";
-import { IComment } from "./types";
-import { apiClient } from "../api";
-import { ResourceCollection } from "../../utils/collection";
-import { distanceInWordsToNow, format } from "date-fns";
-import * as frLocale from "date-fns/locale/fr";
+import { html, LitElement, property } from '@polymer/lit-element';
+import { format } from 'date-fns';
+import * as frLocale from 'date-fns/locale/fr';
+
+import { ResourceCollection } from '../../utils/collection';
+import { apiClient } from '../api';
+import { IComment } from './types';
 
 export class ArticleCommentComponent extends LitElement {
   @property({ type: String })
@@ -84,7 +84,7 @@ export class ArticleCommentComponent extends LitElement {
       });
   }
 
-  render(): TemplateResult {
+  render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>
