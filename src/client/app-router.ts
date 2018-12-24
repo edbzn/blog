@@ -48,7 +48,7 @@ router
 
     render(
       html`
-        <ez-articles-by-tag tag=${tag}></ez-articles-by-tag>
+        <ez-article-feed-by-tag tag=${tag}></ez-article-feed-by-tag>
       `,
       app,
     );

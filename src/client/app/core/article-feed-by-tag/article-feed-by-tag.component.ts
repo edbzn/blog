@@ -38,4 +38,4 @@ export class ArticlesByTagComponent extends LitElement {
   }
 }
 
-customElements.define("ez-articles-by-tag", ArticlesByTagComponent);
+customElements.define("ez-article-feed-by-tag", ArticlesByTagComponent);

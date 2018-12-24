@@ -2,14 +2,14 @@ import { html, LitElement, property } from "@polymer/lit-element";
 import { format } from "date-fns";
 import * as frLocale from "date-fns/locale/fr";
 
-import router from "../../app-router";
-import { IArticle } from "../core/admin/types";
-import { apiClient } from "../core/api-client";
-import { ResourceCollection } from "../utils/collection";
-import check from "../utils/icons/check";
-import { showError } from "../utils/show-error";
-import { placeholder } from "./placeholder";
-import { tags } from "./tags";
+import router from "../../../app-router";
+import { IArticle } from "../admin/types";
+import { apiClient } from "../api-client";
+import { ResourceCollection } from "../../utils/collection";
+import check from "../../utils/icons/check";
+import { showError } from "../../utils/show-error";
+import { placeholder } from "../../shared/placeholder";
+import { tags } from "../../shared/tags";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Array })
