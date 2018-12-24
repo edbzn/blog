@@ -22,3 +22,5 @@ export default class Home extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-home", Home);

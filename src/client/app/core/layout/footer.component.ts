@@ -38,3 +38,5 @@ export default class Footer extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-footer", Footer);

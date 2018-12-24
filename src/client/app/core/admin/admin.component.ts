@@ -29,3 +29,5 @@ export default class Admin extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-admin", Admin);

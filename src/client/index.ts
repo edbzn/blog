@@ -1,7 +1,7 @@
 
 import "@webcomponents/webcomponentsjs";
 
-import "./app/core/error-handler";
+import "./app/core/error-handler-service";
 
 import "./app-components";
 import "./app-router";

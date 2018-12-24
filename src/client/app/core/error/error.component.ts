@@ -45,3 +45,5 @@ export default class Error extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-error", Error);

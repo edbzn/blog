@@ -74,3 +74,5 @@ export default class ProfileComponent extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-profile", ProfileComponent);

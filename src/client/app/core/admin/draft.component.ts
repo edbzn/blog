@@ -4,7 +4,6 @@ import * as SimpleMDE from "simplemde";
 
 import { apiClient } from "../api-client";
 import { showError } from "../../utils/show-error";
-import { upload } from "../upload";
 import { IArticle, IDraft, IDraftFormRefs } from "./types";
 
 export default class Draft extends LitElement {
@@ -188,7 +187,7 @@ export default class Draft extends LitElement {
   }
 
   uploadPoster(file: File): Promise<{ path: string }> {
-    return upload(file);
+    throw new Error('Not implemented')
   }
 
   isDraft(): boolean {
@@ -364,3 +363,5 @@ export default class Draft extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-draft", Draft);

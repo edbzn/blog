@@ -282,3 +282,5 @@ export default class ArticleDetail extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-article-detail", ArticleDetail);

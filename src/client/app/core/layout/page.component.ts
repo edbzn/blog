@@ -15,3 +15,5 @@ export default class Page extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-page", Page);

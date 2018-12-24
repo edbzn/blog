@@ -59,3 +59,5 @@ export default class NavBar extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-navbar", NavBar);

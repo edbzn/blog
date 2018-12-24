@@ -10,7 +10,7 @@ const app = document.getElementById('app')!;
 
 router
   .use("/", (_req, resp) => {
-    setTitleAndMeta('Codamit', 'I share stuff about code, architecture and best practices');
+    setTitleAndMeta('Codamit - Tech Blog', 'I share stuff about code, architecture and best practices');
     render(
       html`
         <ez-home></ez-home>
@@ -48,29 +48,7 @@ router
 
     render(
       html`
-        <ez-page>
-          <style>
-            .last {
-              padding-top: 0 !important;
-              padding-bottom: 0 !important;
-            }
-          </style>
-          <ez-article-feed .tags=${[tag]}></ez-article-feed>
-          <section class="section last">
-            <a
-              href="/"
-              class="button is-block"
-              @click="${
-                (e: Event) => {
-                  e.preventDefault();
-                  router.push("/");
-                }
-              }"
-            >
-              Back to home
-            </a>
-          </section>
-        </ez-page>
+        <ez-articles-by-tag tag=${tag}></ez-articles-by-tag>
       `,
       app,
     );

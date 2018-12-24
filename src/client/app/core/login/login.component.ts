@@ -203,3 +203,5 @@ export default class Login extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-login", Login);

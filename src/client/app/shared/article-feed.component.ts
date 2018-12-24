@@ -301,3 +301,5 @@ export default class ArticleFeed extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-article-feed", ArticleFeed);

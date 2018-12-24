@@ -68,3 +68,5 @@ export default class ArticleContent extends LitElement {
     `;
   }
 }
+
+customElements.define("ez-article-content", ArticleContent);
