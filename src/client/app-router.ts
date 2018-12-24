@@ -1,6 +1,6 @@
 import { html, render } from "lit-html";
 import { browserRouter, ProuterNavigationEvent } from "prouter";
-import { authService } from "./app/core/auth";
+import { authService } from "./app/core/authentication-service";
 import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
 import { createErrorURI } from "./app/utils/show-error";
 import { setTitleAndMeta } from "./app/utils/set-document-meta";

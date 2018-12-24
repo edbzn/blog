@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import * as frLocale from 'date-fns/locale/fr';
 
 import { ResourceCollection } from '../../utils/collection';
-import { apiClient } from '../api';
+import { apiClient } from '../api-client';
 import { IComment } from './types';
 
 export class ArticleCommentComponent extends LitElement {

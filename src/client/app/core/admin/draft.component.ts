@@ -2,7 +2,7 @@ import { LitElement, property, html } from "@polymer/lit-element/lit-element";
 import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
 
-import { apiClient } from "../api";
+import { apiClient } from "../api-client";
 import { showError } from "../../utils/show-error";
 import { upload } from "../upload";
 import { IArticle, IDraft, IDraftFormRefs } from "./types";

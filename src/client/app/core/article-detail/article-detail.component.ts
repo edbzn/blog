@@ -10,7 +10,7 @@ import { debounce } from '../../utils/debounce';
 import { profileConfiguration } from '../../utils/profile-config';
 import { showError } from '../../utils/show-error';
 import { IArticle } from '../admin/types';
-import { apiClient } from '../api';
+import { apiClient } from '../api-client';
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })

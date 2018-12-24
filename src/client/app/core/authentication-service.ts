@@ -1,5 +1,5 @@
 import { IUser } from "./login/types";
-import { apiClient } from "./api";
+import { apiClient } from "./api-client";
 import { showError } from "../utils/show-error";
 
 class Authentication {

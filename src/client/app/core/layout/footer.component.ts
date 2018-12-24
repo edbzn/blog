@@ -2,7 +2,7 @@ import { LitElement, html } from "@polymer/lit-element/lit-element";
 
 import heart from "../../utils/icons/heart";
 import router from "../../../app-router";
-import { authService } from "../auth";
+import { authService } from "../authentication-service";
 
 export default class Footer extends LitElement {
   render() {
