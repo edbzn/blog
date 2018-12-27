@@ -1,16 +1,17 @@
 import { html, render } from "lit-html";
 import { browserRouter, ProuterNavigationEvent, routerGroup } from "prouter";
+
 import { authService } from "./app/core/authentication-service";
-import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
-import { createErrorURI } from "./app/utils/show-error";
+import { errorHandlerService } from "./app/core/error-handler-service";
 import { setTitleAndMeta } from "./app/utils/set-document-meta";
+import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
 import {
   loadAdmin,
-  loadHome,
-  loadLogin,
   loadArticleDetail,
   loadArticlesByTag,
   loadError,
+  loadHome,
+  loadLogin,
 } from "./lazyload";
 
 const appSelector = document.getElementById("app")!;
@@ -20,7 +21,8 @@ const adminRoutes = routerGroup();
 adminRoutes
   .use("*", (_req, resp, next) => {
     if (!authService.authenticated) {
-      router.push(createErrorURI(unAuthenticatedErrorMsg));
+      errorHandlerService.throw(unAuthenticatedErrorMsg);
+      router.push('/error');
       resp.end();
       return;
     }
@@ -40,7 +42,8 @@ adminRoutes
   })
   .use("/draft", async (req, resp) => {
     await loadAdmin();
-
+    
+    setTitleAndMeta("Draft");
     render(
       html`
         <ez-draft id="${req.query.id}"></ez-draft>
@@ -58,7 +61,6 @@ router
       "Codamit - Tech Blog",
       "I share stuff about code, architecture and best practices",
     );
-
     render(
       html`
         <ez-home></ez-home>
@@ -85,7 +87,6 @@ router
     const id = req.params.id;
     const title = (req.query.title = req.query.title);
     setTitleAndMeta(title);
-
     render(
       html`
         <ez-article-detail id="${id}"></ez-article-detail>
@@ -99,7 +100,6 @@ router
 
     const tag = req.params.tag;
     setTitleAndMeta(tag, "Tous les articles au sujet de " + tag);
-
     render(
       html`
         <ez-article-feed-by-tag tag=${tag}></ez-article-feed-by-tag>
@@ -111,12 +111,10 @@ router
   .use("/error", async (req, resp) => {
     await loadError();
 
-    const message = req.query.message;
     setTitleAndMeta("Codamit - Erreur");
-
     render(
       html`
-        <ez-error message="${message}"></ez-error>
+        <ez-error message="${errorHandlerService.getLastError()}"></ez-error>
       `,
       appSelector,
     );
@@ -124,7 +122,8 @@ router
   })
   .use("/admin", adminRoutes)
   .use("*", (_req, resp) => {
-    router.push(createErrorURI("Page not Found"));
+    errorHandlerService.throw("Heuuu, cette page n'existe pas...");
+    router.push("/error");
     resp.end();
   });
 

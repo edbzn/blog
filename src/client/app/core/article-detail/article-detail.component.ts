@@ -1,16 +1,16 @@
-import { html, LitElement, property } from '@polymer/lit-element';
-import { distanceInWords, format } from 'date-fns';
-import * as frLocale from 'date-fns/locale/fr';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { html, LitElement, property } from "@polymer/lit-element";
+import { distanceInWords, format } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
-import router from '../../../app-router';
-import { placeholder } from '../../shared/placeholder';
-import { tags } from '../../shared/tags';
-import { debounce } from '../../utils/debounce';
-import { profileConfiguration } from '../../utils/profile-config';
-import { showError } from '../../utils/show-error';
-import { IArticle } from '../admin/types';
-import { apiClient } from '../api-client';
+import router from "../../../app-router";
+import { placeholder } from "../../shared/placeholder";
+import { tags } from "../../shared/tags";
+import { debounce } from "../../utils/debounce";
+import { profileConfiguration } from "../../utils/profile-config";
+import { IArticle } from "../admin/types";
+import { apiClient } from "../api-client";
+import { errorHandlerService } from "../error-handler-service";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -38,7 +38,7 @@ export default class ArticleDetail extends LitElement {
       this.article = await this.getArticle();
       this.posterUrl = this.article.posterUrl as string;
     } catch (error) {
-      showError(error);
+      errorHandlerService.throwAndRedirect(error);
     }
   }
 

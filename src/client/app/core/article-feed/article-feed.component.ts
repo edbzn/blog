@@ -3,13 +3,13 @@ import { format } from "date-fns";
 import * as frLocale from "date-fns/locale/fr";
 
 import router from "../../../app-router";
-import { IArticle } from "../admin/types";
-import { apiClient } from "../api-client";
-import { ResourceCollection } from "../../utils/collection";
-import check from "../../utils/icons/check";
-import { showError } from "../../utils/show-error";
 import { placeholder } from "../../shared/placeholder";
 import { tags } from "../../shared/tags";
+import { ResourceCollection } from "../../utils/collection";
+import check from "../../utils/icons/check";
+import { IArticle } from "../admin/types";
+import { apiClient } from "../api-client";
+import { errorHandlerService } from "../error-handler-service";
 
 export default class ArticleFeed extends LitElement {
   @property({ type: Array })
@@ -105,7 +105,7 @@ export default class ArticleFeed extends LitElement {
         );
         this.update(new Map());
       } catch (error) {
-        showError(error);
+        errorHandlerService.throwAndRedirect(error);
       }
     }
   }

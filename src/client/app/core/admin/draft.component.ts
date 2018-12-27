@@ -1,12 +1,12 @@
-import { LitElement, property, html } from "@polymer/lit-element/lit-element";
-import { v1 as uuid } from "uuid";
+import { html, LitElement, property } from "@polymer/lit-element/lit-element";
 import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
+import { v1 as uuid } from "uuid";
 
 import { apiClient } from "../api-client";
-import { showError } from "../../utils/show-error";
-import { IArticle, IDraft, IDraftFormRefs } from "./types";
+import { errorHandlerService } from "../error-handler-service";
 import { storageService } from "../storage-client";
+import { IArticle, IDraft, IDraftFormRefs } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: String })
@@ -98,7 +98,7 @@ export default class Draft extends LitElement {
       try {
         await this.uploadFileAndUpdateForm(file);
       } catch (error) {
-        showError(error);
+        errorHandlerService.throw(error);
       }
     }
   }
@@ -125,7 +125,7 @@ export default class Draft extends LitElement {
     try {
       await this.submitAndUpdateFields(article as IArticle);
     } catch (error) {
-      showError(error);
+      errorHandlerService.throw(error);
     }
   }
 
@@ -189,7 +189,7 @@ export default class Draft extends LitElement {
   }
 
   uploadPoster(file: File) {
-    return storageService.upload((this.id || "draft" + "-" + uuid()), file);
+    return storageService.upload(this.id || "draft" + "-" + uuid(), file);
   }
 
   isDraft(): boolean {

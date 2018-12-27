@@ -1,6 +1,6 @@
-import { IUser } from "./login/types";
 import { apiClient } from "./api-client";
-import { showError } from "../utils/show-error";
+import { errorHandlerService } from "./error-handler-service";
+import { IUser } from "./login/types";
 
 class Authentication {
   static readonly AUTHORIZATION = "authorization";
@@ -20,7 +20,7 @@ class Authentication {
         .then(user => {
           this.setUser(user);
         })
-        .catch(e => showError(e));
+        .catch(e => errorHandlerService.throw(e));
     }
   }
 
