@@ -9,8 +9,14 @@ const router = browserRouter();
 const app = document.getElementById('app')!;
 
 router
-  .use("/", (_req, resp) => {
+  .use("/", async (_req, resp) => {
+    await Promise.all([
+      import("./app/core/home/profile"),
+      import("./app/core/home/twitter-feed.component"),
+    ]);
+
     setTitleAndMeta('Codamit - Tech Blog', 'I share stuff about code, architecture and best practices');
+
     render(
       html`
         <ez-home></ez-home>
@@ -19,7 +25,9 @@ router
     );
     resp.end();
   })
-  .use("/login", (_req, resp) => {
+  .use("/login", async (_req, resp) => {
+    await import("./app/core/login/login.component");
+
     setTitleAndMeta('Codamit - Connexion');
     render(
       html`
@@ -29,7 +37,13 @@ router
     );
     resp.end();
   })
-  .use("/article/:id", (req, resp) => {
+  .use("/article/:id", async (req, resp) => {
+    await Promise.all([
+      import("./app/core/article-detail/article-detail.component"),
+      import("./app/core/article-detail/article-comment.component"),
+      import("./app/core/article-detail/article-content.component"),
+    ]);
+
     const id = req.params.id;
     const title = req.query.title = req.query.title;
     setTitleAndMeta(title);
@@ -42,7 +56,9 @@ router
     );
     resp.end();
   })
-  .use("/tag/:tag", (req, resp) => {
+  .use("/tag/:tag", async (req, resp) => {
+    await import("./app/core/article-feed-by-tag/article-feed-by-tag.component");
+
     const tag = req.params.tag;
     setTitleAndMeta(tag, "Tous les articles au sujet de " + tag);
 
@@ -54,10 +70,12 @@ router
     );
     resp.end();
   })
-  .use("/admin", (_req, resp) => {
+  .use("/admin", async (_req, resp) => {
     if (!authService.authenticated) {
       router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
+      await import("./app/core/admin/admin.component");
+
       setTitleAndMeta('Codamit - Admin');
       render(
         html`
@@ -68,10 +86,12 @@ router
     }
     resp.end();
   })
-  .use("/admin/draft", (req, resp) => {
+  .use("/admin/draft", async (req, resp) => {
     if (!authService.authenticated) {
       router.push(createErrorURI(unAuthenticatedErrorMsg));
     } else {
+      await import("./app/core/admin/draft.component");
+
       render(
         html`
           <ez-draft id="${req.query.id}"></ez-draft>
@@ -81,7 +101,9 @@ router
     }
     resp.end();
   })
-  .use("/error", (req, resp) => {
+  .use("/error", async (req, resp) => {
+    await import("./app/core/error/error.component");
+
     const message = req.query.message;
     setTitleAndMeta('Codamit - Erreur');
 

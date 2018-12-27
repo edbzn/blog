@@ -1,15 +1,5 @@
-import "./app/core/admin/admin.component";
-import "./app/core/admin/draft.component";
-import "./app/core/error/error.component";
 import "./app/core/home/home.component";
+import "./app/core/article-feed/article-feed.component";
 import "./app/core/layout/footer.component";
 import "./app/core/layout/navbar.component";
 import "./app/core/layout/page.component";
-import "./app/core/login/login.component";
-import "./app/core/home/profile";
-import "./app/core/article-detail/article-detail.component";
-import "./app/core/article-feed/article-feed.component";
-import "./app/core/article-feed-by-tag/article-feed-by-tag.component";
-import "./app/core/article-detail/article-content.component";
-import "./app/core/article-detail/article-comment.component";
-import "./app/core/home/twitter-feed.component";
