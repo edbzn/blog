@@ -43,6 +43,8 @@
     "chalk": "^2.4.1",
     "date-fns": "^1.29.0",
     "dotenv": "^6.1.0",
+    "dotenv-webpack": "^1.6.0",
+    "dropbox": "^4.0.14",
     "express": "^4.16.4",
     "lit-html": "^1.0.0-rc.1",
     "mongoose": "^5.3.3",

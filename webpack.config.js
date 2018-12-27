@@ -2,6 +2,7 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: "./src/client/index",
@@ -43,6 +44,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Codamit [WDS] - [HMR]",
       template: path.resolve(__dirname, "src", "client", "index.dev.html"),
+    }),
+    new Dotenv({
+      path: './.env'
     }),
     new WriteFilePlugin(),
     new CopyWebpackPlugin([
