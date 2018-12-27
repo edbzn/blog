@@ -291,7 +291,7 @@ export default class Draft extends LitElement {
                 <div class="field">
                   <button
                     class="button"
-                    ?disabled=${!!this.draft.posterUrl}
+                    ?disabled=${!this.draft.posterUrl}
                     @click="${
                       async (e: Event) => {
                         e.preventDefault();
@@ -303,7 +303,7 @@ export default class Draft extends LitElement {
                       }
                     }"
                   >
-                    Remove poster
+                    Supprimer le poster
                   </button>
                 </div>
                 <div class="field">
