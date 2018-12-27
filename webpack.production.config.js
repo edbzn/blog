@@ -2,9 +2,9 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge");
 const Dotenv = require('dotenv-webpack');
-const devConfig = require("./webpack.config");
+const common = require('./webpack.common.config');
 
-module.exports = merge(devConfig, {
+module.exports = merge(common, {
   mode: "production",
   stats: {
     colors: false,
