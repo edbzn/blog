@@ -16,21 +16,6 @@ module.exports = merge(devConfig, {
     modules: true,
     children: true,
   },
-  optimization: {
-    minimizer: [],
-    runtimeChunk: false,
-    splitChunks: {
-      cacheGroups: {
-        default: false,
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor_app",
-          chunks: "all",
-          minChunks: 2,
-        },
-      },
-    },
-  },
   plugins: [
     new HtmlWebpackPlugin({
       title: "Codamit - Tech Blog",
