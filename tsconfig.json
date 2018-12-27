@@ -12,7 +12,7 @@
     "strictPropertyInitialization": false,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "target": "es6",
     "allowJs": false,

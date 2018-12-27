@@ -2,7 +2,7 @@ import { html, LitElement, property } from "@polymer/lit-element";
 
 import router from "../../../app-router";
 
-export class ArticlesByTagComponent extends LitElement {
+export default class ArticlesByTagComponent extends LitElement {
   @property({ type: String })
   tag: string | null = null;
 

@@ -6,7 +6,7 @@ import { ResourceCollection } from '../../utils/collection';
 import { apiClient } from '../api-client';
 import { IComment } from './types';
 
-export class ArticleCommentComponent extends LitElement {
+export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
   articleId: string | null = null;
 

@@ -10,7 +10,7 @@ import retweet from "../../utils/icons/retweet";
 import { apiClient } from "../api-client";
 import { LitElement, html } from "@polymer/lit-element";
 
-export class TwitterFeedComponent extends LitElement {
+export default class TwitterFeedComponent extends LitElement {
 
   async getTweets(): Promise<{ statuses: any[] }> {
     return apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
