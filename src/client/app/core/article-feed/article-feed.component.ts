@@ -178,11 +178,10 @@ export default class ArticleFeed extends LitElement {
                       @click="${
                         (e: Event) => {
                           e.preventDefault();
-                          router.push(
-                            `/admin/draft?id=${
-                              article._id
-                            }?title=${encodeURIComponent(article.title)}`,
-                          );
+                          const url = `/admin/draft?id=${
+                            article._id
+                          }&title=${encodeURIComponent(article.title)}`;
+                          router.push(url);
                         }
                       }"
                     >
