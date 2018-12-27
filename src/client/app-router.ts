@@ -1,46 +1,54 @@
 import { html, render } from "lit-html";
-import { browserRouter, ProuterNavigationEvent } from "prouter";
+import { browserRouter, ProuterNavigationEvent, routerGroup } from "prouter";
 import { authService } from "./app/core/authentication-service";
 import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
 import { createErrorURI } from "./app/utils/show-error";
 import { setTitleAndMeta } from "./app/utils/set-document-meta";
+import {
+  loadAdmin,
+  loadHome,
+  loadLogin,
+  loadArticleDetail,
+  loadArticlesByTag,
+  loadError,
+} from "./lazyload";
 
+const appSelector = document.getElementById("app")!;
 const router = browserRouter();
-const app = document.getElementById("app")!;
+const adminRoutes = routerGroup();
 
-const loadHome = () =>
-  Promise.all([
-    import(/* webpackChunkName: "app-home" */ "./app/core/home/profile"),
-    import(/* webpackChunkName: "app-home" */ "./app/core/home/twitter-feed.component"),
-  ]);
+adminRoutes
+  .use("*", (_req, resp, next) => {
+    if (!authService.authenticated) {
+      router.push(createErrorURI(unAuthenticatedErrorMsg));
+      resp.end();
+      return;
+    }
+    next();
+  })
+  .use("/", async (_req, resp) => {
+    await loadAdmin();
 
-const loadLogin = () =>
-  Promise.all([
-    import(/* webpackChunkName: "app-login" */ "./app/core/login/login.component"),
-  ]);
+    setTitleAndMeta("Codamit - Admin");
+    render(
+      html`
+        <ez-admin></ez-admin>
+      `,
+      appSelector,
+    );
+    resp.end();
+  })
+  .use("/draft", async (req, resp) => {
+    await loadAdmin();
 
-const loadArticleDetail = () =>
-  Promise.all([
-    import(/* webpackChunkName: "app-article" */ "./app/core/article-detail/article-detail.component"),
-    import(/* webpackChunkName: "app-article" */ "./app/core/article-detail/article-comment.component"),
-    import(/* webpackChunkName: "app-article" */ "./app/core/article-detail/article-content.component"),
-  ]);
-
-const loadArticlesByTag = () =>
-  Promise.all([
-    import(/* webpackChunkName: "app-articles-by-tag" */ "./app/core/article-feed-by-tag/article-feed-by-tag.component"),
-  ]);
-
-const loadAdmin = () =>
-  Promise.all([
-    import(/* webpackChunkName: "app-admin" */ "./app/core/admin/admin.component"),
-    import(/* webpackChunkName: "app-admin" */ "./app/core/admin/draft.component"),
-  ]);
-
-const loadError = () =>
-  Promise.all([
-    import(/* webpackChunkName: "app-error" */ "./app/core/error/error.component"),
-  ]);
+    render(
+      html`
+        <ez-draft id="${req.query.id}"></ez-draft>
+      `,
+      appSelector,
+    );
+    resp.end();
+  });
 
 router
   .use("/", async (_req, resp) => {
@@ -55,7 +63,7 @@ router
       html`
         <ez-home></ez-home>
       `,
-      app,
+      appSelector,
     );
     resp.end();
   })
@@ -67,7 +75,7 @@ router
       html`
         <ez-login></ez-login>
       `,
-      app,
+      appSelector,
     );
     resp.end();
   })
@@ -82,7 +90,7 @@ router
       html`
         <ez-article-detail id="${id}"></ez-article-detail>
       `,
-      app,
+      appSelector,
     );
     resp.end();
   })
@@ -96,39 +104,8 @@ router
       html`
         <ez-article-feed-by-tag tag=${tag}></ez-article-feed-by-tag>
       `,
-      app,
+      appSelector,
     );
-    resp.end();
-  })
-  .use("/admin", async (_req, resp) => {
-    if (!authService.authenticated) {
-      router.push(createErrorURI(unAuthenticatedErrorMsg));
-    } else {
-      await loadAdmin();
-
-      setTitleAndMeta("Codamit - Admin");
-      render(
-        html`
-          <ez-admin></ez-admin>
-        `,
-        app,
-      );
-    }
-    resp.end();
-  })
-  .use("/admin/draft", async (req, resp) => {
-    if (!authService.authenticated) {
-      router.push(createErrorURI(unAuthenticatedErrorMsg));
-    } else {
-      await loadAdmin();
-
-      render(
-        html`
-          <ez-draft id="${req.query.id}"></ez-draft>
-        `,
-        app,
-      );
-    }
     resp.end();
   })
   .use("/error", async (req, resp) => {
@@ -141,10 +118,11 @@ router
       html`
         <ez-error message="${message}"></ez-error>
       `,
-      app,
+      appSelector,
     );
     resp.end();
   })
+  .use("/admin", adminRoutes)
   .use("*", (_req, resp) => {
     router.push(createErrorURI("Page not Found"));
     resp.end();
