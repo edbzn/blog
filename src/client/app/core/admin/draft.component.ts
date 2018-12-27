@@ -1,10 +1,12 @@
 import { LitElement, property, html } from "@polymer/lit-element/lit-element";
+import { v1 as uuid } from "uuid";
 import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
 
 import { apiClient } from "../api-client";
 import { showError } from "../../utils/show-error";
 import { IArticle, IDraft, IDraftFormRefs } from "./types";
+import { storageService } from "../storage-client";
 
 export default class Draft extends LitElement {
   @property({ type: String })
@@ -186,8 +188,8 @@ export default class Draft extends LitElement {
     return apiClient.put<IArticle>(`/api/v1/article/${this.id}`, article);
   }
 
-  uploadPoster(file: File): Promise<{ path: string }> {
-    throw new Error('Not implemented')
+  uploadPoster(file: File) {
+    return storageService.upload((this.id || "draft" + "-" + uuid()), file);
   }
 
   isDraft(): boolean {

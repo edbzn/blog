@@ -8,7 +8,7 @@ async function handleErrors(response: Response) {
         error = serverError.error.message;
       }
     } catch (error) {
-      // do nothing
+      console.error(error);
     }
 
     throw Error(error);
