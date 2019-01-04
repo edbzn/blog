@@ -5,7 +5,6 @@ export class HttpClient {
 
   private readonly options: RequestInit = {
     mode: "cors",
-    cache: "no-cache",
     headers: {
       "Content-Type": "application/json",
     },
@@ -14,12 +13,22 @@ export class HttpClient {
   constructor(private baseUrl: string) {}
 
   async get<T>(path: string): Promise<T> {
-    const resp = await _fetch(this.baseUrl + path, {
-      ...this.getOptions(),
-      method: "GET",
-    });
+    try {
+      const resp = await _fetch(this.baseUrl + path, {
+        ...this.getOptions(),
+        method: "GET",
+      });
+  
+      return resp.json();
+    } catch (error) {
+      const cached = await caches.match(this.baseUrl + path);
+      
+      if (cached) {
+        return cached.json();
+      }
+    }
 
-    return resp.json();
+    return Promise.reject('Something went wrong when getting ' + path);
   }
 
   async post<T>(path: string, data: any): Promise<T> {

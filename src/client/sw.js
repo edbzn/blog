@@ -1,5 +1,6 @@
 // Every time code is changed we need to update this string to reinstall the service worker.
-var PRECACHE = "precache-v2";
+var PRECACHE = "precache-v3";
+var APICACHE = "apicache-v1";
 var RUNTIME = "runtime";
 
 // A list of resources we always want to be cached.
@@ -9,7 +10,6 @@ var PRECACHE_URLS = [
   "assets/css/bulma.min.css",
   "assets/css/atom.css",
   "assets/images/portrait.jpg",
-  "bundle.js",
 ];
 
 // The install handler takes care of precaching the resources we always need.
@@ -24,7 +24,7 @@ self.addEventListener("install", event => {
 
 // The activate handler takes care of cleaning up old caches.
 self.addEventListener("activate", event => {
-  var currentCaches = [PRECACHE, RUNTIME];
+  var currentCaches = [PRECACHE, RUNTIME, APICACHE];
 
   event.waitUntil(
     caches
@@ -41,11 +41,9 @@ self.addEventListener("activate", event => {
   );
 });
 
-// The fetch handler serves responses for same-origin resources from a cache.
 // If no response is found, it populates the runtime cache with the response
 // from the network before returning it to the page.
 self.addEventListener("fetch", event => {
-  // Skip cross-origin requests, like those for Google Analytics.
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
@@ -58,6 +56,23 @@ self.addEventListener("fetch", event => {
             // Put a copy of the response in the runtime cache.
             cache.put(event.request, response.clone()).then(() => response),
           ),
+        );
+      }),
+    );
+  }
+});
+
+// Always go to the network & update a cache as we go
+self.addEventListener("fetch", function(event) {
+  if (event.request.url.startsWith("https://api.codamit.com/")) {
+    event.respondWith(
+      caches.open(APICACHE).then(function(cache) {
+        return fetch(event.request, { mode: "cors" }).then(
+          function(response) {
+            cache.put(event.request, response.clone());
+
+            return response;
+          },
         );
       }),
     );
