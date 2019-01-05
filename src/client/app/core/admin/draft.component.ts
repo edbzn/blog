@@ -8,6 +8,7 @@ import { apiClient } from "../api-client";
 import { errorHandlerService } from "../error-handler-service";
 import { storageService } from "../storage-client";
 import { IArticle, IDraft, IDraftFormRefs } from "./types";
+import check from "../../utils/icons/check";
 
 export default class Draft extends LitElement {
   @property({ type: String })
@@ -27,6 +28,12 @@ export default class Draft extends LitElement {
   };
 
   editor: SimpleMDE;
+
+  /**
+   * Whenever form is dirty
+   */
+  dirty: boolean = false;
+  saveTimer: number;
 
   constructor() {
     super();
@@ -82,9 +89,11 @@ export default class Draft extends LitElement {
       const article = await this.postDraft(draft);
       this.id = article._id;
       this.draft = article;
-      router.push(`/admin/draft?id=${article._id}&title=${encodeURIComponent(
-        article.title,
-      )}`);
+      router.push(
+        `/admin/draft?id=${article._id}&title=${encodeURIComponent(
+          article.title,
+        )}`,
+      );
     } else {
       const article = await this.updateArticle(draft as IArticle);
       this.draft = article;
@@ -133,10 +142,33 @@ export default class Draft extends LitElement {
     }
   }
 
-  handleTags() {
+  handleTags(): void {
     const { tagsCtrl } = this.getFormRefs();
     this.draft.tags = tagsCtrl.value.split(",");
     this.update(new Map());
+  }
+
+  handleChange(e: Event): void {
+    e.preventDefault();
+
+    this.dirty = true;
+    this.update(new Map());
+
+    if (this.saveTimer) {
+      window.clearTimeout(this.saveTimer);
+    }
+
+    const { titleCtrl } = this.getFormRefs();
+    if (!titleCtrl.validity.valid) {
+      return;
+    }
+
+    const saveCallback = async () => {
+      await this.handleSubmit(e);
+      this.dirty = false;
+      this.update(new Map());
+    };
+    this.saveTimer = window.setTimeout(saveCallback, 2000);
   }
 
   getFormRefs(): IDraftFormRefs {
@@ -251,6 +283,11 @@ export default class Draft extends LitElement {
           background-size: cover;
           background-color: #eee;
         }
+
+        button svg {
+          width: 22px;
+          margin-right: 6px;
+        }
       </style>
       <ez-navbar></ez-navbar>
       <div>
@@ -265,7 +302,12 @@ export default class Draft extends LitElement {
             : html``
         }
         <div class="container is-fluid">
-          <form name="login" class="columns" @submit="${this.handleSubmit}">
+          <form
+            name="login"
+            class="columns"
+            @submit="${this.handleSubmit}"
+            @input="${this.handleChange}"
+          >
             <div class="column is-three-fifths">
               <h1 class="title">${this.draft.title}</h1>
               <input type="hidden" id="posterUrl" name="posterUrl" />
@@ -315,7 +357,6 @@ export default class Draft extends LitElement {
                     >Tags (separated by a comma)</label
                   >
                   <input
-                    required
                     type="text"
                     class="input"
                     id="tags"
@@ -352,7 +393,17 @@ export default class Draft extends LitElement {
                     type="text"
                   />
                 </div>
-                <button type="submit" class="button">Save draft</button>
+                <button type="submit" class="button" ?disabled=${!this.dirty}>
+                  ${
+                    this.dirty
+                      ? html`
+                          Save is pending...
+                        `
+                      : html`
+                          ${check} Draft saved
+                        `
+                  }
+                </button>
                 <button
                   type="button"
                   class="button is-info"
