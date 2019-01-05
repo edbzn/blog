@@ -10,7 +10,9 @@ export const postArticleEffect$: Effect = req$ =>
     use(articleValidator$),
     map(req => ({
       ...req.body,
-      tags: req.body.tags.map((tag: string) => tag.toLowerCase()),
+      tags: (req.body.tags.map((tag: string) =>
+        tag.toLowerCase(),
+      ) as string[]).filter(val => val && val.length > 2),
     })),
     mergeMap(ArticleDao.create),
     map(article => ({ body: article })),

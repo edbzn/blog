@@ -13,7 +13,9 @@ export const updateArticleEffect$: Effect = req$ =>
       of(req.params.id).pipe(
         mapTo({
           ...req.body,
-          tags: req.body.tags.map((tag: string) => tag.toLowerCase()),
+          tags: (req.body.tags.map((tag: string) =>
+            tag.toLowerCase(),
+          ) as string[]).filter(val => val && val.length > 2),
         }),
         mergeMap(article => ArticleDao.updateById(req.params.id, article)),
         mergeMap(neverNullable),

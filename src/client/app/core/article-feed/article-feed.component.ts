@@ -146,7 +146,7 @@ export default class ArticleFeed extends LitElement {
                     style="background-image: url('${article.posterUrl}')"
                   ></figure>
                 `
-              : html``
+              : ``
           }
           <div class="card-content">
             <h3 class="title">${article.title}</h3>
