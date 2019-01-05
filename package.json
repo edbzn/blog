@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "My web page",
   "main": "index.js",
+  "engines" : {
+    "node" : ">=11.6.0"
+  },
   "scripts": {
     "start": "npm run start:api:prod",
     "watch": "concurrently \"webpack-dev-server --config=webpack.dev.config.js --inline --hot\" \"nodemon --config nodemon.server.json\"",
