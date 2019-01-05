@@ -3,6 +3,7 @@ import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
 import { v1 as uuid } from "uuid";
 
+import router from "../../../app-router";
 import { apiClient } from "../api-client";
 import { errorHandlerService } from "../error-handler-service";
 import { storageService } from "../storage-client";
@@ -81,6 +82,9 @@ export default class Draft extends LitElement {
       const article = await this.postDraft(draft);
       this.id = article._id;
       this.draft = article;
+      router.push(`/admin/draft?id=${article._id}&title=${encodeURIComponent(
+        article.title,
+      )}`);
     } else {
       const article = await this.updateArticle(draft as IArticle);
       this.draft = article;
