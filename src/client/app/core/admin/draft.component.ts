@@ -9,25 +9,16 @@ import { errorHandlerService } from "../error-handler-service";
 import { storageService } from "../storage-client";
 import { IArticle, IDraft, IDraftFormRefs } from "./types";
 import check from "../../utils/icons/check";
+import { DraftState, DraftActions } from "./draft.store";
 
 export default class Draft extends LitElement {
-  @property({ type: String })
-  id: string;
+  @property({ type: Object })
+  actions: DraftActions;
 
   @property({ type: Object })
-  draft: IDraft | IArticle = {
-    title: "New draft",
-    markdown: "",
-    html: "",
-    tags: [],
-    posterUrl: null,
-    published: false,
-    publishedAt: null,
-    metaTitle: null,
-    metaDescription: null,
-  };
+  states: flyd.Stream<DraftState>;
 
-  editor: SimpleMDE;
+  state: DraftState;
 
   /**
    * Whenever form is dirty
@@ -35,71 +26,57 @@ export default class Draft extends LitElement {
   dirty: boolean = false;
   saveTimer: number;
 
-  constructor() {
-    super();
-  }
-
   firstUpdated(): void {
-    this.init();
-  }
+    this.state = this.states();
 
-  async init(): Promise<void> {
-    // If an id is given we needs to fetch draft data
-    // then hydrate the whole form
-    if (!this.isDraft()) {
-      this.draft = await this.getArticle();
-      this.fillFormData();
+    if (this.shouldLoadDraft(this.state)) {
+      this.actions.fetchArticle(this.state.id as string).then(draft => {
+        this.actions.initEditor(
+          this.getFormRefs().markdownCtrl,
+          draft.markdown,
+        );
+      });
     }
 
-    const { markdownCtrl } = this.getFormRefs();
-
-    this.editor = new SimpleMDE({
-      lineWrapping: true,
-      element: markdownCtrl,
-      initialValue: this.draft.markdown,
-      spellChecker: false,
-      autoDownloadFontAwesome: true,
-      forceSync: false,
-      tabSize: 2,
-      autosave: {
-        enabled: false,
-        uniqueId: "editor",
-      },
-      autofocus: true,
+    this.states.map(state => {
+      this.state = state;
+      this.update(new Map());
     });
   }
 
   disconnectedCallback() {
-    this.editor.toTextArea();
+    // this.editor.toTextArea();
+  }
+
+  shouldLoadDraft(state: DraftState): boolean {
+    return typeof state.id === "string" && !state.draftLoaded;
   }
 
   async handleSubmit(e: Event): Promise<void> {
-    e.preventDefault();
-    const article = this.buildData();
-
-    try {
-      await this.submitAndUpdateFields(article);
-    } catch (error) {
-      throw new Error(error);
-    }
+    // e.preventDefault();
+    // const article = this.buildData();
+    // try {
+    //   await this.submitAndUpdateFields(article);
+    // } catch (error) {
+    //   throw new Error(error);
+    // }
   }
 
   async submitAndUpdateFields(draft: IDraft): Promise<void> {
-    if (this.isDraft()) {
-      const article = await this.postDraft(draft);
-      this.id = article._id;
-      this.draft = article;
-      router.push(
-        `/admin/draft?id=${article._id}&title=${encodeURIComponent(
-          article.title,
-        )}`,
-      );
-    } else {
-      const article = await this.updateArticle(draft as IArticle);
-      this.draft = article;
-    }
-
-    this.update(new Map());
+    // if (this.isDraft()) {
+    //   const article = await this.postDraft(draft);
+    //   this.id = article._id;
+    //   this.state.draft = article;
+    //   router.push(
+    //     `/admin/draft?id=${article._id}&title=${encodeURIComponent(
+    //       article.title,
+    //     )}`,
+    //   );
+    // } else {
+    //   const article = await this.updateArticle(draft as IArticle);
+    //   this.state.draft = article;
+    // }
+    // this.update(new Map());
   }
 
   async handleFile(e: Event): Promise<void> {
@@ -117,35 +94,32 @@ export default class Draft extends LitElement {
   }
 
   async uploadFileAndUpdateForm(file: File): Promise<void> {
-    const { path } = await this.uploadPoster(file);
-    const { posterUrlCtrl } = this.getFormRefs();
-
-    posterUrlCtrl.setAttribute("value", path);
-    this.draft.posterUrl = path;
-    this.update(new Map());
+    // const { path } = await this.uploadPoster(file);
+    // const { posterUrlCtrl } = this.getFormRefs();
+    // posterUrlCtrl.setAttribute("value", path);
+    // this.state.draft.posterUrl = path;
+    // this.update(new Map());
   }
 
   async togglePublish(): Promise<void> {
-    const article = this.buildData();
-
-    article.published = !article.published;
-    if (article.published === true) {
-      article.publishedAt = new Date().toString();
-    } else {
-      article.publishedAt = null;
-    }
-
-    try {
-      await this.submitAndUpdateFields(article as IArticle);
-    } catch (error) {
-      errorHandlerService.throw(error);
-    }
+    // const article = this.buildData();
+    // article.published = !article.published;
+    // if (article.published === true) {
+    //   article.publishedAt = new Date().toString();
+    // } else {
+    //   article.publishedAt = null;
+    // }
+    // try {
+    //   await this.submitAndUpdateFields(article as IArticle);
+    // } catch (error) {
+    //   errorHandlerService.throw(error);
+    // }
   }
 
   handleTags(): void {
-    const { tagsCtrl } = this.getFormRefs();
-    this.draft.tags = tagsCtrl.value.split(",");
-    this.update(new Map());
+    // const { tagsCtrl } = this.getFormRefs();
+    // this.state.draft.tags = tagsCtrl.value.split(",");
+    // this.update(new Map());
   }
 
   handleChange(e: Event): void {
@@ -195,62 +169,43 @@ export default class Draft extends LitElement {
   }
 
   fillFormData(): void {
-    const draft = this.draft;
-    const {
-      titleCtrl,
-      posterUrlCtrl,
-      posterCtrl,
-      tagsCtrl,
-    } = this.getFormRefs();
-
-    titleCtrl.setAttribute("value", draft.title);
-    tagsCtrl.setAttribute("value", draft.tags.toString());
-
-    if (draft.posterUrl) {
-      posterUrlCtrl.setAttribute("value", draft.posterUrl);
-      posterCtrl.setAttribute("value", draft.posterUrl);
-    }
-  }
-
-  getArticle(): Promise<IArticle> {
-    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
-  }
-
-  postDraft(article: IDraft): Promise<IArticle> {
-    return apiClient.post<IArticle>("/api/v1/article", article);
-  }
-
-  updateArticle(article: IArticle): Promise<IArticle> {
-    return apiClient.put<IArticle>(`/api/v1/article/${this.id}`, article);
-  }
-
-  uploadPoster(file: File) {
-    return storageService.upload(this.id || "draft" + "-" + uuid(), file);
+    // const draft = this.state.draft;
+    // const {
+    //   titleCtrl,
+    //   posterUrlCtrl,
+    //   posterCtrl,
+    //   tagsCtrl,
+    // } = this.getFormRefs();
+    // titleCtrl.setAttribute("value", draft.title);
+    // tagsCtrl.setAttribute("value", draft.tags.toString());
+    // if (draft.posterUrl) {
+    //   posterUrlCtrl.setAttribute("value", draft.posterUrl);
+    //   posterCtrl.setAttribute("value", draft.posterUrl);
+    // }
   }
 
   isDraft(): boolean {
     return this.id === "undefined";
   }
 
-  buildData(): IDraft | IArticle {
-    const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
-    const converter = new showdown.Converter();
-    const markdown = this.editor.value();
-    const html = converter.makeHtml(markdown);
-    const posterUrl =
-      posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
-
-    return {
-      title: titleCtrl.value,
-      markdown,
-      html,
-      posterUrl,
-      tags: this.draft.tags.map(tag => tag.replace(" ", "")),
-      published: this.draft.published,
-      publishedAt: this.draft.publishedAt,
-      metaTitle: this.draft.metaTitle,
-      metaDescription: this.draft.metaDescription,
-    };
+  buildData() {
+    // const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
+    // const converter = new showdown.Converter();
+    // const markdown = this.editor.value();
+    // const html = converter.makeHtml(markdown);
+    // const posterUrl =
+    //   posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
+    // return {
+    //   title: titleCtrl.value,
+    //   markdown,
+    //   html,
+    //   posterUrl,
+    //   tags: this.state.draft.tags.map(tag => tag.replace(" ", "")),
+    //   published: this.state.draft.published,
+    //   publishedAt: this.state.draft.publishedAt,
+    //   metaTitle: this.state.draft.metaTitle,
+    //   metaDescription: this.state.draft.metaDescription,
+    // };
   }
 
   render() {
@@ -290,133 +245,153 @@ export default class Draft extends LitElement {
         }
       </style>
       <ez-navbar></ez-navbar>
-      <div>
-        ${
-          this.draft.posterUrl
-            ? html`
-                <div
-                  class="poster"
-                  style="background-image: url('${this.draft.posterUrl}')"
-                ></div>
-              `
-            : html``
-        }
-        <div class="container is-fluid">
-          <form
-            name="login"
-            class="columns"
-            @submit="${this.handleSubmit}"
-            @input="${this.handleChange}"
-          >
-            <div class="column is-three-fifths">
-              <h1 class="title">${this.draft.title}</h1>
-              <input type="hidden" id="posterUrl" name="posterUrl" />
-              <label class="label" for="markdown">Content</label>
-              <textarea
-                id="markdown"
-                name="markdown"
-                type="text"
-                rows="20"
-                cols="70"
-              ></textarea>
-            </div>
-            <div class="column">
-              <div class="sticky">
-                <h2 class="subtitle">Configuration</h2>
-                <div class="field">
-                  <label class="label" for="poster">Poster</label>
-                  <input
-                    type="file"
-                    id="poster"
-                    class="input"
-                    name="poster"
-                    accept="image/png, image/jpeg, image/gif"
-                    @change="${this.handleFile}"
-                  />
-                </div>
-                <div class="field">
-                  <button
-                    class="button"
-                    ?disabled=${!this.draft.posterUrl}
-                    @click="${
-                      async (e: Event) => {
-                        e.preventDefault();
-
-                        await this.submitAndUpdateFields({
-                          ...this.buildData(),
-                          posterUrl: null,
-                        });
-                      }
-                    }"
+      ${
+        this.state && this.state.draftLoaded
+          ? html`
+              <div>
+                ${
+                  this.state.draft.posterUrl
+                    ? html`
+                        <div
+                          class="poster"
+                          style="background-image: url('${
+                            this.state.draft.posterUrl
+                          }')"
+                        ></div>
+                      `
+                    : html``
+                }
+                <div class="container is-fluid">
+                  <form
+                    name="login"
+                    class="columns"
+                    @submit="${this.handleSubmit}"
+                    @input="${this.handleChange}"
                   >
-                    Supprimer le poster
-                  </button>
+                    <div class="column is-three-fifths">
+                      <h1 class="title">${this.state.draft.title}</h1>
+                      <input type="hidden" id="posterUrl" name="posterUrl" />
+                      <label class="label" for="markdown">Content</label>
+                      <textarea
+                        id="markdown"
+                        name="markdown"
+                        type="text"
+                        rows="20"
+                        cols="70"
+                      ></textarea>
+                    </div>
+                    <div class="column">
+                      <div class="sticky">
+                        <h2 class="subtitle">Configuration</h2>
+                        <div class="field">
+                          <label class="label" for="poster">Poster</label>
+                          <input
+                            type="file"
+                            id="poster"
+                            class="input"
+                            name="poster"
+                            accept="image/png, image/jpeg, image/gif"
+                            @change="${this.handleFile}"
+                          />
+                        </div>
+                        <div class="field">
+                          <button
+                            class="button"
+                            ?disabled=${!this.state.draft.posterUrl}
+                            @click="${
+                              async (e: Event) => {
+                                // e.preventDefault();
+                                // await this.submitAndUpdateFields({
+                                //   ...this.buildData(),
+                                //   posterUrl: null,
+                                // });
+                              }
+                            }"
+                          >
+                            Supprimer le poster
+                          </button>
+                        </div>
+                        <div class="field">
+                          <label class="label" for="tags"
+                            >Tags (separated by a comma)</label
+                          >
+                          <input
+                            type="text"
+                            class="input"
+                            id="tags"
+                            name="tags"
+                            placeholder="architecture, test"
+                            @change="${this.handleTags}"
+                          />
+                        </div>
+                        <div class="field">
+                          <label class="label" for="title">Title</label>
+                          <input
+                            id="title"
+                            name="title"
+                            class="input"
+                            type="text"
+                            required
+                          />
+                        </div>
+                        <div class="field">
+                          <label class="label" for="title">Meta title</label>
+                          <input
+                            id="metaTitle"
+                            name="metaTitle"
+                            class="input"
+                            type="text"
+                          />
+                        </div>
+                        <div class="field">
+                          <label class="label" for="title"
+                            >Meta description</label
+                          >
+                          <input
+                            id="metaDescription"
+                            name="metaDescription"
+                            class="input"
+                            type="text"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          class="button"
+                          ?disabled=${!this.dirty}
+                        >
+                          ${
+                            this.dirty
+                              ? html`
+                                  Save is pending...
+                                `
+                              : html`
+                                  ${check} Draft saved
+                                `
+                          }
+                        </button>
+                        <button
+                          type="button"
+                          class="button is-info"
+                          @click="${this.togglePublish}"
+                          ?disabled=${this.isDraft()}
+                        >
+                          ${
+                            this.state.draft.published
+                              ? "de publish"
+                              : "publish"
+                          }
+                        </button>
+                      </div>
+                      <div id="tracer"></div>
+                    </div>
+                  </form>
                 </div>
-                <div class="field">
-                  <label class="label" for="tags"
-                    >Tags (separated by a comma)</label
-                  >
-                  <input
-                    type="text"
-                    class="input"
-                    id="tags"
-                    name="tags"
-                    placeholder="architecture, test"
-                    @change="${this.handleTags}"
-                  />
-                </div>
-                <div class="field">
-                  <label class="label" for="title">Title</label>
-                  <input
-                    id="title"
-                    name="title"
-                    class="input"
-                    type="text"
-                    required
-                  />
-                </div>
-                <div class="field">
-                  <label class="label" for="title">Meta title</label>
-                  <input
-                    id="metaTitle"
-                    name="metaTitle"
-                    class="input"
-                    type="text"
-                  />
-                </div>
-                <div class="field">
-                  <label class="label" for="title">Meta description</label>
-                  <input
-                    id="metaDescription"
-                    name="metaDescription"
-                    class="input"
-                    type="text"
-                  />
-                </div>
-                <button type="submit" class="button" ?disabled=${!this.dirty}>
-                  ${
-                    this.dirty
-                      ? html`
-                          Save is pending...
-                        `
-                      : html`
-                          ${check} Draft saved
-                        `
-                  }
-                </button>
-                <button
-                  type="button"
-                  class="button is-info"
-                  @click="${this.togglePublish}"
-                  ?disabled=${this.isDraft()}
-                >
-                  ${this.draft.published ? "de publish" : "publish"}
-                </button>
               </div>
-            </div>
-          </form>
-        </div>
-      </div>
+            `
+          : html`
+              Chargement...
+            `
+      }
     `;
   }
 }
