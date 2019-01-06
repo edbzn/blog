@@ -28,6 +28,10 @@ export interface DraftActions {
   dePublish(): void;
   removePoster(): void;
   transformMarkdownToHtml(): void;
+  editTitle(title: string): void;
+  editMetaTitle(metaTitle: string): void;
+  editMetaDescription(metaDescription: string): void;
+  editTags(tags: string): void;
 }
 
 export interface StateUpdateFunction {
@@ -183,8 +187,33 @@ const draft = {
           });
       });
     },
+    editTitle(title: string) {
+      update((state: DraftState) => {
+        state.draft.title = title;
+        return state;
+      });
+    },
+    editMetaTitle(metaTitle: string) {
+      update((state: DraftState) => {
+        state.draft.metaTitle = metaTitle;
+        return state;
+      });
+    },
+    editMetaDescription(metaDescription: string) {
+      update((state: DraftState) => {
+        state.draft.metaDescription = metaDescription;
+        return state;
+      });
+    },
+    editTags(tags: string) {
+      update((state: DraftState) => {
+        state.draft.tags = tags.split(",");
+        return state;
+      });
+    },
     removePoster() {
       update((state: DraftState) => {
+        // @todo remove remote poster
         state.draft.posterUrl = null;
         return state;
       });

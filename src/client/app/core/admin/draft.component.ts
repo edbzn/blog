@@ -65,6 +65,7 @@ export default class Draft extends LitElement {
 
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
+    
     this.actions.transformMarkdownToHtml();
     const draft = this.buildData();
 
@@ -114,32 +115,43 @@ export default class Draft extends LitElement {
     // }
   }
 
-  handleTags(): void {
-    // const { tagsCtrl } = this.getFormRefs();
-    // this.state.draft.tags = tagsCtrl.value.split(",");
-    // this.update(new Map());
+  handleTagsChange(e: Event): void {
+    this.actions.editTags((e.target as HTMLInputElement).value);
+  }
+
+  handleTitleChange(e: Event): void {
+    console.log((e.target as HTMLInputElement).value)
+    this.actions.editTitle((e.target as HTMLInputElement).value);
+  }
+
+  handleMetaTitleChange(e: Event): void {
+    this.actions.editMetaTitle((e.target as HTMLInputElement).value);
+  }
+
+  handleMetaDescriptionChange(e: Event): void {
+    this.actions.editMetaDescription((e.target as HTMLInputElement).value);
   }
 
   handleChange(e: Event): void {
-    e.preventDefault();
+    // e.preventDefault();
 
-    this.dirty = true;
-    this.update(new Map());
+    // this.dirty = true;
+    // this.update(new Map());
 
-    if (this.saveTimer) {
-      window.clearTimeout(this.saveTimer);
-    }
+    // if (this.saveTimer) {
+    //   window.clearTimeout(this.saveTimer);
+    // }
 
-    if (!this.state.draft.title) {
-      return;
-    }
+    // if (!this.state.draft.title) {
+    //   return;
+    // }
 
-    const saveCallback = async () => {
-      await this.handleSubmit(e);
-      this.dirty = false;
-      this.update(new Map());
-    };
-    this.saveTimer = window.setTimeout(saveCallback, 2000);
+    // const saveCallback = async () => {
+    //   await this.handleSubmit(e);
+    //   this.dirty = false;
+    //   this.update(new Map());
+    // };
+    // this.saveTimer = window.setTimeout(saveCallback, 2000);
   }
 
   handleRemovePoster(): void {
@@ -218,19 +230,13 @@ export default class Draft extends LitElement {
                 }
                 <div class="container is-fluid">
                   <form
-                    name="login"
+                    name="draft"
                     class="columns"
                     @submit="${this.handleSubmit}"
                     @input="${this.handleChange}"
                   >
                     <div class="column is-three-fifths">
                       <h1 class="title">${this.state.draft.title}</h1>
-                      <input
-                        type="hidden"
-                        id="posterUrl"
-                        name="posterUrl"
-                        value="${this.state.draft.posterUrl}"
-                      />
                       <label class="label" for="markdown">Content</label>
                       <textarea
                         id="markdown"
@@ -252,7 +258,7 @@ export default class Draft extends LitElement {
                             value="${this.state.draft.posterUrl}"
                             name="poster"
                             accept="image/png, image/jpeg, image/gif"
-                            @change="${this.handleFile}"
+                            @input="${this.handleFile}"
                           />
                         </div>
                         <div class="field">
@@ -275,7 +281,7 @@ export default class Draft extends LitElement {
                             name="tags"
                             placeholder="architecture, test"
                             value="${this.state.draft.tags.toString()}"
-                            @change="${this.handleTags}"
+                            @input="${this.handleTagsChange}"
                           />
                         </div>
                         <div class="field">
@@ -285,6 +291,7 @@ export default class Draft extends LitElement {
                             name="title"
                             class="input"
                             value="${this.state.draft.title}"
+                            @input="${this.handleTitleChange}"
                             type="text"
                             required
                           />
@@ -295,6 +302,7 @@ export default class Draft extends LitElement {
                             id="metaTitle"
                             name="metaTitle"
                             value="${this.state.draft.metaTitle || ""}"
+                            @input="${this.handleMetaTitleChange}"
                             class="input"
                             type="text"
                           />
@@ -306,6 +314,7 @@ export default class Draft extends LitElement {
                           <input
                             id="metaDescription"
                             name="metaDescription"
+                            @input="${this.handleMetaDescriptionChange}"
                             class="input"
                             value="${this.state.draft.metaDescription || ""}"
                             type="text"
