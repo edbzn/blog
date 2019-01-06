@@ -20,7 +20,7 @@ export default class Draft extends LitElement {
    * Whenever form is dirty
    */
   dirty: boolean = false;
-  
+
   /**
    * Timer for save action pending
    */
@@ -43,12 +43,15 @@ export default class Draft extends LitElement {
     if (!this.isDraft()) {
       this.actions.fetch(this.state.id as string).then(draft => {
         this.actions.initEditor(
-          this.getFormRefs().markdownCtrl,
+          this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
           draft.markdown,
         );
       });
     } else {
-      this.actions.initEditor(this.getFormRefs().markdownCtrl, "");
+      this.actions.initEditor(
+        this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
+        "",
+      );
     }
   }
 
@@ -62,6 +65,7 @@ export default class Draft extends LitElement {
 
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
+    this.actions.transformMarkdownToHtml();
     const draft = this.buildData();
 
     try {
@@ -87,11 +91,8 @@ export default class Draft extends LitElement {
       const id = this.state.id as string;
 
       try {
-        const path = await this.actions.uploadPoster(id, file);
+        await this.actions.uploadPoster(id, file);
         await this.actions.update(id, this.state.draft as IArticle);
-
-        const { posterUrlCtrl } = this.getFormRefs();
-        posterUrlCtrl.setAttribute("value", path);
       } catch (error) {
         errorHandlerService.throw(error);
       }
@@ -129,8 +130,7 @@ export default class Draft extends LitElement {
       window.clearTimeout(this.saveTimer);
     }
 
-    const { titleCtrl } = this.getFormRefs();
-    if (!titleCtrl.validity.valid) {
+    if (!this.state.draft.title) {
       return;
     }
 
@@ -142,52 +142,24 @@ export default class Draft extends LitElement {
     this.saveTimer = window.setTimeout(saveCallback, 2000);
   }
 
-  getFormRefs(): IDraftFormRefs {
-    const host = this.shadowRoot as ShadowRoot;
-    const titleCtrl = host.getElementById("title") as HTMLInputElement;
-    const markdownCtrl = host.getElementById("markdown") as HTMLTextAreaElement;
-    const posterUrlCtrl = host.getElementById("posterUrl") as HTMLInputElement;
-    const posterCtrl = host.getElementById("posterUrl") as HTMLInputElement;
-    const tagsCtrl = host.getElementById("tags") as HTMLInputElement;
-    const metaTitleCtrl = host.getElementById("metaTitle") as HTMLInputElement;
-    const metaDescriptionCtrl = host.getElementById(
-      "metaDescription",
-    ) as HTMLInputElement;
-
-    return {
-      titleCtrl,
-      markdownCtrl,
-      posterUrlCtrl,
-      tagsCtrl,
-      posterCtrl,
-      metaTitleCtrl,
-      metaDescriptionCtrl,
-    };
-  }
-
   handleRemovePoster(): void {
     this.actions.removePoster();
     this.actions.update(this.state.id as string, this.state.draft as IArticle);
   }
 
   buildData(): IDraft {
-    const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
-    const converter = new showdown.Converter();
-    const markdown = this.state!.editor!.value();
-    const html = converter.makeHtml(markdown);
-    const posterUrl =
-      posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
+    const { draft } = this.state;
 
     return {
-      title: titleCtrl.value,
-      markdown,
-      html,
-      posterUrl,
-      tags: this.state.draft.tags.map(tag => tag.replace(" ", "")),
-      published: this.state.draft.published,
-      publishedAt: this.state.draft.publishedAt,
-      metaTitle: this.state.draft.metaTitle,
-      metaDescription: this.state.draft.metaDescription,
+      title: draft.title,
+      markdown: draft.markdown,
+      html: draft.html,
+      posterUrl: draft.posterUrl,
+      tags: draft.tags.map(tag => tag.replace(" ", "")),
+      published: draft.published,
+      publishedAt: draft.publishedAt,
+      metaTitle: draft.metaTitle,
+      metaDescription: draft.metaDescription,
     };
   }
 
@@ -277,6 +249,7 @@ export default class Draft extends LitElement {
                             type="file"
                             id="poster"
                             class="input"
+                            value="${this.state.draft.posterUrl}"
                             name="poster"
                             accept="image/png, image/jpeg, image/gif"
                             @change="${this.handleFile}"

@@ -1,4 +1,5 @@
 import * as flyd from "flyd";
+import showdown from "showdown";
 import SimpleMDE from "simplemde";
 import { v1 as uuid } from "uuid";
 
@@ -26,6 +27,7 @@ export interface DraftActions {
   publish(): void;
   dePublish(): void;
   removePoster(): void;
+  transformMarkdownToHtml(): void;
 }
 
 export interface StateUpdateFunction {
@@ -186,7 +188,17 @@ const draft = {
         state.draft.posterUrl = null;
         return state;
       });
-    }
+    },
+    transformMarkdownToHtml() {
+      const converter = new showdown.Converter();
+      update(state => {
+        const markdown = state.editor!.value();
+        const html = converter.makeHtml(markdown);
+        state.draft.html = html;
+        state.draft.markdown = markdown;
+        return state;
+      });
+    },
   }),
 };
 
