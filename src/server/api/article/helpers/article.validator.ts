@@ -13,7 +13,7 @@ export const articleValidator$ = validator$({
     metaDescription: Joi.string().allow(null),
     createdAt: Joi.date(),
     updatedAt: Joi.date(),
-    _id: Joi.string().uuid(),
+    _id: Joi.string(),
     __v: Joi.number(),
   }),
 });

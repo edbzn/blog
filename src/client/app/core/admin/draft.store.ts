@@ -25,6 +25,7 @@ export interface DraftActions {
   post(draft: IDraft): Promise<IArticle>;
   publish(): void;
   dePublish(): void;
+  removePoster(): void;
 }
 
 export interface StateUpdateFunction {
@@ -180,6 +181,12 @@ const draft = {
           });
       });
     },
+    removePoster() {
+      update((state: DraftState) => {
+        state.draft.posterUrl = null;
+        return state;
+      });
+    }
   }),
 };
 

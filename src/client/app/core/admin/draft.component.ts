@@ -1,15 +1,11 @@
 import { html, LitElement, property } from "lit-element/lit-element";
 import * as showdown from "showdown";
-import * as SimpleMDE from "simplemde";
-import { v1 as uuid } from "uuid";
 
 import router from "../../../app-router";
-import { apiClient } from "../api-client";
-import { errorHandlerService } from "../error-handler-service";
-import { storageService } from "../storage-client";
-import { IArticle, IDraft, IDraftFormRefs } from "./types";
 import check from "../../utils/icons/check";
-import { DraftState, DraftActions } from "./draft.store";
+import { errorHandlerService } from "../error-handler-service";
+import { DraftActions, DraftState } from "./draft.store";
+import { IArticle, IDraft, IDraftFormRefs } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: Object })
@@ -24,6 +20,10 @@ export default class Draft extends LitElement {
    * Whenever form is dirty
    */
   dirty: boolean = false;
+  
+  /**
+   * Timer for save action pending
+   */
   saveTimer: number;
 
   firstUpdated(): void {
@@ -32,15 +32,15 @@ export default class Draft extends LitElement {
       this.update(new Map());
     });
 
-    this.loadDraftAndInit();
+    this.loadAndInit();
   }
 
   disconnectedCallback(): void {
     this.actions.reset();
   }
 
-  loadDraftAndInit(): void {
-    if (this.shouldLoadDraft()) {
+  loadAndInit(): void {
+    if (!this.isDraft()) {
       this.actions.fetch(this.state.id as string).then(draft => {
         this.actions.initEditor(
           this.getFormRefs().markdownCtrl,
@@ -48,46 +48,35 @@ export default class Draft extends LitElement {
         );
       });
     } else {
-      this.actions.initEditor(
-        this.getFormRefs().markdownCtrl,
-        "",
-      );
+      this.actions.initEditor(this.getFormRefs().markdownCtrl, "");
     }
   }
 
-  shouldLoadDraft(): boolean {
-    return typeof this.state.id === "string";
+  isDraft(): boolean {
+    return typeof this.state.id !== "string";
   }
 
   shouldShowEditor(): boolean {
-    return this.state && (this.state.draftLoaded || !this.state.id);
+    return this.state && (this.state.draftLoaded || this.isDraft());
   }
 
   async handleSubmit(e: Event): Promise<void> {
-    // e.preventDefault();
-    // const article = this.buildData();
-    // try {
-    //   await this.submitAndUpdateFields(article);
-    // } catch (error) {
-    //   throw new Error(error);
-    // }
-  }
+    e.preventDefault();
+    const draft = this.buildData();
 
-  async submitAndUpdateFields(draft: IDraft): Promise<void> {
-    // if (this.isDraft()) {
-    //   const article = await this.postDraft(draft);
-    //   this.id = article._id;
-    //   this.state.draft = article;
-    //   router.push(
-    //     `/admin/draft?id=${article._id}&title=${encodeURIComponent(
-    //       article.title,
-    //     )}`,
-    //   );
-    // } else {
-    //   const article = await this.updateArticle(draft as IArticle);
-    //   this.state.draft = article;
-    // }
-    // this.update(new Map());
+    try {
+      if (this.isDraft()) {
+        const article = await this.actions.post(draft);
+        const route = `/admin/draft?id=${
+          article._id
+        }&title=${encodeURIComponent(article.title)}`;
+        router.push(route);
+      } else {
+        this.actions.update(this.state.id as string, draft as IArticle);
+      }
+    } catch (error) {
+      errorHandlerService.throw(error);
+    }
   }
 
   async handleFile(e: Event): Promise<void> {
@@ -100,7 +89,7 @@ export default class Draft extends LitElement {
       try {
         const path = await this.actions.uploadPoster(id, file);
         await this.actions.update(id, this.state.draft as IArticle);
-        
+
         const { posterUrlCtrl } = this.getFormRefs();
         posterUrlCtrl.setAttribute("value", path);
       } catch (error) {
@@ -176,44 +165,30 @@ export default class Draft extends LitElement {
     };
   }
 
-  fillFormData(): void {
-    // const draft = this.state.draft;
-    // const {
-    //   titleCtrl,
-    //   posterUrlCtrl,
-    //   posterCtrl,
-    //   tagsCtrl,
-    // } = this.getFormRefs();
-    // titleCtrl.setAttribute("value", draft.title);
-    // tagsCtrl.setAttribute("value", draft.tags.toString());
-    // if (draft.posterUrl) {
-    //   posterUrlCtrl.setAttribute("value", draft.posterUrl);
-    //   posterCtrl.setAttribute("value", draft.posterUrl);
-    // }
+  handleRemovePoster(): void {
+    this.actions.removePoster();
+    this.actions.update(this.state.id as string, this.state.draft as IArticle);
   }
 
-  isDraft(): boolean {
-    return this.id === "undefined";
-  }
+  buildData(): IDraft {
+    const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
+    const converter = new showdown.Converter();
+    const markdown = this.state!.editor!.value();
+    const html = converter.makeHtml(markdown);
+    const posterUrl =
+      posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
 
-  buildData() {
-    // const { titleCtrl, posterUrlCtrl } = this.getFormRefs();
-    // const converter = new showdown.Converter();
-    // const markdown = this.editor.value();
-    // const html = converter.makeHtml(markdown);
-    // const posterUrl =
-    //   posterUrlCtrl.value.length > 0 ? posterUrlCtrl.value : null;
-    // return {
-    //   title: titleCtrl.value,
-    //   markdown,
-    //   html,
-    //   posterUrl,
-    //   tags: this.state.draft.tags.map(tag => tag.replace(" ", "")),
-    //   published: this.state.draft.published,
-    //   publishedAt: this.state.draft.publishedAt,
-    //   metaTitle: this.state.draft.metaTitle,
-    //   metaDescription: this.state.draft.metaDescription,
-    // };
+    return {
+      title: titleCtrl.value,
+      markdown,
+      html,
+      posterUrl,
+      tags: this.state.draft.tags.map(tag => tag.replace(" ", "")),
+      published: this.state.draft.published,
+      publishedAt: this.state.draft.publishedAt,
+      metaTitle: this.state.draft.metaTitle,
+      metaDescription: this.state.draft.metaDescription,
+    };
   }
 
   render() {
@@ -278,7 +253,12 @@ export default class Draft extends LitElement {
                   >
                     <div class="column is-three-fifths">
                       <h1 class="title">${this.state.draft.title}</h1>
-                      <input type="hidden" id="posterUrl" name="posterUrl" />
+                      <input
+                        type="hidden"
+                        id="posterUrl"
+                        name="posterUrl"
+                        value="${this.state.draft.posterUrl}"
+                      />
                       <label class="label" for="markdown">Content</label>
                       <textarea
                         id="markdown"
@@ -306,15 +286,7 @@ export default class Draft extends LitElement {
                           <button
                             class="button"
                             ?disabled=${!this.state.draft.posterUrl}
-                            @click="${
-                              async (e: Event) => {
-                                // e.preventDefault();
-                                // await this.submitAndUpdateFields({
-                                //   ...this.buildData(),
-                                //   posterUrl: null,
-                                // });
-                              }
-                            }"
+                            @click="${this.handleRemovePoster}"
                           >
                             Supprimer le poster
                           </button>
@@ -329,6 +301,7 @@ export default class Draft extends LitElement {
                             id="tags"
                             name="tags"
                             placeholder="architecture, test"
+                            value="${this.state.draft.tags.toString()}"
                             @change="${this.handleTags}"
                           />
                         </div>
@@ -338,6 +311,7 @@ export default class Draft extends LitElement {
                             id="title"
                             name="title"
                             class="input"
+                            value="${this.state.draft.title}"
                             type="text"
                             required
                           />
@@ -347,18 +321,20 @@ export default class Draft extends LitElement {
                           <input
                             id="metaTitle"
                             name="metaTitle"
+                            value="${this.state.draft.metaTitle || ""}"
                             class="input"
                             type="text"
                           />
                         </div>
                         <div class="field">
-                          <label class="label" for="title"
+                          <label class="label" for="metaDescription"
                             >Meta description</label
                           >
                           <input
                             id="metaDescription"
                             name="metaDescription"
                             class="input"
+                            value="${this.state.draft.metaDescription || ""}"
                             type="text"
                           />
                         </div>
