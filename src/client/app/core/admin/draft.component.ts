@@ -95,21 +95,18 @@ export default class Draft extends LitElement {
 
     if (target.files instanceof FileList) {
       const file = target.files.item(0) as File;
+      const id = this.state.id as string;
 
       try {
-        await this.uploadFileAndUpdateForm(file);
+        const path = await this.actions.uploadPoster(id, file);
+        await this.actions.update(id, this.state.draft as IArticle);
+        
+        const { posterUrlCtrl } = this.getFormRefs();
+        posterUrlCtrl.setAttribute("value", path);
       } catch (error) {
         errorHandlerService.throw(error);
       }
     }
-  }
-
-  async uploadFileAndUpdateForm(file: File): Promise<void> {
-    // const { path } = await this.uploadPoster(file);
-    // const { posterUrlCtrl } = this.getFormRefs();
-    // posterUrlCtrl.setAttribute("value", path);
-    // this.state.draft.posterUrl = path;
-    // this.update(new Map());
   }
 
   async togglePublish(): Promise<void> {

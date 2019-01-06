@@ -1,13 +1,15 @@
 import * as flyd from "flyd";
 import SimpleMDE from "simplemde";
+import { v1 as uuid } from "uuid";
 
-import { IDraft, IArticle } from "./types";
 import { apiClient } from "../api-client";
+import { storageService } from "../storage-client";
+import { IArticle, IDraft } from "./types";
 
 export interface DraftState {
   id: null | string;
   editor: null | SimpleMDE;
-  draft: IDraft;
+  draft: IDraft | IArticle;
   error: string | null;
   draftLoaded: boolean;
   dirty: boolean;
@@ -19,6 +21,7 @@ export interface DraftActions {
   initEditor(element: HTMLTextAreaElement, initialValue: string): void;
   fetch(id: string): Promise<IArticle>;
   update(id: string, draft: IArticle): Promise<IArticle>;
+  uploadPoster(id: string, file: File): Promise<string>;
   post(draft: IDraft): Promise<IArticle>;
   publish(): void;
   dePublish(): void;
@@ -27,10 +30,6 @@ export interface DraftActions {
 export interface StateUpdateFunction {
   (state: DraftState): DraftState;
 }
-
-// function uploadPoster(file: File) {
-//   return storageService.upload(this.id || "draft" + "-" + uuid(), file);
-// }
 
 const initialState: DraftState = {
   id: null,
@@ -149,6 +148,28 @@ const draft = {
               return state;
             });
             resolve(postedDraft);
+          })
+          .catch(err => {
+            update((state: DraftState) => {
+              state.error = err;
+              return state;
+            });
+            reject(err);
+          });
+      });
+    },
+    uploadPoster(id: string, file: File): Promise<string> {
+      return new Promise((resolve, reject) => {
+        const filename = id || "draft" + "-" + uuid();
+        storageService
+          .upload(filename, file)
+          .then(response => {
+            const { path } = response;
+            update((state: DraftState) => {
+              state.draft.posterUrl = path;
+              return state;
+            });
+            resolve(path);
           })
           .catch(err => {
             update((state: DraftState) => {
