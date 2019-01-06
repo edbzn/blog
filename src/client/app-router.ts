@@ -46,7 +46,7 @@ adminRoutes
 
     const id = req.query.id;
     if (id) {
-      actions.setArticleId(id);
+      actions.setId(id);
     }
 
     setTitleAndMeta("Draft");

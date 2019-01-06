@@ -27,29 +27,40 @@ export default class Draft extends LitElement {
   saveTimer: number;
 
   firstUpdated(): void {
-    this.state = this.states();
+    this.states.map(state => {
+      this.state = state;
+      this.update(new Map());
+    });
 
-    if (this.shouldLoadDraft(this.state)) {
-      this.actions.fetchArticle(this.state.id as string).then(draft => {
+    this.loadDraftAndInit();
+  }
+
+  disconnectedCallback(): void {
+    this.actions.reset();
+  }
+
+  loadDraftAndInit(): void {
+    if (this.shouldLoadDraft()) {
+      this.actions.fetch(this.state.id as string).then(draft => {
         this.actions.initEditor(
           this.getFormRefs().markdownCtrl,
           draft.markdown,
         );
       });
+    } else {
+      this.actions.initEditor(
+        this.getFormRefs().markdownCtrl,
+        "",
+      );
     }
-
-    this.states.map(state => {
-      this.state = state;
-      this.update(new Map());
-    });
   }
 
-  disconnectedCallback() {
-    // this.editor.toTextArea();
+  shouldLoadDraft(): boolean {
+    return typeof this.state.id === "string";
   }
 
-  shouldLoadDraft(state: DraftState): boolean {
-    return typeof state.id === "string" && !state.draftLoaded;
+  shouldShowEditor(): boolean {
+    return this.state && (this.state.draftLoaded || !this.state.id);
   }
 
   async handleSubmit(e: Event): Promise<void> {
@@ -246,7 +257,7 @@ export default class Draft extends LitElement {
       </style>
       <ez-navbar></ez-navbar>
       ${
-        this.state && this.state.draftLoaded
+        this.shouldShowEditor()
           ? html`
               <div>
                 ${
