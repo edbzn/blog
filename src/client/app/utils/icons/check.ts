@@ -1,4 +1,4 @@
-import { svg } from "@polymer/lit-element";
+import { svg } from "lit-element";
 
 export default svg`
 <?xml version="1.0" encoding="iso-8859-1"?>

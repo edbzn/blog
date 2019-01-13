@@ -1,4 +1,4 @@
-import { LitElement, html } from "@polymer/lit-element/lit-element";
+import { LitElement, html } from "lit-element/lit-element";
 
 import heart from "../../utils/icons/heart";
 import router from "../../../app-router";

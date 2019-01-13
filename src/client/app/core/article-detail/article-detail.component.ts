@@ -1,4 +1,4 @@
-import { html, LitElement, property } from "@polymer/lit-element";
+import { html, LitElement, property } from "lit-element";
 import { distanceInWords, format } from "date-fns";
 import * as frLocale from "date-fns/locale/fr";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";

@@ -8,7 +8,7 @@ import { placeholder } from "../../shared/placeholder";
 import like from "../../utils/icons/like";
 import retweet from "../../utils/icons/retweet";
 import { apiClient } from "../api-client";
-import { LitElement, html } from "@polymer/lit-element";
+import { LitElement, html } from "lit-element";
 
 export default class TwitterFeedComponent extends LitElement {
 

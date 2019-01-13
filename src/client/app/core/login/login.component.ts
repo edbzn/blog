@@ -1,4 +1,4 @@
-import { html, LitElement } from '@polymer/lit-element/lit-element';
+import { html, LitElement } from 'lit-element/lit-element';
 
 import { LoginPayload } from '../../../../server/api/auth/helpers/login-payload';
 import { SignupPayload } from '../../../../server/api/auth/helpers/signup-payload';

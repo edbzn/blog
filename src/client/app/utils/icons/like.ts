@@ -1,4 +1,4 @@
-import { svg } from "@polymer/lit-element";
+import { svg } from "lit-element";
 
 export default svg`
 <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" viewBox="0 -256 1850 1850" version="1.1" inkscape:version="0.48.3.1 r9886" width="100%" height="100%">

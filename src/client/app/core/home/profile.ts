@@ -1,4 +1,4 @@
-import { LitElement, property, html } from "@polymer/lit-element";
+import { LitElement, property, html } from "lit-element";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 export default class ProfileComponent extends LitElement {

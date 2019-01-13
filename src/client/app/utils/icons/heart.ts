@@ -1,4 +1,4 @@
-import { svg } from "@polymer/lit-element";
+import { svg } from "lit-element";
 
 export default svg`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 492.719 492.719" xml:space="preserve">
 <g>

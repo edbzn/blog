@@ -1,4 +1,4 @@
-import { html, LitElement, property } from "@polymer/lit-element/lit-element";
+import { html, LitElement, property } from "lit-element/lit-element";
 import * as showdown from "showdown";
 import * as SimpleMDE from "simplemde";
 import { v1 as uuid } from "uuid";
