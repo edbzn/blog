@@ -9,6 +9,7 @@
     ".env.production",
     "src/server",
     "tsconfig.json",
+    "tsconfig.common.json",
     "tsconfig.server.json",
     "package.json",
     "package-lock.json"
