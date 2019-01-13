@@ -153,6 +153,10 @@ export default class ArticleDetail extends LitElement {
           background-position: center center;
         }
 
+        .content .title {
+          font-size: 3.2em;
+        }
+
         .header {
           display: flex;
           align-items: center;
@@ -215,11 +219,16 @@ export default class ArticleDetail extends LitElement {
         }
 
         .time-remaining {
-          height: 3px;
+          height: 4px;
           position: sticky;
           top: 0;
           z-index: 10;
-          transition: width ease-in-out 100ms;
+          background: rgba(155, 155, 155, 0.48);
+        }
+
+        .time-remaining > div {
+          height: 4px;
+          transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
         }
 
         .content blockquote:not(:last-child),
@@ -260,10 +269,12 @@ export default class ArticleDetail extends LitElement {
             `
           : null
       }
-      <div
-        class="time-remaining has-background-info"
-        style="width: ${this.percentRemaining + "%"};"
-      ></div>
+      <div class="time-remaining">
+        <div
+          class="has-background-info"
+          style="width: ${this.percentRemaining + "%"};"
+        ></div>
+      </div>
       <ez-page .navbar="${false}">
         <section class="section meta-container">
           ${
