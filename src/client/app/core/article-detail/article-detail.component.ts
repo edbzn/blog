@@ -242,6 +242,10 @@ export default class ArticleDetail extends LitElement {
         }
 
         @media screen and (max-width: 600px) {
+          .content .title {
+            font-size: 2.75em;
+          }
+
           .header {
             align-items: initial;
             flex-direction: column-reverse;
