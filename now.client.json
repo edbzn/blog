@@ -23,6 +23,11 @@
       }
     ]
   },
-  "alias": ["codamit.com", "www.codamit.com"],
+  "alias": [
+    "codamit.com",
+    "www.codamit.com",
+    "blog.codamit.com",
+    "www.blog.codamit.com"
+  ],
   "files": ["dist/client"]
 }
