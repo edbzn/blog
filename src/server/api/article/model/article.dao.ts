@@ -43,6 +43,17 @@ export namespace ArticleDao {
     from(model.findByIdAndUpdate(id, body).exec());
 
   export const create = (body: IArticlePayload) => {
-    return from(model.create(new Article(body)));
+    const article = new Article();
+    article.title = body.title;
+    article.markdown = body.markdown;
+    article.html = body.html;
+    article.posterUrl = body.posterUrl;
+    article.tags = body.tags;
+    article.published = body.published;
+    article.publishedAt = body.publishedAt;
+    article.metaTitle = body.metaTitle;
+    article.metaDescription = body.metaDescription;
+
+    return from(model.create(article));
   };
 }

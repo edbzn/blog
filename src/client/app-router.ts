@@ -1,7 +1,7 @@
 import { html, render } from "lit-html";
 import { browserRouter, ProuterNavigationEvent, routerGroup } from "prouter";
 
-import { actions, states } from "./app/core/admin/draft.store";
+import { actions, states } from "./app/core/admin/draft.stream";
 import { authService } from "./app/core/authentication-service";
 import { errorHandlerService } from "./app/core/error-handler-service";
 import { setTitleAndMeta } from "./app/utils/set-document-meta";

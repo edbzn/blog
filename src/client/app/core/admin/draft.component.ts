@@ -1,11 +1,10 @@
 import { html, LitElement, property } from "lit-element/lit-element";
-import * as showdown from "showdown";
 
+import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
 import router from "../../../app-router";
 import check from "../../utils/icons/check";
 import { errorHandlerService } from "../error-handler-service";
-import { DraftActions, DraftState } from "./draft.store";
-import { IArticle, IDraft, IDraftFormRefs } from "./types";
+import { DraftActions, DraftState, IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: Object })
@@ -65,7 +64,7 @@ export default class Draft extends LitElement {
 
   async handleSubmit(e: Event): Promise<void> {
     e.preventDefault();
-    
+
     this.actions.transformMarkdownToHtml();
     const draft = this.buildData();
 
@@ -120,7 +119,7 @@ export default class Draft extends LitElement {
   }
 
   handleTitleChange(e: Event): void {
-    console.log((e.target as HTMLInputElement).value)
+    console.log((e.target as HTMLInputElement).value);
     this.actions.editTitle((e.target as HTMLInputElement).value);
   }
 
@@ -134,18 +133,14 @@ export default class Draft extends LitElement {
 
   handleChange(e: Event): void {
     // e.preventDefault();
-
     // this.dirty = true;
     // this.update(new Map());
-
     // if (this.saveTimer) {
     //   window.clearTimeout(this.saveTimer);
     // }
-
     // if (!this.state.draft.title) {
     //   return;
     // }
-
     // const saveCallback = async () => {
     //   await this.handleSubmit(e);
     //   this.dirty = false;
@@ -172,6 +167,7 @@ export default class Draft extends LitElement {
       publishedAt: draft.publishedAt,
       metaTitle: draft.metaTitle,
       metaDescription: draft.metaDescription,
+      lang: ArticleLanguage.FR,
     };
   }
 

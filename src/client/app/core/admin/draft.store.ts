@@ -1,63 +1,19 @@
-import * as flyd from "flyd";
 import showdown from "showdown";
 import SimpleMDE from "simplemde";
 import { v1 as uuid } from "uuid";
 
 import { apiClient } from "../api-client";
 import { storageService } from "../storage-client";
-import { IArticle, IDraft } from "./types";
+import { initialState } from "./draft.initialState";
+import {
+  DraftActions,
+  DraftState,
+  IArticle,
+  IDraft,
+  StateUpdateFunction,
+} from "./types";
 
-export interface DraftState {
-  id: null | string;
-  editor: null | SimpleMDE;
-  draft: IDraft | IArticle;
-  error: string | null;
-  draftLoaded: boolean;
-  dirty: boolean;
-}
-
-export interface DraftActions {
-  reset(): void;
-  setId(id: string): void;
-  initEditor(element: HTMLTextAreaElement, initialValue: string): void;
-  fetch(id: string): Promise<IArticle>;
-  update(id: string, draft: IArticle): Promise<IArticle>;
-  uploadPoster(id: string, file: File): Promise<string>;
-  post(draft: IDraft): Promise<IArticle>;
-  publish(): void;
-  dePublish(): void;
-  removePoster(): void;
-  transformMarkdownToHtml(): void;
-  editTitle(title: string): void;
-  editMetaTitle(metaTitle: string): void;
-  editMetaDescription(metaDescription: string): void;
-  editTags(tags: string): void;
-}
-
-export interface StateUpdateFunction {
-  (state: DraftState): DraftState;
-}
-
-const initialState: DraftState = {
-  id: null,
-  editor: null,
-  draft: {
-    title: "Brouillon",
-    markdown: "",
-    html: "",
-    tags: [],
-    posterUrl: null,
-    published: false,
-    publishedAt: null,
-    metaTitle: null,
-    metaDescription: null,
-  },
-  error: null,
-  draftLoaded: false,
-  dirty: false,
-};
-
-const draft = {
+export const draft = {
   initialState: (): DraftState => initialState,
   actions: (update: flyd.Stream<StateUpdateFunction>): DraftActions => ({
     reset() {
@@ -231,13 +187,4 @@ const draft = {
   }),
 };
 
-const update = flyd.stream<StateUpdateFunction>();
-const updateState = (state: DraftState, patch: StateUpdateFunction) =>
-  patch(state);
 
-export const actions = draft.actions(update);
-export const states = flyd.scan<DraftState, StateUpdateFunction>(
-  updateState,
-  draft.initialState(),
-  update,
-);
