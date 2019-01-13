@@ -42,7 +42,7 @@ export class Article extends Typegoose {
   published = false;
 
   @prop({ enum: ArticleLanguage, default: ArticleLanguage.FR })
-  lang = ArticleLanguage.FR;
+  lang: ArticleLanguage;
 
   /**
    * Automatically mapped by mongoose

@@ -1,3 +1,4 @@
+import * as flyd from "flyd";
 import { html, LitElement, property } from "lit-element/lit-element";
 
 import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
@@ -25,7 +26,12 @@ export default class Draft extends LitElement {
    */
   saveTimer: number;
 
-  firstUpdated(): void {
+  async firstUpdated() {
+    // if (process.env.MEIOSIS_TRACER) {
+    //   const meiosisTracer = await import("meiosis-tracer");
+    //   meiosisTracer.default({ selector: "#tracer", streams: [this.states] });
+    // }
+
     this.states.map(state => {
       this.state = state;
       this.update(new Map());
@@ -119,7 +125,6 @@ export default class Draft extends LitElement {
   }
 
   handleTitleChange(e: Event): void {
-    console.log((e.target as HTMLInputElement).value);
     this.actions.editTitle((e.target as HTMLInputElement).value);
   }
 
@@ -131,22 +136,34 @@ export default class Draft extends LitElement {
     this.actions.editMetaDescription((e.target as HTMLInputElement).value);
   }
 
+  handleLangChange(e: Event): void {
+    this.actions.editLang((e.target as HTMLInputElement)
+      .value as ArticleLanguage);
+  }
+
   handleChange(e: Event): void {
-    // e.preventDefault();
-    // this.dirty = true;
-    // this.update(new Map());
-    // if (this.saveTimer) {
-    //   window.clearTimeout(this.saveTimer);
-    // }
-    // if (!this.state.draft.title) {
-    //   return;
-    // }
-    // const saveCallback = async () => {
-    //   await this.handleSubmit(e);
-    //   this.dirty = false;
-    //   this.update(new Map());
-    // };
-    // this.saveTimer = window.setTimeout(saveCallback, 2000);
+    e.preventDefault();
+    this.dirty = true;
+    this.update(new Map());
+
+    if (this.saveTimer) {
+      window.clearTimeout(this.saveTimer);
+    }
+
+    if (
+      !this.state.draft.markdown ||
+      (this.state.draft.markdown || "").length === 0 ||
+      !this.state.draft.title
+    ) {
+      return;
+    }
+
+    const saveCallback = async () => {
+      await this.handleSubmit(e);
+      this.dirty = false;
+      this.update(new Map());
+    };
+    this.saveTimer = window.setTimeout(saveCallback, 2000);
   }
 
   handleRemovePoster(): void {
@@ -167,7 +184,7 @@ export default class Draft extends LitElement {
       publishedAt: draft.publishedAt,
       metaTitle: draft.metaTitle,
       metaDescription: draft.metaDescription,
-      lang: ArticleLanguage.FR,
+      lang: draft.lang,
     };
   }
 
@@ -293,6 +310,32 @@ export default class Draft extends LitElement {
                           />
                         </div>
                         <div class="field">
+                          <label class="label" for="lang">Lang</label>
+                          <div class="control">
+                            <div class="select">
+                              <select
+                                required
+                                id="lang"
+                                @change="${this.handleLangChange}"
+                              >
+                                ${
+                                  [ArticleLanguage.FR, ArticleLanguage.EN].map(
+                                    lang => html`
+                                      <option
+                                        value="${lang}"
+                                        ?selected="${
+                                          lang === this.state.draft.lang
+                                        }"
+                                        >${lang}</option
+                                      >
+                                    `,
+                                  )
+                                }
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="field">
                           <label class="label" for="title">Meta title</label>
                           <input
                             id="metaTitle"
@@ -316,11 +359,7 @@ export default class Draft extends LitElement {
                             type="text"
                           />
                         </div>
-                        <button
-                          type="submit"
-                          class="button"
-                          ?disabled=${!this.dirty}
-                        >
+                        <button type="submit" class="button">
                           ${
                             this.dirty
                               ? html`
@@ -344,7 +383,6 @@ export default class Draft extends LitElement {
                           }
                         </button>
                       </div>
-                      <div id="tracer"></div>
                     </div>
                   </form>
                 </div>

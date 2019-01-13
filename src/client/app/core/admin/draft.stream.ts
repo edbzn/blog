@@ -3,8 +3,7 @@ import { StateUpdateFunction, DraftState } from "./types";
 import { draft } from "./draft.store";
 
 const update = flyd.stream<StateUpdateFunction>();
-const updateState = (state: DraftState, patch: StateUpdateFunction) =>
-  patch(state);
+const updateState = (state: DraftState, patch: StateUpdateFunction) => patch(state);
 
 export const actions = draft.actions(update);
 export const states = flyd.scan<DraftState, StateUpdateFunction>(

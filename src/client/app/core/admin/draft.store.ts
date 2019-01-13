@@ -12,9 +12,10 @@ import {
   IDraft,
   StateUpdateFunction,
 } from "./types";
+import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
 
 export const draft = {
-  initialState: (): DraftState => initialState,
+  initialState: (): DraftState => Object.assign(initialState, {}),
   actions: (update: flyd.Stream<StateUpdateFunction>): DraftActions => ({
     reset() {
       update(() => {
@@ -51,10 +52,10 @@ export const draft = {
     initEditor(element: HTMLTextAreaElement, initialValue: string) {
       update((state: DraftState) => {
         state.editor = new SimpleMDE({
-          lineWrapping: true,
           element,
           initialValue,
-          spellChecker: false,
+          lineWrapping: true,
+          spellChecker: state.draft.lang === ArticleLanguage.EN ? true : false,
           autoDownloadFontAwesome: true,
           forceSync: false,
           tabSize: 2,
@@ -164,6 +165,12 @@ export const draft = {
     editTags(tags: string) {
       update((state: DraftState) => {
         state.draft.tags = tags.split(",");
+        return state;
+      });
+    },
+    editLang(lang: ArticleLanguage) {
+      update((state: DraftState) => {
+        state.draft.lang = lang;
         return state;
       });
     },

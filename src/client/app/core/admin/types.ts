@@ -41,6 +41,7 @@ export interface DraftActions {
   editMetaTitle(metaTitle: string): void;
   editMetaDescription(metaDescription: string): void;
   editTags(tags: string): void;
+  editLang(lang: ArticleLanguage): void;
 }
 
 export interface StateUpdateFunction {
