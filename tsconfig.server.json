@@ -1,7 +1,7 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.common.json",
   "compilerOptions": {
-    "lib": ["es7"],
+    "lib": ["es2015", "es2016", "es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -9,6 +9,6 @@
     "target": "es6",
     "types": ["node", "express", "mongoose"]
   },
-  "include": ["./src/server/**/*", "./src/static-storage/**/*"],
+  "include": ["./src/server/**/*"],
   "exclude": ["./src/client/**/*", "node_module"]
 }

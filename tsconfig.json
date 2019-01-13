@@ -1,26 +1,11 @@
 {
+  "extends": "./tsconfig.common.json",
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./dist/client",
-    "typeRoots": ["./node_modules/@types"],
-    "pretty": true,
-    "allowSyntheticDefaultImports": true,
-    "alwaysStrict": true,
-    "strict": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": false,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "es6",
-    "allowJs": false,
-    "sourceMap": true,
-    "declaration": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "lib": ["es2017", "dom"]
+    "lib": ["es2015", "es2016", "es2017", "dom"],
   },
   "include": ["./src/client/**/*", "./custom.d"],
   "exclude": ["node_modules"]
