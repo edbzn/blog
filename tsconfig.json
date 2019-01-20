@@ -2,11 +2,13 @@
   "extends": "./tsconfig.common.json",
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/client",
+    "allowJs": true,
+    "noEmit": true,
+    "skipLibCheck": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "lib": ["es2015", "es2016", "es2017", "dom"]
   },
   "include": ["./src/client/**/*", "./src/server/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/node_modules/*"]
 }
