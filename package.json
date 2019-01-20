@@ -1,22 +1,21 @@
 {
   "name": "codamit",
   "version": "1.0.0",
-  "description": "My web page",
-  "main": "index.js",
+  "description": "Tech Blog",
   "engines": {
-    "node": ">=11.6.0"
+    "node": "^8.11.3"
   },
   "scripts": {
     "start": "npm run start:api:prod",
     "watch": "concurrently \"webpack-dev-server --config=webpack.dev.config.js --inline --hot\" \"nodemon --config nodemon.server.json\"",
     "build:client": "webpack ---progress --config=webpack.production.config.js --mode production",
     "start:api:dev": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env",
-    "start:api:prod": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env.production",
-    "deploy:all": "concurrently \"npm run update:client\" \"npm run update:api\"",
+    "start:api:prod": "ts-node --project tsconfig.server.json --require dotenv/config ./src/server/index.ts dotenv_config_path=.env.production",
     "deploy:api": "now -A now.api.json && now scale api.codamit.com bru1 1",
     "deploy:client": "npm run build:client && now -A now.client.json",
     "ln:api": "now ln -A now.api.json && now rm codamit-api --safe --yes",
-    "ln:client": "now ln -A now.client.json",
+    "ln:client": "now ln -A now.client.json && now rm codamit-client --safe --yes",
+    "update:all": "concurrently \"npm run update:client\" \"npm run update:api\"",
     "update:client": "npm run deploy:client && npm run ln:client",
     "update:api": "npm run deploy:api && npm run ln:api"
   },
