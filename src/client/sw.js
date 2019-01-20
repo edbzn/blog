@@ -64,7 +64,7 @@ self.addEventListener("fetch", event => {
 
 // Always go to the network & update a cache as we go
 self.addEventListener("fetch", function(event) {
-  if (event.request.url.startsWith("https://api.codamit.com/")) {
+  if (event.request.url.startsWith("https://api.codamit.com/") && event.request.method === 'GET') {
     event.respondWith(
       caches.open(APICACHE).then(function(cache) {
         return fetch(event.request, { mode: "cors" }).then(
