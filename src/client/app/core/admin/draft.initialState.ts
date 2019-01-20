@@ -19,5 +19,4 @@ export const initialState: DraftState = {
   },
   error: null,
   draftLoaded: false,
-  dirty: false,
 };

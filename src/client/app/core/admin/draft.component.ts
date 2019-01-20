@@ -19,7 +19,7 @@ export default class Draft extends LitElement {
   /**
    * Whenever form is dirty
    */
-  dirty: boolean = false;
+  dirty = false;
 
   /**
    * Timer for save action pending
@@ -72,7 +72,7 @@ export default class Draft extends LitElement {
     e.preventDefault();
 
     this.actions.transformMarkdownToHtml();
-    const draft = this.buildData();
+    const draft = this.getDraft();
 
     try {
       if (this.isDraft()) {
@@ -82,63 +82,11 @@ export default class Draft extends LitElement {
         }&title=${encodeURIComponent(article.title)}`;
         router.push(route);
       } else {
-        this.actions.update(this.state.id as string, draft as IArticle);
+        await this.actions.update(this.state.id as string, draft as IArticle);
       }
     } catch (error) {
       errorHandlerService.throw(error);
     }
-  }
-
-  async handleFile(e: Event): Promise<void> {
-    const target = e.target as HTMLInputElement;
-
-    if (target.files instanceof FileList) {
-      const file = target.files.item(0) as File;
-      const id = this.state.id as string;
-
-      try {
-        await this.actions.uploadPoster(id, file);
-        await this.actions.update(id, this.state.draft as IArticle);
-      } catch (error) {
-        errorHandlerService.throw(error);
-      }
-    }
-  }
-
-  async togglePublish(): Promise<void> {
-    // const article = this.buildData();
-    // article.published = !article.published;
-    // if (article.published === true) {
-    //   article.publishedAt = new Date().toString();
-    // } else {
-    //   article.publishedAt = null;
-    // }
-    // try {
-    //   await this.submitAndUpdateFields(article as IArticle);
-    // } catch (error) {
-    //   errorHandlerService.throw(error);
-    // }
-  }
-
-  handleTagsChange(e: Event): void {
-    this.actions.editTags((e.target as HTMLInputElement).value);
-  }
-
-  handleTitleChange(e: Event): void {
-    this.actions.editTitle((e.target as HTMLInputElement).value);
-  }
-
-  handleMetaTitleChange(e: Event): void {
-    this.actions.editMetaTitle((e.target as HTMLInputElement).value);
-  }
-
-  handleMetaDescriptionChange(e: Event): void {
-    this.actions.editMetaDescription((e.target as HTMLInputElement).value);
-  }
-
-  handleLangChange(e: Event): void {
-    this.actions.editLang((e.target as HTMLInputElement)
-      .value as ArticleLanguage);
   }
 
   handleChange(e: Event): void {
@@ -166,12 +114,66 @@ export default class Draft extends LitElement {
     this.saveTimer = window.setTimeout(saveCallback, 2000);
   }
 
-  handleRemovePoster(): void {
-    this.actions.removePoster();
-    this.actions.update(this.state.id as string, this.state.draft as IArticle);
+  async handleFile(e: Event): Promise<void> {
+    const target = e.target as HTMLInputElement;
+
+    if (target.files instanceof FileList) {
+      const file = target.files.item(0) as File;
+      const id = this.state.id as string;
+
+      try {
+        await this.actions.uploadPoster(id, file);
+        this.handleChange(e);
+      } catch (error) {
+        errorHandlerService.throw(error);
+      }
+    }
   }
 
-  buildData(): IDraft {
+  togglePublish(e: Event) {
+    const article = this.getDraft();
+
+    if (article.published) {
+      this.actions.dePublish();
+    } else {
+      this.actions.publish();
+    }
+
+    this.handleChange(e);
+  }
+
+  handleTagsChange(e: Event): void {
+    this.actions.editTags((e.target as HTMLInputElement).value);
+    this.handleChange(e);
+  }
+
+  handleTitleChange(e: Event): void {
+    this.actions.editTitle((e.target as HTMLInputElement).value);
+    this.handleChange(e);
+  }
+
+  handleMetaTitleChange(e: Event): void {
+    this.actions.editMetaTitle((e.target as HTMLInputElement).value);
+    this.handleChange(e);
+  }
+
+  handleMetaDescriptionChange(e: Event): void {
+    this.actions.editMetaDescription((e.target as HTMLInputElement).value);
+    this.handleChange(e);
+  }
+
+  handleLangChange(e: Event): void {
+    this.actions.editLang((e.target as HTMLInputElement)
+      .value as ArticleLanguage);
+    this.handleChange(e);
+  }
+
+  handleRemovePoster(e: Event): void {
+    this.actions.removePoster();
+    this.handleChange(e);
+  }
+
+  getDraft(): IDraft {
     const { draft } = this.state;
 
     return {
@@ -247,6 +249,7 @@ export default class Draft extends LitElement {
                     class="columns"
                     @submit="${this.handleSubmit}"
                     @input="${this.handleChange}"
+                    @change="${this.handleChange}"
                   >
                     <div class="column is-three-fifths">
                       <h1 class="title">${this.state.draft.title}</h1>
@@ -372,7 +375,7 @@ export default class Draft extends LitElement {
                         </button>
                         <button
                           type="button"
-                          class="button is-info"
+                          class="button ${this.state.draft.published ? "is-warning" : "is-info"}"
                           @click="${this.togglePublish}"
                           ?disabled=${this.isDraft()}
                         >

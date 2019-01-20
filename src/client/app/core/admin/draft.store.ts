@@ -88,7 +88,6 @@ export const draft = {
           .put<IArticle>(`/api/v1/article/${id}`, draft)
           .then(updatedDraft => {
             update((state: DraftState) => {
-              state.draft = updatedDraft;
               return state;
             });
             resolve(updatedDraft);
@@ -122,7 +121,7 @@ export const draft = {
           });
       });
     },
-    uploadPoster(id: string, file: File): Promise<string> {
+    uploadPoster(id: string, file: File) {
       return new Promise((resolve, reject) => {
         const filename = id || "draft" + "-" + uuid();
         storageService
@@ -133,7 +132,7 @@ export const draft = {
               state.draft.posterUrl = path;
               return state;
             });
-            resolve(path);
+            resolve();
           })
           .catch(err => {
             update((state: DraftState) => {

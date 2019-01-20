@@ -22,7 +22,6 @@ export interface DraftState {
   draft: IDraft | IArticle;
   error: string | null;
   draftLoaded: boolean;
-  dirty: boolean;
 }
 
 export interface DraftActions {
@@ -31,7 +30,7 @@ export interface DraftActions {
   initEditor(element: HTMLTextAreaElement, initialValue: string): void;
   fetch(id: string): Promise<IArticle>;
   update(id: string, draft: IArticle): Promise<IArticle>;
-  uploadPoster(id: string, file: File): Promise<string>;
+  uploadPoster(id: string, file: File): Promise<void>;
   post(draft: IDraft): Promise<IArticle>;
   publish(): void;
   dePublish(): void;
