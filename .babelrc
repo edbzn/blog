@@ -1,0 +1,38 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions"]
+        }
+      }
+    ],
+    "@babel/typescript"
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-class-properties"],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-syntax-dynamic-import"],
+    [
+      "template-html-minifier",
+      {
+        "modules": {
+          "lit-html": ["html"],
+          "lit-element": [
+            "html",
+            {
+              "name": "css",
+              "encapsulation": "style"
+            }
+          ]
+        },
+        "htmlMinifier": {
+          "collapseWhitespace": true,
+          "minifyJS": true,
+          "removeComments": true
+        }
+      }
+    ]
+  ]
+}
