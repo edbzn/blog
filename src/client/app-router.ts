@@ -1,6 +1,7 @@
 import { html, render } from "lit-html";
 import { browserRouter, ProuterNavigationEvent, routerGroup } from "prouter";
 
+import { actions, states } from "./app/core/admin/draft.stream";
 import { authService } from "./app/core/authentication-service";
 import { errorHandlerService } from "./app/core/error-handler-service";
 import { setTitleAndMeta } from "./app/utils/set-document-meta";
@@ -22,7 +23,7 @@ adminRoutes
   .use("*", (_req, resp, next) => {
     if (!authService.authenticated) {
       errorHandlerService.throw(unAuthenticatedErrorMsg);
-      router.push('/error');
+      router.push("/error");
       resp.end();
       return;
     }
@@ -42,11 +43,16 @@ adminRoutes
   })
   .use("/draft", async (req, resp) => {
     await loadAdmin();
-    
+
+    const id = req.query.id;
+    if (id) {
+      actions.setId(id);
+    }
+
     setTitleAndMeta("Draft");
     render(
       html`
-        <ez-draft id="${req.query.id}"></ez-draft>
+        <ez-draft .actions="${actions}" .states="${states}"></ez-draft>
       `,
       appSelector,
     );

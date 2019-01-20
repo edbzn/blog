@@ -8,4 +8,5 @@ export interface IArticlePayload {
   publishedAt: Date;
   metaTitle: string;
   metaDescription: string;
+  lang: string;
 }

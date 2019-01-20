@@ -2,10 +2,11 @@ import { MongooseDocument } from "mongoose";
 import { arrayProp, prop, Typegoose, post } from "typegoose";
 import { IArticlePayload } from "../helpers/article-payload";
 import { MongoError } from "mongodb";
+import { ArticleLanguage } from "./article-language";
 
 export type ArticleDocument = Article & MongooseDocument;
 
-@post<Article>('save', (error: MongoError, _doc: any, next: any) => {
+@post<Article>('save', (error: MongoError, _doc: any, next: Function) => {
   if (error.name === 'MongoError' && error.code === 11000) {
     next(new Error('There was a duplicate key error'));
   } else {
@@ -40,25 +41,12 @@ export class Article extends Typegoose {
   @prop({ required: Boolean, default: false })
   published = false;
 
+  @prop({ enum: ArticleLanguage, default: ArticleLanguage.FR })
+  lang: ArticleLanguage;
+
   /**
    * Automatically mapped by mongoose
    */
   createdAt: Date;
   updatedAt: Date;
-
-  constructor(payload?: IArticlePayload) {
-    super();
-
-    if (payload) {
-      this.title = payload.title;
-      this.markdown = payload.markdown;
-      this.html = payload.html;
-      this.posterUrl = payload.posterUrl;
-      this.tags = payload.tags;
-      this.published = payload.published;
-      this.publishedAt = payload.publishedAt;
-      this.metaTitle = payload.metaTitle;
-      this.metaDescription = payload.metaDescription;
-    }
-  }
 }

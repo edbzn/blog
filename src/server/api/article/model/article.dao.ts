@@ -1,11 +1,13 @@
+import { FilterQuery } from "mongodb";
 import { from } from "rxjs";
-import { Article } from "./article.model";
+
 import {
   applyCollectionQuery,
   ArticleCollectionQueryOptions,
 } from "../../../utils/collection";
 import { IArticlePayload } from "../helpers/article-payload";
-import { FilterQuery } from "mongodb";
+import { ArticleLanguage } from "./article-language";
+import { Article } from "./article.model";
 
 export namespace ArticleDao {
   export const model = new Article().getModelForClass(Article, {
@@ -43,6 +45,18 @@ export namespace ArticleDao {
     from(model.findByIdAndUpdate(id, body).exec());
 
   export const create = (body: IArticlePayload) => {
-    return from(model.create(new Article(body)));
+    const article = new Article();
+    article.title = body.title;
+    article.markdown = body.markdown;
+    article.html = body.html;
+    article.posterUrl = body.posterUrl;
+    article.tags = body.tags;
+    article.published = body.published;
+    article.publishedAt = body.publishedAt;
+    article.metaTitle = body.metaTitle;
+    article.metaDescription = body.metaDescription;
+    article.lang = body.lang as ArticleLanguage;
+
+    return from(model.create(article));
   };
 }
