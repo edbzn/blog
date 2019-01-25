@@ -22,6 +22,7 @@ export interface DraftState {
   draft: IDraft | IArticle;
   error: string | null;
   draftLoaded: boolean;
+  loading: boolean;
 }
 
 export interface DraftActions {

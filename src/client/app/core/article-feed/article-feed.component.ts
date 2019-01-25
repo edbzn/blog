@@ -103,7 +103,7 @@ export default class ArticleFeed extends LitElement {
         this.articleCollection = (this.articleCollection || []).filter(
           _article => article._id !== _article._id,
         );
-        this.update(new Map());
+        this.requestUpdate();
       } catch (error) {
         errorHandlerService.throwAndRedirect(error);
       }

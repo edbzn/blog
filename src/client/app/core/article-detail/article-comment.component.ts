@@ -29,7 +29,7 @@ export default class ArticleCommentComponent extends LitElement {
 
     this.commentCollection = commentCollection;
     this.loading = false;
-    this.update(new Map());
+    this.requestUpdate();
   }
 
   isFormValid(): boolean {
@@ -57,7 +57,7 @@ export default class ArticleCommentComponent extends LitElement {
   postComment(event: Event): void {
     event.preventDefault();
     this.loading = true;
-    this.update(new Map());
+    this.requestUpdate();
 
     const name = (this.shadowRoot!.querySelector("#name") as HTMLInputElement)
       .value;
@@ -75,12 +75,12 @@ export default class ArticleCommentComponent extends LitElement {
       .then(() => {
         this.showEditor = false;
         this.loading = false;
-        this.update(new Map());
+        this.requestUpdate();
       })
       .catch(err => {
         this.error = err.message ? err.message : err;
         this.loading = false;
-        this.update(new Map());
+        this.requestUpdate();
       });
   }
 
@@ -121,7 +121,7 @@ export default class ArticleCommentComponent extends LitElement {
           @click="${
             () => {
               this.showEditor = !this.showEditor;
-              this.update(new Map());
+              this.requestUpdate();
 
               if (this.showEditor) {
                 (this.shadowRoot!.querySelector(
@@ -156,7 +156,7 @@ export default class ArticleCommentComponent extends LitElement {
                               @click="${
                                 () => {
                                   this.error = null;
-                                  this.update(new Map());
+                                  this.requestUpdate();
                                 }
                               }"
                             ></button>

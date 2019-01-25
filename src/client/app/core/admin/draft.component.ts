@@ -26,15 +26,11 @@ export default class Draft extends LitElement {
    */
   saveTimer: number;
 
-  async firstUpdated() {
-    // if (process.env.MEIOSIS_TRACER) {
-    //   const meiosisTracer = await import("meiosis-tracer");
-    //   meiosisTracer.default({ selector: "#tracer", streams: [this.states] });
-    // }
-
-    this.states.map(state => {
+  firstUpdated() {
+    this.state = this.states();
+    this.states.map(async state => {
       this.state = state;
-      this.update(new Map());
+      await this.requestUpdate("state");
     });
 
     this.loadAndInit();
@@ -44,14 +40,16 @@ export default class Draft extends LitElement {
     this.actions.reset();
   }
 
-  loadAndInit(): void {
+  async loadAndInit() {
     if (!this.isDraft()) {
-      this.actions.fetch(this.state.id as string).then(draft => {
-        this.actions.initEditor(
-          this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
-          draft.markdown,
-        );
-      });
+      const draft = await this.actions.fetch(this.state.id as string);
+
+      await this.requestUpdate();
+
+      this.actions.initEditor(
+        this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
+        draft.markdown,
+      );
     } else {
       this.actions.initEditor(
         this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
@@ -92,7 +90,7 @@ export default class Draft extends LitElement {
   handleChange(e: Event): void {
     e.preventDefault();
     this.dirty = true;
-    this.update(new Map());
+    this.requestUpdate();
 
     if (this.saveTimer) {
       window.clearTimeout(this.saveTimer);
@@ -109,12 +107,12 @@ export default class Draft extends LitElement {
     const saveCallback = async () => {
       await this.handleSubmit(e);
       this.dirty = false;
-      this.update(new Map());
+      this.requestUpdate();
     };
     this.saveTimer = window.setTimeout(saveCallback, 2000);
   }
 
-  async handleFile(e: Event): Promise<void> {
+  async handleFile(e: Event) {
     const target = e.target as HTMLInputElement;
 
     if (target.files instanceof FileList) {
@@ -123,14 +121,14 @@ export default class Draft extends LitElement {
 
       try {
         await this.actions.uploadPoster(id, file);
-        this.handleChange(e);
+        await this.actions.update(id, this.getDraft() as IArticle);
       } catch (error) {
         errorHandlerService.throw(error);
       }
     }
   }
 
-  togglePublish(e: Event) {
+  async togglePublish(e: Event) {
     const article = this.getDraft();
 
     if (article.published) {
@@ -139,7 +137,10 @@ export default class Draft extends LitElement {
       this.actions.publish();
     }
 
-    this.handleChange(e);
+    await this.actions.update(
+      this.state.id as string,
+      this.getDraft() as IArticle,
+    );
   }
 
   handleTagsChange(e: Event): void {
@@ -191,6 +192,13 @@ export default class Draft extends LitElement {
   }
 
   render() {
+    const articleUri =
+      this.state && this.state.draftLoaded
+        ? `/article/${
+            (this.state.draft as IArticle)._id
+          }?title=${encodeURIComponent(this.state.draft.title)}`
+        : null;
+
     return html`
       <link
         href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -221,7 +229,12 @@ export default class Draft extends LitElement {
           background-color: #eee;
         }
 
+        .right {
+          float: right;
+        }
+
         button svg {
+          fill: #17a917;
           width: 22px;
           margin-right: 6px;
         }
@@ -243,7 +256,7 @@ export default class Draft extends LitElement {
                       `
                     : html``
                 }
-                <div class="container is-fluid">
+                <div class="container">
                   <form
                     name="draft"
                     class="columns"
@@ -364,27 +377,52 @@ export default class Draft extends LitElement {
                         </div>
                         <button type="submit" class="button">
                           ${
-                            this.dirty
+                            this.dirty || this.state.loading
                               ? html`
-                                  Save is pending...
+                                  ⌛️ Sauvegarde en cours...
                                 `
                               : html`
-                                  ${check} Draft saved
+                                  ${check} Sauvegarder
                                 `
                           }
                         </button>
-                        <button
-                          type="button"
-                          class="button ${this.state.draft.published ? "is-warning" : "is-info"}"
-                          @click="${this.togglePublish}"
-                          ?disabled=${this.isDraft()}
-                        >
+                        <span class="right">
+                          <button
+                            type="button"
+                            class="button ${
+                              this.state.draft.published
+                                ? "is-warning"
+                                : "is-info"
+                            }"
+                            @click="${this.togglePublish}"
+                            ?disabled=${this.isDraft()}
+                          >
+                            ${
+                              this.state.draft.published
+                                ? "🔒 Dépublier"
+                                : "🔓 Publier"
+                            }
+                          </button>
                           ${
-                            this.state.draft.published
-                              ? "de publish"
-                              : "publish"
+                            this.state.id
+                              ? html`
+                                  <a
+                                    class="button is-primary"
+                                    href="${articleUri}"
+                                    title="Lire ${this.state.draft.title}"
+                                    @click="${
+                                      (e: Event) => {
+                                        e.preventDefault();
+                                        router.push(articleUri as string);
+                                      }
+                                    }"
+                                  >
+                                    👁 Prévisualisation
+                                  </a>
+                                `
+                              : ""
                           }
-                        </button>
+                        </span>
                       </div>
                     </div>
                   </form>

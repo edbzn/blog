@@ -130,7 +130,7 @@ export default class Login extends LitElement {
                       @click="${
                         () => {
                           this.showSignup = !this.showSignup;
-                          this.update(new Map());
+                          this.requestUpdate();
                         }
                       }"
                     >

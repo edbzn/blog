@@ -83,11 +83,17 @@ export const draft = {
       });
     },
     update(id: string, draft: IArticle): Promise<IArticle> {
+      update((state: DraftState) => {
+        state.loading = true;
+        return state;
+      });
+
       return new Promise((resolve, reject) => {
         apiClient
           .put<IArticle>(`/api/v1/article/${id}`, draft)
           .then(updatedDraft => {
             update((state: DraftState) => {
+              state.loading = false;
               return state;
             });
             resolve(updatedDraft);
@@ -95,6 +101,7 @@ export const draft = {
           .catch(err => {
             update((state: DraftState) => {
               state.error = err;
+              state.loading = false;
               return state;
             });
             reject(err);
