@@ -68,7 +68,7 @@ export default class ArticleDetail extends LitElement {
   }
 
   showArticleDetail() {
-    const article = this.article as IArticle;
+    const article = this.article!;
 
     return html`
       <article class="content is-medium">
@@ -271,7 +271,7 @@ export default class ArticleDetail extends LitElement {
                 style="background-image: url('${this.posterUrl}')"
               ></figure>
             `
-          : null
+          : html`<div class="poster"></div>`
       }
       <div class="time-remaining">
         <div

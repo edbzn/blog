@@ -2,12 +2,27 @@ import { Middleware } from "@marblejs/core";
 import { tap, filter } from "rxjs/operators";
 import { Config } from "../../../config";
 
+function getAuthorizedOrigin(referer: string | undefined): string {
+  if (
+    referer &&
+    Config.frontAppDomains.some(
+      authorizedDomain => referer.includes(authorizedDomain),
+    )
+  ) {
+    return Config.frontAppDomains.filter(
+      authorizedDomain => referer.includes(authorizedDomain),
+    )[0];
+  }
+
+  return "";
+}
+
 export const cors$: Middleware = (req$, res) =>
   req$.pipe(
-    tap(() => {
+    tap(req => {
       res.setHeader(
         "Access-Control-Allow-Origin",
-        Config.frontAppDomains.join(", "),
+        getAuthorizedOrigin(req.headers.referer),
       );
       res.setHeader("Access-Control-Allow-Headers", [
         "Content-Type",
