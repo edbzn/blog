@@ -122,12 +122,6 @@ export default class ArticleCommentComponent extends LitElement {
             () => {
               this.showEditor = !this.showEditor;
               this.requestUpdate();
-
-              if (this.showEditor) {
-                (this.shadowRoot!.querySelector(
-                  "#name",
-                ) as HTMLInputElement).focus();
-              }
             }
           }"
         >

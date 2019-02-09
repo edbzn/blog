@@ -112,7 +112,7 @@ export default class ArticleDetail extends LitElement {
           >
             Accueil
           </a>
-          <ez-comment .articleId="${article._id}"></ez-comment>
+          <ez-comment articleId=${article._id}></ez-comment>
           <div class="profile">
             <figure
               class="avatar"
