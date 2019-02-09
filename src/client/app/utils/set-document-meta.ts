@@ -1,5 +1,5 @@
 export function setTitleAndMeta(
-  title: string,
+  title?: string,
   description?: string | undefined,
 ): void {
   setDocTitle(title);
@@ -18,8 +18,14 @@ export function setTitleAndMeta(
   }
 }
 
-const setDocTitle = (title: string): void => {
+const crop = (title: string, prefix: string) =>
+  prefix + (title.length > 55 ? title.slice(0, 55) + "..." : title);
+
+const setDocTitle = (title: string | undefined): void => {
+  if (!(typeof title === "string")) {
+    title = "Codamit - Tech Blog";
+  }
+
   const prefix = process.env.NODE_ENV !== "production" ? "[DEV] - " : "";
-  document.title =
-    prefix + (title.length > 55 ? title.slice(0, 55) + "..." : title);
+  document.title = crop(title, prefix);
 };
