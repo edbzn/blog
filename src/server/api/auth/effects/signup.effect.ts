@@ -28,12 +28,12 @@ export const signupEffect$: HttpEffect = req$ =>
                 )
               : forkJoin(of(req.body), createHash$(req.body.password)),
         ),
-        mergeMap(payload =>
+        mergeMap(([payload, password]) =>
           UserDao.create({
-            email: payload[0].email,
-            password: payload[1],
-            firstName: payload[0].firstName,
-            lastName: payload[0].lastName,
+            email: payload.email,
+            password,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
           }),
         ),
         map(generateTokenPayload),

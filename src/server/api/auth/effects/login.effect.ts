@@ -1,14 +1,14 @@
-import { HttpEffect, HttpError, HttpStatus, use } from '@marblejs/core';
-import { generateToken } from '@marblejs/middleware-jwt';
-import { forkJoin, iif, of, throwError } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { HttpEffect, HttpError, HttpStatus, use } from "@marblejs/core";
+import { generateToken } from "@marblejs/middleware-jwt";
+import { forkJoin, iif, of, throwError } from "rxjs";
+import { catchError, map, mergeMap } from "rxjs/operators";
 
-import { Config } from '../../../config';
-import { neverNullable } from '../../../utils/never-nullable';
-import { UserDao } from '../../user/model/user.dao';
-import { credentialsValidator$ } from '../helpers/credentials.validator';
-import { compare$ } from '../helpers/hash';
-import { generateTokenPayload } from '../helpers/token.helper';
+import { Config } from "../../../config";
+import { neverNullable } from "../../../utils/never-nullable";
+import { UserDao } from "../../user/model/user.dao";
+import { credentialsValidator$ } from "../helpers/credentials.validator";
+import { compare$ } from "../helpers/hash";
+import { generateTokenPayload } from "../helpers/token.helper";
 
 export const loginEffect$: HttpEffect = req$ =>
   req$.pipe(
@@ -22,9 +22,7 @@ export const loginEffect$: HttpEffect = req$ =>
             of(body.password),
           ),
         ),
-        mergeMap(data => {
-          return compare$(data[1], data[0].password);
-        }),
+        mergeMap(([user, password]) => compare$(password, user.password)),
         mergeMap(isUser =>
           iif(
             () => isUser,
@@ -36,7 +34,7 @@ export const loginEffect$: HttpEffect = req$ =>
         map(generateTokenPayload),
         map(generateToken({ secret: Config.jwt.secret })),
         map(token => ({ body: { token } })),
-        catchError(err => {
+        catchError(() => {
           return throwError(
             new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED),
           );
