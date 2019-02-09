@@ -1,11 +1,11 @@
-import { httpListener } from '@marblejs/core';
-import { bodyParser$ } from '@marblejs/middleware-body';
-import { loggerWithOpts$ } from '@marblejs/middleware-logger';
+import { httpListener } from "@marblejs/core";
+import { bodyParser$ } from "@marblejs/middleware-body";
+import { logger$ } from "@marblejs/middleware-logger";
 
-import { api$ } from './api';
-import { cors$ } from './api/common/middlewares/cors.middleware';
+import { api$ } from "./api";
+import { cors$ } from "./api/common/middlewares/cors.middleware";
 
-const middlewares = [loggerWithOpts$(), cors$, bodyParser$];
+const middlewares = [cors$, logger$({ silent: false }), bodyParser$()];
 
 const effects = [api$];
 

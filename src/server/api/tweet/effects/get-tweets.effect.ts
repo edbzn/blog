@@ -1,10 +1,10 @@
 import { RxHR } from "@akanass/rx-http-request";
-import { Effect } from "@marblejs/core";
+import { HttpEffect } from "@marblejs/core";
 import { mergeMap } from "rxjs/operators";
 
 import { Config } from "../../../config";
 
-export const getTweetsEffect$: Effect = req$ =>
+export const getTweetsEffect$: HttpEffect = req$ =>
   req$.pipe(
     mergeMap(_ => {
       const oauth = Config.twitter.oAuth;

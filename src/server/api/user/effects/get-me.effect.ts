@@ -1,10 +1,11 @@
-import { Effect, HttpError, HttpStatus } from "@marblejs/core";
-import { throwError } from "rxjs";
-import { map, mergeMap, catchError } from "rxjs/operators";
-import { UserDao } from "../model/user.dao";
-import { neverNullable } from "../../../utils/never-nullable";
+import { HttpEffect, HttpError, HttpStatus } from '@marblejs/core';
+import { throwError } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
-export const getMeEffect$: Effect = req$ =>
+import { neverNullable } from '../../../utils/never-nullable';
+import { UserDao } from '../model/user.dao';
+
+export const getMeEffect$: HttpEffect = req$ =>
   req$.pipe(
     map(req => req.user._id),
     mergeMap(UserDao.findById),

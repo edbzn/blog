@@ -1,8 +1,8 @@
-import { MongooseDocument } from "mongoose";
-import { arrayProp, prop, Typegoose, post } from "typegoose";
-import { IArticlePayload } from "../helpers/article-payload";
-import { MongoError } from "mongodb";
-import { ArticleLanguage } from "./article-language";
+import { MongoError } from 'mongodb';
+import { MongooseDocument } from 'mongoose';
+import { arrayProp, post, prop, Typegoose } from 'typegoose';
+
+import { ArticleLanguage } from './article-language';
 
 export type ArticleDocument = Article & MongooseDocument;
 

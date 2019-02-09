@@ -1,14 +1,21 @@
-import { Effect, HttpError, HttpStatus, use } from "@marblejs/core";
-import { of, throwError } from "rxjs";
-import { catchError, map, mergeMap, mapTo } from "rxjs/operators";
+import { HttpEffect, HttpError, HttpStatus, use } from '@marblejs/core';
+import { of, throwError } from 'rxjs';
+import { catchError, map, mapTo, mergeMap } from 'rxjs/operators';
 
-import { neverNullable } from "../../../utils/never-nullable";
-import { ArticleDao } from "../model/article.dao";
-import { articleValidator$ } from "../helpers/article.validator";
+import { neverNullable } from '../../../utils/never-nullable';
+// import { articleValidator$ } from '../helpers/article.validator';
+import { ArticleDao } from '../model/article.dao';
+import { requestValidator$, t } from '@marblejs/middleware-io';
 
-export const updateArticleEffect$: Effect = req$ =>
+const validator$ = requestValidator$({
+  params: t.type({
+    id: t.string,
+  }),
+});
+
+export const updateArticleEffect$: HttpEffect = req$ =>
   req$.pipe(
-    use(articleValidator$),
+    use(validator$),
     mergeMap(req =>
       of(req.params.id).pipe(
         mapTo({

@@ -1,11 +1,11 @@
-import { Effect, use } from "@marblejs/core";
+import { HttpEffect, use } from "@marblejs/core";
 import { map, mergeMap, catchError } from "rxjs/operators";
 
 import { CommentDao } from "../model/comment.dao";
 import { throwError } from "rxjs";
 import { commentValidator$ } from "../helpers/comment-validator";
 
-export const postCommentByArticleEffect$: Effect = req$ =>
+export const postCommentByArticleEffect$: HttpEffect = req$ =>
   req$.pipe(
     use(commentValidator$),
     map(req => req.body),

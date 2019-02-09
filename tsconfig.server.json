@@ -7,7 +7,13 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "es6",
-    "types": ["node", "express", "mongoose"]
+    "types": ["node", "express", "mongoose"],
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true
   },
   "include": ["./src/server/**/*"],
   "exclude": ["./src/client/**/*", "node_module"]

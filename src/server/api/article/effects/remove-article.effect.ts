@@ -1,11 +1,19 @@
-import { Effect, HttpError, HttpStatus, use } from "@marblejs/core";
+import { HttpEffect, HttpError, HttpStatus, use } from "@marblejs/core";
 import { of, throwError } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
 
 import { ArticleDao } from "../model/article.dao";
+import { requestValidator$, t } from "@marblejs/middleware-io";
 
-export const removeArticleEffect$: Effect = req$ =>
+const validator$ = requestValidator$({
+  params: t.type({
+    id: t.string,
+  }),
+});
+
+export const removeArticleEffect$: HttpEffect = req$ =>
   req$.pipe(
+    use(validator$),
     mergeMap(req =>
       of(req.params.id).pipe(
         mergeMap(ArticleDao.removeById),

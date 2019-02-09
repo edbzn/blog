@@ -1,4 +1,4 @@
-import { Effect, use } from "@marblejs/core";
+import { HttpEffect, use } from "@marblejs/core";
 import { of } from "rxjs";
 import { mergeMap, map } from "rxjs/operators";
 import { ArticleDao } from "../model/article.dao";
@@ -7,7 +7,7 @@ import { articleCollectionQueryValidator$ } from "../helpers/article-collection-
 
 type Query = CollectionQueryOptions;
 
-export const getDraftListEffect$: Effect = req$ =>
+export const getDraftListEffect$: HttpEffect = req$ =>
   req$.pipe(
     use(
       articleCollectionQueryValidator$({

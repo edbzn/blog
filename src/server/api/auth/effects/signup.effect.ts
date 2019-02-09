@@ -1,4 +1,4 @@
-import { Effect, HttpError, HttpStatus, use } from "@marblejs/core";
+import { HttpEffect, HttpError, HttpStatus, use } from "@marblejs/core";
 import { generateToken } from "@marblejs/middleware-jwt";
 import { forkJoin, of, throwError } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
@@ -10,7 +10,7 @@ import { generateTokenPayload } from "../helpers/token.helper";
 import { userValidator$ } from "../helpers/user.validator";
 import { createHash$ } from "../helpers/hash";
 
-export const signupEffect$: Effect = req$ =>
+export const signupEffect$: HttpEffect = req$ =>
   req$.pipe(
     use(userValidator$),
     mergeMap(req =>

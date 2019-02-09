@@ -22,7 +22,7 @@ module.exports = merge(common, {
         commons: {
           chunks: "initial",
           minChunks: 2,
-          maxInitialRequests: 5, // The default limit is too small to showcase the effect
+          maxInitialRequests: 5, // The default limit is too small to showcase the HttpEffect
           minSize: 0 // This is example is too small to create commons chunks
         },
         vendor: {

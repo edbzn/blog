@@ -1,15 +1,16 @@
-import { use, HttpError, HttpStatus, Effect } from "@marblejs/core";
-import { generateToken } from "@marblejs/middleware-jwt";
-import { of, throwError, forkJoin, iif } from "rxjs";
-import { mergeMap, map, catchError } from "rxjs/operators";
-import { UserDao } from "../../user/model/user.dao";
-import { Config } from "../../../config";
-import { generateTokenPayload } from "../helpers/token.helper";
-import { neverNullable } from "../../../utils/never-nullable";
-import { credentialsValidator$ } from "../helpers/credentials.validator";
-import { compare$ } from "../helpers/hash";
+import { HttpEffect, HttpError, HttpStatus, use } from '@marblejs/core';
+import { generateToken } from '@marblejs/middleware-jwt';
+import { forkJoin, iif, of, throwError } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
-export const loginEffect$: Effect = req$ =>
+import { Config } from '../../../config';
+import { neverNullable } from '../../../utils/never-nullable';
+import { UserDao } from '../../user/model/user.dao';
+import { credentialsValidator$ } from '../helpers/credentials.validator';
+import { compare$ } from '../helpers/hash';
+import { generateTokenPayload } from '../helpers/token.helper';
+
+export const loginEffect$: HttpEffect = req$ =>
   req$.pipe(
     use(credentialsValidator$),
     mergeMap(req =>

@@ -1,7 +1,7 @@
-import { from } from "rxjs";
-import { User, USER_SECURE_FIELDS, USER_PUBLIC_FIELDS } from "./user.model";
-import { LoginPayload } from "../../auth/helpers/login-payload";
-import { SignupPayload } from "../../auth/helpers/signup-payload";
+import { from } from 'rxjs';
+
+import { SignupPayload } from '../../auth/helpers/signup-payload';
+import { User, USER_PUBLIC_FIELDS, USER_SECURE_FIELDS } from './user.model';
 
 export namespace UserDao {
   export const model = new User().getModelForClass(User, {
