@@ -1,16 +1,15 @@
-import { distanceInWords, format } from 'date-fns';
-import * as frLocale from 'date-fns/locale/fr';
-import { html, LitElement, property } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
+import { distanceInWords, format } from "date-fns";
+import { html, LitElement, property } from "lit-element";
 
-import router from '../../../../app-router';
-import { placeholder } from '../../../shared/placeholder';
-import { tags } from '../../../shared/tags';
-import { debounce } from '../../../utils/debounce';
-import { profileConfiguration } from '../../../utils/profile-config';
-import { apiClient } from '../../api-client';
-import { errorHandlerService } from '../../error-handler-service';
-import { IArticle } from '../admin/types';
+import router from "../../../../app-router";
+import { placeholder } from "../../../shared/placeholder";
+import { tags } from "../../../shared/tags";
+import { debounce } from "../../../utils/debounce";
+import { profileConfiguration } from "../../../utils/profile-config";
+import { apiClient } from "../../api-client";
+import { errorHandlerService } from "../../error-handler-service";
+import { languageService } from "../../language-service";
+import { IArticle } from "../admin/types";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -75,13 +74,11 @@ export default class ArticleDetail extends LitElement {
         <header class="header">
           ${tags(article)}
           <span class="article-date"
-            >${
-              format(
-                new Date(article.publishedAt as string),
-                "dddd DD MMMM YYYY",
-                { locale: frLocale },
-              )
-            }</span
+            >${format(
+              new Date(article.publishedAt as string),
+              "dddd DD MMMM YYYY",
+              { locale: languageService.dateFnsLocale },
+            )}</span
           >
         </header>
         <h1 class="title">${article.title}</h1>
@@ -89,28 +86,25 @@ export default class ArticleDetail extends LitElement {
         <footer class="section article-footer">
           <div class="publication">
             ${tags(article)}
-            <span class="article-date"
-              >Publié il y a
-              ${
-                distanceInWords(
-                  new Date(article.publishedAt as string),
-                  new Date(),
-                  { locale: frLocale },
-                )
-              }</span
-            >
+            <span class="article-date">
+              ${languageService.translation.article_detail.published_at}
+              ${distanceInWords(
+                new Date(article.publishedAt as string),
+                new Date(),
+                { locale: languageService.dateFnsLocale },
+              )}
+              ${languageService.getLang() === "en" ? " ago" : null}
+            </span>
           </div>
           <a
             href="/"
             class="button is-block back-to-home"
-            @click="${
-              (e: Event) => {
-                e.preventDefault();
-                router.push("/");
-              }
-            }"
+            @click="${(e: Event) => {
+              e.preventDefault();
+              router.push("/");
+            }}"
           >
-            Accueil
+            ${languageService.translation.article_detail.home_btn}
           </a>
           <ez-comment articleId=${article._id}></ez-comment>
           <div class="profile">
@@ -120,8 +114,8 @@ export default class ArticleDetail extends LitElement {
             ></figure>
             <div class="presentation has-text-dark">
               <strong>${profileConfiguration.name}</strong><br />
-              <span>${unsafeHTML(profileConfiguration.description)}</span>
-              <div>
+              <span>${languageService.translation.profile.description}</span>
+              <div class="follow-me">
                 <iframe
                   src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
                   title="Follow me"
@@ -175,6 +169,10 @@ export default class ArticleDetail extends LitElement {
           margin: 0 auto;
           display: flex;
           align-items: center;
+        }
+
+        .follow-me {
+          max-height: 36px;
         }
 
         .avatar {
@@ -263,16 +261,16 @@ export default class ArticleDetail extends LitElement {
         }
       </style>
       <ez-navbar></ez-navbar>
-      ${
-        this.posterUrl
-          ? html`
-              <figure
-                class="poster"
-                style="background-image: url('${this.posterUrl}')"
-              ></figure>
-            `
-          : html`<div class="poster"></div>`
-      }
+      ${this.posterUrl
+        ? html`
+            <figure
+              class="poster"
+              style="background-image: url('${this.posterUrl}')"
+            ></figure>
+          `
+        : html`
+            <div class="poster"></div>
+          `}
       <div class="time-remaining">
         <div
           class="has-background-info"
@@ -281,17 +279,15 @@ export default class ArticleDetail extends LitElement {
       </div>
       <ez-page .navbar="${false}">
         <section class="section meta-container">
-          ${
-            this.article
-              ? this.showArticleDetail()
-              : placeholder({
-                  count: 1,
-                  minLines: 200,
-                  maxLines: 300,
-                  box: false,
-                  image: false,
-                })
-          }
+          ${this.article
+            ? this.showArticleDetail()
+            : placeholder({
+                count: 1,
+                minLines: 200,
+                maxLines: 300,
+                box: false,
+                image: false,
+              })}
         </section>
       </ez-page>
     `;

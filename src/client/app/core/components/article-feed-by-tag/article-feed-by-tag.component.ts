@@ -1,6 +1,7 @@
-import { html, LitElement, property } from "lit-element";
+import { html, LitElement, property } from 'lit-element';
 
-import router from "../../../../app-router";
+import router from '../../../../app-router';
+import { languageService } from '../../language-service';
 
 export default class ArticlesByTagComponent extends LitElement {
   @property({ type: String })
@@ -13,6 +14,7 @@ export default class ArticlesByTagComponent extends LitElement {
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>
         .last {
+          margin-top: -1.5rem;
           padding-top: 0 !important;
           padding-bottom: 0 !important;
         }
@@ -23,14 +25,12 @@ export default class ArticlesByTagComponent extends LitElement {
           <a
             href="/"
             class="button is-block"
-            @click="${
-              (e: Event) => {
-                e.preventDefault();
-                router.push("/");
-              }
-            }"
+            @click="${(e: Event) => {
+              e.preventDefault();
+              router.push("/");
+            }}"
           >
-            Accueil
+            ${languageService.translation.article_feed_by_tag.home_btn}
           </a>
         </section>
       </ez-page>

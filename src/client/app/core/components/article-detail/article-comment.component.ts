@@ -1,9 +1,10 @@
-import { html, LitElement, property } from 'lit-element';
 import { format } from 'date-fns';
 import * as frLocale from 'date-fns/locale/fr';
+import { html, LitElement, property } from 'lit-element';
 
 import { ResourceCollection } from '../../../utils/collection';
 import { apiClient } from '../../api-client';
+import { languageService } from '../../language-service';
 import { IComment } from './types';
 
 export default class ArticleCommentComponent extends LitElement {
@@ -127,12 +128,8 @@ export default class ArticleCommentComponent extends LitElement {
         >
           ${
             !this.showEditor
-              ? html`
-                  Ajouter un commentaire
-                `
-              : html`
-                  Annuler
-                `
+              ? languageService.translation.article_detail.leave_comment_btn
+              : languageService.translation.article_detail.stop_comment_btn
           }
         </button>
         ${
@@ -160,13 +157,13 @@ export default class ArticleCommentComponent extends LitElement {
                       : null
                   }
                   <div class="field">
-                    <label for="name">Nom</label
+                    <label for="name">${languageService.translation.article_detail.name_label}</label
                     <div class="control">
                       <input class="input" name="name" id="name" type="text" required />
                     </div>
                   </div>
                   <div class="field">
-                    <label for="comment">Commentaire</label
+                    <label for="comment">${languageService.translation.article_detail.comment_label}</label
                     <div class="control">
                       <textarea class="textarea ${
                         this.loading
@@ -177,7 +174,9 @@ export default class ArticleCommentComponent extends LitElement {
                       }" name="comment" id="comment" required></textarea>
                     </div>
                   </div>
-                  <button type="submit" ?disabled=${!this.isFormValid()} class="button">Commenter</button>
+                  <button type="submit" ?disabled=${!this.isFormValid()} class="button">
+                    ${languageService.translation.article_detail.comment_btn}
+                  </button>
                 </form>
               `
             : null

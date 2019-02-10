@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
-import * as frLocale from 'date-fns/locale/fr';
-import { html, LitElement, property } from 'lit-element';
+import { html, LitElement, property, TemplateResult } from 'lit-element';
 
 import router from '../../../../app-router';
 import { placeholder } from '../../../shared/placeholder';
@@ -9,6 +8,7 @@ import { ResourceCollection } from '../../../utils/collection';
 import check from '../../../utils/icons/check';
 import { apiClient } from '../../api-client';
 import { errorHandlerService } from '../../error-handler-service';
+import { languageService } from '../../language-service';
 import { IArticle } from '../admin/types';
 
 export default class ArticleFeed extends LitElement {
@@ -19,7 +19,7 @@ export default class ArticleFeed extends LitElement {
   adminMode = false;
 
   @property({ type: Array })
-  articleCollection: IArticle[] | null = null;
+  articleCollection: IArticle[] = [];
 
   @property({ type: Boolean })
   loading = true;
@@ -41,7 +41,7 @@ export default class ArticleFeed extends LitElement {
     }
   }
 
-  updateArticleCollection() {
+  updateArticleCollection(): void {
     this.getArticleCollection().then(articleCollection => {
       const { collection, total } = articleCollection;
       this.articleCollection = collection;
@@ -92,11 +92,12 @@ export default class ArticleFeed extends LitElement {
     this.loading = false;
   }
 
-  async removeArticle(article: IArticle) {
+  async removeArticle(article: IArticle): Promise<void> {
     const articleTitle = article.title;
     if (
-      prompt("Enter " + articleTitle + " to delete the article") ===
-      articleTitle
+      (
+        prompt("Enter " + articleTitle + " to delete the article") || ""
+      ).toLowerCase() === articleTitle.toLowerCase()
     ) {
       try {
         await this.deleteArticle(article._id);
@@ -110,13 +111,7 @@ export default class ArticleFeed extends LitElement {
     }
   }
 
-  articleList() {
-    if (!this.articleCollection || this.articleCollection.length === 0) {
-      return html`
-        <article class="box"><p>C'est vide copain...</p></article>
-      `;
-    }
-
+  articleList(): TemplateResult[] {
     return this.articleCollection.map((article: IArticle) => {
       const articleUri = `/article/${article._id}`;
 
@@ -130,7 +125,7 @@ export default class ArticleFeed extends LitElement {
                   ? format(
                       new Date(article.publishedAt as string),
                       "dddd DD MMMM YYYY",
-                      { locale: frLocale },
+                      { locale: languageService.dateFnsLocale },
                     )
                   : ``}
               </span>
@@ -153,24 +148,24 @@ export default class ArticleFeed extends LitElement {
             <a
               class="card-footer-item"
               href="${articleUri}"
-              title="Lire ${article.title}"
+              title="${languageService.translation.article_feed
+                .read} ${article.title}"
               @click="${(e: Event) => {
                 e.preventDefault();
                 router.push(
-                  `${articleUri}?title=${encodeURIComponent(
-                    article.title,
-                  )}`,
+                  `${articleUri}?title=${encodeURIComponent(article.title)}`,
                 );
               }}"
             >
-              Lire
+              ${languageService.translation.article_feed.read}
             </a>
             ${this.adminMode
               ? html`
                   <a
                     class="card-footer-item"
                     href="${`/admin/draft?id=${article._id}`}"
-                    title="Editer l'article"
+                    title="${languageService.translation.article_feed
+                      .edit} ${article.title}"
                     @click="${(e: Event) => {
                       e.preventDefault();
                       const url = `/admin/draft?id=${
@@ -179,15 +174,16 @@ export default class ArticleFeed extends LitElement {
                       router.push(url);
                     }}"
                   >
-                    Editer
+                    ${languageService.translation.article_feed.edit}
                   </a>
                   <a
                     class="card-footer-item"
                     type="button"
-                    title="Delete article"
+                    title="${languageService.translation.article_feed
+                      .remove} ${article.title}"
                     @click="${this.removeArticle.bind(this, article)}"
                   >
-                    Supprimer
+                    ${languageService.translation.article_feed.remove}
                   </a>
                 `
               : html``}
@@ -232,6 +228,9 @@ export default class ArticleFeed extends LitElement {
         .load-complete {
           width: 24px;
         }
+        .load-more {
+          height: 62px;
+        }
         .feed-header {
           display: flex;
           justify-content: space-between;
@@ -262,9 +261,7 @@ export default class ArticleFeed extends LitElement {
           <h4 class="subtitle uppercase">articles</h4>
           ${this.tags.length > 0
             ? html`
-                <span class="tag is-primary is-medium"
-                  >${this.tags[0]}</span
-                >
+                <span class="tag is-primary is-medium">${this.tags[0]}</span>
               `
             : null}
         </header>
@@ -278,13 +275,13 @@ export default class ArticleFeed extends LitElement {
               image: true,
             })}
         <button
-          title="Voir plus"
-          class="button is-fullwidth ${this.loading ? "is-loading" : ""}"
+          title="${languageService.translation.article_feed.more}"
+          class="button load-more is-fullwidth ${this.loading ? "is-loading" : ""}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >
           ${this.articleRemaining
-            ? "Voir plus"
+            ? languageService.translation.article_feed.more
             : html`
                 <span class="load-complete">${check}</span>
               `}

@@ -3,6 +3,7 @@ import { html, LitElement } from 'lit-element/lit-element';
 import router from '../../../../app-router';
 import heart from '../../../utils/icons/heart';
 import { authService } from '../../authentication-service';
+import { languageService } from '../../language-service';
 
 export default class Footer extends LitElement {
   render() {
@@ -27,7 +28,7 @@ export default class Footer extends LitElement {
         }
       </style>
       <footer>
-        <span>Made with</span>
+        <span>${languageService.translation.footer.credentials}</span>
         <a href="/admin" title="Zone privilégiée" @click=${(e: Event) => {
           e.preventDefault();
           router.push(authService.authenticated ? "/admin" : "/login");

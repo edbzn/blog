@@ -1,0 +1,26 @@
+{
+  "profile": {
+    "description": "I'm a web expert ; that means I know nothing about absolutely everything. #TypeScript #JavaScript #PHP #Linux"
+  },
+  "article_feed": {
+    "read": "Read",
+    "edit": "Edit",
+    "remove": "Remove",
+    "more": "View more articles"
+  },
+  "article_feed_by_tag": {
+    "home_btn": "Go to home"
+  },
+  "article_detail": {
+    "published_at": "Published",
+    "home_btn": "Go to home",
+    "leave_comment_btn": "Leave a comment",
+    "stop_comment_btn": "Cancel",
+    "comment_btn": "Comment",
+    "name_label": "Name",
+    "comment_label": "Comment"
+  },
+  "footer": {
+    "credentials": "Made with"
+  }
+}
