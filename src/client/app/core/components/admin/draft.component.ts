@@ -1,11 +1,11 @@
-import * as flyd from "flyd";
-import { html, LitElement, property } from "lit-element/lit-element";
+import * as flyd from 'flyd';
+import { html, LitElement, property } from 'lit-element/lit-element';
 
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import router from "../../../app-router";
-import check from "../../utils/icons/check";
-import { errorHandlerService } from "../error-handler-service";
-import { DraftActions, DraftState, IArticle, IDraft } from "./types";
+import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
+import router from '../../../../app-router';
+import check from '../../../utils/icons/check';
+import { errorHandlerService } from '../../error-handler-service';
+import { DraftActions, DraftState, IArticle, IDraft } from './types';
 
 export default class Draft extends LitElement {
   @property({ type: Object })

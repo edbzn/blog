@@ -1,4 +1,4 @@
-import { IArticle } from "../core/admin/types";
+import { IArticle } from "../core/components/admin/types";
 import router from "../../app-router";
 import { html } from "lit-element";
 

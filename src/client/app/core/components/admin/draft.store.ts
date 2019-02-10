@@ -1,18 +1,12 @@
-import showdown from "showdown";
-import SimpleMDE from "simplemde";
-import { v1 as uuid } from "uuid";
+import showdown from 'showdown';
+import SimpleMDE from 'simplemde';
+import { v1 as uuid } from 'uuid';
 
-import { apiClient } from "../api-client";
-import { storageService } from "../storage-client";
-import { initialState } from "./draft.initialState";
-import {
-  DraftActions,
-  DraftState,
-  IArticle,
-  IDraft,
-  StateUpdateFunction,
-} from "./types";
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
+import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
+import { apiClient } from '../../api-client';
+import { storageService } from '../../storage-client';
+import { initialState } from './draft.initialState';
+import { DraftActions, DraftState, IArticle, IDraft, StateUpdateFunction } from './types';
 
 export const draft = {
   initialState: (): DraftState => Object.assign(initialState, {}),

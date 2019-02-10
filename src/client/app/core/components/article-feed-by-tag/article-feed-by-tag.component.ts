@@ -1,6 +1,6 @@
 import { html, LitElement, property } from "lit-element";
 
-import router from "../../../app-router";
+import router from "../../../../app-router";
 
 export default class ArticlesByTagComponent extends LitElement {
   @property({ type: String })

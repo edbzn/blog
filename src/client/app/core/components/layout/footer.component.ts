@@ -1,8 +1,8 @@
-import { LitElement, html } from "lit-element/lit-element";
+import { html, LitElement } from 'lit-element/lit-element';
 
-import heart from "../../utils/icons/heart";
-import router from "../../../app-router";
-import { authService } from "../authentication-service";
+import router from '../../../../app-router';
+import heart from '../../../utils/icons/heart';
+import { authService } from '../../authentication-service';
 
 export default class Footer extends LitElement {
   render() {

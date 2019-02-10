@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit-element/lit-element";
 
-import router from "../../../app-router";
+import router from "../../../../app-router";
 
 export default class Admin extends LitElement {
   render() {

@@ -1,4 +1,4 @@
-import { LitElement, property, html } from "lit-element/lit-element";
+import { LitElement, property, html } from "lit-element";
 import { pageMaxWidth } from "./variables";
 
 export default class Page extends LitElement {

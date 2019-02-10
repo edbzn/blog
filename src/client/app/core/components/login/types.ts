@@ -1,4 +1,4 @@
-import { IResource } from "../../utils/resource";
+import { IResource } from "../../../utils/resource";
 
 export interface IUser extends IResource {
   email: string;

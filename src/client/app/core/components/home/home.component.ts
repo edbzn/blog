@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit-element/lit-element";
-import { profileConfiguration } from "../../utils/profile-config";
+import { profileConfiguration } from "../../../utils/profile-config";
 
 export default class Home extends LitElement {
   render() {

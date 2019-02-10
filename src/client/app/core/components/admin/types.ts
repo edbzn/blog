@@ -1,5 +1,5 @@
-import { IResource, ITimeStampableResource } from "../../utils/resource";
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
+import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
+import { IResource, ITimeStampableResource } from '../../../utils/resource';
 
 export interface IDraft {
   title: string;

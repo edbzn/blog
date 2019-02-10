@@ -1,16 +1,16 @@
-import { html, LitElement, property } from "lit-element";
-import { distanceInWords, format } from "date-fns";
-import * as frLocale from "date-fns/locale/fr";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { distanceInWords, format } from 'date-fns';
+import * as frLocale from 'date-fns/locale/fr';
+import { html, LitElement, property } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import router from "../../../app-router";
-import { placeholder } from "../../shared/placeholder";
-import { tags } from "../../shared/tags";
-import { debounce } from "../../utils/debounce";
-import { profileConfiguration } from "../../utils/profile-config";
-import { IArticle } from "../admin/types";
-import { apiClient } from "../api-client";
-import { errorHandlerService } from "../error-handler-service";
+import router from '../../../../app-router';
+import { placeholder } from '../../../shared/placeholder';
+import { tags } from '../../../shared/tags';
+import { debounce } from '../../../utils/debounce';
+import { profileConfiguration } from '../../../utils/profile-config';
+import { apiClient } from '../../api-client';
+import { errorHandlerService } from '../../error-handler-service';
+import { IArticle } from '../admin/types';
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })

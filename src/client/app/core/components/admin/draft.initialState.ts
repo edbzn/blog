@@ -1,4 +1,4 @@
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
+import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
 
 import { DraftState } from "./types";
 

@@ -2,8 +2,8 @@ import { html, LitElement, property } from 'lit-element';
 import { format } from 'date-fns';
 import * as frLocale from 'date-fns/locale/fr';
 
-import { ResourceCollection } from '../../utils/collection';
-import { apiClient } from '../api-client';
+import { ResourceCollection } from '../../../utils/collection';
+import { apiClient } from '../../api-client';
 import { IComment } from './types';
 
 export default class ArticleCommentComponent extends LitElement {

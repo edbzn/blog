@@ -1,11 +1,11 @@
 import { html, LitElement } from 'lit-element/lit-element';
 
-import { LoginPayload } from '../../../../server/api/auth/helpers/login-payload';
-import { SignupPayload } from '../../../../server/api/auth/helpers/signup-payload';
-import router from '../../../app-router';
-import { apiClient } from '../api-client';
-import { authService } from '../authentication-service';
-import { errorHandlerService } from '../error-handler-service';
+import { LoginPayload } from '../../../../../server/api/auth/helpers/login-payload';
+import { SignupPayload } from '../../../../../server/api/auth/helpers/signup-payload';
+import router from '../../../../app-router';
+import { apiClient } from '../../api-client';
+import { authService } from '../../authentication-service';
+import { errorHandlerService } from '../../error-handler-service';
 import { IUser } from './types';
 
 export default class Login extends LitElement {
