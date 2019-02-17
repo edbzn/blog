@@ -1,19 +1,11 @@
-import { html, render } from "lit-html";
-import { browserRouter, ProuterNavigationEvent, routerGroup } from "prouter";
+import { html, render } from 'lit-html';
+import { browserRouter, ProuterNavigationEvent, routerGroup } from 'prouter';
 
-import { actions, states } from "./app/core/components/admin/draft.stream";
-import { authService } from "./app/core/authentication-service";
-import { errorHandlerService } from "./app/core/error-handler-service";
-import { setTitleAndMeta } from "./app/utils/set-document-meta";
-import { unAuthenticatedErrorMsg } from "./app/utils/unauthenticated-error";
-import {
-  loadAdmin,
-  loadArticleDetail,
-  loadArticlesByTag,
-  loadError,
-  loadHome,
-  loadLogin,
-} from "./lazyload";
+import { authService } from './app/core/authentication-service';
+import { actions, states } from './app/core/components/admin/draft.stream';
+import { errorHandlerService } from './app/core/error-handler-service';
+import { unAuthenticatedErrorMsg } from './app/utils/unauthenticated-error';
+import { loadAdmin, loadArticleDetail, loadArticlesByTag, loadError, loadHome, loadLogin } from './lazyload';
 
 const appSelector = document.getElementById("app")!;
 const router = browserRouter();
@@ -32,7 +24,6 @@ adminRoutes
   .use("/", async (_req, resp) => {
     await loadAdmin();
 
-    setTitleAndMeta("Codamit - Admin");
     render(
       html`
         <ez-admin></ez-admin>
@@ -44,12 +35,13 @@ adminRoutes
   .use("/draft", async (req, resp) => {
     await loadAdmin();
 
+    actions.reset();
+
     const id = req.query.id;
     if (id) {
       actions.setId(id);
     }
 
-    setTitleAndMeta("Draft");
     render(
       html`
         <ez-draft .actions="${actions}" .states="${states}"></ez-draft>
@@ -63,10 +55,6 @@ router
   .use("/", async (_req, resp) => {
     await loadHome();
 
-    setTitleAndMeta(
-      "Codamit - Tech Blog",
-      "I share stuff about code, architecture and best practices",
-    );
     render(
       html`
         <ez-home></ez-home>
@@ -78,7 +66,6 @@ router
   .use("/login", async (_req, resp) => {
     await loadLogin();
 
-    setTitleAndMeta("Codamit - Connexion");
     render(
       html`
         <ez-login></ez-login>
@@ -91,8 +78,7 @@ router
     await loadArticleDetail();
 
     const id = req.params.id;
-    const title = (req.query.title = req.query.title);
-    setTitleAndMeta(title);
+
     render(
       html`
         <ez-article-detail id="${id}"></ez-article-detail>
@@ -105,7 +91,7 @@ router
     await loadArticlesByTag();
 
     const tag = req.params.tag;
-    setTitleAndMeta(tag, "Tous les articles au sujet de " + tag);
+
     render(
       html`
         <ez-article-feed-by-tag tag=${tag}></ez-article-feed-by-tag>
@@ -116,8 +102,13 @@ router
   })
   .use("/error", async (req, resp) => {
     await loadError();
+    
+    if (null === errorHandlerService.getLastError()) {
+      router.push("/");
+      resp.end();
+      return;
+    }
 
-    setTitleAndMeta("Codamit - Erreur");
     render(
       html`
         <ez-error message="${errorHandlerService.getLastError()}"></ez-error>

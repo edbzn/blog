@@ -2,10 +2,19 @@ import { html, LitElement, property } from 'lit-element';
 
 import router from '../../../../app-router';
 import { languageService } from '../../language-service';
+import { setPageMeta } from '../../../utils/set-document-meta';
 
 export default class ArticlesByTagComponent extends LitElement {
   @property({ type: String })
   tag: string | null = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    setPageMeta({
+      title: `Tag ${this.tag}`,
+    });
+  }
 
   render() {
     const { tag } = this;
@@ -17,6 +26,12 @@ export default class ArticlesByTagComponent extends LitElement {
           margin-top: -1.5rem;
           padding-top: 0 !important;
           padding-bottom: 0 !important;
+        }
+        @media screen and (max-width: 600px) {
+          .last {
+            padding: 2rem 0.8rem;
+            margin-top: -0.8rem;
+          }
         }
       </style>
       <ez-page>

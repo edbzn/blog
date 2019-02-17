@@ -10,6 +10,7 @@ import { apiClient } from "../../api-client";
 import { errorHandlerService } from "../../error-handler-service";
 import { languageService } from "../../language-service";
 import { IArticle } from "../admin/types";
+import { setPageMeta } from "../../../utils/set-document-meta";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -27,9 +28,14 @@ export default class ArticleDetail extends LitElement {
   calculateRemainingHandler: EventListenerOrEventListenerObject | null = null;
 
   firstUpdated(): void {
-    this.init().then(() => {
-      this.handleScrollChange();
-    });
+    this.init()
+      .then(() => {
+        this.handleScrollChange();
+        this.setPageMeta();
+      })
+      .catch(e => {
+        errorHandlerService.throw(e);
+      });
   }
 
   async init(): Promise<void> {
@@ -59,6 +65,31 @@ export default class ArticleDetail extends LitElement {
     }, 10);
 
     window.addEventListener("scroll", this.calculateRemainingHandler);
+  }
+
+  setPageMeta() {
+    const metaTitle =
+      typeof this.article!.metaTitle === "string"
+        ? (this.article!.metaTitle as string)
+        : undefined;
+    const metaDescription =
+      typeof this.article!.metaDescription === "string"
+        ? (this.article!.metaDescription as string)
+        : undefined;
+    const [firstSentence, secondSentence] = this.article!.html.replace(
+      /<\/?[^>]+(>|$)/g,
+      "",
+    )
+      .slice(0, 250)
+      .split(".");
+    const description = [firstSentence, secondSentence + '.'].join(".");
+
+    setPageMeta({
+      title: this.article!.title,
+      metaTitle,
+      description,
+      metaDescription,
+    });
   }
 
   disconnectedCallback(): void {

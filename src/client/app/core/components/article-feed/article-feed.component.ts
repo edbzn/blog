@@ -152,9 +152,7 @@ export default class ArticleFeed extends LitElement {
                 .read} ${article.title}"
               @click="${(e: Event) => {
                 e.preventDefault();
-                router.push(
-                  `${articleUri}?title=${encodeURIComponent(article.title)}`,
-                );
+                router.push(`${articleUri}`);
               }}"
             >
               ${languageService.translation.article_feed.read}
@@ -170,7 +168,7 @@ export default class ArticleFeed extends LitElement {
                       e.preventDefault();
                       const url = `/admin/draft?id=${
                         article._id
-                      }&title=${encodeURIComponent(article.title)}`;
+                      }`;
                       router.push(url);
                     }}"
                   >

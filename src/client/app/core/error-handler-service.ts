@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/browser";
 import router from "../../app-router";
 
 class ErrorHandler {
-  private error: string = "";
+  private error: string | null = null;
 
   constructor() {
     if (process.env.NODE_ENV === "production") {
@@ -34,7 +34,7 @@ class ErrorHandler {
     router.push("/error");
   }
 
-  getLastError(): string {
+  getLastError(): string | null {
     return this.error;
   }
 }

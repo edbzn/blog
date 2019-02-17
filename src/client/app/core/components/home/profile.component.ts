@@ -12,6 +12,7 @@ export default class ProfileComponent extends LitElement {
       <style>
         .profile {
           max-width: 672px;
+          min-height: 210px;
           margin: 0 auto !important;
         }
 
@@ -64,15 +65,17 @@ export default class ProfileComponent extends LitElement {
             </div>
             <div class="column presentation is-full-mobile">
               <h1 class="title">${this.profile.name}</h1>
-              <h2 class="subtitle">${languageService.translation.profile.description}</h2>
+              <h2 class="subtitle">
+                ${languageService.translation.profile.description}
+              </h2>
               <div class="follow-me">
                 <iframe
-                    src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=true"
-                    title="Follow me"
-                    width="245"
-                    height="26"
-                    style="border: 0; overflow: hidden;"
-                  ></iframe> 
+                  src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=true"
+                  title="Follow me"
+                  width="245"
+                  height="26"
+                  style="border: 0; overflow: hidden;"
+                ></iframe>
               </div>
             </div>
           </div>
