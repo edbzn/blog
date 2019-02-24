@@ -47,6 +47,7 @@ export default class ArticleFeed extends LitElement {
       this.articleCollection = collection;
       this.articleRemaining = total > this.articleCollection.length;
       this.loading = false;
+      this.requestUpdate();
     });
   }
 
@@ -90,6 +91,7 @@ export default class ArticleFeed extends LitElement {
     ];
     this.articleRemaining = total > this.articleCollection.length;
     this.loading = false;
+    this.requestUpdate();
   }
 
   async removeArticle(article: IArticle): Promise<void> {

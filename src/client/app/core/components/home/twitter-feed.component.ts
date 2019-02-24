@@ -1,23 +1,32 @@
-import anchorme from 'anchorme';
-import { distanceInWords } from 'date-fns';
-import * as frLocale from 'date-fns/locale/fr';
-import { html, LitElement } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { until } from 'lit-html/directives/until';
+import anchorme from "anchorme";
+import { distanceInWords } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
+import { html, LitElement, TemplateResult } from "lit-element";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { until } from "lit-html/directives/until";
 
-import { placeholder } from '../../../shared/placeholder';
-import like from '../../../utils/icons/like';
-import retweet from '../../../utils/icons/retweet';
-import { apiClient } from '../../api-client';
+import { placeholder } from "../../../shared/placeholder";
+import like from "../../../utils/icons/like";
+import retweet from "../../../utils/icons/retweet";
+import { apiClient } from "../../api-client";
+import { languageService } from "../../language-service";
 
 export default class TwitterFeedComponent extends LitElement {
+  initialized = false;
+  tweets: { statuses: any[] } = { statuses: [] };
 
-  async getTweets(): Promise<{ statuses: any[] }> {
-    return apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
+  firstUpdated() {
+    this.getTweets();
   }
 
-  showTweets(resp: any) {
-    return resp.statuses.map(
+  async getTweets(): Promise<void> {
+    this.tweets = await apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
+    this.initialized = true;
+    this.requestUpdate();
+  }
+
+  showTweets(): TemplateResult[] {
+    return this.tweets.statuses.map(
       (tweet: any) => html`
         <div class="box">
           <article class="media">
@@ -26,20 +35,16 @@ export default class TwitterFeedComponent extends LitElement {
                 <header>
                   <strong>${tweet.user.name}</strong>
                   <a
-                    href="https://twitter.com/${
-                      tweet.user.screen_name.toLowerCase()
-                    }"
+                    href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}"
                   >
                     <small>@${tweet.user.screen_name.toLowerCase()}</small>
                   </a>
                   -
                   <small>
                     Il y a
-                    ${
-                      distanceInWords(new Date(tweet.created_at), new Date(), {
-                        locale: frLocale,
-                      })
-                    }
+                    ${distanceInWords(new Date(tweet.created_at), new Date(), {
+                      locale: languageService.dateFnsLocale,
+                    })}
                   </small>
                 </header>
                 <div class="content">${unsafeHTML(anchorme(tweet.text))}</div>
@@ -93,21 +98,27 @@ export default class TwitterFeedComponent extends LitElement {
           }
         }
       </style>
-      <section class="section twitter">
-        <h4 class="subtitle uppercase">tweets</h4>
-        ${
-          until(
-            this.getTweets().then(resp => this.showTweets(resp)),
-            placeholder({
-              count: 4,
-              minLines: 1,
-              maxLines: 3,
-              box: true,
-              image: false,
-            }),
-          )
-        }
-      </section>
+      ${!this.initialized
+        ? html`
+            <section class="section twitter">
+              <h4 class="subtitle uppercase">tweets</h4>
+              ${placeholder({
+                count: 4,
+                minLines: 1,
+                maxLines: 3,
+                box: true,
+                image: false,
+              })}
+            </section>
+          `
+        : this.initialized && this.tweets.statuses.length > 0
+        ? html`
+            <section class="section twitter">
+              <h4 class="subtitle uppercase">tweets</h4>
+              ${this.showTweets()}
+            </section>
+          `
+        : null}
     `;
   }
 }
