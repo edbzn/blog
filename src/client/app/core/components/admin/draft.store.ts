@@ -1,12 +1,17 @@
-import showdown from 'showdown';
-import SimpleMDE from 'simplemde';
-import { v1 as uuid } from 'uuid';
+import { v1 as uuid } from "uuid";
 
-import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
-import { apiClient } from '../../api-client';
-import { storageService } from '../../storage-client';
-import { initialState } from './draft.initialState';
-import { DraftActions, DraftState, IArticle, IDraft, StateUpdateFunction } from './types';
+import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
+import { apiClient } from "../../api-client";
+import { storageService } from "../../storage-client";
+import { initialState } from "./draft.initialState";
+import {
+  DraftActions,
+  DraftState,
+  IArticle,
+  IDraft,
+  StateUpdateFunction,
+} from "./types";
+import { errorHandlerService } from "../../error-handler-service";
 
 export const draft = {
   initialState: (): DraftState => Object.assign(initialState, {}),
@@ -44,23 +49,28 @@ export const draft = {
       });
     },
     initEditor(element: HTMLTextAreaElement, initialValue: string) {
-      update((state: DraftState) => {
-        state.editor = new SimpleMDE({
-          element,
-          initialValue,
-          lineWrapping: true,
-          spellChecker: state.draft.lang === ArticleLanguage.EN ? true : false,
-          autoDownloadFontAwesome: true,
-          forceSync: false,
-          tabSize: 2,
-          autosave: {
-            enabled: false,
-            uniqueId: "editor",
-          },
-          autofocus: true,
-        });
-        return state;
-      });
+      import(/* webpackChunkName: "app-admin" */"simplemde")
+        .then(SimpleMDE => {
+          update((state: DraftState) => {
+            state.editor = new SimpleMDE.default({
+              element,
+              initialValue,
+              lineWrapping: true,
+              spellChecker:
+                state.draft.lang === ArticleLanguage.EN ? true : false,
+              autoDownloadFontAwesome: true,
+              forceSync: false,
+              tabSize: 2,
+              autosave: {
+                enabled: false,
+                uniqueId: "editor",
+              },
+              autofocus: true,
+            });
+            return state;
+          });
+        })
+        .catch(err => errorHandlerService.throw(err));
     },
     publish() {
       update((state: DraftState) => {
@@ -182,16 +192,18 @@ export const draft = {
       });
     },
     transformMarkdownToHtml() {
-      const converter = new showdown.Converter();
-      update(state => {
-        const markdown = state.editor!.value();
-        const html = converter.makeHtml(markdown);
-        state.draft.html = html;
-        state.draft.markdown = markdown;
-        return state;
-      });
+      import(/* webpackChunkName: "app-admin" */ "showdown")
+        .then(showdown => {
+          const converter = new showdown.Converter();
+          update(state => {
+            const markdown = state.editor!.value();
+            const html = converter.makeHtml(markdown);
+            state.draft.html = html;
+            state.draft.markdown = markdown;
+            return state;
+          });
+        })
+        .catch(err => errorHandlerService.throw(err));
     },
   }),
 };
-
-
