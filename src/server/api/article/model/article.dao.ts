@@ -38,6 +38,8 @@ export namespace ArticleDao {
 
   export const findById = (id: string) => from(model.findById(id).exec());
 
+  export const findByTitle = (slug: string) =>  from(model.findOne({ slug }).exec());
+
   export const removeById = (id: string) =>
     from(model.findByIdAndDelete(id).exec());
 

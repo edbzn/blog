@@ -6,7 +6,6 @@ const common = require('./webpack.common.config');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
-
 module.exports = merge(common, {
   plugins: [
     new WebpackBuildNotifierPlugin({

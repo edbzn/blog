@@ -1,11 +1,11 @@
-import * as flyd from "flyd";
-import { html, LitElement, property } from "lit-element/lit-element";
+import * as flyd from 'flyd';
+import { html, LitElement, property } from 'lit-element/lit-element';
 
-import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
-import router from "../../../../app-router";
-import check from "../../../utils/icons/check";
-import { errorHandlerService } from "../../error-handler-service";
-import { DraftActions, DraftState, IArticle, IDraft } from "./types";
+import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
+import router from '../../../../app-router';
+import { slugify } from '../../../shared/slugify';
+import { errorHandlerService } from '../../error-handler-service';
+import { DraftActions, DraftState, IArticle, IDraft } from './types';
 
 export default class Draft extends LitElement {
   @property({ type: Object })
@@ -184,6 +184,7 @@ export default class Draft extends LitElement {
 
     return {
       title: draft.title,
+      slug: slugify(draft.title),
       markdown: draft.markdown,
       html: draft.html,
       posterUrl: draft.posterUrl,
@@ -204,9 +205,7 @@ export default class Draft extends LitElement {
   render() {
     const articleUri =
       this.state && this.state.draftLoaded
-        ? `/article/${
-            (this.state.draft as IArticle)._id
-          }?title=${encodeURIComponent(this.state.draft.title)}`
+        ? `/article/slug/${this.state.draft.slug}`
         : null;
 
     return html`

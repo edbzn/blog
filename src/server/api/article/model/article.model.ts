@@ -17,6 +17,9 @@ export class Article extends Typegoose {
   @prop({ required: String, unique: true })
   title: string;
 
+  @prop({ required: String, unique: true })
+  slug: string;
+
   @prop({ required: String })
   markdown: string;
 

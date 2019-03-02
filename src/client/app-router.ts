@@ -72,14 +72,14 @@ router
     );
     resp.end();
   })
-  .use("/article/:id", async (req, resp) => {
+  .use("/article/:slug", async (req, resp) => {
     await loadArticleDetail();
 
-    const id = req.params.id;
+    const slug = req.params.slug;
 
     render(
       html`
-        <ez-article-detail id="${id}"></ez-article-detail>
+        <ez-article-detail slug="${slug}"></ez-article-detail>
       `,
       appSelector,
     );

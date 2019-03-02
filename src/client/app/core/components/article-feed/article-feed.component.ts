@@ -1,8 +1,9 @@
 import { format } from 'date-fns';
-import { html, LitElement, property, TemplateResult } from 'lit-element';
+import { css, html, LitElement, property, TemplateResult } from 'lit-element';
 
 import router from '../../../../app-router';
 import { placeholder } from '../../../shared/placeholder';
+import { slugify } from '../../../shared/slugify';
 import { tags } from '../../../shared/tags';
 import { ResourceCollection } from '../../../utils/collection';
 import check from '../../../utils/icons/check';
@@ -12,6 +13,69 @@ import { languageService } from '../../language-service';
 import { IArticle } from '../admin/types';
 
 export default class ArticleFeed extends LitElement {
+  static get styles() {
+    return css`
+      .uppercase {
+        text-transform: uppercase;
+      }
+      .poster {
+        height: 200px;
+        background-color: #eee;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+      }
+      .card {
+        margin-bottom: 1.5rem;
+      }
+      .card:last-child {
+        margin-bottom: 0;
+      }
+      .article-date {
+        margin-right: 12px;
+        font-weight: 100;
+        text-transform: capitalize;
+      }
+      .card-header-title {
+        justify-content: space-between;
+      }
+      .lang {
+        font-size: 12px;
+        margin-right: 4px;
+      }
+      .load-complete {
+        width: 24px;
+      }
+      .load-more {
+        height: 62px;
+      }
+      .feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      .feed-header h4 {
+        margin-bottom: 0 !important;
+      }
+      .feed-header .tag {
+        text-transform: capitalize;
+      }
+      @media screen and (max-width: 600px) {
+        .feed .card-header-title {
+          align-items: initial;
+          flex-direction: column;
+        }
+        .card-header-title .article-date {
+          margin-bottom: 4px;
+        }
+        .feed.section {
+          padding: 2rem 0.8rem;
+        }
+      }
+    `;
+  }
+
   @property({ type: Array })
   tags = [];
 
@@ -115,7 +179,7 @@ export default class ArticleFeed extends LitElement {
 
   articleList(): TemplateResult[] {
     return this.articleCollection.map((article: IArticle) => {
-      const articleUri = `/article/${article._id}`;
+      const articleUri = `/article/${article.slug}`;
 
       return html`
         <article class="card">
@@ -168,9 +232,7 @@ export default class ArticleFeed extends LitElement {
                       .edit} ${article.title}"
                     @click="${(e: Event) => {
                       e.preventDefault();
-                      const url = `/admin/draft?id=${
-                        article._id
-                      }`;
+                      const url = `/admin/draft?id=${article._id}`;
                       router.push(url);
                     }}"
                   >
@@ -196,66 +258,6 @@ export default class ArticleFeed extends LitElement {
   render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        .uppercase {
-          text-transform: uppercase;
-        }
-        .poster {
-          height: 200px;
-          background-color: #eee;
-          background-size: cover;
-          background-position: center center;
-          background-repeat: no-repeat;
-        }
-        .card {
-          margin-bottom: 1.5rem;
-        }
-        .card:last-child {
-          margin-bottom: 0;
-        }
-        .article-date {
-          margin-right: 12px;
-          font-weight: 100;
-          text-transform: capitalize;
-        }
-        .card-header-title {
-          justify-content: space-between;
-        }
-        .lang {
-          font-size: 12px;
-          margin-right: 4px;
-        }
-        .load-complete {
-          width: 24px;
-        }
-        .load-more {
-          height: 62px;
-        }
-        .feed-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1.5rem;
-        }
-        .feed-header h4 {
-          margin-bottom: 0 !important;
-        }
-        .feed-header .tag {
-          text-transform: capitalize;
-        }
-        @media screen and (max-width: 600px) {
-          .feed .card-header-title {
-            align-items: initial;
-            flex-direction: column;
-          }
-          .card-header-title .article-date {
-            margin-bottom: 4px;
-          }
-          .feed.section {
-            padding: 2rem 0.8rem;
-          }
-        }
-      </style>
       <section class="section feed">
         <header class="feed-header">
           <h4 class="subtitle uppercase">articles</h4>
@@ -276,7 +278,9 @@ export default class ArticleFeed extends LitElement {
             })}
         <button
           title="${languageService.translation.article_feed.more}"
-          class="button load-more is-fullwidth ${this.loading ? "is-loading" : ""}"
+          class="button load-more is-fullwidth ${this.loading
+            ? "is-loading"
+            : ""}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >

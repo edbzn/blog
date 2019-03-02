@@ -3,6 +3,7 @@ import { IResource, ITimeStampableResource } from '../../../utils/resource';
 
 export interface IDraft {
   title: string;
+  slug: string;
   markdown: string;
   html: string;
   tags: string[];

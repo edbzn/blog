@@ -7,6 +7,7 @@ export const initialState = (): DraftState => ({
   editor: null,
   draft: {
     title: "Brouillon",
+    slug: "brouillon",
     markdown: "",
     html: "",
     tags: [],

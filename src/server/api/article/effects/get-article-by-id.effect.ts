@@ -12,7 +12,7 @@ const validator$ = requestValidator$({
   }),
 });
 
-export const getArticleEffect$: HttpEffect = req$ =>
+export const getArticleByIdEffect$: HttpEffect = req$ =>
   req$.pipe(
     use(validator$),
     mergeMap(req =>

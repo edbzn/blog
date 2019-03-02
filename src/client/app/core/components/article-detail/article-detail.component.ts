@@ -14,7 +14,7 @@ import { setPageMeta } from "../../../utils/set-document-meta";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
-  id: string;
+  slug: string;
 
   @property({ type: String })
   posterUrl: string | null = null;
@@ -48,7 +48,7 @@ export default class ArticleDetail extends LitElement {
   }
 
   getArticle(): Promise<IArticle> {
-    return apiClient.get<IArticle>(`/api/v1/article/${this.id}`);
+    return apiClient.get<IArticle>(`/api/v1/article/slug/${this.slug}`);
   }
 
   handleScrollChange(): void {

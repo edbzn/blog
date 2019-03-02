@@ -2,7 +2,8 @@ import { combineRoutes, EffectFactory } from "@marblejs/core";
 
 import { authorize$ } from "../auth/middlewares/auth.middleware";
 import { getArticleListEffect$ } from "./effects/get-article-list.effect";
-import { getArticleEffect$ } from "./effects/get-article.effect";
+import { getArticleByIdEffect$ } from "./effects/get-article-by-id.effect";
+import { getArticleBySlugEffect$ } from "./effects/get-article-by-slug.effect";
 import { getDraftListEffect$ } from "./effects/get-draft-list.effect";
 import { postArticleEffect$ } from "./effects/post-article.effect";
 import { removeArticleEffect$ } from "./effects/remove-article.effect";
@@ -16,9 +17,13 @@ const getDraftList$ = EffectFactory.matchPath("/")
   .matchType("GET")
   .use(getDraftListEffect$);
 
-const getArticle$ = EffectFactory.matchPath("/:id")
+const getArticleById$ = EffectFactory.matchPath("/:id")
   .matchType("GET")
-  .use(getArticleEffect$);
+  .use(getArticleByIdEffect$);
+
+const getArticleBySlug$ = EffectFactory.matchPath("/slug/:slug")
+  .matchType("GET")
+  .use(getArticleBySlugEffect$);
 
 const removeArticle$ = EffectFactory.matchPath("/:id")
   .matchType("DELETE")
@@ -33,7 +38,7 @@ const postArticle$ = EffectFactory.matchPath("/")
   .use(postArticleEffect$);
 
 export const article$ = combineRoutes("/article", {
-  effects: [getArticleList$, getArticle$],
+  effects: [getArticleList$, getArticleById$, getArticleBySlug$],
 });
 
 export const authorizedArticle$ = combineRoutes("/article", {
