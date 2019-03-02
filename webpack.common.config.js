@@ -76,9 +76,6 @@ module.exports = {
       {
         from: "src/client/manifest.json",
       },
-      {
-        from: "src/client/sw.js",
-      },
     ]),
   ]
 }
