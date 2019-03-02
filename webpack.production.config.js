@@ -41,6 +41,7 @@ module.exports = merge(common, {
       template: path.resolve(__dirname, "src", "client", "index.html"),
       minify: true,
       hash: true,
+      chunksSortMode: 'none',
     }),
     new Dotenv({
       path: './.env.production'

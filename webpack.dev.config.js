@@ -10,14 +10,17 @@ const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 module.exports = merge(common, {
   plugins: [
     new WebpackBuildNotifierPlugin({
-      title: "My Project Webpack Build",
-      logo: path.resolve("./src/client/assets/images/icons/icon-96x96.png"),
+      title: "Codamit",
+      logo: path.resolve(__dirname, "src" ," client", "assets", "images", "icons", "icon-96x96.png"),
       suppressSuccess: true
     }),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      openAnalyzer: false,
+    }),
     new HtmlWebpackPlugin({
       title: "Codamit [WDS] - [HMR]",
       template: path.resolve(__dirname, "src", "client", "index.dev.html"),
+      chunksSortMode: 'none',
     }),
     new Dotenv({
       path: './.env'
