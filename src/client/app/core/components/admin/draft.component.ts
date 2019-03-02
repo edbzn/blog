@@ -198,7 +198,7 @@ export default class Draft extends LitElement {
 
   toggleConfigurationDrawer(): void {
     this.drawerOpen = !this.drawerOpen;
-    this.requestUpdate('drawerOpen');
+    this.requestUpdate("drawerOpen");
   }
 
   render() {
@@ -267,6 +267,10 @@ export default class Draft extends LitElement {
           z-index: 8;
           background: #efefef;
           box-shadow: 0 0px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .drawer-btn {
+          margin-bottom: 26px;
         }
 
         .field .button {
@@ -445,14 +449,21 @@ export default class Draft extends LitElement {
                 <div class="container">
                   <div name="draft" class="columns is-centered">
                     <div class="column is-half">
+                      <button
+                        type="button"
+                        class="drawer-btn button ${this.drawerOpen ? null : "is-info"}"
+                        @click="${this.toggleConfigurationDrawer}"
+                      >
+                        ${this.drawerOpen
+                          ? html`
+                              ⤬
+                            `
+                          : html`
+                              ⚙
+                            `}
+                        préparer mon article
+                      </button>
                       <h1 class="title">
-                        <button
-                          type="button"
-                          class="button ${ this.drawerOpen ? null : 'is-info' }"
-                          @click="${this.toggleConfigurationDrawer}"
-                        >
-                          ${this.drawerOpen ? html`⤬` : html`⚙`}
-                        </button>
                         ${this.state.draft.title}
                       </h1>
                       <textarea
