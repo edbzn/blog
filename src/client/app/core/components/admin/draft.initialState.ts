@@ -2,7 +2,7 @@ import { ArticleLanguage } from "../../../../../server/api/article/model/article
 
 import { DraftState } from "./types";
 
-export const initialState: DraftState = {
+export const initialState = (): DraftState => ({
   id: null,
   editor: null,
   draft: {
@@ -20,4 +20,4 @@ export const initialState: DraftState = {
   error: null,
   draftLoaded: false,
   loading: false,
-};
+});

@@ -14,12 +14,10 @@ import {
 import { errorHandlerService } from "../../error-handler-service";
 
 export const draft = {
-  initialState: (): DraftState => Object.assign(initialState, {}),
+  initialState: (): DraftState => ({ ...initialState() }),
   actions: (update: flyd.Stream<StateUpdateFunction>): DraftActions => ({
     reset() {
-      update(() => {
-        return initialState;
-      });
+      update(() => ({ ...initialState() }));
     },
     setId(id: string) {
       update((state: DraftState) => {

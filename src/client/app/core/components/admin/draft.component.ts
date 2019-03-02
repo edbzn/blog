@@ -1,11 +1,11 @@
-import * as flyd from 'flyd';
-import { html, LitElement, property } from 'lit-element/lit-element';
+import * as flyd from "flyd";
+import { html, LitElement, property } from "lit-element/lit-element";
 
-import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
-import router from '../../../../app-router';
-import check from '../../../utils/icons/check';
-import { errorHandlerService } from '../../error-handler-service';
-import { DraftActions, DraftState, IArticle, IDraft } from './types';
+import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
+import router from "../../../../app-router";
+import check from "../../../utils/icons/check";
+import { errorHandlerService } from "../../error-handler-service";
+import { DraftActions, DraftState, IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: Object })
@@ -51,6 +51,8 @@ export default class Draft extends LitElement {
         draft.markdown,
       );
     } else {
+      await this.requestUpdate();
+
       this.actions.initEditor(
         this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
         "",
@@ -75,9 +77,7 @@ export default class Draft extends LitElement {
     try {
       if (this.isDraft()) {
         const article = await this.actions.post(draft);
-        const route = `/admin/draft?id=${
-          article._id
-        }&title=${encodeURIComponent(article.title)}`;
+        const route = `/admin/draft?id=${article._id}`;
         router.push(route);
       } else {
         await this.actions.update(this.state.id as string, draft as IArticle);
@@ -240,199 +240,181 @@ export default class Draft extends LitElement {
         }
       </style>
       <ez-navbar></ez-navbar>
-      ${
-        this.shouldShowEditor()
-          ? html`
-              <div>
-                ${
-                  this.state.draft.posterUrl
-                    ? html`
-                        <div
-                          class="poster"
-                          style="background-image: url('${
-                            this.state.draft.posterUrl
-                          }')"
-                        ></div>
-                      `
-                    : html``
-                }
-                <div class="container">
-                  <form
-                    name="draft"
-                    class="columns"
-                    @submit="${this.handleSubmit}"
-                    @input="${this.handleChange}"
-                    @change="${this.handleChange}"
-                  >
-                    <div class="column is-three-fifths">
-                      <h1 class="title">${this.state.draft.title}</h1>
-                      <label class="label" for="markdown">Content</label>
-                      <textarea
-                        id="markdown"
-                        name="markdown"
-                        type="text"
-                        rows="20"
-                        cols="70"
-                      ></textarea>
-                    </div>
-                    <div class="column">
-                      <div class="sticky">
-                        <h2 class="subtitle">Configuration</h2>
-                        <div class="field">
-                          <label class="label" for="poster">Poster</label>
-                          <input
-                            type="file"
-                            id="poster"
-                            class="input"
-                            value="${this.state.draft.posterUrl}"
-                            name="poster"
-                            accept="image/png, image/jpeg, image/gif"
-                            @input="${this.handleFile}"
-                          />
-                        </div>
-                        <div class="field">
-                          <button
-                            class="button"
-                            ?disabled=${!this.state.draft.posterUrl}
-                            @click="${this.handleRemovePoster}"
-                          >
-                            Supprimer le poster
-                          </button>
-                        </div>
-                        <div class="field">
-                          <label class="label" for="tags"
-                            >Tags (separated by a comma)</label
-                          >
-                          <input
-                            type="text"
-                            class="input"
-                            id="tags"
-                            name="tags"
-                            placeholder="architecture, test"
-                            value="${this.state.draft.tags.toString()}"
-                            @input="${this.handleTagsChange}"
-                          />
-                        </div>
-                        <div class="field">
-                          <label class="label" for="title">Title</label>
-                          <input
-                            id="title"
-                            name="title"
-                            class="input"
-                            value="${this.state.draft.title}"
-                            @input="${this.handleTitleChange}"
-                            type="text"
-                            required
-                          />
-                        </div>
-                        <div class="field">
-                          <label class="label" for="lang">Lang</label>
-                          <div class="control">
-                            <div class="select">
-                              <select
-                                required
-                                id="lang"
-                                @change="${this.handleLangChange}"
-                              >
-                                ${
-                                  [ArticleLanguage.FR, ArticleLanguage.EN].map(
-                                    lang => html`
-                                      <option
-                                        value="${lang}"
-                                        ?selected="${
-                                          lang === this.state.draft.lang
-                                        }"
-                                        >${lang}</option
-                                      >
-                                    `,
-                                  )
-                                }
-                              </select>
-                            </div>
+      ${this.shouldShowEditor()
+        ? html`
+            <div>
+              ${this.state.draft.posterUrl
+                ? html`
+                    <div
+                      class="poster"
+                      style="background-image: url('${this.state.draft
+                        .posterUrl}')"
+                    ></div>
+                  `
+                : html``}
+              <div class="container">
+                <form
+                  name="draft"
+                  class="columns"
+                  @submit="${this.handleSubmit}"
+                  @input="${this.handleChange}"
+                  @change="${this.handleChange}"
+                >
+                  <div class="column is-three-fifths">
+                    <h1 class="title">${this.state.draft.title}</h1>
+                    <label class="label" for="markdown">Content</label>
+                    <textarea
+                      id="markdown"
+                      name="markdown"
+                      type="text"
+                      rows="20"
+                      cols="70"
+                    ></textarea>
+                  </div>
+                  <div class="column">
+                    <div class="sticky">
+                      <h2 class="subtitle">Configuration</h2>
+                      <div class="field">
+                        <label class="label" for="poster">Poster</label>
+                        <input
+                          type="file"
+                          id="poster"
+                          class="input"
+                          value="${this.state.draft.posterUrl}"
+                          name="poster"
+                          accept="image/png, image/jpeg, image/gif"
+                          @input="${this.handleFile}"
+                        />
+                      </div>
+                      <div class="field">
+                        <button
+                          class="button"
+                          ?disabled=${!this.state.draft.posterUrl}
+                          @click="${this.handleRemovePoster}"
+                        >
+                          Supprimer le poster
+                        </button>
+                      </div>
+                      <div class="field">
+                        <label class="label" for="tags"
+                          >Tags (separated by a comma)</label
+                        >
+                        <input
+                          type="text"
+                          class="input"
+                          id="tags"
+                          name="tags"
+                          placeholder="architecture, test"
+                          value="${this.state.draft.tags.toString()}"
+                          @input="${this.handleTagsChange}"
+                        />
+                      </div>
+                      <div class="field">
+                        <label class="label" for="title">Title</label>
+                        <input
+                          id="title"
+                          name="title"
+                          class="input"
+                          value="${this.state.draft.title}"
+                          @input="${this.handleTitleChange}"
+                          type="text"
+                          required
+                        />
+                      </div>
+                      <div class="field">
+                        <label class="label" for="lang">Lang</label>
+                        <div class="control">
+                          <div class="select">
+                            <select
+                              required
+                              id="lang"
+                              @change="${this.handleLangChange}"
+                            >
+                              ${[ArticleLanguage.FR, ArticleLanguage.EN].map(
+                                lang => html`
+                                  <option
+                                    value="${lang}"
+                                    ?selected="${lang ===
+                                      this.state.draft.lang}"
+                                    >${lang}</option
+                                  >
+                                `,
+                              )}
+                            </select>
                           </div>
                         </div>
-                        <div class="field">
-                          <label class="label" for="title">Meta title</label>
-                          <input
-                            id="metaTitle"
-                            name="metaTitle"
-                            value="${this.state.draft.metaTitle || ""}"
-                            @input="${this.handleMetaTitleChange}"
-                            class="input"
-                            type="text"
-                          />
-                        </div>
-                        <div class="field">
-                          <label class="label" for="metaDescription"
-                            >Meta description</label
-                          >
-                          <input
-                            id="metaDescription"
-                            name="metaDescription"
-                            @input="${this.handleMetaDescriptionChange}"
-                            class="input"
-                            value="${this.state.draft.metaDescription || ""}"
-                            type="text"
-                          />
-                        </div>
-                        <button type="submit" class="button">
-                          ${
-                            this.dirty || this.state.loading
-                              ? html`
-                                  ⌛️ Sauvegarde en cours...
-                                `
-                              : html`
-                                  ${check} Sauvegarder
-                                `
-                          }
-                        </button>
-                        <span class="right">
-                          <button
-                            type="button"
-                            class="button ${
-                              this.state.draft.published
-                                ? "is-warning"
-                                : "is-info"
-                            }"
-                            @click="${this.togglePublish}"
-                            ?disabled=${this.isDraft()}
-                          >
-                            ${
-                              this.state.draft.published
-                                ? "🔒 Dépublier"
-                                : "🔓 Publier"
-                            }
-                          </button>
-                          ${
-                            this.state.id
-                              ? html`
-                                  <a
-                                    class="button is-primary"
-                                    href="${articleUri}"
-                                    title="Lire ${this.state.draft.title}"
-                                    @click="${
-                                      (e: Event) => {
-                                        e.preventDefault();
-                                        router.push(articleUri as string);
-                                      }
-                                    }"
-                                  >
-                                    👁 Prévisualisation
-                                  </a>
-                                `
-                              : ""
-                          }
-                        </span>
                       </div>
+                      <div class="field">
+                        <label class="label" for="title">Meta title</label>
+                        <input
+                          id="metaTitle"
+                          name="metaTitle"
+                          value="${this.state.draft.metaTitle || ""}"
+                          @input="${this.handleMetaTitleChange}"
+                          class="input"
+                          type="text"
+                        />
+                      </div>
+                      <div class="field">
+                        <label class="label" for="metaDescription"
+                          >Meta description</label
+                        >
+                        <input
+                          id="metaDescription"
+                          name="metaDescription"
+                          @input="${this.handleMetaDescriptionChange}"
+                          class="input"
+                          value="${this.state.draft.metaDescription || ""}"
+                          type="text"
+                        />
+                      </div>
+                      <button type="submit" class="button">
+                        ${this.dirty || this.state.loading
+                          ? html`
+                              ⌛️ Sauvegarde en cours...
+                            `
+                          : html`
+                              ${check} Sauvegarder
+                            `}
+                      </button>
+                      <span class="right">
+                        <button
+                          type="button"
+                          class="button ${this.state.draft.published
+                            ? "is-warning"
+                            : "is-info"}"
+                          @click="${this.togglePublish}"
+                          ?disabled=${this.isDraft()}
+                        >
+                          ${this.state.draft.published
+                            ? "🔒 Dépublier"
+                            : "🔓 Publier"}
+                        </button>
+                        ${this.state.id
+                          ? html`
+                              <a
+                                class="button is-primary"
+                                href="${articleUri}"
+                                title="Lire ${this.state.draft.title}"
+                                @click="${(e: Event) => {
+                                  e.preventDefault();
+                                  router.push(articleUri as string);
+                                }}"
+                              >
+                                👁 Prévisualisation
+                              </a>
+                            `
+                          : ""}
+                      </span>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                </form>
               </div>
-            `
-          : html`
-              Chargement...
-            `
-      }
+            </div>
+          `
+        : html`
+            Chargement...
+          `}
     `;
   }
 }

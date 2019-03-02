@@ -35,8 +35,6 @@ adminRoutes
   .use("/draft", async (req, resp) => {
     await loadAdmin();
 
-    actions.reset();
-
     const id = req.query.id;
     if (id) {
       actions.setId(id);
