@@ -12,6 +12,7 @@ import {
   StateUpdateFunction,
 } from "./types";
 import { errorHandlerService } from "../../error-handler-service";
+import { slugify } from "../../../shared/slugify";
 
 export const draft = {
   initialState: (): DraftState => ({ ...initialState() }),
@@ -47,7 +48,7 @@ export const draft = {
       });
     },
     initEditor(element: HTMLTextAreaElement, initialValue: string) {
-      import(/* webpackChunkName: "app-admin" */"simplemde")
+      import(/* webpackChunkName: "app-admin" */ "simplemde")
         .then(SimpleMDE => {
           update((state: DraftState) => {
             state.editor = new SimpleMDE.default({
@@ -155,6 +156,12 @@ export const draft = {
     editTitle(title: string) {
       update((state: DraftState) => {
         state.draft.title = title;
+        return state;
+      });
+    },
+    editSlug(slug: string) {
+      update((state: DraftState) => {
+        state.draft.slug = slugify(slug);
         return state;
       });
     },

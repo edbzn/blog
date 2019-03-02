@@ -43,6 +43,7 @@ export interface DraftActions {
   editMetaDescription(metaDescription: string): void;
   editTags(tags: string): void;
   editLang(lang: ArticleLanguage): void;
+  editSlug(slug: string): void;
 }
 
 export interface StateUpdateFunction {

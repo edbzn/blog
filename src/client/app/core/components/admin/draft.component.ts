@@ -1,11 +1,11 @@
-import * as flyd from 'flyd';
-import { html, LitElement, property } from 'lit-element/lit-element';
+import * as flyd from "flyd";
+import { css, html, LitElement, property } from "lit-element/lit-element";
 
-import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
-import router from '../../../../app-router';
-import { slugify } from '../../../shared/slugify';
-import { errorHandlerService } from '../../error-handler-service';
-import { DraftActions, DraftState, IArticle, IDraft } from './types';
+import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
+import router from "../../../../app-router";
+import { slugify } from "../../../shared/slugify";
+import { errorHandlerService } from "../../error-handler-service";
+import { DraftActions, DraftState, IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {
   @property({ type: Object })
@@ -174,6 +174,12 @@ export default class Draft extends LitElement {
     this.handleChange(e);
   }
 
+  handleSlugChange(e: Event): void {
+    this.actions.editSlug((e.target as HTMLInputElement)
+      .value as ArticleLanguage);
+    this.handleChange(e);
+  }
+
   handleRemovePoster(e: Event): void {
     this.actions.removePoster();
     this.handleChange(e);
@@ -184,7 +190,7 @@ export default class Draft extends LitElement {
 
     return {
       title: draft.title,
-      slug: slugify(draft.title),
+      slug: draft.slug,
       markdown: draft.markdown,
       html: draft.html,
       posterUrl: draft.posterUrl,
@@ -202,6 +208,69 @@ export default class Draft extends LitElement {
     this.requestUpdate("drawerOpen");
   }
 
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+
+      .loading {
+        padding-top: 5rem;
+        text-align: center;
+        color: #7c7c7c;
+      }
+
+      .loading > .loader {
+        margin: 0 auto;
+        margin-top: 1rem;
+      }
+
+      .container {
+        margin-top: 40px !important;
+      }
+
+      .draft-configuration {
+        margin-top: 8px;
+        padding: 0.8rem;
+      }
+
+      .poster {
+        height: 400px;
+        background-position: center center;
+        background-size: cover;
+        background-color: #eee;
+      }
+
+      .right {
+        float: right;
+      }
+
+      button svg {
+        fill: #17a917;
+        width: 22px;
+        margin-right: 6px;
+      }
+
+      .configuration-drawer {
+        width: 420px;
+        height: calc(100vh - 64px);
+        position: fixed;
+        bottom: 0;
+        z-index: 8;
+        background: #efefef;
+        box-shadow: 0 0px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .drawer-btn {
+        margin-bottom: 26px;
+      }
+
+      .field .button {
+        width: 100%;
+      }
+    `;
+  }
+
   render() {
     const articleUri =
       this.state && this.state.draftLoaded
@@ -216,66 +285,6 @@ export default class Draft extends LitElement {
       <link href="assets/css/simplemde.css" rel="stylesheet" />
       <link href="assets/css/debug-simplemde.css" rel="stylesheet" />
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        :host {
-          display: block;
-        }
-
-        .loading {
-          padding-top: 5rem;
-          text-align: center;
-          color: #7c7c7c;
-        }
-
-        .loading > .loader {
-          margin: 0 auto;
-          margin-top: 1rem;
-        }
-
-        .container {
-          margin-top: 40px !important;
-        }
-
-        .draft-configuration {
-          margin-top: 8px;
-          padding: 0.8rem;
-        }
-
-        .poster {
-          height: 400px;
-          background-position: center center;
-          background-size: cover;
-          background-color: #eee;
-        }
-
-        .right {
-          float: right;
-        }
-
-        button svg {
-          fill: #17a917;
-          width: 22px;
-          margin-right: 6px;
-        }
-
-        .configuration-drawer {
-          width: 420px;
-          height: calc(100vh - 64px);
-          position: fixed;
-          bottom: 0;
-          z-index: 8;
-          background: #efefef;
-          box-shadow: 0 0px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .drawer-btn {
-          margin-bottom: 26px;
-        }
-
-        .field .button {
-          width: 100%;
-        }
-      </style>
       <ez-navbar></ez-navbar>
       <form
         @submit="${this.handleSubmit}"
@@ -296,6 +305,18 @@ export default class Draft extends LitElement {
                             class="input"
                             value="${this.state.draft.title}"
                             @input="${this.handleTitleChange}"
+                            type="text"
+                            required
+                          />
+                        </div>
+                        <div class="field">
+                          <label class="label" for="slug">Slug</label>
+                          <input
+                            id="slug"
+                            name="slug"
+                            class="input"
+                            value="${this.state.draft.slug || slugify(this.title)}"
+                            @input="${this.handleSlugChange}"
                             type="text"
                             required
                           />
@@ -428,7 +449,9 @@ export default class Draft extends LitElement {
                       </div>
                     `
                   : html`
-                      Chargement de la matrice quantique...
+                      <div class="drawer-loading">
+                        Chargement de la matrice quantique...
+                      </div>
                     `}
               </div>
             `
@@ -450,7 +473,9 @@ export default class Draft extends LitElement {
                     <div class="column is-half">
                       <button
                         type="button"
-                        class="drawer-btn button ${this.drawerOpen ? null : "is-info"}"
+                        class="drawer-btn button ${this.drawerOpen
+                          ? null
+                          : "is-info"}"
                         @click="${this.toggleConfigurationDrawer}"
                       >
                         ${this.drawerOpen
