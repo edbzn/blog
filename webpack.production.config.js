@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge");
 const Dotenv = require('dotenv-webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const common = require('./webpack.common.config');
 
 module.exports = merge(common, {
@@ -36,6 +37,7 @@ module.exports = merge(common, {
     }
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: "Codamit - Tech Blog",
       template: path.resolve(__dirname, "src", "client", "index.html"),
