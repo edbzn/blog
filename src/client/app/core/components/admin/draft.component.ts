@@ -274,7 +274,7 @@ export default class Draft extends LitElement {
   render() {
     const articleUri =
       this.state && this.state.draftLoaded
-        ? `/article/slug/${this.state.draft.slug}`
+        ? `/article/${this.state.draft.slug}`
         : null;
 
     return html`
