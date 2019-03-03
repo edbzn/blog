@@ -9,4 +9,4 @@ const middlewares = [cors$, logger$({ silent: false }), bodyParser$()];
 
 const effects = [api$];
 
-export const app = httpListener({ middlewares, effects });
+export default httpListener({ middlewares, effects });

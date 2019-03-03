@@ -1,4 +1,4 @@
-import { app } from "./app";
+import app from "./app";
 import { Database } from "./connection/database";
 import { Server } from "./connection/server";
 

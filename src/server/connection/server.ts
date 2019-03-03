@@ -1,6 +1,10 @@
-import { createServer, IncomingMessage, ServerResponse } from "http";
-import chalk from "chalk";
-import { Config } from "../config";
+import { createContext, httpListener } from '@marblejs/core';
+import chalk from 'chalk';
+import { createServer } from 'http';
+
+import { Config } from '../config';
+
+type HttpListener = ReturnType<typeof httpListener>
 
 export namespace Server {
   const { host, port } = Config.server;
@@ -14,14 +18,17 @@ export namespace Server {
   };
 
   const onError = (error: Error) => {
-    console.error(chalk.red("[server] errored"), error.message);
+    console.error(chalk.red("[server] failed"), error.message);
   };
 
-  export const create = async (
-    app: (req: IncomingMessage, res: ServerResponse) => void,
-  ) =>
-    createServer(app)
-      .listen(port, onListen)
+  export const create = async (httpListener: HttpListener) => {
+    const httpListenerWithContext = httpListener
+      .run(createContext());
+
+    createServer(httpListenerWithContext)
+      .listen(port)
       .on("close", onClose)
-      .on("error", onError);
+      .on("error", onError)
+      .on("listening", onListen);
+  };
 }
