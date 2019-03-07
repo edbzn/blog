@@ -81,7 +81,7 @@
     "clean-webpack-plugin": "2.0.0",
     "concurrently": "4.1.0",
     "copy-webpack-plugin": "5.0.0",
-    "css-loader": "2.1.0",
+    "css-loader": "2.1.1",
     "html-webpack-plugin": "3.2.0",
     "meiosis-tracer": "2.0.3",
     "node-sass": "4.11.0",
