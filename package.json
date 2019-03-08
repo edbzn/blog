@@ -8,8 +8,9 @@
   "scripts": {
     "start": "npm run start:api:prod",
     "watch": "concurrently \"webpack-dev-server --config=webpack.dev.config.js --inline --hot\" \"nodemon --config nodemon.server.json\"",
-    "build:client": "webpack ---progress --config=webpack.production.config.js --mode production && npm run build:sw",
+    "build:client": "webpack ---progress --config=webpack.production.config.js --mode production",
     "build:sw": "sw-precache --root='dist/client' --config=src/client/sw-config.js",
+    "postbuild:client": "npm run build:sw",
     "start:api:dev": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env",
     "start:api:prod": "ts-node --project tsconfig.server.json --require dotenv/config ./src/server/index.ts dotenv_config_path=.env.production",
     "deploy:api": "now -A now.api.json && now scale api.codamit.com bru1 1",
