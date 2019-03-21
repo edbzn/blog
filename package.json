@@ -50,7 +50,7 @@
     "dotenv-webpack": "1.7.0",
     "express": "4.16.4",
     "flyd": "0.2.8",
-    "lit-element": "2.0.1",
+    "lit-element": "2.1.0",
     "lit-html": "1.0.0",
     "mongoose": "5.4.19",
     "prismjs": "1.15.0",
