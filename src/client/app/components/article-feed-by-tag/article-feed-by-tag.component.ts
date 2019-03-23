@@ -1,8 +1,8 @@
-import { html, LitElement, property } from 'lit-element';
+import { html, LitElement, property } from "lit-element";
 
-import router from '../../../../app-router';
-import { languageService } from '../../language-service';
-import { setPageMeta } from '../../../utils/set-document-meta';
+import router from "../../../app-router";
+import { languageService } from "../../core/language-service";
+import { setPageMeta } from "../../utils/set-document-meta";
 
 export default class ArticlesByTagComponent extends LitElement {
   @property({ type: String })

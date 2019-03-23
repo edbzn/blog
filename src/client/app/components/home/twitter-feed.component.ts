@@ -1,15 +1,13 @@
 import anchorme from "anchorme";
 import { distanceInWords } from "date-fns";
-import * as frLocale from "date-fns/locale/fr";
 import { html, LitElement, TemplateResult } from "lit-element";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { until } from "lit-html/directives/until";
 
-import { placeholder } from "../../../shared/placeholder";
-import like from "../../../utils/icons/like";
-import retweet from "../../../utils/icons/retweet";
-import { apiClient } from "../../api-client";
-import { languageService } from "../../language-service";
+import { apiClient } from "../../core/api-client";
+import { languageService } from "../../core/language-service";
+import { placeholder } from "../../shared/placeholder";
+import like from "../../utils/icons/like";
+import retweet from "../../utils/icons/retweet";
 
 export default class TwitterFeedComponent extends LitElement {
   initialized = false;

@@ -1,8 +1,8 @@
 import { LitElement, html } from "lit-element/lit-element";
 
-import router from "../../../../app-router";
-import github from "../../../utils/icons/github";
-import twitter from "../../../utils/icons/twitter";
+import router from "../../../app-router";
+import github from "../../utils/icons/github";
+import twitter from "../../utils/icons/twitter";
 
 export default class NavBar extends LitElement {
   twitterUrl = "https://twitter.com/edouardbozon";

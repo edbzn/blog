@@ -1,8 +1,8 @@
 import { v1 as uuid } from "uuid";
 
-import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
-import { apiClient } from "../../api-client";
-import { storageService } from "../../storage-client";
+import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
+import { apiClient } from "../../core/api-client";
+import { storageService } from "../../core/storage-client";
 import { initialState } from "./draft.initialState";
 import {
   DraftActions,
@@ -11,8 +11,8 @@ import {
   IDraft,
   StateUpdateFunction,
 } from "./types";
-import { errorHandlerService } from "../../error-handler-service";
-import { slugify } from "../../../shared/slugify";
+import { errorHandlerService } from "../../core/error-handler-service";
+import { slugify } from "../../shared/slugify";
 
 export const draft = {
   initialState: (): DraftState => ({ ...initialState() }),

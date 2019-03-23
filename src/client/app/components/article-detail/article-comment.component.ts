@@ -1,11 +1,11 @@
-import { format } from 'date-fns';
-import * as frLocale from 'date-fns/locale/fr';
-import { html, LitElement, property } from 'lit-element';
+import { format } from "date-fns";
+import * as frLocale from "date-fns/locale/fr";
+import { html, LitElement, property } from "lit-element";
 
-import { ResourceCollection } from '../../../utils/collection';
-import { apiClient } from '../../api-client';
-import { languageService } from '../../language-service';
-import { IComment } from './types';
+import { ResourceCollection } from "../../utils/collection";
+import { apiClient } from "../../core/api-client";
+import { languageService } from "../../core/language-service";
+import { IComment } from "./types";
 
 export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
@@ -119,22 +119,17 @@ export default class ArticleCommentComponent extends LitElement {
         <button
           type="button"
           class="button is-primary is-block"
-          @click="${
-            () => {
-              this.showEditor = !this.showEditor;
-              this.requestUpdate();
-            }
-          }"
+          @click="${() => {
+            this.showEditor = !this.showEditor;
+            this.requestUpdate();
+          }}"
         >
-          ${
-            !this.showEditor
-              ? languageService.translation.article_detail.leave_comment_btn
-              : languageService.translation.article_detail.stop_comment_btn
-          }
+          ${!this.showEditor
+            ? languageService.translation.article_detail.leave_comment_btn
+            : languageService.translation.article_detail.stop_comment_btn}
         </button>
-        ${
-          this.showEditor
-            ? html`
+        ${this.showEditor
+          ? html`
                 <form name="postComment" @submit=${
                   this.postComment
                 } @input=${() => this.update(new Map())}>
@@ -144,12 +139,10 @@ export default class ArticleCommentComponent extends LitElement {
                           <div class="notification is-danger">
                             <button
                               class="delete"
-                              @click="${
-                                () => {
-                                  this.error = null;
-                                  this.requestUpdate();
-                                }
-                              }"
+                              @click="${() => {
+                                this.error = null;
+                                this.requestUpdate();
+                              }}"
                             ></button>
                             ${this.error}
                           </div>
@@ -157,13 +150,17 @@ export default class ArticleCommentComponent extends LitElement {
                       : null
                   }
                   <div class="field">
-                    <label for="name">${languageService.translation.article_detail.name_label}</label
+                    <label for="name">${
+                      languageService.translation.article_detail.name_label
+                    }</label
                     <div class="control">
                       <input class="input" name="name" id="name" type="text" required />
                     </div>
                   </div>
                   <div class="field">
-                    <label for="comment">${languageService.translation.article_detail.comment_label}</label
+                    <label for="comment">${
+                      languageService.translation.article_detail.comment_label
+                    }</label
                     <div class="control">
                       <textarea class="textarea ${
                         this.loading
@@ -179,11 +176,9 @@ export default class ArticleCommentComponent extends LitElement {
                   </button>
                 </form>
               `
-            : null
-        }
+          : null}
         <section class="comments">
-        ${
-          this.commentCollection !== null
+          ${this.commentCollection !== null
             ? this.commentCollection.collection.map(
                 comment => html`
                   <article class="message">
@@ -192,11 +187,13 @@ export default class ArticleCommentComponent extends LitElement {
                         <strong>${comment.author}</strong>
                         <em>
                           -
-                          ${
-                            format(new Date(comment.createdAt), "ddd DD MMM YYYY",{
+                          ${format(
+                            new Date(comment.createdAt),
+                            "ddd DD MMM YYYY",
+                            {
                               locale: frLocale,
-                            })
-                          }
+                            },
+                          )}
                         </em>
                       </header>
                       ${comment.comment}
@@ -204,8 +201,7 @@ export default class ArticleCommentComponent extends LitElement {
                   </article>
                 `,
               )
-            : null
-        }
+            : null}
         </section>
       </div>
     `;

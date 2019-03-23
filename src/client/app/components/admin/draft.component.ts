@@ -1,10 +1,10 @@
 import * as flyd from "flyd";
 import { css, html, LitElement, property } from "lit-element/lit-element";
 
-import { ArticleLanguage } from "../../../../../server/api/article/model/article-language";
-import router from "../../../../app-router";
-import { slugify } from "../../../shared/slugify";
-import { errorHandlerService } from "../../error-handler-service";
+import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
+import router from "../../../app-router";
+import { slugify } from "../../shared/slugify";
+import { errorHandlerService } from "../../core/error-handler-service";
 import { DraftActions, DraftState, IArticle, IDraft } from "./types";
 
 export default class Draft extends LitElement {
@@ -315,7 +315,8 @@ export default class Draft extends LitElement {
                             id="slug"
                             name="slug"
                             class="input"
-                            value="${this.state.draft.slug || slugify(this.title)}"
+                            value="${this.state.draft.slug ||
+                              slugify(this.title)}"
                             @input="${this.handleSlugChange}"
                             type="text"
                             required

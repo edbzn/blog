@@ -1,9 +1,9 @@
 import { html, LitElement } from 'lit-element/lit-element';
 
-import router from '../../../../app-router';
-import heart from '../../../utils/icons/heart';
-import { authService } from '../../authentication-service';
-import { languageService } from '../../language-service';
+import router from '../../../app-router';
+import heart from '../../utils/icons/heart';
+import { authService } from '../../core/authentication-service';
+import { languageService } from '../../core/language-service';
 
 export default class Footer extends LitElement {
   render() {

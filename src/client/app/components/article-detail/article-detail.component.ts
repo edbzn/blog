@@ -1,16 +1,16 @@
 import { distanceInWords, format } from "date-fns";
 import { html, LitElement, property } from "lit-element";
 
-import router from "../../../../app-router";
-import { placeholder } from "../../../shared/placeholder";
-import { tags } from "../../../shared/tags";
-import { debounce } from "../../../utils/debounce";
-import { profileConfiguration } from "../../../utils/profile-config";
-import { apiClient } from "../../api-client";
-import { errorHandlerService } from "../../error-handler-service";
-import { languageService } from "../../language-service";
+import router from "../../../app-router";
+import { placeholder } from "../../shared/placeholder";
+import { tags } from "../../shared/tags";
+import { debounce } from "../../utils/debounce";
+import { profileConfiguration } from "../../utils/profile-config";
+import { apiClient } from "../../core/api-client";
+import { errorHandlerService } from "../../core/error-handler-service";
+import { languageService } from "../../core/language-service";
 import { IArticle } from "../admin/types";
-import { setPageMeta } from "../../../utils/set-document-meta";
+import { setPageMeta } from "../../utils/set-document-meta";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })

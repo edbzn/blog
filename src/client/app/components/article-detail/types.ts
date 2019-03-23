@@ -1,4 +1,4 @@
-import { IResource, ITimeStampableResource } from "../../../utils/resource";
+import { IResource, ITimeStampableResource } from "../../utils/resource";
 
 export interface IComment extends IResource, ITimeStampableResource {
   comment: string;

@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit-element/lit-element";
-import { profileConfiguration } from "../../../utils/profile-config";
-import { setPageMeta } from "../../../utils/set-document-meta";
+import { profileConfiguration } from "../../utils/profile-config";
+import { setPageMeta } from "../../utils/set-document-meta";
 
 export default class Home extends LitElement {
 

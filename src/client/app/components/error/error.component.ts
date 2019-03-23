@@ -1,6 +1,6 @@
 import { LitElement, property, html } from "lit-element/lit-element";
 
-import router from "../../../../app-router";
+import router from "../../../app-router";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
 export default class Error extends LitElement {

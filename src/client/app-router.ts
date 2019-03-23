@@ -2,7 +2,7 @@ import { html, render } from 'lit-html';
 import { browserRouter, ProuterNavigationEvent, routerGroup } from 'prouter';
 
 import { authService } from './app/core/authentication-service';
-import { actions, states } from './app/core/components/admin/draft.stream';
+import { actions, states } from './app/components/admin/draft.stream';
 import { errorHandlerService } from './app/core/error-handler-service';
 import { unAuthenticatedErrorMsg } from './app/utils/unauthenticated-error';
 import { loadAdmin, loadArticleDetail, loadArticlesByTag, loadError, loadHome, loadLogin } from './lazyload';
