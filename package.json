@@ -95,7 +95,7 @@
     "sw-precache": "5.2.1",
     "ts-loader": "5.3.3",
     "ts-node": "8.0.3",
-    "typescript": "3.3.4000",
+    "typescript": "3.4.1",
     "webpack": "4.29.6",
     "webpack-build-notifier": "0.1.31",
     "webpack-bundle-analyzer": "3.1.0",
