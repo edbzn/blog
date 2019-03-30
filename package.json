@@ -73,7 +73,7 @@
     "@types/joi": "14.3.2",
     "@types/mongoose": "5.3.23",
     "@types/node": "11.11.6",
-    "@types/prismjs": "1.9.1",
+    "@types/prismjs": "1.16.0",
     "@types/showdown": "1.9.2",
     "@types/simplemde": "1.11.7",
     "@types/uuid": "3.4.4",
