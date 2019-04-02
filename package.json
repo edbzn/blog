@@ -36,7 +36,7 @@
     "@marblejs/core": "2.0.1",
     "@marblejs/middleware-body": "2.0.1",
     "@marblejs/middleware-io": "2.0.1",
-    "@marblejs/middleware-joi": "2.0.1",
+    "@marblejs/middleware-joi": "2.1.0",
     "@marblejs/middleware-jwt": "2.0.1",
     "@marblejs/middleware-logger": "2.0.1",
     "@sentry/browser": "4.6.6",
