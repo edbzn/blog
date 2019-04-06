@@ -6,6 +6,7 @@
     "akanass",
     "flyd",
     "marblejs",
-    "middlewares"
+    "middlewares",
+    "signup"
   ]
 }
