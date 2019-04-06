@@ -7,6 +7,7 @@ export const articleValidator$ = validator$({
     markdown: Joi.string().allow(["", null]),
     html: Joi.string().allow(["", null]),
     tags: Joi.array().required(),
+    slug: Joi.string(),
     published: Joi.boolean().required(),
     publishedAt: Joi.date().allow(null),
     posterUrl: Joi.string().allow(null),
