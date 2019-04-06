@@ -25,14 +25,27 @@ const checkUserExists = (body: CredentialsPayload) =>
 const combineHashAndPassword = (body: CredentialsPayload) =>
   forkJoin(checkUserExists(body), of(body.password));
 
-const checkPassword = ([user, password]: [InstanceType<User>, string]) =>
+const compareHashAndPassword = ([user, password]: [InstanceType<User>, string]) =>
   compare$(password, user.password);
 
-const getUserIfAuthorized = (authorized: boolean, email: string) =>
-  iif(
-    () => authorized,
-    UserDao.findByEmail(email).pipe(mergeMap(neverNullable)),
-    throwError(new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED)),
+const checkPassword = (body: CredentialsPayload) =>
+  combineHashAndPassword(body).pipe(
+    mergeMap(compareHashAndPassword),
+    mergeMap(authorized =>
+      iif(
+        () => authorized,
+        of(body),
+        throwError(new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED)),
+      ),
+    ),
+  );
+
+const getUser = ({ email }: { email: string }) =>
+  UserDao.findByEmail(email).pipe(mergeMap(neverNullable));
+
+const generateTokenFromUser = (user: InstanceType<User>) =>
+  of(generateTokenPayload(user)).pipe(
+    map(generateToken({ secret: Config.jwt.secret })),
   );
 
 export const loginEffect$: HttpEffect = req$ =>
@@ -41,11 +54,9 @@ export const loginEffect$: HttpEffect = req$ =>
     mergeMap(req =>
       of(req).pipe(
         map(req => req.body),
-        mergeMap(combineHashAndPassword),
         mergeMap(checkPassword),
-        mergeMap(authorized => getUserIfAuthorized(authorized, req.body.email)),
-        map(generateTokenPayload),
-        map(generateToken({ secret: Config.jwt.secret })),
+        mergeMap(getUser),
+        mergeMap(generateTokenFromUser),
         map(token => ({ body: { token } })),
         catchError(() =>
           throwError(new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED)),
