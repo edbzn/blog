@@ -1,24 +1,22 @@
-import { from } from 'rxjs';
+import { from } from "rxjs";
 
-import { SignupPayload } from '../../auth/helpers/signup-payload';
-import { User, USER_PUBLIC_FIELDS, USER_SECURE_FIELDS } from './user.model';
+import { User, USER_PUBLIC_FIELDS, USER_SECURE_FIELDS } from "./user.model";
+import { UserPayload } from "../../auth/effects/signup.effect";
 
 export namespace UserDao {
   export const model = new User().getModelForClass(User, {
     schemaOptions: { timestamps: true },
   });
 
-  export const create = (payload: SignupPayload) =>
-    from(
-      model.create(
-        new User({
-          email: payload.email,
-          password: payload.password,
-          firstName: payload.firstName,
-          lastName: payload.lastName,
-        }),
-      ),
-    );
+  export const create = (payload: UserPayload) => {
+    const user = new User();
+    user.email = payload.email;
+    user.password = payload.password;
+    user.firstName = payload.firstName;
+    user.lastName = payload.lastName;
+
+    return from(model.create(user));
+  };
 
   export const findByEmail = (email: string) =>
     from(

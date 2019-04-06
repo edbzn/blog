@@ -30,22 +30,6 @@ export class User extends Typegoose {
    */
   createdAt: Date;
   updatedAt: Date;
-
-  constructor(payload?: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-  }) {
-    super();
-
-    if (payload) {
-      this.email = payload.email;
-      this.password = payload.password;
-      this.firstName = payload.firstName;
-      this.lastName = payload.lastName;
-    }
-  }
 }
 
 export const USER_SECURE_FIELDS = {
