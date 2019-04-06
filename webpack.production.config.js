@@ -38,7 +38,7 @@ module.exports = merge(common, {
     },
   },
   plugins: [
-    new CleanWebpackPlugin(["dist"]),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: "Codamit - Tech Blog",
       template: path.resolve(__dirname, "src", "client", "index.html"),
