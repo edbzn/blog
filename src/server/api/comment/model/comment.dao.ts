@@ -1,9 +1,10 @@
 import { from } from "rxjs";
+
 import {
   applyCollectionQuery,
   CollectionQueryOptions,
 } from "../../../utils/collection";
-import { ICommentPayload } from "../helpers/comment-payload";
+import { CommentPayload } from "../effects/post-comment-by-article.effect";
 import { Comment } from "./comment.model";
 
 export namespace CommentDao {
@@ -21,7 +22,12 @@ export namespace CommentDao {
       applyCollectionQuery(query)(() => model.find({ articleId: articleId })),
     );
 
-  export const create = (body: ICommentPayload) => {
-    return from(model.create(new Comment(body)));
+  export const create = (body: CommentPayload) => {
+    const comment = new Comment();
+    comment.articleId = body.articleId;
+    comment.author = body.author;
+    comment.comment = body.comment;
+
+    return from(model.create(comment));
   };
 }

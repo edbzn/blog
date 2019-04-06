@@ -1,7 +1,6 @@
-import { MongooseDocument } from "mongoose";
-import { prop, Typegoose, post } from "typegoose";
-import { ICommentPayload } from "../helpers/comment-payload";
-import { MongoError } from "mongodb";
+import { MongoError } from 'mongodb';
+import { MongooseDocument } from 'mongoose';
+import { post, prop, Typegoose } from 'typegoose';
 
 export type CommentDocument = Comment & MongooseDocument;
 
@@ -27,14 +26,4 @@ export class Comment extends Typegoose {
    */
   createdAt: Date;
   updatedAt: Date;
-
-  constructor(payload?: ICommentPayload) {
-    super();
-
-    if (payload) {
-      this.author = payload.author;
-      this.comment = payload.comment;
-      this.articleId = payload.articleId;
-    }
-  }
 }

@@ -1,32 +1,40 @@
-import { HttpEffect, use } from "@marblejs/core";
-import { of } from "rxjs";
-import { mergeMap, map } from "rxjs/operators";
-import { CommentDao } from "../model/comment.dao";
-import { CollectionQueryOptions } from "../../../utils/collection";
-import { commentCollectionQueryValidator$ } from "../helpers/comment-collection-query.validator";
-import { requestValidator$, t } from "@marblejs/middleware-io";
+import { HttpEffect, HttpError, HttpStatus, use } from '@marblejs/core';
+import { requestValidator$, t } from '@marblejs/middleware-io';
+import { of, throwError } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
-type Query = CollectionQueryOptions;
+import { SortDir } from '../../../../server/utils/collection';
+import { CommentDao } from '../model/comment.dao';
 
-const validator$ = requestValidator$({
+const commentQuerySchema = {
   params: t.type({
     articleId: t.string,
   }),
-});
+};
 
 export const getCommentByArticleEffect$: HttpEffect = req$ =>
   req$.pipe(
-    use(
-      commentCollectionQueryValidator$({
-        sortBy: CommentDao.COMMENT_SORTING_FIELDS,
-      }),
-    ),
-    use(validator$),
+    use(requestValidator$(commentQuerySchema)),
     mergeMap(req =>
       of(req).pipe(
-        map(req => req.query as Query),
-        mergeMap(query => CommentDao.findAllByArticle(req.params.articleId, query)),
+        map(req => req.query),
+        mergeMap(() =>
+          CommentDao.findAllByArticle(
+            req.params.articleId,
+            {
+              sortBy: '_id',
+              sortDir: SortDir.DESC,
+              limit: 5,
+              page: 1
+            },
+          ),
+        ),
         map(commentCollection => ({ body: commentCollection })),
+        catchError(err =>
+          throwError(
+            new HttpError(err, HttpStatus.INTERNAL_SERVER_ERROR),
+          ),
+        ),
       ),
     ),
   );
