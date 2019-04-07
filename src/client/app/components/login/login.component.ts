@@ -1,7 +1,7 @@
 import { html, LitElement } from "lit-element/lit-element";
 
-import { LoginPayload } from "../../../../server/api/auth/helpers/login-payload";
-import { SignupPayload } from "../../../../server/api/auth/helpers/signup-payload";
+import { LoginPayload } from "../../../../server/api/authentication/helpers/login-payload";
+import { SignupPayload } from "../../../../server/api/authentication/helpers/signup-payload";
 import router from "../../../app-router";
 import { apiClient } from "../../core/api-client";
 import { authService } from "../../core/authentication-service";

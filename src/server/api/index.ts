@@ -3,7 +3,7 @@ import { combineRoutes, EffectFactory } from "@marblejs/core";
 import { article$, authorizedArticle$, authorizedDraft$ } from "./article";
 import { notFoundEffect$ } from "./common/effects/not-found.effect";
 import { getTweetsEffect$ } from "./tweet/effects/get-tweets.effect";
-import { auth$ } from "./auth";
+import { authentication$ } from "./authentication";
 import { user$ } from "./user";
 import { comment$ } from "./comment";
 
@@ -20,7 +20,7 @@ export const api$ = combineRoutes("/api/v1", [
   comment$,
   authorizedArticle$,
   authorizedDraft$,
-  auth$,
+  authentication$,
   user$,
   getTweets$,
   notFound$,

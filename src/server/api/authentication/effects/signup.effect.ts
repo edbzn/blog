@@ -4,8 +4,8 @@ import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
 import { UserDao } from '../../user/model/user.dao';
-import { generateTokenFromUser } from '../helpers/generate-token';
 import { createHash$ } from '../helpers/hash';
+import { generateTokenFromUser } from '../helpers/token.helper';
 
 const userSchema = t.type({
   email: t.string,

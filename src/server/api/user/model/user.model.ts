@@ -32,14 +32,7 @@ export class User extends Typegoose {
   updatedAt: Date;
 }
 
-export const USER_SECURE_FIELDS = {
-  password: 1,
-};
-
 export const USER_PUBLIC_FIELDS = {
-  ...USER_SECURE_FIELDS,
-  email: 0,
-  roles: 0,
-  createdAt: 0,
-  updatedAt: 0,
+  email: 1,
+  roles: 1,
 };

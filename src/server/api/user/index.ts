@@ -1,5 +1,5 @@
 import { combineRoutes, EffectFactory } from "@marblejs/core";
-import { authorize$ } from "../auth/middlewares/auth.middleware";
+import { authorize$ } from "../authentication/middlewares/auth.middleware";
 import { getMeEffect$ } from "./effects/get-me.effect";
 import { getUsersEffect$ } from "./effects/get-users.effect";
 
