@@ -1,20 +1,27 @@
 import { HttpEffect, use } from "@marblejs/core";
-import { map, mergeMap, catchError } from "rxjs/operators";
+import { requestValidator$, t } from "@marblejs/middleware-io";
+import { of, throwError } from "rxjs";
+import { catchError, map, mapTo, mergeMap } from "rxjs/operators";
 
+import { articleSchema } from "../helpers/article-body.validator";
 import { ArticleDao } from "../model/article.dao";
-import { throwError } from "rxjs";
-import { articleValidator$ } from "../helpers/article.validator";
+
+const validator$ = requestValidator$({
+  params: t.type({
+    id: t.string,
+  }),
+  body: articleSchema,
+});
 
 export const postArticleEffect$: HttpEffect = req$ =>
   req$.pipe(
-    use(articleValidator$),
-    map(req => ({
-      ...req.body,
-      tags: (req.body.tags.map((tag: string) =>
-        tag.toLowerCase(),
-      ) as string[]).filter(val => val && val.length > 2),
-    })),
-    mergeMap(ArticleDao.create),
-    map(article => ({ body: article })),
-    catchError(err => throwError(err)),
+    use(validator$),
+    mergeMap(req =>
+      of(req).pipe(
+        mapTo(req.body),
+        mergeMap(ArticleDao.create),
+        map(article => ({ body: article })),
+        catchError(err => throwError(err)),
+      ),
+    ),
   );

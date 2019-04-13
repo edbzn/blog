@@ -1,11 +1,11 @@
-import { authorize$ as jwt$, VerifyOptions } from '@marblejs/middleware-jwt';
-import { flatMap } from 'rxjs/operators';
+import { authorize$ as jwt$, VerifyOptions } from "@marblejs/middleware-jwt";
+import { flatMap } from "rxjs/operators";
 
-import { Config } from '../../../config';
-import { neverNullable } from '../../../utils/never-nullable';
-import { throwIfNotAdmin } from '../../user/helpers/throw-if-not-admin';
-import { UserDao } from '../../user/model/user.dao';
-import { generateTokenPayload } from '../helpers/token.helper';
+import { Config } from "../../../config";
+import { neverNullable } from "../../../utils/never-nullable";
+import { throwIfNotAdmin } from "../../user/helpers/throw-if-not-admin";
+import { UserDao } from "../../user/model/user.dao";
+import { generateTokenPayload } from "../helpers/token.helper";
 
 type Payload = ReturnType<typeof generateTokenPayload>;
 

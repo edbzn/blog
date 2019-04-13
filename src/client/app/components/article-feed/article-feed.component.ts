@@ -117,13 +117,21 @@ export default class ArticleFeed extends LitElement {
   getArticleCollection(): Promise<ResourceCollection<IArticle>> {
     return this.adminMode
       ? apiClient.get<ResourceCollection<IArticle>>(
-          `/api/v1/draft?limit=${this.limit}&page=${this.page}`,
+          encodeURI(
+            `/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${
+              this.page
+            }`,
+          ),
         )
       : apiClient.get<ResourceCollection<IArticle>>(
-          `/api/v1/article?limit=${this.limit}&page=${this.page}${this.tags
-            .map(tag => "&tags[]=" + tag)
-            .toString()
-            .replace(",", "")}`,
+          encodeURI(
+            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${
+              this.limit
+            }&page=${this.page}${this.tags
+              .map(tag => "&tags[]=" + tag)
+              .toString()
+              .replace(",", "")}`,
+          ),
         );
   }
 

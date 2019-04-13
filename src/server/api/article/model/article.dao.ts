@@ -1,13 +1,11 @@
-import { FilterQuery } from "mongodb";
-import { from } from "rxjs";
+import { FilterQuery } from 'mongodb';
+import { from } from 'rxjs';
 
-import {
-  applyCollectionQuery,
-  ArticleCollectionQueryOptions,
-} from "../../../utils/collection";
-import { IArticlePayload } from "../helpers/article-payload";
-import { ArticleLanguage } from "./article-language";
-import { Article } from "./article.model";
+import { applyCollectionQuery } from '../../../utils/collection';
+import { ArticleCollectionQueryPayload } from '../helpers/article-collection-query.validator';
+import { ArticlePayload } from '../helpers/article-body.validator';
+import { ArticleLanguage } from './article-language';
+import { Article } from './article.model';
 
 export namespace ArticleDao {
   export const model = new Article().getModelForClass(Article, {
@@ -16,12 +14,13 @@ export namespace ArticleDao {
 
   export const ARTICLE_SORTING_FIELDS = ["_id", "publishedAt"];
 
-  export const findAll = (query: ArticleCollectionQueryOptions) =>
+  export const findAll = (query: ArticleCollectionQueryPayload) =>
     from(applyCollectionQuery(query)(() => model.find()));
 
-  export const findAllPublished = (query: ArticleCollectionQueryOptions) =>
+  export const findAllPublished = (query: ArticleCollectionQueryPayload) =>
     from(
       applyCollectionQuery(query)(() => {
+        console.log(query)
         let qb: FilterQuery<Article> = { published: true };
 
         if (query.tags) {
@@ -38,15 +37,16 @@ export namespace ArticleDao {
 
   export const findById = (id: string) => from(model.findById(id).exec());
 
-  export const findByTitle = (slug: string) =>  from(model.findOne({ slug }).exec());
+  export const findByTitle = (slug: string) =>
+    from(model.findOne({ slug }).exec());
 
   export const removeById = (id: string) =>
     from(model.findByIdAndDelete(id).exec());
 
-  export const updateById = (id: string, body: IArticlePayload) =>
+  export const updateById = (id: string, body: ArticlePayload) =>
     from(model.findByIdAndUpdate(id, body).exec());
 
-  export const create = (body: IArticlePayload) => {
+  export const create = (body: ArticlePayload) => {
     const article = new Article();
     article.title = body.title;
     article.markdown = body.markdown;
@@ -54,7 +54,7 @@ export namespace ArticleDao {
     article.posterUrl = body.posterUrl;
     article.tags = body.tags;
     article.published = body.published;
-    article.publishedAt = body.publishedAt;
+    article.publishedAt = body.publishedAt ? new Date(body.publishedAt) : null;
     article.metaTitle = body.metaTitle;
     article.metaDescription = body.metaDescription;
     article.lang = body.lang as ArticleLanguage;

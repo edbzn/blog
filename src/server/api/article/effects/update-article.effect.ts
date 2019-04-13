@@ -1,16 +1,17 @@
-import { HttpEffect, HttpError, HttpStatus, use } from '@marblejs/core';
-import { of, throwError } from 'rxjs';
-import { catchError, map, mapTo, mergeMap } from 'rxjs/operators';
+import { HttpEffect, HttpError, HttpStatus, use } from "@marblejs/core";
+import { requestValidator$, t } from "@marblejs/middleware-io";
+import { of, throwError } from "rxjs";
+import { catchError, map, mapTo, mergeMap } from "rxjs/operators";
 
-import { neverNullable } from '../../../utils/never-nullable';
-// import { articleValidator$ } from '../helpers/article.validator';
-import { ArticleDao } from '../model/article.dao';
-import { requestValidator$, t } from '@marblejs/middleware-io';
+import { neverNullable } from "../../../utils/never-nullable";
+import { articleSchema } from "../helpers/article-body.validator";
+import { ArticleDao } from "../model/article.dao";
 
 const validator$ = requestValidator$({
   params: t.type({
     id: t.string,
   }),
+  body: articleSchema,
 });
 
 export const updateArticleEffect$: HttpEffect = req$ =>
@@ -18,12 +19,7 @@ export const updateArticleEffect$: HttpEffect = req$ =>
     use(validator$),
     mergeMap(req =>
       of(req.params.id).pipe(
-        mapTo({
-          ...req.body,
-          tags: (req.body.tags.map((tag: string) =>
-            tag.toLowerCase(),
-          ) as string[]).filter(val => val && val.length > 2),
-        }),
+        mapTo(req.body),
         mergeMap(article => ArticleDao.updateById(req.params.id, article)),
         mergeMap(neverNullable),
         map(article => ({ body: article })),
