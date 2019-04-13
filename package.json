@@ -99,7 +99,7 @@
     "typescript": "3.4.3",
     "webpack": "4.30.0",
     "webpack-build-notifier": "0.1.31",
-    "webpack-bundle-analyzer": "3.2.0",
+    "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.0",
     "webpack-dev-server": "3.3.0",
     "webpack-merge": "4.2.1",
