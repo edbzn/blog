@@ -43,7 +43,7 @@
     "@sentry/browser": "5.0.5",
     "@webcomponents/webcomponentsjs": "2.2.8",
     "anchorme": "1.1.2",
-    "bcrypt": "3.0.5",
+    "bcrypt": "3.0.6",
     "bulma": "0.7.4",
     "chalk": "2.4.2",
     "date-fns": "1.30.1",
