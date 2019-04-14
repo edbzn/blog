@@ -1,30 +1,35 @@
-import { validator$, Joi } from "@marblejs/middleware-joi";
-import { SortDir } from "../../../utils/collection";
+import { requestValidator$, t } from '@marblejs/middleware-io';
 
-export interface CollectionQueryValidatorOpts {
-  sortBy: string[];
+import { SortDir } from '../../../utils/collection';
+import { CollectionQueryValidatorOpts, createQuery } from '../../../utils/collection-query.validator';
+
+export interface ArticleCollectionQueryOpts
+  extends CollectionQueryValidatorOpts {
+  tags?: string | string[];
 }
 
-export const articleCollectionQueryValidator$ = (
-  opts: CollectionQueryValidatorOpts,
+export const articleCollectionQuery = (options: ArticleCollectionQueryOpts) =>
+  t.intersection([
+    createQuery(options),
+    t.type({
+      tags: t.union([t.string, t.array(t.string), t.undefined]),
+    }),
+  ]);
+
+export const defaultArticleQuery: ArticleCollectionQueryOpts = {
+  page: 1,
+  limit: 4,
+  sortBy: ["_id", "createdAt"],
+  sortDir: SortDir.DESC,
+};
+
+const queryReturnType = articleCollectionQuery(defaultArticleQuery);
+
+export type ArticleCollectionQueryPayload = t.TypeOf<typeof queryReturnType>;
+
+export const articleQueryValidator$ = (
+  options: ArticleCollectionQueryOpts = defaultArticleQuery,
 ) =>
-  validator$({
-    query: Joi.object({
-      sortBy: Joi.string()
-        .valid(opts.sortBy)
-        .default("_id"),
-      sortDir: Joi.number()
-        .valid(SortDir.DESC, SortDir.ASC)
-        .default(SortDir.DESC),
-      limit: Joi.number().min(0),
-      page: Joi.number().min(1),
-      tags: Joi.alternatives([
-        Joi.array()
-          .sparse()
-          .items(Joi.string()),
-        Joi.string()
-          .not()
-          .empty(),
-      ]),
-    }).required(),
+  requestValidator$({
+    query: articleCollectionQuery(options),
   });

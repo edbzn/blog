@@ -6,6 +6,8 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { UserDao } from '../../user/model/user.dao';
 import { createHash$ } from '../helpers/hash';
 import { generateTokenFromUser } from '../helpers/token.helper';
+import { User } from '../../user/model/user.model';
+import { InstanceType } from 'typegoose';
 
 const userSchema = t.type({
   email: t.string,
@@ -27,7 +29,7 @@ const throwIfUserAlreadyExists = (body: UserPayload) =>
     ),
   );
 
-const createUserFromRequest = (body: UserPayload) =>
+const createUser = (body: UserPayload) =>
   forkJoin(of(body), createHash$(body.password)).pipe(
     mergeMap(([payload, password]) =>
       UserDao.create({
@@ -37,6 +39,10 @@ const createUserFromRequest = (body: UserPayload) =>
         lastName: payload.lastName,
       }),
     ),
+  );
+
+const generateToken = (user: InstanceType<User>) =>
+  of(user).pipe(
     mergeMap(generateTokenFromUser),
     catchError(() =>
       throwError(
@@ -52,7 +58,8 @@ export const signupEffect$: HttpEffect = req$ =>
       of(req).pipe(
         map(req => req.body),
         mergeMap(throwIfUserAlreadyExists),
-        mergeMap(createUserFromRequest),
+        mergeMap(createUser),
+        mergeMap(generateToken),
         map(token => ({ body: { token } })),
       ),
     ),

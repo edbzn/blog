@@ -1,22 +1,16 @@
 import { HttpEffect, use } from "@marblejs/core";
 import { of } from "rxjs";
-import { mergeMap, map } from "rxjs/operators";
-import { ArticleDao } from "../model/article.dao";
-import { CollectionQueryOptions } from "../../../utils/collection";
-import { articleCollectionQueryValidator$ } from "../helpers/article-collection-query.validator";
+import { map, mapTo, mergeMap } from "rxjs/operators";
 
-type Query = CollectionQueryOptions;
+import { articleQueryValidator$ } from "../helpers/article-collection-query.validator";
+import { ArticleDao } from "../model/article.dao";
 
 export const getDraftListEffect$: HttpEffect = req$ =>
   req$.pipe(
-    use(
-      articleCollectionQueryValidator$({
-        sortBy: ArticleDao.ARTICLE_SORTING_FIELDS,
-      }),
-    ),
+    use(articleQueryValidator$()),
     mergeMap(req =>
       of(req).pipe(
-        map(req => req.query as Query),
+        mapTo(req.query),
         mergeMap(ArticleDao.findAll),
         map(articleList => ({ body: articleList })),
       ),

@@ -1,15 +1,5 @@
 import { Document, DocumentQuery } from "mongoose";
-
-export interface CollectionQueryOptions extends Record<string, any> {
-  sortBy: string;
-  sortDir: SortDir;
-  limit: number;
-  page: number;
-}
-
-export interface ArticleCollectionQueryOptions extends CollectionQueryOptions {
-  tags?: string[] | string;
-}
+import { CollectionQuery } from "./collection-query.validator";
 
 export interface CollectionQueryResult<T> {
   collection: T;
@@ -21,19 +11,21 @@ export enum SortDir {
   DESC = -1,
 }
 
-export const applyCollectionQuery = (
-  queryOptions: CollectionQueryOptions,
-) => async <T, U extends Document>(
+export const applyCollectionQuery = ({
+  limit = 0,
+  page = 1,
+  sortBy = "_id",
+  sortDir = SortDir.ASC,
+}: CollectionQuery) => async <T, U extends Document>(
   dbQuery: () => DocumentQuery<T, U>,
 ): Promise<CollectionQueryResult<T>> => {
-  const totalQuery = await dbQuery().countDocuments();
-
   const collectionQuery = dbQuery()
-    .limit(queryOptions.limit)
-    .skip((queryOptions.page - 1) * queryOptions.limit)
-    .sort({ [queryOptions.sortBy]: queryOptions.sortDir });
+    .limit(Number(limit))
+    .skip((Number(page) - 1) * Number(limit))
+    .sort({ [sortBy]: sortDir });
 
-  const [total, collection] = [await totalQuery, await collectionQuery];
-
-  return { collection, total };
+  return {
+    collection: await collectionQuery,
+    total: await dbQuery().countDocuments(),
+  };
 };
