@@ -20,7 +20,6 @@ export namespace ArticleDao {
   export const findAllPublished = (query: ArticleCollectionQueryPayload) =>
     from(
       applyCollectionQuery(query)(() => {
-        console.log(query)
         let qb: FilterQuery<Article> = { published: true };
 
         if (query.tags) {

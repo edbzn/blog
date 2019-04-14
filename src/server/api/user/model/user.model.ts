@@ -36,3 +36,9 @@ export const USER_PUBLIC_FIELDS = {
   email: 1,
   roles: 1,
 };
+
+export const USER_SECURE_FIELDS = {
+  email: 1,
+  roles: 1,
+  password: 1,
+};

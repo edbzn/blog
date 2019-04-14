@@ -11,7 +11,6 @@ class ErrorHandler {
         dsn: process.env.SENTRY_DSN,
         integrations: [
           new Sentry.Integrations.Breadcrumbs({
-            beacon: true, // Log HTTP requests done with the Beacon API
             console: true, // Log calls to `console.log`, `console.debug`, etc
             dom: true, // Log all click and keypress events
             fetch: true, // Log HTTP requests done with the Fetch API
