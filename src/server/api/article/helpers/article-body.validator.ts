@@ -13,11 +13,7 @@ export const articleSchema = t.type({
   posterUrl: t.union([t.string, t.null]),
   metaTitle: t.union([t.string, t.null]),
   metaDescription: t.union([t.string, t.null]),
-  createdAt: t.string,
-  updatedAt: t.string,
   lang: t.union([t.literal(ArticleLanguage.FR), t.literal(ArticleLanguage.EN)]),
-  _id: t.string,
-  __v: t.number,
 });
 
 export type ArticlePayload = t.TypeOf<typeof articleSchema>;
