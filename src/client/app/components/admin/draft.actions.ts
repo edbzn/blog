@@ -9,7 +9,7 @@ export interface DraftActions extends ApiActions, EditorActions, FormActions {
   setId(id: string): void;
 }
 
-export const draft = {
+export const draftActions = {
   initialState: (): DraftState => ({ ...initialState() }),
   actions: (update: flyd.Stream<StateUpdateFunction>): DraftActions => ({
     ...editorActions(update),

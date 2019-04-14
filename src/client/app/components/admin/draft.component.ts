@@ -6,7 +6,7 @@ import router from "../../../app-router";
 import { errorHandlerService } from "../../core/error-handler-service";
 import { slugify } from "../../shared/slugify";
 import { DraftState } from "./draft.initialState";
-import { DraftActions } from "./draft.store";
+import { DraftActions } from "./draft.actions";
 import { Article, Draft } from "./types";
 
 export default class DraftComponent extends LitElement {
