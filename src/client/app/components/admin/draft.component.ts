@@ -3,11 +3,13 @@ import { css, html, LitElement, property } from "lit-element/lit-element";
 
 import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
 import router from "../../../app-router";
-import { slugify } from "../../shared/slugify";
 import { errorHandlerService } from "../../core/error-handler-service";
-import { DraftActions, DraftState, IArticle, IDraft } from "./types";
+import { slugify } from "../../shared/slugify";
+import { DraftState } from "./draft.initialState";
+import { DraftActions } from "./draft.store";
+import { Article, Draft } from "./types";
 
-export default class Draft extends LitElement {
+export default class DraftComponent extends LitElement {
   @property({ type: Object })
   actions: DraftActions;
 
@@ -47,7 +49,7 @@ export default class Draft extends LitElement {
 
   async loadAndInit() {
     if (!this.isDraft()) {
-      const draft = await this.actions.fetch(this.state.id as string);
+      const draft = await this.actions.get(this.state.id as string);
 
       await this.requestUpdate();
 
@@ -85,7 +87,7 @@ export default class Draft extends LitElement {
         const route = `/admin/draft?id=${article._id}`;
         router.push(route);
       } else {
-        await this.actions.update(this.state.id as string, draft as IArticle);
+        await this.actions.update(this.state.id as string, draft as Article);
       }
     } catch (error) {
       errorHandlerService.throw(error);
@@ -126,7 +128,7 @@ export default class Draft extends LitElement {
 
       try {
         await this.actions.uploadPoster(id, file);
-        await this.actions.update(id, this.getDraft() as IArticle);
+        await this.actions.update(id, this.getDraft() as Article);
       } catch (error) {
         errorHandlerService.throw(error);
       }
@@ -144,7 +146,7 @@ export default class Draft extends LitElement {
 
     await this.actions.update(
       this.state.id as string,
-      this.getDraft() as IArticle,
+      this.getDraft() as Article,
     );
   }
 
@@ -185,7 +187,7 @@ export default class Draft extends LitElement {
     this.handleChange(e);
   }
 
-  getDraft(): IDraft {
+  getDraft(): Draft {
     const { draft } = this.state;
 
     return {
@@ -514,4 +516,4 @@ export default class Draft extends LitElement {
   }
 }
 
-customElements.define("ez-draft", Draft);
+customElements.define("ez-draft", DraftComponent);

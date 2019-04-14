@@ -9,7 +9,7 @@ import { profileConfiguration } from "../../utils/profile-config";
 import { apiClient } from "../../core/api-client";
 import { errorHandlerService } from "../../core/error-handler-service";
 import { languageService } from "../../core/language-service";
-import { IArticle } from "../admin/types";
+import { Article } from "../admin/types";
 import { setPageMeta } from "../../utils/set-document-meta";
 
 export default class ArticleDetail extends LitElement {
@@ -23,7 +23,7 @@ export default class ArticleDetail extends LitElement {
   percentRemaining: string = "0";
 
   @property({ type: Object })
-  article: IArticle | null = null;
+  article: Article | null = null;
 
   calculateRemainingHandler: EventListenerOrEventListenerObject | null = null;
 
@@ -47,8 +47,8 @@ export default class ArticleDetail extends LitElement {
     }
   }
 
-  getArticle(): Promise<IArticle> {
-    return apiClient.get<IArticle>(`/api/v1/article/slug/${this.slug}`);
+  getArticle(): Promise<Article> {
+    return apiClient.get<Article>(`/api/v1/article/slug/${this.slug}`);
   }
 
   handleScrollChange(): void {

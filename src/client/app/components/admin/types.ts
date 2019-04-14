@@ -1,7 +1,7 @@
-import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
-import { IResource, ITimeStampableResource } from '../../utils/resource';
+import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
+import { Resource, TimeStampableResource } from "../../utils/resource";
 
-export interface IDraft {
+export interface Draft {
   title: string;
   slug: string;
   markdown: string;
@@ -15,37 +15,4 @@ export interface IDraft {
   lang: ArticleLanguage;
 }
 
-export interface IArticle extends IDraft, IResource, ITimeStampableResource {}
-
-export interface DraftState {
-  id: null | string;
-  editor: null | SimpleMDE;
-  draft: IDraft | IArticle;
-  error: string | null;
-  draftLoaded: boolean;
-  loading: boolean;
-}
-
-export interface DraftActions {
-  reset(): void;
-  setId(id: string): void;
-  initEditor(element: HTMLTextAreaElement, initialValue: string): void;
-  fetch(id: string): Promise<IArticle>;
-  update(id: string, draft: IArticle): Promise<IArticle>;
-  uploadPoster(id: string, file: File): Promise<void>;
-  post(draft: IDraft): Promise<IArticle>;
-  publish(): void;
-  dePublish(): void;
-  removePoster(): void;
-  transformMarkdownToHtml(): void;
-  editTitle(title: string): void;
-  editMetaTitle(metaTitle: string): void;
-  editMetaDescription(metaDescription: string): void;
-  editTags(tags: string): void;
-  editLang(lang: ArticleLanguage): void;
-  editSlug(slug: string): void;
-}
-
-export interface StateUpdateFunction {
-  (state: DraftState): DraftState;
-}
+export interface Article extends Draft, Resource, TimeStampableResource {}

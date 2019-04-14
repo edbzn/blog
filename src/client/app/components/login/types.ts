@@ -1,6 +1,6 @@
-import { IResource } from "../../utils/resource";
+import { Resource } from "../../utils/resource";
 
-export interface IUser extends IResource {
+export interface IUser extends Resource {
   email: string;
   roles: string[];
   firstName: string;

@@ -9,7 +9,7 @@ import { placeholder } from "../../shared/placeholder";
 import { tags } from "../../shared/tags";
 import { ResourceCollection } from "../../utils/collection";
 import check from "../../utils/icons/check";
-import { IArticle } from "../admin/types";
+import { Article } from "../admin/types";
 
 export default class ArticleFeed extends LitElement {
   static get styles() {
@@ -82,7 +82,7 @@ export default class ArticleFeed extends LitElement {
   adminMode = false;
 
   @property({ type: Array })
-  articleCollection: IArticle[] = [];
+  articleCollection: Article[] = [];
 
   @property({ type: Boolean })
   loading = true;
@@ -114,16 +114,16 @@ export default class ArticleFeed extends LitElement {
     });
   }
 
-  getArticleCollection(): Promise<ResourceCollection<IArticle>> {
+  getArticleCollection(): Promise<ResourceCollection<Article>> {
     return this.adminMode
-      ? apiClient.get<ResourceCollection<IArticle>>(
+      ? apiClient.get<ResourceCollection<Article>>(
           encodeURI(
             `/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${
               this.page
             }`,
           ),
         )
-      : apiClient.get<ResourceCollection<IArticle>>(
+      : apiClient.get<ResourceCollection<Article>>(
           encodeURI(
             `/api/v1/article?sortDir=-1&sortBy=_id&limit=${
               this.limit
@@ -154,10 +154,10 @@ export default class ArticleFeed extends LitElement {
     const {
       collection,
       total,
-    } = (await this.getArticleCollection()) as ResourceCollection<IArticle>;
+    } = (await this.getArticleCollection()) as ResourceCollection<Article>;
 
     this.articleCollection = [
-      ...(this.articleCollection as IArticle[]),
+      ...(this.articleCollection as Article[]),
       ...collection,
     ];
     this.articleRemaining = total > this.articleCollection.length;
@@ -165,7 +165,7 @@ export default class ArticleFeed extends LitElement {
     this.requestUpdate();
   }
 
-  async removeArticle(article: IArticle): Promise<void> {
+  async removeArticle(article: Article): Promise<void> {
     const articleTitle = article.title;
     if (
       (
@@ -185,7 +185,7 @@ export default class ArticleFeed extends LitElement {
   }
 
   articleList(): TemplateResult[] {
-    return this.articleCollection.map((article: IArticle) => {
+    return this.articleCollection.map((article: Article) => {
       const articleUri = `/article/${article.slug}`;
 
       return html`
