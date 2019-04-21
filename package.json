@@ -96,7 +96,7 @@
     "ts-node": "8.0.3",
     "typescript": "3.4.4",
     "webpack": "4.30.0",
-    "webpack-build-notifier": "0.1.31",
+    "webpack-build-notifier": "1.0.1",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.0",
     "webpack-dev-server": "3.3.1",
