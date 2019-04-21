@@ -1,7 +1,7 @@
 import { v1 as uuid } from "uuid";
 
-import { apiClient } from "../../core/api-client";
-import { storageService } from "../../core/storage-client";
+import { apiClient } from "../../core/services/api-client";
+import { storageService } from "../../core/services/storage-client";
 import { DraftState } from "./draft.initialState";
 import { Article, Draft } from "./types";
 import { StateUpdateFunction } from "./draft.stream";

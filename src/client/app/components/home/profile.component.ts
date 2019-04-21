@@ -1,6 +1,6 @@
 import { html, LitElement, property } from "lit-element";
 
-import { languageService } from "../../core/language-service";
+import { languageService } from "../../core/services/language-service";
 
 export default class ProfileComponent extends LitElement {
   @property({ type: Object })

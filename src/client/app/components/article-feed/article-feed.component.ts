@@ -1,10 +1,10 @@
 import { format } from "date-fns";
 import { css, html, LitElement, property, TemplateResult } from "lit-element";
 
-import router from "../../../app-router";
-import { apiClient } from "../../core/api-client";
-import { errorHandlerService } from "../../core/error-handler-service";
-import { languageService } from "../../core/language-service";
+import { router } from "../../core/router";
+import { apiClient } from "../../core/services/api-client";
+import { errorHandlerService } from "../../core/services/error-handler-service";
+import { languageService } from "../../core/services/language-service";
 import { placeholder } from "../../shared/placeholder";
 import { tags } from "../../shared/tags";
 import { ResourceCollection } from "../../utils/collection";
@@ -125,9 +125,9 @@ export default class ArticleFeed extends LitElement {
         )
       : apiClient.get<ResourceCollection<Article>>(
           encodeURI(
-            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${
-              this.limit
-            }&page=${this.page}${this.tags
+            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${
+              this.page
+            }${this.tags
               .map(tag => "&tags[]=" + tag)
               .toString()
               .replace(",", "")}`,

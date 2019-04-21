@@ -1,2 +1,2 @@
-import "./app-components";
-import "./app-router";
+import "./app/core/layout";
+import "./app/core/router";

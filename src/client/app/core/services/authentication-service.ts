@@ -1,6 +1,6 @@
-import { apiClient } from "./api-client";
-import { errorHandlerService } from "./error-handler-service";
-import { IUser } from "./components/login/types";
+import { IUser } from '../../components/login/types';
+import { apiClient } from './api-client';
+import { errorHandlerService } from './error-handler-service';
 
 class Authentication {
   static readonly AUTHORIZATION = "authorization";

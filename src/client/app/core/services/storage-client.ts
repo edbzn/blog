@@ -1,5 +1,5 @@
 import { v1 as uuid } from "uuid";
-import { _fetch } from "../utils/fetch";
+import { _fetch } from "../../utils/fetch";
 
 class StorageClient {
   private authToken = process.env.DROPBOX_ACCESS_TOKEN;

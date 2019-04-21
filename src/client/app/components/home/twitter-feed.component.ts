@@ -3,8 +3,8 @@ import { distanceInWords } from "date-fns";
 import { html, LitElement, TemplateResult } from "lit-element";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
-import { apiClient } from "../../core/api-client";
-import { languageService } from "../../core/language-service";
+import { apiClient } from "../../core/services/api-client";
+import { languageService } from "../../core/services/language-service";
 import { placeholder } from "../../shared/placeholder";
 import like from "../../utils/icons/like";
 import retweet from "../../utils/icons/retweet";

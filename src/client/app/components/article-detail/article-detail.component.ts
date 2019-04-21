@@ -1,16 +1,16 @@
 import { distanceInWords, format } from "date-fns";
 import { html, LitElement, property } from "lit-element";
 
-import router from "../../../app-router";
+import { router } from "../../core/router";
+import { apiClient } from "../../core/services/api-client";
+import { errorHandlerService } from "../../core/services/error-handler-service";
+import { languageService } from "../../core/services/language-service";
 import { placeholder } from "../../shared/placeholder";
 import { tags } from "../../shared/tags";
 import { debounce } from "../../utils/debounce";
 import { profileConfiguration } from "../../utils/profile-config";
-import { apiClient } from "../../core/api-client";
-import { errorHandlerService } from "../../core/error-handler-service";
-import { languageService } from "../../core/language-service";
-import { Article } from "../admin/types";
 import { setPageMeta } from "../../utils/set-document-meta";
+import { Article } from "../admin/types";
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -82,7 +82,7 @@ export default class ArticleDetail extends LitElement {
     )
       .slice(0, 250)
       .split(".");
-    const description = [firstSentence, secondSentence + '.'].join(".");
+    const description = [firstSentence, secondSentence + "."].join(".");
 
     setPageMeta({
       title: this.article!.title,

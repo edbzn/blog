@@ -1,17 +1,17 @@
 import { html, LitElement } from "lit-element/lit-element";
 
-import { LoginPayload } from "../../../../server/api/authentication/helpers/login-payload";
-import { SignupPayload } from "../../../../server/api/authentication/helpers/signup-payload";
-import router from "../../../app-router";
-import { apiClient } from "../../core/api-client";
-import { authService } from "../../core/authentication-service";
-import { errorHandlerService } from "../../core/error-handler-service";
+import { CredentialsPayload } from "../../../../server/api/authentication/effects/login.effect";
+import { UserPayload } from "../../../../server/api/authentication/effects/signup.effect";
+import { router } from "../../core/router";
+import { apiClient } from "../../core/services/api-client";
+import { authService } from "../../core/services/authentication-service";
+import { errorHandlerService } from "../../core/services/error-handler-service";
 import { IUser } from "./types";
 
 export default class Login extends LitElement {
   showSignup = false;
 
-  logUser(credentials: LoginPayload): Promise<{ token: string }> {
+  logUser(credentials: CredentialsPayload): Promise<{ token: string }> {
     return apiClient.post<{ token: string }>("/api/v1/auth/login", credentials);
   }
 
@@ -19,11 +19,11 @@ export default class Login extends LitElement {
     return apiClient.get<IUser>("/api/v1/user/me");
   }
 
-  signupUser(user: SignupPayload): Promise<{ user: IUser; token: string }> {
-    return apiClient.post<{ user: IUser; token: string }>(
-      "/api/v1/auth/signup",
-      user,
-    );
+  signupUser(user: UserPayload): Promise<{ user: IUser; token: string }> {
+    return apiClient.post<{
+      user: IUser;
+      token: string;
+    }>("/api/v1/auth/signup", user);
   }
 
   render() {
@@ -59,7 +59,7 @@ export default class Login extends LitElement {
                     const lastName = host.getElementById(
                       "lastName",
                     ) as HTMLInputElement;
-                    const signupPayload: SignupPayload = {
+                    const signupPayload: UserPayload = {
                       email: email.value,
                       password: password.value,
                       firstName: firstName.value,
@@ -146,7 +146,7 @@ export default class Login extends LitElement {
                     const password = host.getElementById(
                       "password",
                     ) as HTMLInputElement;
-                    const credentials: LoginPayload = {
+                    const credentials: CredentialsPayload = {
                       email: email.value,
                       password: password.value,
                     };

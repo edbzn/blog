@@ -3,8 +3,8 @@ import * as frLocale from "date-fns/locale/fr";
 import { html, LitElement, property } from "lit-element";
 
 import { ResourceCollection } from "../../utils/collection";
-import { apiClient } from "../../core/api-client";
-import { languageService } from "../../core/language-service";
+import { apiClient } from "../../core/services/api-client";
+import { languageService } from "../../core/services/language-service";
 import { IComment } from "./types";
 
 export default class ArticleCommentComponent extends LitElement {

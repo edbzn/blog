@@ -1,6 +1,5 @@
 import * as Sentry from "@sentry/browser";
-
-import router from "../../app-router";
+import { router } from "../router";
 
 class ErrorHandler {
   private error: string | null = null;
@@ -25,7 +24,7 @@ class ErrorHandler {
 
   throw(error: string): void {
     this.error = error;
-    console.error(error);
+    throw new Error(error);
   }
 
   throwAndRedirect(error: string): void {

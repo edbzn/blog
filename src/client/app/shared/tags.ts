@@ -1,8 +1,9 @@
-import { IArticle } from "../core/components/admin/types";
-import router from "../../app-router";
 import { html } from "lit-element";
 
-export const tags = (article: IArticle, adminMode = false) => html`
+import { Article } from "../components/admin/types";
+import { router } from "../core/router";
+
+export const tags = (article: Article, adminMode = false) => html`
   <style>
     .article-tag {
       margin-right: 4px;
@@ -16,38 +17,32 @@ export const tags = (article: IArticle, adminMode = false) => html`
     }
   </style>
   <span class="tag-wrapper">
-    ${
-      article.tags.map(
-        (tag: string) =>
-          html`
-            <a
-              href="/tag/${tag}"
-              ?title=${tag + ' articles'}
-              @click="${
-                (e: Event) => {
-                  e.preventDefault();
-                  router.push(`/tag/${tag}`);
-                }
-              }"
-              class="article-tag tag is-light"
-            >
-              ${tag}
-            </a>
-          `,
-      )
-    }
-    ${
-      adminMode
-        ? html`
-            <span
-              class="article-tag tag ${
-                article.published ? "is-primary" : "is-warning"
-              }"
-            >
-              ${article.published ? "published" : "draft"}
-            </span>
-          `
-        : ``
-    }
+    ${article.tags.map(
+      (tag: string) =>
+        html`
+          <a
+            href="/tag/${tag}"
+            ?title=${tag + " articles"}
+            @click="${(e: Event) => {
+              e.preventDefault();
+              router.push(`/tag/${tag}`);
+            }}"
+            class="article-tag tag is-light"
+          >
+            ${tag}
+          </a>
+        `,
+    )}
+    ${adminMode
+      ? html`
+          <span
+            class="article-tag tag ${article.published
+              ? "is-primary"
+              : "is-warning"}"
+          >
+            ${article.published ? "published" : "draft"}
+          </span>
+        `
+      : ``}
   </span>
 `;

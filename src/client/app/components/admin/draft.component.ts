@@ -2,11 +2,11 @@ import * as flyd from "flyd";
 import { css, html, LitElement, property } from "lit-element/lit-element";
 
 import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import router from "../../../app-router";
-import { errorHandlerService } from "../../core/error-handler-service";
+import { router } from "../../core/router";
+import { errorHandlerService } from "../../core/services/error-handler-service";
 import { slugify } from "../../shared/slugify";
-import { DraftState } from "./draft.initialState";
 import { DraftActions } from "./draft.actions";
+import { DraftState } from "./draft.initialState";
 import { Article, Draft } from "./types";
 
 export default class DraftComponent extends LitElement {

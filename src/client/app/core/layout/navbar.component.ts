@@ -1,8 +1,8 @@
-import { LitElement, html } from "lit-element/lit-element";
+import { html, LitElement } from "lit-element/lit-element";
 
-import router from "../../../app-router";
 import github from "../../utils/icons/github";
 import twitter from "../../utils/icons/twitter";
+import { router } from "../router";
 
 export default class NavBar extends LitElement {
   twitterUrl = "https://twitter.com/edouardbozon";
@@ -47,10 +47,14 @@ export default class NavBar extends LitElement {
         }
       </style>
       <nav>
-        <a href="/" @click=${(e: Event) => {
-          e.preventDefault();
-          router.push("/");
-        }}>Codamit - @edouardbozon</a>
+        <a
+          href="/"
+          @click=${(e: Event) => {
+            e.preventDefault();
+            router.push("/");
+          }}
+          >Codamit - @edouardbozon</a
+        >
         <span class="socials">
           <a title="Github profile" href="${this.githubUrl}">${github}</a>
           <a title="Twitter profile" href="${this.twitterUrl}">${twitter}</a>

@@ -1,7 +1,7 @@
-import { LitElement, property, html } from "lit-element/lit-element";
-
-import router from "../../../app-router";
+import { html, LitElement, property } from "lit-element/lit-element";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
+
+import { router } from "../../core/router";
 
 export default class Error extends LitElement {
   @property({ type: String })
@@ -9,7 +9,7 @@ export default class Error extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet">
+      <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <style>
         a {
           display: inline-block;
@@ -28,16 +28,24 @@ export default class Error extends LitElement {
         <section class="section">
           <h1 class="title">Something bad happened!</h1>
           <div class="notification is-danger">${unsafeHTML(this.message)}</div>
-          <a class="button" href="" @click=${(e: Event) => {
-            e.preventDefault();
-            window.history.back();
-          }}>
+          <a
+            class="button"
+            href=""
+            @click=${(e: Event) => {
+              e.preventDefault();
+              window.history.back();
+            }}
+          >
             Page précédente
           </a>
-          <a class="button" href="/" @click=${(e: Event) => {
-            e.preventDefault();
-            router.push("/");
-          }}>
+          <a
+            class="button"
+            href="/"
+            @click=${(e: Event) => {
+              e.preventDefault();
+              router.push("/");
+            }}
+          >
             Accueil
           </a>
         </section>

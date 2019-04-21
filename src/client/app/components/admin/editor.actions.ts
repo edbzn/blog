@@ -1,5 +1,5 @@
 import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import { errorHandlerService } from "../../core/error-handler-service";
+import { errorHandlerService } from "../../core/services/error-handler-service";
 import { DraftState } from "./draft.initialState";
 import { StateUpdateFunction } from "./draft.stream";
 

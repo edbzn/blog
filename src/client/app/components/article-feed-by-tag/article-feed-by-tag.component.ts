@@ -1,7 +1,7 @@
 import { html, LitElement, property } from "lit-element";
 
-import router from "../../../app-router";
-import { languageService } from "../../core/language-service";
+import { router } from "../../core/router";
+import { languageService } from "../../core/services/language-service";
 import { setPageMeta } from "../../utils/set-document-meta";
 
 export default class ArticlesByTagComponent extends LitElement {

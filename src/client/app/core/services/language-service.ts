@@ -38,7 +38,7 @@ class LanguageService {
   }
 
   private loadLang() {
-    return import(`../i18n/${this.lang}.json`);
+    return import(`../../i18n/${this.lang}.json`);
   }
 }
 

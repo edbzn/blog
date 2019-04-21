@@ -1,9 +1,9 @@
-import { html, LitElement } from 'lit-element/lit-element';
+import { html, LitElement } from "lit-element/lit-element";
 
-import router from '../../../app-router';
-import heart from '../../utils/icons/heart';
-import { authService } from '../../core/authentication-service';
-import { languageService } from '../../core/language-service';
+import heart from "../../utils/icons/heart";
+import { router } from "../router";
+import { authService } from "../services/authentication-service";
+import { languageService } from "../services/language-service";
 
 export default class Footer extends LitElement {
   render() {
@@ -29,10 +29,14 @@ export default class Footer extends LitElement {
       </style>
       <footer>
         <span>${languageService.translation.footer.credentials}</span>
-        <a href="/admin" title="Zone privilégiée" @click=${(e: Event) => {
-          e.preventDefault();
-          router.push(authService.authenticated ? "/admin" : "/login");
-        }}>
+        <a
+          href="/admin"
+          title="Zone privilégiée"
+          @click=${(e: Event) => {
+            e.preventDefault();
+            router.push(authService.authenticated ? "/admin" : "/login");
+          }}
+        >
           <i class="heart">${heart}</i>
         </a>
       </footer>
