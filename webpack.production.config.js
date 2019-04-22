@@ -1,13 +1,14 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const merge = require("webpack-merge");
-const Dotenv = require("dotenv-webpack");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const { HashedModuleIdsPlugin } = require("webpack");
-const common = require("./webpack.common.config");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
+const Dotenv = require('dotenv-webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const { HashedModuleIdsPlugin } = require('webpack');
+const common = require('./webpack.common.config');
 
 module.exports = merge(common, {
-  mode: "production",
+  mode: 'production',
   stats: {
     colors: false,
     hash: true,
@@ -22,15 +23,15 @@ module.exports = merge(common, {
     splitChunks: {
       cacheGroups: {
         commons: {
-          chunks: "initial",
+          chunks: 'initial',
           minChunks: 2,
           maxInitialRequests: 5, // The default limit is too small to showcase the HttpEffect
           minSize: 0, // This is example is too small to create commons chunks
         },
         vendor: {
           test: /node_modules/,
-          chunks: "initial",
-          name: "vendor",
+          chunks: 'initial',
+          name: 'vendor',
           priority: 10,
           enforce: true,
         },
@@ -40,15 +41,34 @@ module.exports = merge(common, {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: "Codamit - Tech Blog",
-      template: path.resolve(__dirname, "src", "client", "index.html"),
+      title: 'Codamit - Tech Blog',
+      template: path.resolve(__dirname, 'src', 'client', 'index.html'),
       minify: true,
       hash: true,
-      chunksSortMode: "none",
+      chunksSortMode: 'none',
     }),
     new Dotenv({
-      path: "./.env.production",
+      path: './.env.production',
     }),
     new HashedModuleIdsPlugin(),
+    new WorkboxPlugin.GenerateSW({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: new RegExp('https://api.codamit.com'),
+          handler: 'StaleWhileRevalidate',
+        },
+        {
+          urlPattern: new RegExp('https://www.dropbox.com'),
+          handler: 'CacheFirst',
+        },
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+          handler: 'CacheFirst',
+        },
+      ],
+    }),
   ],
 });

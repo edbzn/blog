@@ -61,7 +61,6 @@
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-
       gtag('config', 'UA-47975149-8');
     </script>
 
@@ -70,7 +69,7 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register(
-            'service-worker.js',
+            'sw.js',
             {
               scope: '/',
             },

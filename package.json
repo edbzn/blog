@@ -9,8 +9,6 @@
     "start": "npm run start:api:prod",
     "watch": "concurrently \"webpack-dev-server --config=webpack.dev.config.js --inline --hot\" \"nodemon --config nodemon.server.json\"",
     "build:client": "webpack ---progress --config=webpack.production.config.js --mode production",
-    "build:sw": "sw-precache --root='dist/client' --config=src/client/sw-config.js",
-    "postbuild:client": "npm run build:sw",
     "start:api:dev": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env",
     "start:api:prod": "ts-node --project tsconfig.server.json --require dotenv/config ./src/server/index.ts dotenv_config_path=.env.production",
     "deploy:api": "now -A now.api.json && now scale api.codamit.com bru1 1",
@@ -93,7 +91,6 @@
     "source-map-loader": "0.2.4",
     "style-loader": "0.23.1",
     "svg-inline-loader": "0.8.0",
-    "sw-precache": "5.2.1",
     "ts-loader": "5.3.3",
     "ts-node": "8.1.0",
     "typescript": "3.4.4",
@@ -103,6 +100,7 @@
     "webpack-cli": "3.3.0",
     "webpack-dev-server": "3.3.1",
     "webpack-merge": "4.2.1",
+    "workbox-webpack-plugin": "^4.3.0",
     "write-file-webpack-plugin": "4.5.0"
   }
 }
