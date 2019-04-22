@@ -1,20 +1,16 @@
-import { browserRouter, ProuterNavigationEvent } from 'prouter';
+import { browserRouter, ProuterNavigationEvent } from "prouter";
 
-import { errorHandlerService } from '../services/error-handler-service';
-import { adminRoutes } from './admin';
-import { clientRoutes } from './client';
+import { adminRoutes } from "./admin";
+import { clientRoutes } from "./client";
+import { notFoundHandler } from "./not-found-handler";
 
 export const appSelector = document.getElementById("app")!;
 export const router = browserRouter();
 
 router
-  .use("/", clientRoutes)
+  .use("", clientRoutes)
   .use("/admin", adminRoutes)
-  .use("*", (_req, resp) => {
-    errorHandlerService.throw("Heuuu, cette page n'existe pas...");
-    router.push("/error");
-    resp.end();
-  })
+  .use("*", notFoundHandler)
   .listen();
 
 router.on("navigation", (_e: ProuterNavigationEvent) => {
