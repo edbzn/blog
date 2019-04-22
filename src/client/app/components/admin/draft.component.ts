@@ -1,5 +1,5 @@
 import * as flyd from 'flyd';
-import { css, html, LitElement, property } from 'lit-element/lit-element';
+import { css, html, LitElement, property } from 'lit-element';
 
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
 import { router } from '../../core/router';

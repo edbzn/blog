@@ -13,7 +13,7 @@ export interface ApiActions {
   uploadPoster(id: string, file: File): Promise<void>;
 }
 
-export const apiActions = (update: flyd.Stream<StateUpdateFunction>) => ({
+export const apiActions = (update: flyd.Stream<StateUpdateFunction>): ApiActions => ({
   get(id: string): Promise<Article> {
     return new Promise((resolve, reject) => {
       apiClient

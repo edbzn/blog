@@ -1,6 +1,6 @@
 import anchorme from 'anchorme';
 import { distanceInWords } from 'date-fns';
-import { html, LitElement, TemplateResult } from 'lit-element';
+import { css, html, LitElement, TemplateResult } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import { apiClient } from '../../core/services/api-client';
@@ -43,10 +43,18 @@ export default class TwitterFeedComponent extends LitElement {
                     })}
                   </small>
                 </header>
-                <div class="content">${unsafeHTML(anchorme(tweet.text))}</div>
+                <div class="content">
+                  ${unsafeHTML(anchorme(tweet.text))}
+                </div>
                 <footer>
-                  <span> <i class="heart">${like}</i> ${tweet.favorite_count} </span>
-                  <span> <i class="retweet">${retweet}</i> ${tweet.retweet_count} </span>
+                  <span>
+                    <i class="heart">${like}</i>
+                    ${tweet.favorite_count}
+                  </span>
+                  <span>
+                    <i class="retweet">${retweet}</i>
+                    ${tweet.retweet_count}
+                  </span>
                 </footer>
               </div>
             </div>
@@ -56,40 +64,43 @@ export default class TwitterFeedComponent extends LitElement {
     );
   }
 
+  static get styles() {
+    return css`
+      .uppercase {
+        text-transform: uppercase;
+      }
+      .retweet svg,
+      .heart svg {
+        width: 18px;
+      }
+
+      .retweet svg {
+        fill: #2dae5a;
+      }
+
+      .heart svg {
+        fill: #df3e3e;
+      }
+
+      footer span {
+        margin-right: 10px;
+      }
+
+      .section.twitter {
+        padding-top: 0;
+      }
+
+      @media screen and (max-width: 600px) {
+        .twitter.section {
+          padding: 1rem 0.8rem;
+        }
+      }
+    `;
+  }
+
   render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        .uppercase {
-          text-transform: uppercase;
-        }
-        .retweet svg,
-        .heart svg {
-          width: 18px;
-        }
-
-        .retweet svg {
-          fill: #2dae5a;
-        }
-
-        .heart svg {
-          fill: #df3e3e;
-        }
-
-        footer span {
-          margin-right: 10px;
-        }
-
-        .section.twitter {
-          padding-top: 0;
-        }
-
-        @media screen and (max-width: 600px) {
-          .twitter.section {
-            padding: 1rem 0.8rem;
-          }
-        }
-      </style>
       ${!this.initialized
         ? html`
             <section class="section twitter">

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element';
+import { css, html, LitElement } from 'lit-element';
 
 import github from '../../utils/icons/github';
 import twitter from '../../utils/icons/twitter';
@@ -8,44 +8,47 @@ export default class NavBar extends LitElement {
   twitterUrl = 'https://twitter.com/edouardbozon';
   githubUrl = 'https://github.com/edouardbozon';
 
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+
+      nav {
+        height: 64px;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        color: rgb(180, 180, 180);
+        background: rgb(34, 34, 34);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      svg {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+      }
+
+      a {
+        color: rgb(180, 180, 180);
+        text-decoration: none;
+      }
+
+      .socials a {
+        padding-left: 1rem;
+      }
+    `;
+  }
+
   render() {
     return html`
-      <style>
-        :host {
-          display: block;
-        }
-
-        nav {
-          height: 64px;
-          padding: 1rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          box-sizing: border-box;
-          color: rgb(180, 180, 180);
-          background: rgb(34, 34, 34);
-        }
-
-        h1 {
-          margin: 0;
-          font-size: 1.4rem;
-        }
-
-        svg {
-          display: inline-block;
-          width: 24px;
-          height: 24px;
-        }
-
-        a {
-          color: rgb(180, 180, 180);
-          text-decoration: none;
-        }
-
-        .socials a {
-          padding-left: 1rem;
-        }
-      </style>
       <nav>
         <a
           href="/"

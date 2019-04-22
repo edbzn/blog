@@ -1,17 +1,17 @@
 import { format } from 'date-fns';
 import * as frLocale from 'date-fns/locale/fr';
-import { html, LitElement, property } from 'lit-element';
-
-import { ResourceCollection } from '../../utils/collection';
+import { css, html, LitElement, property } from 'lit-element';
 import { apiClient } from '../../core/services/api-client';
 import { languageService } from '../../core/services/language-service';
-import { IComment } from './types';
+import { ResourceCollection } from '../../utils/collection';
+import { Comment } from './types';
+
 
 export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
   articleId: string | null = null;
 
-  commentCollection: ResourceCollection<IComment> | null = null;
+  commentCollection: ResourceCollection<Comment> | null = null;
 
   showEditor = false;
 
@@ -24,7 +24,7 @@ export default class ArticleCommentComponent extends LitElement {
   }
 
   async fetch(): Promise<void> {
-    const commentCollection = await apiClient.get<ResourceCollection<IComment>>(
+    const commentCollection = await apiClient.get<ResourceCollection<Comment>>(
       `/api/v1/article/${this.articleId}/comment`
     );
 
@@ -61,7 +61,7 @@ export default class ArticleCommentComponent extends LitElement {
     const formData = { author: name, comment, articleId: this.articleId };
 
     apiClient
-      .post<ResourceCollection<IComment>>(`/api/v1/article/${this.articleId}/comment`, formData)
+      .post<ResourceCollection<Comment>>(`/api/v1/article/${this.articleId}/comment`, formData)
       .then(() => this.fetch())
       .then(() => {
         this.showEditor = false;
@@ -75,36 +75,39 @@ export default class ArticleCommentComponent extends LitElement {
       });
   }
 
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        margin-top: 0.6rem;
+        margin-bottom: 4rem;
+      }
+
+      form[name='postComment'] {
+        font-size: 1rem;
+        margin: 2rem 0;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .comments {
+        margin-top: 2rem;
+        font-size: 1rem;
+      }
+
+      .message header em {
+        font-weight: 100;
+        font-size: 14px;
+        text-transform: capitalize;
+      }
+    `;
+  }
+
   render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        :host {
-          display: block;
-          margin-top: 0.6rem;
-          margin-bottom: 4rem;
-        }
-
-        form[name='postComment'] {
-          font-size: 1rem;
-          margin: 2rem 0;
-        }
-
-        .button {
-          width: 100%;
-        }
-
-        .comments {
-          margin-top: 2rem;
-          font-size: 1rem;
-        }
-
-        .message header em {
-          font-weight: 100;
-          font-size: 14px;
-          text-transform: capitalize;
-        }
-      </style>
       <div>
         <button
           type="button"

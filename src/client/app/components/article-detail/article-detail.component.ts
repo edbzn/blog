@@ -1,5 +1,5 @@
 import { distanceInWords, format } from 'date-fns';
-import { html, LitElement, property } from 'lit-element';
+import { css, html, LitElement, property } from 'lit-element';
 
 import { router } from '../../core/router';
 import { apiClient } from '../../core/services/api-client';
@@ -151,135 +151,138 @@ export default class ArticleDetail extends LitElement {
     `;
   }
 
-  render() {
-    return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        :host {
-          position: relative;
-          display: block;
-        }
+  static get styles() {
+    return css`
+      :host {
+        position: relative;
+        display: block;
+      }
 
-        .poster {
-          height: 50vh;
-          background-color: #eee;
-          background-size: cover;
-          background-position: center center;
-        }
+      .poster {
+        height: 50vh;
+        background-color: #eee;
+        background-size: cover;
+        background-position: center center;
+      }
 
+      .content .title {
+        font-size: 3.2em;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .header .tag {
+        margin-right: 4px;
+      }
+
+      .header .tag:last-child {
+        margin-right: 0;
+      }
+
+      .profile {
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+      }
+
+      .follow-me {
+        max-height: 36px;
+      }
+
+      .avatar {
+        min-width: 110px;
+        height: 110px;
+        overflow: hidden;
+        border-radius: 100%;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        background-color: #eee;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 0 !important;
+      }
+
+      .presentation {
+        padding-left: 1.55rem;
+        font-size: 0.8em;
+      }
+
+      .article-date {
+        text-transform: capitalize;
+        font-weight: 100;
+        font-size: 14px;
+      }
+
+      .content .publication {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+      }
+
+      .content .publication .article-date {
+        text-transform: initial;
+      }
+
+      .content .article-footer {
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .time-remaining {
+        height: 4px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(155, 155, 155, 0.48);
+      }
+
+      .time-remaining > div {
+        height: 4px;
+        transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
+      }
+
+      .content blockquote:not(:last-child),
+      .content dl:not(:last-child),
+      .content ol:not(:last-child),
+      .content p:not(:last-child),
+      .content pre:not(:last-child),
+      .content table:not(:last-child),
+      .content ul:not(:last-child) {
+        margin-bottom: 1.1em !important;
+      }
+
+      @media screen and (max-width: 600px) {
         .content .title {
-          font-size: 3.2em;
+          font-size: 2.75em;
         }
 
         .header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+          align-items: initial;
+          flex-direction: column-reverse;
         }
-
-        .header .tag {
-          margin-right: 4px;
-        }
-
-        .header .tag:last-child {
-          margin-right: 0;
-        }
-
-        .profile {
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-        }
-
-        .follow-me {
-          max-height: 36px;
-        }
-
-        .avatar {
-          min-width: 110px;
-          height: 110px;
-          overflow: hidden;
-          border-radius: 100%;
-          box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-          background-color: #eee;
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: cover;
-          margin: 0 !important;
-        }
-
-        .presentation {
-          padding-left: 1.55rem;
-          font-size: 0.8em;
-        }
-
-        .article-date {
-          text-transform: capitalize;
-          font-weight: 100;
-          font-size: 14px;
-        }
-
         .content .publication {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 3rem;
+          align-items: initial;
+          flex-direction: column-reverse;
         }
-
-        .content .publication .article-date {
-          text-transform: initial;
+        .article-date {
+          margin-bottom: 4px;
         }
-
-        .content .article-footer {
-          padding-bottom: 0;
-          padding-left: 0;
-          padding-right: 0;
+        .meta-container.section {
+          padding: 3rem 0.8rem;
         }
+      }
+    `;
+  }
 
-        .time-remaining {
-          height: 4px;
-          position: sticky;
-          top: 0;
-          z-index: 10;
-          background: rgba(155, 155, 155, 0.48);
-        }
-
-        .time-remaining > div {
-          height: 4px;
-          transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
-        }
-
-        .content blockquote:not(:last-child),
-        .content dl:not(:last-child),
-        .content ol:not(:last-child),
-        .content p:not(:last-child),
-        .content pre:not(:last-child),
-        .content table:not(:last-child),
-        .content ul:not(:last-child) {
-          margin-bottom: 1.1em !important;
-        }
-
-        @media screen and (max-width: 600px) {
-          .content .title {
-            font-size: 2.75em;
-          }
-
-          .header {
-            align-items: initial;
-            flex-direction: column-reverse;
-          }
-          .content .publication {
-            align-items: initial;
-            flex-direction: column-reverse;
-          }
-          .article-date {
-            margin-bottom: 4px;
-          }
-          .meta-container.section {
-            padding: 3rem 0.8rem;
-          }
-        }
-      </style>
+  render() {
+    return html`
+      <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <ez-navbar></ez-navbar>
       ${this.posterUrl
         ? html`

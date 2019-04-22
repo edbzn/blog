@@ -1,19 +1,21 @@
-import { LitElement, property, html } from 'lit-element';
-import { pageMaxWidth } from './variables';
+import { css, html, LitElement, property } from 'lit-element';
 
 export default class Page extends LitElement {
   @property({ type: Boolean })
   navbar = true;
 
+  static get styles() {
+    return css`
+      .page-wrapper {
+        max-width: 780px !important;
+        margin: 0 auto;
+      }
+    `;
+  }
+
   render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        .page-wrapper {
-          max-width: ${pageMaxWidth} !important;
-          margin: 0 auto;
-        }
-      </style>
       ${this.navbar
         ? html`
             <ez-navbar></ez-navbar>

@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element';
+import { css, html, LitElement } from 'lit-element';
 
 import { CredentialsPayload } from '../../../../server/api/authentication/effects/login.effect';
 import { UserPayload } from '../../../../server/api/authentication/effects/signup.effect';
@@ -26,15 +26,18 @@ export default class Login extends LitElement {
     }>('/api/v1/auth/signup', user);
   }
 
+  static get styles() {
+    return css`
+      .section {
+        max-width: 350px;
+        margin: 0 auto;
+      }
+    `;
+  }
+
   render() {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <style>
-        .section {
-          max-width: 350px;
-          margin: 0 auto;
-        }
-      </style>
       <ez-page>
         <section class="section">
           ${this.showSignup
