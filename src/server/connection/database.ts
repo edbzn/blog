@@ -1,15 +1,15 @@
-import chalk from "chalk";
-import * as uuid from "uuid";
-import { Config } from "../config";
-import { Error } from "mongoose";
+import chalk from 'chalk';
+import * as uuid from 'uuid';
+import { Config } from '../config';
+import { Error } from 'mongoose';
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 export namespace Database {
   const { urlMain, urlTest } = Config.db;
 
   const onOpen = () => {
-    console.info(chalk.green("[database] connected"));
+    console.info(chalk.green('[database] connected'));
   };
 
   const onError = (error: Error) => {
@@ -19,18 +19,12 @@ export namespace Database {
 
   export const connect = () =>
     mongoose
-      .connect(
-        urlMain,
-        { useNewUrlParser: true },
-      )
+      .connect(urlMain, { useNewUrlParser: true })
       .then(onOpen)
       .catch(onError);
 
   export const connectTest = () =>
-    mongoose.connect(
-      urlTest + "/" + uuid.v4(),
-      { useNewUrlParser: true },
-    );
+    mongoose.connect(urlTest + '/' + uuid.v4(), { useNewUrlParser: true });
 
   export const disconnect = () => mongoose.disconnect();
 

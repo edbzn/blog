@@ -1,9 +1,9 @@
-import { html, LitElement } from "lit-element/lit-element";
+import { html, LitElement } from 'lit-element/lit-element';
 
-import heart from "../../utils/icons/heart";
-import { router } from "../router";
-import { authService } from "../services/authentication-service";
-import { languageService } from "../services/language-service";
+import heart from '../../utils/icons/heart';
+import { router } from '../router';
+import { authService } from '../services/authentication-service';
+import { languageService } from '../services/language-service';
 
 export default class Footer extends LitElement {
   render() {
@@ -34,7 +34,7 @@ export default class Footer extends LitElement {
           title="Zone privilégiée"
           @click=${(e: Event) => {
             e.preventDefault();
-            router.push(authService.authenticated ? "/admin" : "/login");
+            router.push(authService.authenticated ? '/admin' : '/login');
           }}
         >
           <i class="heart">${heart}</i>
@@ -44,4 +44,4 @@ export default class Footer extends LitElement {
   }
 }
 
-customElements.define("ez-footer", Footer);
+customElements.define('ez-footer', Footer);

@@ -1,8 +1,8 @@
-import { ApiActions, apiActions } from "./api.actions";
-import { DraftState, initialState } from "./draft.initialState";
-import { EditorActions, editorActions } from "./editor.actions";
-import { FormActions, formActions } from "./form.actions";
-import { StateUpdateFunction } from "./draft.stream";
+import { ApiActions, apiActions } from './api.actions';
+import { DraftState, initialState } from './draft.initialState';
+import { EditorActions, editorActions } from './editor.actions';
+import { FormActions, formActions } from './form.actions';
+import { StateUpdateFunction } from './draft.stream';
 
 export interface DraftActions extends ApiActions, EditorActions, FormActions {
   reset(): void;

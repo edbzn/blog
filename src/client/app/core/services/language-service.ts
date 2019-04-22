@@ -3,10 +3,10 @@ import * as frLocale from 'date-fns/locale/fr';
 
 import { errorHandlerService } from './error-handler-service';
 
-type Language = "fr" | "en";
+type Language = 'fr' | 'en';
 
 class LanguageService {
-  private default: Language = "en";
+  private default: Language = 'en';
 
   private lang: Language;
 

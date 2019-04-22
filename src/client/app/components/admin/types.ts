@@ -1,5 +1,5 @@
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import { Resource, TimeStampableResource } from "../../utils/resource";
+import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
+import { Resource, TimeStampableResource } from '../../utils/resource';
 
 export interface Draft {
   title: string;

@@ -1,8 +1,7 @@
-import * as bcrypt from "bcrypt";
-import { from, Observable } from "rxjs";
+import * as bcrypt from 'bcrypt';
+import { from, Observable } from 'rxjs';
 
-const createHash = (password: string): Promise<string> =>
-  bcrypt.hash(password, 10);
+const createHash = (password: string): Promise<string> => bcrypt.hash(password, 10);
 
 export const createHash$ = (password: string) => from(createHash(password));
 

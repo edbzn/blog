@@ -1,12 +1,12 @@
-import { html, LitElement } from "lit-element/lit-element";
+import { html, LitElement } from 'lit-element/lit-element';
 
-import github from "../../utils/icons/github";
-import twitter from "../../utils/icons/twitter";
-import { router } from "../router";
+import github from '../../utils/icons/github';
+import twitter from '../../utils/icons/twitter';
+import { router } from '../router';
 
 export default class NavBar extends LitElement {
-  twitterUrl = "https://twitter.com/edouardbozon";
-  githubUrl = "https://github.com/edouardbozon";
+  twitterUrl = 'https://twitter.com/edouardbozon';
+  githubUrl = 'https://github.com/edouardbozon';
 
   render() {
     return html`
@@ -51,7 +51,7 @@ export default class NavBar extends LitElement {
           href="/"
           @click=${(e: Event) => {
             e.preventDefault();
-            router.push("/");
+            router.push('/');
           }}
           >Codamit - @edouardbozon</a
         >
@@ -64,4 +64,4 @@ export default class NavBar extends LitElement {
   }
 }
 
-customElements.define("ez-navbar", NavBar);
+customElements.define('ez-navbar', NavBar);

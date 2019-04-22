@@ -1,11 +1,11 @@
-import * as Sentry from "@sentry/browser";
-import { router } from "../router";
+import * as Sentry from '@sentry/browser';
+import { router } from '../router';
 
 class ErrorHandler {
   private error: string | null = null;
 
   constructor() {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === 'production') {
       Sentry.init({
         dsn: process.env.SENTRY_DSN,
         integrations: [
@@ -29,7 +29,7 @@ class ErrorHandler {
 
   throwAndRedirect(error: string): void {
     this.throw(error);
-    router.push("/error");
+    router.push('/error');
   }
 
   getLastError(): string | null {

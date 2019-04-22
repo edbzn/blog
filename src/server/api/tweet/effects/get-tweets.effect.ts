@@ -1,26 +1,26 @@
-import { RxHR } from "@akanass/rx-http-request";
-import { HttpEffect } from "@marblejs/core";
-import { mergeMap } from "rxjs/operators";
+import { RxHR } from '@akanass/rx-http-request';
+import { HttpEffect } from '@marblejs/core';
+import { mergeMap } from 'rxjs/operators';
 
-import { Config } from "../../../config";
+import { Config } from '../../../config';
 
 export const getTweetsEffect$: HttpEffect = req$ =>
   req$.pipe(
     mergeMap(_ => {
       const oauth = Config.twitter.oAuth;
       const headers = {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       };
 
       return RxHR.get(Config.twitter.baseUrl, {
         json: true,
         qs: {
           from: Config.twitter.fromUserName,
-          exclude: "replies",
+          exclude: 'replies',
           count: 5,
         },
         headers,
         oauth,
       });
-    }),
+    })
   );

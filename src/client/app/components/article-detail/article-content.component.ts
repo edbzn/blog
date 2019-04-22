@@ -1,23 +1,23 @@
-import { LitElement, property, html } from "lit-element";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { LitElement, property, html } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import * as Prism from "prismjs";
-import "prismjs/components/prism-typescript";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-css";
-import "prismjs/components/prism-scss";
-import "prismjs/components/prism-markup";
-import "prismjs/components/prism-nginx";
-import "prismjs/components/prism-docker";
-import "prismjs/components/prism-json";
-import "prismjs/components/prism-bash";
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-scss';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-nginx';
+import 'prismjs/components/prism-docker';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-bash';
 
 export default class ArticleContent extends LitElement {
   @property({ type: String })
   content: string;
 
   firstUpdated() {
-    (this.shadowRoot as ShadowRoot).querySelectorAll("code").forEach(elem => {
+    (this.shadowRoot as ShadowRoot).querySelectorAll('code').forEach(elem => {
       Prism.highlightElement(elem);
     });
   }
@@ -31,12 +31,12 @@ export default class ArticleContent extends LitElement {
           display: block;
         }
 
-        pre[class*="language-"] {
+        pre[class*='language-'] {
           margin: 2em 0 !important;
         }
 
-        :not(pre) > code[class*="language-"],
-        pre[class*="language-"] {
+        :not(pre) > code[class*='language-'],
+        pre[class*='language-'] {
           border-radius: 4px;
         }
 
@@ -56,11 +56,11 @@ export default class ArticleContent extends LitElement {
           vertical-align: inherit;
         }
 
-        :not(pre) > code[class*="language-"] {
-          background:rgba(255,229,100,.2) !important;
+        :not(pre) > code[class*='language-'] {
+          background: rgba(255, 229, 100, 0.2) !important;
           text-shadow: none;
           color: #1a1a1a;
-          padding: .15em .2em .05em;
+          padding: 0.15em 0.2em 0.05em;
           border-radius: 0px !important;
         }
       </style>
@@ -69,4 +69,4 @@ export default class ArticleContent extends LitElement {
   }
 }
 
-customElements.define("ez-article-content", ArticleContent);
+customElements.define('ez-article-content', ArticleContent);

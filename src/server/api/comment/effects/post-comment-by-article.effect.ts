@@ -17,5 +17,5 @@ export const postCommentByArticleEffect$: HttpEffect = req$ =>
     use(requestValidator$({ body: commentSchema })),
     map(req => req.body),
     mergeMap(CommentDao.create),
-    map(article => ({ body: article })),
+    map(article => ({ body: article }))
   );

@@ -1,29 +1,29 @@
-import { html, LitElement } from "lit-element/lit-element";
+import { html, LitElement } from 'lit-element/lit-element';
 
-import { CredentialsPayload } from "../../../../server/api/authentication/effects/login.effect";
-import { UserPayload } from "../../../../server/api/authentication/effects/signup.effect";
-import { router } from "../../core/router";
-import { apiClient } from "../../core/services/api-client";
-import { authService } from "../../core/services/authentication-service";
-import { errorHandlerService } from "../../core/services/error-handler-service";
-import { IUser } from "./types";
+import { CredentialsPayload } from '../../../../server/api/authentication/effects/login.effect';
+import { UserPayload } from '../../../../server/api/authentication/effects/signup.effect';
+import { router } from '../../core/router';
+import { apiClient } from '../../core/services/api-client';
+import { authService } from '../../core/services/authentication-service';
+import { errorHandlerService } from '../../core/services/error-handler-service';
+import { IUser } from './types';
 
 export default class Login extends LitElement {
   showSignup = false;
 
   logUser(credentials: CredentialsPayload): Promise<{ token: string }> {
-    return apiClient.post<{ token: string }>("/api/v1/auth/login", credentials);
+    return apiClient.post<{ token: string }>('/api/v1/auth/login', credentials);
   }
 
   getMe(): Promise<IUser> {
-    return apiClient.get<IUser>("/api/v1/user/me");
+    return apiClient.get<IUser>('/api/v1/user/me');
   }
 
   signupUser(user: UserPayload): Promise<{ user: IUser; token: string }> {
     return apiClient.post<{
       user: IUser;
       token: string;
-    }>("/api/v1/auth/signup", user);
+    }>('/api/v1/auth/signup', user);
   }
 
   render() {
@@ -47,18 +47,10 @@ export default class Login extends LitElement {
                     e.preventDefault();
 
                     const host = this.shadowRoot as ShadowRoot;
-                    const email = host.getElementById(
-                      "email",
-                    ) as HTMLInputElement;
-                    const password = host.getElementById(
-                      "password",
-                    ) as HTMLInputElement;
-                    const firstName = host.getElementById(
-                      "firstName",
-                    ) as HTMLInputElement;
-                    const lastName = host.getElementById(
-                      "lastName",
-                    ) as HTMLInputElement;
+                    const email = host.getElementById('email') as HTMLInputElement;
+                    const password = host.getElementById('password') as HTMLInputElement;
+                    const firstName = host.getElementById('firstName') as HTMLInputElement;
+                    const lastName = host.getElementById('lastName') as HTMLInputElement;
                     const signupPayload: UserPayload = {
                       email: email.value,
                       password: password.value,
@@ -71,7 +63,7 @@ export default class Login extends LitElement {
                       authService.login(token);
                       const user = await this.getMe();
                       authService.setUser(user);
-                      router.push("/admin");
+                      router.push('/admin');
                     } catch (e) {
                       errorHandlerService.throwAndRedirect(e);
                     }
@@ -79,43 +71,19 @@ export default class Login extends LitElement {
                 >
                   <div class="field">
                     <label class="label" for="email">Email</label>
-                    <input
-                      class="input"
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                    />
+                    <input class="input" id="email" name="email" type="email" required />
                   </div>
                   <div class="field">
                     <label class="label" for="firstName">First name</label>
-                    <input
-                      class="input"
-                      id="firstName"
-                      name="firstName"
-                      type="string"
-                      required
-                    />
+                    <input class="input" id="firstName" name="firstName" type="string" required />
                   </div>
                   <div class="field">
                     <label class="label" for="lastName">Last name</label>
-                    <input
-                      class="input"
-                      id="lastName"
-                      name="lastName"
-                      type="string"
-                      required
-                    />
+                    <input class="input" id="lastName" name="lastName" type="string" required />
                   </div>
                   <div class="field">
                     <label class="label" for="password">Password</label>
-                    <input
-                      class="input"
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                    />
+                    <input class="input" id="password" name="password" type="password" required />
                   </div>
                   <button class="button is-primary" type="submit">
                     Signup
@@ -140,12 +108,8 @@ export default class Login extends LitElement {
                     e.preventDefault();
 
                     const host = this.shadowRoot as ShadowRoot;
-                    const email = host.getElementById(
-                      "email",
-                    ) as HTMLInputElement;
-                    const password = host.getElementById(
-                      "password",
-                    ) as HTMLInputElement;
+                    const email = host.getElementById('email') as HTMLInputElement;
+                    const password = host.getElementById('password') as HTMLInputElement;
                     const credentials: CredentialsPayload = {
                       email: email.value,
                       password: password.value,
@@ -156,7 +120,7 @@ export default class Login extends LitElement {
                       authService.login(token);
                       const user = await this.getMe();
                       authService.setUser(user);
-                      router.push("/admin");
+                      router.push('/admin');
                     } catch (e) {
                       errorHandlerService.throwAndRedirect(e);
                     }
@@ -164,23 +128,11 @@ export default class Login extends LitElement {
                 >
                   <div class="field">
                     <label class="label" for="email">Email</label>
-                    <input
-                      class="input"
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                    />
+                    <input class="input" id="email" name="email" type="email" required />
                   </div>
                   <div class="field">
                     <label class="label" for="password">Password</label>
-                    <input
-                      class="input"
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                    />
+                    <input class="input" id="password" name="password" type="password" required />
                   </div>
                   <button class="button is-primary" type="submit">
                     Login
@@ -193,4 +145,4 @@ export default class Login extends LitElement {
   }
 }
 
-customElements.define("ez-login", Login);
+customElements.define('ez-login', Login);

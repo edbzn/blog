@@ -1,15 +1,15 @@
-import { format } from "date-fns";
-import { css, html, LitElement, property, TemplateResult } from "lit-element";
+import { format } from 'date-fns';
+import { css, html, LitElement, property, TemplateResult } from 'lit-element';
 
-import { router } from "../../core/router";
-import { apiClient } from "../../core/services/api-client";
-import { errorHandlerService } from "../../core/services/error-handler-service";
-import { languageService } from "../../core/services/language-service";
-import { placeholder } from "../../shared/placeholder";
-import { tags } from "../../shared/tags";
-import { ResourceCollection } from "../../utils/collection";
-import check from "../../utils/icons/check";
-import { Article } from "../admin/types";
+import { router } from '../../core/router';
+import { apiClient } from '../../core/services/api-client';
+import { errorHandlerService } from '../../core/services/error-handler-service';
+import { languageService } from '../../core/services/language-service';
+import { placeholder } from '../../shared/placeholder';
+import { tags } from '../../shared/tags';
+import { ResourceCollection } from '../../utils/collection';
+import check from '../../utils/icons/check';
+import { Article } from '../admin/types';
 
 export default class ArticleFeed extends LitElement {
   static get styles() {
@@ -98,7 +98,7 @@ export default class ArticleFeed extends LitElement {
   }
 
   updated(props: Map<string | number | symbol, unknown>) {
-    const oldTags = props.get("tags");
+    const oldTags = props.get('tags');
     if (oldTags instanceof Array && oldTags !== this.tags) {
       this.updateArticleCollection();
     }
@@ -117,21 +117,15 @@ export default class ArticleFeed extends LitElement {
   getArticleCollection(): Promise<ResourceCollection<Article>> {
     return this.adminMode
       ? apiClient.get<ResourceCollection<Article>>(
-          encodeURI(
-            `/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${
-              this.page
-            }`,
-          ),
+          encodeURI(`/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}`)
         )
       : apiClient.get<ResourceCollection<Article>>(
           encodeURI(
-            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${
-              this.page
-            }${this.tags
-              .map(tag => "&tags[]=" + tag)
+            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}${this.tags
+              .map(tag => '&tags[]=' + tag)
               .toString()
-              .replace(",", "")}`,
-          ),
+              .replace(',', '')}`
+          )
         );
   }
 
@@ -140,26 +134,22 @@ export default class ArticleFeed extends LitElement {
   }
 
   stripTagsAndTruncate(content: string): string {
-    return content.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 180);
+    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
   }
 
   async loadMore(): Promise<void> {
     if (!this.articleRemaining) {
-      return Promise.reject("All article are already loaded");
+      return Promise.reject('All article are already loaded');
     }
 
     this.loading = true;
 
     ++this.page;
-    const {
-      collection,
-      total,
-    } = (await this.getArticleCollection()) as ResourceCollection<Article>;
+    const { collection, total } = (await this.getArticleCollection()) as ResourceCollection<
+      Article
+    >;
 
-    this.articleCollection = [
-      ...(this.articleCollection as Article[]),
-      ...collection,
-    ];
+    this.articleCollection = [...(this.articleCollection as Article[]), ...collection];
     this.articleRemaining = total > this.articleCollection.length;
     this.loading = false;
     this.requestUpdate();
@@ -168,14 +158,13 @@ export default class ArticleFeed extends LitElement {
   async removeArticle(article: Article): Promise<void> {
     const articleTitle = article.title;
     if (
-      (
-        prompt("Enter " + articleTitle + " to delete the article") || ""
-      ).toLowerCase() === articleTitle.toLowerCase()
+      (prompt('Enter ' + articleTitle + ' to delete the article') || '').toLowerCase() ===
+      articleTitle.toLowerCase()
     ) {
       try {
         await this.deleteArticle(article._id);
         this.articleCollection = (this.articleCollection || []).filter(
-          _article => article._id !== _article._id,
+          _article => article._id !== _article._id
         );
         this.requestUpdate();
       } catch (error) {
@@ -195,11 +184,9 @@ export default class ArticleFeed extends LitElement {
               <span class="article-date">
                 <span class="lang">[${article.lang.toUpperCase()}]</span>
                 ${article.published
-                  ? format(
-                      new Date(article.publishedAt as string),
-                      "dddd DD MMMM YYYY",
-                      { locale: languageService.dateFnsLocale },
-                    )
+                  ? format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+                      locale: languageService.dateFnsLocale,
+                    })
                   : ``}
               </span>
               ${tags(article, this.adminMode)}
@@ -215,14 +202,13 @@ export default class ArticleFeed extends LitElement {
             : ``}
           <div class="card-content">
             <h3 class="title">${article.title}</h3>
-            <p>${this.stripTagsAndTruncate(article.html) + "..."}</p>
+            <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
           </div>
           <footer class="card-footer">
             <a
               class="card-footer-item"
               href="${articleUri}"
-              title="${languageService.translation.article_feed
-                .read} ${article.title}"
+              title="${languageService.translation.article_feed.read} ${article.title}"
               @click="${(e: Event) => {
                 e.preventDefault();
                 router.push(`${articleUri}`);
@@ -235,8 +221,7 @@ export default class ArticleFeed extends LitElement {
                   <a
                     class="card-footer-item"
                     href="${`/admin/draft?id=${article._id}`}"
-                    title="${languageService.translation.article_feed
-                      .edit} ${article.title}"
+                    title="${languageService.translation.article_feed.edit} ${article.title}"
                     @click="${(e: Event) => {
                       e.preventDefault();
                       const url = `/admin/draft?id=${article._id}`;
@@ -248,8 +233,7 @@ export default class ArticleFeed extends LitElement {
                   <a
                     class="card-footer-item"
                     type="button"
-                    title="${languageService.translation.article_feed
-                      .remove} ${article.title}"
+                    title="${languageService.translation.article_feed.remove} ${article.title}"
                     @click="${this.removeArticle.bind(this, article)}"
                   >
                     ${languageService.translation.article_feed.remove}
@@ -285,9 +269,7 @@ export default class ArticleFeed extends LitElement {
             })}
         <button
           title="${languageService.translation.article_feed.more}"
-          class="button load-more is-fullwidth ${this.loading
-            ? "is-loading"
-            : ""}"
+          class="button load-more is-fullwidth ${this.loading ? 'is-loading' : ''}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >
@@ -302,4 +284,4 @@ export default class ArticleFeed extends LitElement {
   }
 }
 
-customElements.define("ez-article-feed", ArticleFeed);
+customElements.define('ez-article-feed', ArticleFeed);

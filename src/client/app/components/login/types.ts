@@ -1,4 +1,4 @@
-import { Resource } from "../../utils/resource";
+import { Resource } from '../../utils/resource';
 
 export interface IUser extends Resource {
   email: string;

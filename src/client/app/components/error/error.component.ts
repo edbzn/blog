@@ -1,7 +1,7 @@
-import { html, LitElement, property } from "lit-element/lit-element";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { html, LitElement, property } from 'lit-element/lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import { router } from "../../core/router";
+import { router } from '../../core/router';
 
 export default class Error extends LitElement {
   @property({ type: String })
@@ -43,7 +43,7 @@ export default class Error extends LitElement {
             href="/"
             @click=${(e: Event) => {
               e.preventDefault();
-              router.push("/");
+              router.push('/');
             }}
           >
             Accueil
@@ -54,4 +54,4 @@ export default class Error extends LitElement {
   }
 }
 
-customElements.define("ez-error", Error);
+customElements.define('ez-error', Error);

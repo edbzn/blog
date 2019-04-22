@@ -10,5 +10,5 @@ export const getUsersEffect$: HttpEffect = req$ =>
     flatMap(getMe),
     flatMap(throwIfNotAdmin),
     flatMap(UserDao.findAllPublic),
-    map(body => ({ body })),
+    map(body => ({ body }))
   );

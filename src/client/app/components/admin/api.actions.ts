@@ -1,10 +1,10 @@
-import { v1 as uuid } from "uuid";
+import { v1 as uuid } from 'uuid';
 
-import { apiClient } from "../../core/services/api-client";
-import { storageService } from "../../core/services/storage-client";
-import { DraftState } from "./draft.initialState";
-import { Article, Draft } from "./types";
-import { StateUpdateFunction } from "./draft.stream";
+import { apiClient } from '../../core/services/api-client';
+import { storageService } from '../../core/services/storage-client';
+import { DraftState } from './draft.initialState';
+import { Article, Draft } from './types';
+import { StateUpdateFunction } from './draft.stream';
 
 export interface ApiActions {
   get(id: string): Promise<Article>;
@@ -83,7 +83,7 @@ export const apiActions = (update: flyd.Stream<StateUpdateFunction>) => ({
   },
   uploadPoster(id: string, file: File): Promise<void> {
     return new Promise((resolve, reject) => {
-      const filename = id || "draft" + "-" + uuid();
+      const filename = id || 'draft' + '-' + uuid();
       storageService
         .upload(filename, file)
         .then(response => {

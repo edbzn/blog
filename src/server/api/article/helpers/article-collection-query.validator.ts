@@ -1,10 +1,12 @@
 import { requestValidator$, t } from '@marblejs/middleware-io';
 
 import { SortDir } from '../../../utils/collection';
-import { CollectionQueryValidatorOpts, createQuery } from '../../../utils/collection-query.validator';
+import {
+  CollectionQueryValidatorOpts,
+  createQuery,
+} from '../../../utils/collection-query.validator';
 
-export interface ArticleCollectionQueryOpts
-  extends CollectionQueryValidatorOpts {
+export interface ArticleCollectionQueryOpts extends CollectionQueryValidatorOpts {
   tags?: string | string[];
 }
 
@@ -19,7 +21,7 @@ export const articleCollectionQuery = (options: ArticleCollectionQueryOpts) =>
 export const defaultArticleQuery: ArticleCollectionQueryOpts = {
   page: 1,
   limit: 4,
-  sortBy: ["_id", "createdAt"],
+  sortBy: ['_id', 'createdAt'],
   sortDir: SortDir.DESC,
 };
 
@@ -27,9 +29,7 @@ const queryReturnType = articleCollectionQuery(defaultArticleQuery);
 
 export type ArticleCollectionQueryPayload = t.TypeOf<typeof queryReturnType>;
 
-export const articleQueryValidator$ = (
-  options: ArticleCollectionQueryOpts = defaultArticleQuery,
-) =>
+export const articleQueryValidator$ = (options: ArticleCollectionQueryOpts = defaultArticleQuery) =>
   requestValidator$({
     query: articleCollectionQuery(options),
   });

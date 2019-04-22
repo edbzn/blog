@@ -1,6 +1,6 @@
-import { html, LitElement } from "lit-element/lit-element";
+import { html, LitElement } from 'lit-element/lit-element';
 
-import { router } from "../../core/router";
+import { router } from '../../core/router';
 
 export default class Admin extends LitElement {
   render() {
@@ -32,4 +32,4 @@ export default class Admin extends LitElement {
   }
 }
 
-customElements.define("ez-admin", Admin);
+customElements.define('ez-admin', Admin);

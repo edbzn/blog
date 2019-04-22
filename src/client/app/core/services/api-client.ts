@@ -1,12 +1,12 @@
-import _fetch from "../../utils/fetch";
+import _fetch from '../../utils/fetch';
 
 export class HttpClient {
   private token: string | null = null;
 
   private readonly options: RequestInit = {
-    mode: "cors",
+    mode: 'cors',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
@@ -16,13 +16,13 @@ export class HttpClient {
     try {
       const resp = await _fetch(this.baseUrl + path, {
         ...this.getOptions(),
-        method: "GET",
+        method: 'GET',
       });
-  
+
       return resp.json();
     } catch (error) {
       const cached = await caches.match(this.baseUrl + path);
-      
+
       if (cached) {
         return cached.json();
       }
@@ -34,7 +34,7 @@ export class HttpClient {
   async post<T>(path: string, data: any): Promise<T> {
     const resp = await _fetch(this.baseUrl + path, {
       ...this.getOptions(),
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ ...data }),
     });
 
@@ -44,7 +44,7 @@ export class HttpClient {
   async put<T>(path: string, data: any): Promise<T> {
     const resp = await _fetch(this.baseUrl + path, {
       ...this.getOptions(),
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify({ ...data }),
     });
 
@@ -54,7 +54,7 @@ export class HttpClient {
   async delete(path: string): Promise<void> {
     const resp = await _fetch(this.baseUrl + path, {
       ...this.getOptions(),
-      method: "DELETE",
+      method: 'DELETE',
     });
 
     return resp.json();
@@ -71,9 +71,9 @@ export class HttpClient {
   private getOptions() {
     const options: RequestInit = this.options;
 
-    if (typeof this.token === "string") {
+    if (typeof this.token === 'string') {
       const authorizedHeaders = new Headers(options.headers);
-      authorizedHeaders.set("Authorization", `Bearer ${this.token}`);
+      authorizedHeaders.set('Authorization', `Bearer ${this.token}`);
       options.headers = authorizedHeaders;
     }
 
@@ -82,5 +82,5 @@ export class HttpClient {
 }
 
 export const apiClient = new HttpClient(
-  (process.env.API_BASE_URL as string) || "http://localhost:8081",
+  (process.env.API_BASE_URL as string) || 'http://localhost:8081'
 );

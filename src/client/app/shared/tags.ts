@@ -1,7 +1,7 @@
-import { html } from "lit-element";
+import { html } from 'lit-element';
 
-import { Article } from "../components/admin/types";
-import { router } from "../core/router";
+import { Article } from '../components/admin/types';
+import { router } from '../core/router';
 
 export const tags = (article: Article, adminMode = false) => html`
   <style>
@@ -22,7 +22,7 @@ export const tags = (article: Article, adminMode = false) => html`
         html`
           <a
             href="/tag/${tag}"
-            ?title=${tag + " articles"}
+            ?title=${tag + ' articles'}
             @click="${(e: Event) => {
               e.preventDefault();
               router.push(`/tag/${tag}`);
@@ -31,16 +31,12 @@ export const tags = (article: Article, adminMode = false) => html`
           >
             ${tag}
           </a>
-        `,
+        `
     )}
     ${adminMode
       ? html`
-          <span
-            class="article-tag tag ${article.published
-              ? "is-primary"
-              : "is-warning"}"
-          >
-            ${article.published ? "published" : "draft"}
+          <span class="article-tag tag ${article.published ? 'is-primary' : 'is-warning'}">
+            ${article.published ? 'published' : 'draft'}
           </span>
         `
       : ``}

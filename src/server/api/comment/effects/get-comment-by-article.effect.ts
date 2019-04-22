@@ -19,22 +19,15 @@ export const getCommentByArticleEffect$: HttpEffect = req$ =>
       of(req).pipe(
         map(req => req.query),
         mergeMap(() =>
-          CommentDao.findAllByArticle(
-            req.params.articleId,
-            {
-              sortBy: '_id',
-              sortDir: SortDir.DESC,
-              limit: 5,
-              page: 1
-            },
-          ),
+          CommentDao.findAllByArticle(req.params.articleId, {
+            sortBy: '_id',
+            sortDir: SortDir.DESC,
+            limit: 5,
+            page: 1,
+          })
         ),
         map(commentCollection => ({ body: commentCollection })),
-        catchError(err =>
-          throwError(
-            new HttpError(err, HttpStatus.INTERNAL_SERVER_ERROR),
-          ),
-        ),
-      ),
-    ),
+        catchError(err => throwError(new HttpError(err, HttpStatus.INTERNAL_SERVER_ERROR)))
+      )
+    )
   );

@@ -1,6 +1,6 @@
-import { requestValidator$, t } from "@marblejs/middleware-io";
+import { requestValidator$, t } from '@marblejs/middleware-io';
 
-import { ArticleLanguage } from "../model/article-language";
+import { ArticleLanguage } from '../model/article-language';
 
 export const articleSchema = t.type({
   title: t.string,

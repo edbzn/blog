@@ -1,13 +1,13 @@
-import * as flyd from "flyd";
-import { css, html, LitElement, property } from "lit-element/lit-element";
+import * as flyd from 'flyd';
+import { css, html, LitElement, property } from 'lit-element/lit-element';
 
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import { router } from "../../core/router";
-import { errorHandlerService } from "../../core/services/error-handler-service";
-import { slugify } from "../../shared/slugify";
-import { DraftActions } from "./draft.actions";
-import { DraftState } from "./draft.initialState";
-import { Article, Draft } from "./types";
+import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
+import { router } from '../../core/router';
+import { errorHandlerService } from '../../core/services/error-handler-service';
+import { slugify } from '../../shared/slugify';
+import { DraftActions } from './draft.actions';
+import { DraftState } from './draft.initialState';
+import { Article, Draft } from './types';
 
 export default class DraftComponent extends LitElement {
   @property({ type: Object })
@@ -37,7 +37,7 @@ export default class DraftComponent extends LitElement {
     this.state = this.states();
     this.states.map(async state => {
       this.state = state;
-      await this.requestUpdate("state");
+      await this.requestUpdate('state');
     });
 
     this.loadAndInit();
@@ -54,21 +54,21 @@ export default class DraftComponent extends LitElement {
       await this.requestUpdate();
 
       this.actions.initEditor(
-        this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
-        draft.markdown,
+        this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
+        draft.markdown
       );
     } else {
       await this.requestUpdate();
 
       this.actions.initEditor(
-        this.shadowRoot!.getElementById("markdown") as HTMLTextAreaElement,
-        "",
+        this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
+        ''
       );
     }
   }
 
   isDraft(): boolean {
-    return typeof this.state.id !== "string";
+    return typeof this.state.id !== 'string';
   }
 
   shouldShowEditor(): boolean {
@@ -105,7 +105,7 @@ export default class DraftComponent extends LitElement {
 
     if (
       !this.state.draft.markdown ||
-      (this.state.draft.markdown || "").length === 0 ||
+      (this.state.draft.markdown || '').length === 0 ||
       !this.state.draft.title
     ) {
       return;
@@ -144,10 +144,7 @@ export default class DraftComponent extends LitElement {
       this.actions.publish();
     }
 
-    await this.actions.update(
-      this.state.id as string,
-      this.getDraft() as Article,
-    );
+    await this.actions.update(this.state.id as string, this.getDraft() as Article);
   }
 
   handleTagsChange(e: Event): void {
@@ -171,14 +168,12 @@ export default class DraftComponent extends LitElement {
   }
 
   handleLangChange(e: Event): void {
-    this.actions.editLang((e.target as HTMLInputElement)
-      .value as ArticleLanguage);
+    this.actions.editLang((e.target as HTMLInputElement).value as ArticleLanguage);
     this.handleChange(e);
   }
 
   handleSlugChange(e: Event): void {
-    this.actions.editSlug((e.target as HTMLInputElement)
-      .value as ArticleLanguage);
+    this.actions.editSlug((e.target as HTMLInputElement).value as ArticleLanguage);
     this.handleChange(e);
   }
 
@@ -196,7 +191,7 @@ export default class DraftComponent extends LitElement {
       markdown: draft.markdown,
       html: draft.html,
       posterUrl: draft.posterUrl,
-      tags: draft.tags.map(tag => tag.replace(" ", "")),
+      tags: draft.tags.map(tag => tag.replace(' ', '')),
       published: draft.published,
       publishedAt: draft.publishedAt,
       metaTitle: draft.metaTitle,
@@ -207,7 +202,7 @@ export default class DraftComponent extends LitElement {
 
   toggleConfigurationDrawer(): void {
     this.drawerOpen = !this.drawerOpen;
-    this.requestUpdate("drawerOpen");
+    this.requestUpdate('drawerOpen');
   }
 
   static get styles() {
@@ -275,9 +270,7 @@ export default class DraftComponent extends LitElement {
 
   render() {
     const articleUri =
-      this.state && this.state.draftLoaded
-        ? `/article/${this.state.draft.slug}`
-        : null;
+      this.state && this.state.draftLoaded ? `/article/${this.state.draft.slug}` : null;
 
     return html`
       <link
@@ -317,17 +310,14 @@ export default class DraftComponent extends LitElement {
                             id="slug"
                             name="slug"
                             class="input"
-                            value="${this.state.draft.slug ||
-                              slugify(this.title)}"
+                            value="${this.state.draft.slug || slugify(this.title)}"
                             @input="${this.handleSlugChange}"
                             type="text"
                             required
                           />
                         </div>
                         <div class="field">
-                          <label class="label" for="tags"
-                            >Tags (separated by a comma)</label
-                          >
+                          <label class="label" for="tags">Tags (separated by a comma)</label>
                           <input
                             type="text"
                             class="input"
@@ -342,20 +332,15 @@ export default class DraftComponent extends LitElement {
                           <label class="label" for="lang">Lang</label>
                           <div class="control">
                             <div class="select">
-                              <select
-                                required
-                                id="lang"
-                                @change="${this.handleLangChange}"
-                              >
+                              <select required id="lang" @change="${this.handleLangChange}">
                                 ${[ArticleLanguage.FR, ArticleLanguage.EN].map(
                                   lang => html`
                                     <option
                                       value="${lang}"
-                                      ?selected="${lang ===
-                                        this.state.draft.lang}"
+                                      ?selected="${lang === this.state.draft.lang}"
                                       >${lang}</option
                                     >
-                                  `,
+                                  `
                                 )}
                               </select>
                             </div>
@@ -387,22 +372,20 @@ export default class DraftComponent extends LitElement {
                           <input
                             id="metaTitle"
                             name="metaTitle"
-                            value="${this.state.draft.metaTitle || ""}"
+                            value="${this.state.draft.metaTitle || ''}"
                             @input="${this.handleMetaTitleChange}"
                             class="input"
                             type="text"
                           />
                         </div>
                         <div class="field">
-                          <label class="label" for="metaDescription"
-                            >Meta description</label
-                          >
+                          <label class="label" for="metaDescription">Meta description</label>
                           <input
                             id="metaDescription"
                             name="metaDescription"
                             @input="${this.handleMetaDescriptionChange}"
                             class="input"
-                            value="${this.state.draft.metaDescription || ""}"
+                            value="${this.state.draft.metaDescription || ''}"
                             type="text"
                           />
                         </div>
@@ -422,14 +405,12 @@ export default class DraftComponent extends LitElement {
                           <button
                             type="button"
                             class="button is-block ${this.state.draft.published
-                              ? "is-warning"
-                              : "is-info"}"
+                              ? 'is-warning'
+                              : 'is-info'}"
                             @click="${this.togglePublish}"
                             ?disabled=${this.isDraft()}
                           >
-                            ${this.state.draft.published
-                              ? "🔒 Dépublier"
-                              : "🔓 Publier"}
+                            ${this.state.draft.published ? '🔒 Dépublier' : '🔓 Publier'}
                           </button>
                         </div>
                         <div class="field">
@@ -447,7 +428,7 @@ export default class DraftComponent extends LitElement {
                                   👁 Prévisualisation
                                 </a>
                               `
-                            : ""}
+                            : ''}
                         </div>
                       </div>
                     `
@@ -466,8 +447,7 @@ export default class DraftComponent extends LitElement {
                   ? html`
                       <div
                         class="poster"
-                        style="background-image: url('${this.state.draft
-                          .posterUrl}')"
+                        style="background-image: url('${this.state.draft.posterUrl}')"
                       ></div>
                     `
                   : html``}
@@ -476,9 +456,7 @@ export default class DraftComponent extends LitElement {
                     <div class="column is-half">
                       <button
                         type="button"
-                        class="drawer-btn button ${this.drawerOpen
-                          ? null
-                          : "is-info"}"
+                        class="drawer-btn button ${this.drawerOpen ? null : 'is-info'}"
                         @click="${this.toggleConfigurationDrawer}"
                       >
                         ${this.drawerOpen
@@ -516,4 +494,4 @@ export default class DraftComponent extends LitElement {
   }
 }
 
-customElements.define("ez-draft", DraftComponent);
+customElements.define('ez-draft', DraftComponent);

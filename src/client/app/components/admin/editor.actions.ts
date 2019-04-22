@@ -1,32 +1,29 @@
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import { errorHandlerService } from "../../core/services/error-handler-service";
-import { DraftState } from "./draft.initialState";
-import { StateUpdateFunction } from "./draft.stream";
+import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
+import { errorHandlerService } from '../../core/services/error-handler-service';
+import { DraftState } from './draft.initialState';
+import { StateUpdateFunction } from './draft.stream';
 
 export interface EditorActions {
   initEditor(element: HTMLTextAreaElement, initialValue: string): void;
   transformMarkdownToHtml(): void;
 }
 
-export const editorActions = (
-  update: flyd.Stream<StateUpdateFunction>,
-): EditorActions => ({
+export const editorActions = (update: flyd.Stream<StateUpdateFunction>): EditorActions => ({
   initEditor(element: HTMLTextAreaElement, initialValue: string) {
-    import(/* webpackChunkName: "app-admin" */ "simplemde")
+    import(/* webpackChunkName: "app-admin" */ 'simplemde')
       .then(SimpleMDE => {
         update((state: DraftState) => {
           state.editor = new SimpleMDE.default({
             element,
             initialValue,
             lineWrapping: true,
-            spellChecker:
-              state.draft.lang === ArticleLanguage.EN ? true : false,
+            spellChecker: state.draft.lang === ArticleLanguage.EN ? true : false,
             autoDownloadFontAwesome: true,
             forceSync: false,
             tabSize: 2,
             autosave: {
               enabled: false,
-              uniqueId: "editor",
+              uniqueId: 'editor',
             },
             autofocus: true,
           });
@@ -36,7 +33,7 @@ export const editorActions = (
       .catch(err => errorHandlerService.throw(err));
   },
   transformMarkdownToHtml() {
-    import(/* webpackChunkName: "app-admin" */ "showdown")
+    import(/* webpackChunkName: "app-admin" */ 'showdown')
       .then(showdown => {
         const converter = new showdown.Converter();
         update(state => {

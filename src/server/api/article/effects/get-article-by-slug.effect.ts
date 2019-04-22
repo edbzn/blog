@@ -20,11 +20,7 @@ export const getArticleBySlugEffect$: HttpEffect = req$ =>
         mergeMap(ArticleDao.findByTitle),
         mergeMap(neverNullable),
         map(article => ({ body: article })),
-        catchError(() =>
-          throwError(
-            new HttpError("Article does not exist", HttpStatus.NOT_FOUND),
-          ),
-        ),
-      ),
-    ),
+        catchError(() => throwError(new HttpError('Article does not exist', HttpStatus.NOT_FOUND)))
+      )
+    )
   );

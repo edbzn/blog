@@ -12,7 +12,7 @@ export namespace ArticleDao {
     schemaOptions: { timestamps: true, emitIndexErrors: true },
   });
 
-  export const ARTICLE_SORTING_FIELDS = ["_id", "publishedAt"];
+  export const ARTICLE_SORTING_FIELDS = ['_id', 'publishedAt'];
 
   export const findAll = (query: ArticleCollectionQueryPayload) =>
     from(applyCollectionQuery(query)(() => model.find()));
@@ -23,7 +23,7 @@ export namespace ArticleDao {
         let qb: FilterQuery<Article> = { published: true };
 
         if (query.tags) {
-          if (typeof query.tags === "string") {
+          if (typeof query.tags === 'string') {
             qb = { ...qb, tags: query.tags };
           } else if (query.tags.length > 0) {
             qb = { ...qb, tags: { $in: [...query.tags] } };
@@ -31,16 +31,14 @@ export namespace ArticleDao {
         }
 
         return model.find(qb);
-      }),
+      })
     );
 
   export const findById = (id: string) => from(model.findById(id).exec());
 
-  export const findByTitle = (slug: string) =>
-    from(model.findOne({ slug }).exec());
+  export const findByTitle = (slug: string) => from(model.findOne({ slug }).exec());
 
-  export const removeById = (id: string) =>
-    from(model.findByIdAndDelete(id).exec());
+  export const removeById = (id: string) => from(model.findByIdAndDelete(id).exec());
 
   export const updateById = (id: string, body: ArticlePayload) =>
     from(model.findByIdAndUpdate(id, body).exec());

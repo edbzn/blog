@@ -1,11 +1,11 @@
-import { format } from "date-fns";
-import * as frLocale from "date-fns/locale/fr";
-import { html, LitElement, property } from "lit-element";
+import { format } from 'date-fns';
+import * as frLocale from 'date-fns/locale/fr';
+import { html, LitElement, property } from 'lit-element';
 
-import { ResourceCollection } from "../../utils/collection";
-import { apiClient } from "../../core/services/api-client";
-import { languageService } from "../../core/services/language-service";
-import { IComment } from "./types";
+import { ResourceCollection } from '../../utils/collection';
+import { apiClient } from '../../core/services/api-client';
+import { languageService } from '../../core/services/language-service';
+import { IComment } from './types';
 
 export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
@@ -25,7 +25,7 @@ export default class ArticleCommentComponent extends LitElement {
 
   async fetch(): Promise<void> {
     const commentCollection = await apiClient.get<ResourceCollection<IComment>>(
-      `/api/v1/article/${this.articleId}/comment`,
+      `/api/v1/article/${this.articleId}/comment`
     );
 
     this.commentCollection = commentCollection;
@@ -38,12 +38,8 @@ export default class ArticleCommentComponent extends LitElement {
       return false;
     }
 
-    const nameCtrl = this.shadowRoot!.querySelector(
-      "#name",
-    ) as HTMLInputElement;
-    const commentCtrl = this.shadowRoot!.querySelector(
-      "#comment",
-    ) as HTMLTextAreaElement;
+    const nameCtrl = this.shadowRoot!.querySelector('#name') as HTMLInputElement;
+    const commentCtrl = this.shadowRoot!.querySelector('#comment') as HTMLTextAreaElement;
 
     if (!nameCtrl || !commentCtrl) {
       return false;
@@ -60,18 +56,12 @@ export default class ArticleCommentComponent extends LitElement {
     this.loading = true;
     this.requestUpdate();
 
-    const name = (this.shadowRoot!.querySelector("#name") as HTMLInputElement)
-      .value;
-    const comment = (this.shadowRoot!.querySelector(
-      "#comment",
-    ) as HTMLTextAreaElement).value;
+    const name = (this.shadowRoot!.querySelector('#name') as HTMLInputElement).value;
+    const comment = (this.shadowRoot!.querySelector('#comment') as HTMLTextAreaElement).value;
     const formData = { author: name, comment, articleId: this.articleId };
 
     apiClient
-      .post<ResourceCollection<IComment>>(
-        `/api/v1/article/${this.articleId}/comment`,
-        formData,
-      )
+      .post<ResourceCollection<IComment>>(`/api/v1/article/${this.articleId}/comment`, formData)
       .then(() => this.fetch())
       .then(() => {
         this.showEditor = false;
@@ -95,7 +85,7 @@ export default class ArticleCommentComponent extends LitElement {
           margin-bottom: 4rem;
         }
 
-        form[name="postComment"] {
+        form[name='postComment'] {
           font-size: 1rem;
           margin: 2rem 0;
         }
@@ -130,9 +120,8 @@ export default class ArticleCommentComponent extends LitElement {
         </button>
         ${this.showEditor
           ? html`
-                <form name="postComment" @submit=${
-                  this.postComment
-                } @input=${() => this.update(new Map())}>
+                <form name="postComment" @submit=${this.postComment} @input=${() =>
+              this.update(new Map())}>
                   ${
                     this.error
                       ? html`
@@ -187,19 +176,15 @@ export default class ArticleCommentComponent extends LitElement {
                         <strong>${comment.author}</strong>
                         <em>
                           -
-                          ${format(
-                            new Date(comment.createdAt),
-                            "ddd DD MMM YYYY",
-                            {
-                              locale: frLocale,
-                            },
-                          )}
+                          ${format(new Date(comment.createdAt), 'ddd DD MMM YYYY', {
+                            locale: frLocale,
+                          })}
                         </em>
                       </header>
                       ${comment.comment}
                     </div>
                   </article>
-                `,
+                `
               )
             : null}
         </section>
@@ -208,4 +193,4 @@ export default class ArticleCommentComponent extends LitElement {
   }
 }
 
-customElements.define("ez-comment", ArticleCommentComponent);
+customElements.define('ez-comment', ArticleCommentComponent);

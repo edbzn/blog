@@ -1,16 +1,16 @@
-import { distanceInWords, format } from "date-fns";
-import { html, LitElement, property } from "lit-element";
+import { distanceInWords, format } from 'date-fns';
+import { html, LitElement, property } from 'lit-element';
 
-import { router } from "../../core/router";
-import { apiClient } from "../../core/services/api-client";
-import { errorHandlerService } from "../../core/services/error-handler-service";
-import { languageService } from "../../core/services/language-service";
-import { placeholder } from "../../shared/placeholder";
-import { tags } from "../../shared/tags";
-import { debounce } from "../../utils/debounce";
-import { profileConfiguration } from "../../utils/profile-config";
-import { setPageMeta } from "../../utils/set-document-meta";
-import { Article } from "../admin/types";
+import { router } from '../../core/router';
+import { apiClient } from '../../core/services/api-client';
+import { errorHandlerService } from '../../core/services/error-handler-service';
+import { languageService } from '../../core/services/language-service';
+import { placeholder } from '../../shared/placeholder';
+import { tags } from '../../shared/tags';
+import { debounce } from '../../utils/debounce';
+import { profileConfiguration } from '../../utils/profile-config';
+import { setPageMeta } from '../../utils/set-document-meta';
+import { Article } from '../admin/types';
 
 export default class ArticleDetail extends LitElement {
   @property({ type: String })
@@ -20,7 +20,7 @@ export default class ArticleDetail extends LitElement {
   posterUrl: string | null = null;
 
   @property({ type: String })
-  percentRemaining: string = "0";
+  percentRemaining: string = '0';
 
   @property({ type: Object })
   article: Article | null = null;
@@ -52,9 +52,7 @@ export default class ArticleDetail extends LitElement {
   }
 
   handleScrollChange(): void {
-    const body = document
-      .getElementsByTagName("body")
-      .item(0) as HTMLBodyElement;
+    const body = document.getElementsByTagName('body').item(0) as HTMLBodyElement;
 
     this.calculateRemainingHandler = debounce(() => {
       const currentPosition = window.scrollY;
@@ -64,25 +62,20 @@ export default class ArticleDetail extends LitElement {
       this.percentRemaining = percentRemaining.toFixed();
     }, 10);
 
-    window.addEventListener("scroll", this.calculateRemainingHandler);
+    window.addEventListener('scroll', this.calculateRemainingHandler);
   }
 
   setPageMeta() {
     const metaTitle =
-      typeof this.article!.metaTitle === "string"
-        ? (this.article!.metaTitle as string)
-        : undefined;
+      typeof this.article!.metaTitle === 'string' ? (this.article!.metaTitle as string) : undefined;
     const metaDescription =
-      typeof this.article!.metaDescription === "string"
+      typeof this.article!.metaDescription === 'string'
         ? (this.article!.metaDescription as string)
         : undefined;
-    const [firstSentence, secondSentence] = this.article!.html.replace(
-      /<\/?[^>]+(>|$)/g,
-      "",
-    )
+    const [firstSentence, secondSentence] = this.article!.html.replace(/<\/?[^>]+(>|$)/g, '')
       .slice(0, 250)
-      .split(".");
-    const description = [firstSentence, secondSentence + "."].join(".");
+      .split('.');
+    const description = [firstSentence, secondSentence + '.'].join('.');
 
     setPageMeta({
       title: this.article!.title,
@@ -93,7 +86,7 @@ export default class ArticleDetail extends LitElement {
   }
 
   disconnectedCallback(): void {
-    this.removeEventListener("scroll", this
+    this.removeEventListener('scroll', this
       .calculateRemainingHandler as EventListenerOrEventListenerObject);
   }
 
@@ -105,11 +98,9 @@ export default class ArticleDetail extends LitElement {
         <header class="header">
           ${tags(article)}
           <span class="article-date"
-            >${format(
-              new Date(article.publishedAt as string),
-              "dddd DD MMMM YYYY",
-              { locale: languageService.dateFnsLocale },
-            )}</span
+            >${format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+              locale: languageService.dateFnsLocale,
+            })}</span
           >
         </header>
         <h1 class="title">${article.title}</h1>
@@ -119,12 +110,10 @@ export default class ArticleDetail extends LitElement {
             ${tags(article)}
             <span class="article-date">
               ${languageService.translation.article_detail.published_at}
-              ${distanceInWords(
-                new Date(article.publishedAt as string),
-                new Date(),
-                { locale: languageService.dateFnsLocale },
-              )}
-              ${languageService.getLang() === "en" ? " ago" : null}
+              ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
+                locale: languageService.dateFnsLocale,
+              })}
+              ${languageService.getLang() === 'en' ? ' ago' : null}
             </span>
           </div>
           <a
@@ -132,7 +121,7 @@ export default class ArticleDetail extends LitElement {
             class="button is-block back-to-home"
             @click="${(e: Event) => {
               e.preventDefault();
-              router.push("/");
+              router.push('/');
             }}"
           >
             ${languageService.translation.article_detail.home_btn}
@@ -294,19 +283,13 @@ export default class ArticleDetail extends LitElement {
       <ez-navbar></ez-navbar>
       ${this.posterUrl
         ? html`
-            <figure
-              class="poster"
-              style="background-image: url('${this.posterUrl}')"
-            ></figure>
+            <figure class="poster" style="background-image: url('${this.posterUrl}')"></figure>
           `
         : html`
             <div class="poster"></div>
           `}
       <div class="time-remaining">
-        <div
-          class="has-background-info"
-          style="width: ${this.percentRemaining + "%"};"
-        ></div>
+        <div class="has-background-info" style="width: ${this.percentRemaining + '%'};"></div>
       </div>
       <ez-page .navbar="${false}">
         <section class="section meta-container">
@@ -325,4 +308,4 @@ export default class ArticleDetail extends LitElement {
   }
 }
 
-customElements.define("ez-article-detail", ArticleDetail);
+customElements.define('ez-article-detail', ArticleDetail);

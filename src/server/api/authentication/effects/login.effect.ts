@@ -26,9 +26,7 @@ export const loginEffect$: HttpEffect = req$ =>
         mergeMap(throwIfNotAdmin),
         mergeMap(generateTokenFromUser),
         map(token => ({ body: { token } })),
-        catchError(() =>
-          throwError(new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED)),
-        ),
-      ),
-    ),
+        catchError(() => throwError(new HttpError('Unauthorized', HttpStatus.UNAUTHORIZED)))
+      )
+    )
   );

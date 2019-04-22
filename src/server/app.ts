@@ -1,15 +1,15 @@
-import { httpListener } from "@marblejs/core";
-import { bodyParser$ } from "@marblejs/middleware-body";
-import { logger$ } from "@marblejs/middleware-logger";
-import { cors$ } from "@marblejs/middleware-cors";
+import { httpListener } from '@marblejs/core';
+import { bodyParser$ } from '@marblejs/middleware-body';
+import { logger$ } from '@marblejs/middleware-logger';
+import { cors$ } from '@marblejs/middleware-cors';
 
-import { api$ } from "./api";
-import { Config } from "./config";
+import { api$ } from './api';
+import { Config } from './config';
 
 const middlewares = [
   cors$({
     origin: Config.frontAppDomains,
-    allowHeaders: ["Content-Type", "Origin", "Authorization"],
+    allowHeaders: ['Content-Type', 'Origin', 'Authorization'],
     methods: ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE'],
   }),
   logger$({ silent: false }),

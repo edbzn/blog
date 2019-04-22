@@ -22,11 +22,9 @@ const throwIfUserAlreadyExists = (body: UserPayload) =>
   UserDao.findByEmail(body.email).pipe(
     mergeMap(user =>
       null != user
-        ? throwError(
-            new HttpError("This email already exists", HttpStatus.CONFLICT),
-          )
-        : of(body),
-    ),
+        ? throwError(new HttpError('This email already exists', HttpStatus.CONFLICT))
+        : of(body)
+    )
   );
 
 const createUser = (body: UserPayload) =>
@@ -37,18 +35,16 @@ const createUser = (body: UserPayload) =>
         password,
         firstName: payload.firstName,
         lastName: payload.lastName,
-      }),
-    ),
+      })
+    )
   );
 
 const generateToken = (user: InstanceType<User>) =>
   of(user).pipe(
     mergeMap(generateTokenFromUser),
     catchError(() =>
-      throwError(
-        new HttpError("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR),
-      ),
-    ),
+      throwError(new HttpError('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR))
+    )
   );
 
 export const signupEffect$: HttpEffect = req$ =>
@@ -60,7 +56,7 @@ export const signupEffect$: HttpEffect = req$ =>
         mergeMap(throwIfUserAlreadyExists),
         mergeMap(createUser),
         mergeMap(generateToken),
-        map(token => ({ body: { token } })),
-      ),
-    ),
+        map(token => ({ body: { token } }))
+      )
+    )
   );

@@ -1,4 +1,4 @@
-import { throwError, of } from "rxjs";
+import { throwError, of } from 'rxjs';
 
 const isNullable = (data: any) => data === null || data === undefined;
 

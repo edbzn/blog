@@ -1,5 +1,5 @@
-import { Document, DocumentQuery } from "mongoose";
-import { CollectionQuery } from "./collection-query.validator";
+import { Document, DocumentQuery } from 'mongoose';
+import { CollectionQuery } from './collection-query.validator';
 
 export interface CollectionQueryResult<T> {
   collection: T;
@@ -14,10 +14,10 @@ export enum SortDir {
 export const applyCollectionQuery = ({
   limit = 0,
   page = 1,
-  sortBy = "_id",
+  sortBy = '_id',
   sortDir = SortDir.ASC,
 }: CollectionQuery) => async <T, U extends Document>(
-  dbQuery: () => DocumentQuery<T, U>,
+  dbQuery: () => DocumentQuery<T, U>
 ): Promise<CollectionQueryResult<T>> => {
   const collectionQuery = dbQuery()
     .limit(Number(limit))

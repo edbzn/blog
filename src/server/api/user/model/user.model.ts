@@ -1,8 +1,8 @@
-import { arrayProp, prop, Typegoose } from "typegoose";
+import { arrayProp, prop, Typegoose } from 'typegoose';
 
 export enum UserRole {
-  USER = "ROLE_USER",
-  ADMIN = "ROLE_ADMIN",
+  USER = 'ROLE_USER',
+  ADMIN = 'ROLE_ADMIN',
 }
 
 export class User extends Typegoose {

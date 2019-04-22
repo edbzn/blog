@@ -1,5 +1,5 @@
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import { Article, Draft } from "./types";
+import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
+import { Article, Draft } from './types';
 
 export interface DraftState {
   id: null | string;
@@ -14,10 +14,10 @@ export const initialState = (): DraftState => ({
   id: null,
   editor: null,
   draft: {
-    title: "Brouillon",
-    slug: "brouillon",
-    markdown: "",
-    html: "",
+    title: 'Brouillon',
+    slug: 'brouillon',
+    markdown: '',
+    html: '',
     tags: [],
     posterUrl: null,
     published: false,

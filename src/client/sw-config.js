@@ -3,11 +3,11 @@ module.exports = {
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/api\.codamit\/.com/,
-      handler: "fastest",
+      handler: 'fastest',
     },
     {
       urlPattern: /^https:\/\/codamit\/.com/,
-      handler: "fastest",
+      handler: 'fastest',
     },
   ],
 };

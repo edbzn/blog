@@ -1,4 +1,4 @@
-declare module "meiosis-tracer" {
+declare module 'meiosis-tracer' {
   interface TracerConfig {
     selector?: string;
     streams: flyd.Stream<any>[];

@@ -1,6 +1,6 @@
-import { html, LitElement, property } from "lit-element";
+import { html, LitElement, property } from 'lit-element';
 
-import { languageService } from "../../core/services/language-service";
+import { languageService } from '../../core/services/language-service';
 
 export default class ProfileComponent extends LitElement {
   @property({ type: Object })
@@ -54,9 +54,7 @@ export default class ProfileComponent extends LitElement {
       </style>
       <section class="hero is-light is-medium">
         <div class="hero-body">
-          <div
-            class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered"
-          >
+          <div class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered">
             <div class="column is-narrow">
               <figure
                 class="avatar"
@@ -85,4 +83,4 @@ export default class ProfileComponent extends LitElement {
   }
 }
 
-customElements.define("ez-profile", ProfileComponent);
+customElements.define('ez-profile', ProfileComponent);

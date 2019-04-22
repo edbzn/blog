@@ -1,9 +1,9 @@
 export enum NodeEnv {
-  PRODUCTION = "production",
-  DEVELOPMENT = "development",
+  PRODUCTION = 'production',
+  DEVELOPMENT = 'development',
 }
 
-export type LoggerLevel = "dev" | "prod";
+export type LoggerLevel = 'dev' | 'prod';
 
 interface IConfig {
   env: NodeEnv;
@@ -35,7 +35,7 @@ interface IConfig {
 }
 
 export const Config: IConfig = {
-  frontAppDomains: (process.env.FRONT_APP_DOMAINS as string).split(" "),
+  frontAppDomains: (process.env.FRONT_APP_DOMAINS as string).split(' '),
   env: process.env.NODE_ENV as NodeEnv,
   jwt: { secret: process.env.JWT_SECRET as string },
   server: {
@@ -50,8 +50,8 @@ export const Config: IConfig = {
     urlTest: process.env.DB_URL_TEST as string,
   },
   twitter: {
-    baseUrl: "https://api.twitter.com/1.1/search/tweets.json",
-    fromUserName: "edouardbozon",
+    baseUrl: 'https://api.twitter.com/1.1/search/tweets.json',
+    fromUserName: 'edouardbozon',
     oAuth: {
       token: process.env.TWITTER_TOKEN as string,
       token_secret: process.env.TWITTER_TOKEN_SECRET as string,

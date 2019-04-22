@@ -13,6 +13,4 @@ export const generateTokenPayload = (user: InstanceType<User>) => ({
 });
 
 export const generateTokenFromUser = (user: InstanceType<User>) =>
-  of(generateTokenPayload(user)).pipe(
-    map(generateToken({ secret: Config.jwt.secret })),
-  );
+  of(generateTokenPayload(user)).pipe(map(generateToken({ secret: Config.jwt.secret })));

@@ -1,4 +1,4 @@
-import { Resource, TimeStampableResource } from "../../utils/resource";
+import { Resource, TimeStampableResource } from '../../utils/resource';
 
 export interface IComment extends Resource, TimeStampableResource {
   comment: string;

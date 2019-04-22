@@ -1,7 +1,7 @@
-import { ArticleLanguage } from "../../../../server/api/article/model/article-language";
-import { slugify } from "../../shared/slugify";
-import { DraftState } from "./draft.initialState";
-import { StateUpdateFunction } from "./draft.stream";
+import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
+import { slugify } from '../../shared/slugify';
+import { DraftState } from './draft.initialState';
+import { StateUpdateFunction } from './draft.stream';
 
 export interface FormActions {
   publish(): void;
@@ -15,9 +15,7 @@ export interface FormActions {
   removePoster(): void;
 }
 
-export const formActions = (
-  update: flyd.Stream<StateUpdateFunction>,
-): FormActions => ({
+export const formActions = (update: flyd.Stream<StateUpdateFunction>): FormActions => ({
   editTitle(title: string) {
     update((state: DraftState) => {
       state.draft.title = title;
@@ -44,7 +42,7 @@ export const formActions = (
   },
   editTags(tags: string) {
     update((state: DraftState) => {
-      state.draft.tags = tags.split(",");
+      state.draft.tags = tags.split(',');
       return state;
     });
   },

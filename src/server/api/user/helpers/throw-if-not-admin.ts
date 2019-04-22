@@ -8,5 +8,5 @@ export const throwIfNotAdmin = (user: InstanceType<User>) =>
   iif(
     () => user.roles.includes(UserRole.ADMIN),
     of(user),
-    throwError(new HttpError("Unauthorized", HttpStatus.UNAUTHORIZED)),
+    throwError(new HttpError('Unauthorized', HttpStatus.UNAUTHORIZED))
   );

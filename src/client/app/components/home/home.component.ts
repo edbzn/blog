@@ -1,15 +1,14 @@
-import { LitElement, html } from "lit-element/lit-element";
-import { profileConfiguration } from "../../utils/profile-config";
-import { setPageMeta } from "../../utils/set-document-meta";
+import { LitElement, html } from 'lit-element/lit-element';
+import { profileConfiguration } from '../../utils/profile-config';
+import { setPageMeta } from '../../utils/set-document-meta';
 
 export default class Home extends LitElement {
-
   connectedCallback() {
     super.connectedCallback();
-  
+
     setPageMeta({
-      title: "Codamit - Tech Blog",
-      description: "I share stuff about code, architecture and best practices",
+      title: 'Codamit - Tech Blog',
+      description: 'I share stuff about code, architecture and best practices',
     });
   }
 
@@ -34,4 +33,4 @@ export default class Home extends LitElement {
   }
 }
 
-customElements.define("ez-home", Home);
+customElements.define('ez-home', Home);

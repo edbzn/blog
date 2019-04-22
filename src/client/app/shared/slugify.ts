@@ -1,11 +1,11 @@
 export function slugify(str: string): string {
   const slug = str
-    .split("")
+    .split('')
     .reduce((result, ch) => {
-      return result + ch.replace(/[^\w\s$*_+~.()'"!\-:@]/g, "");
-    }, "")
+      return result + ch.replace(/[^\w\s$*_+~.()'"!\-:@]/g, '');
+    }, '')
     .trim()
-    .replace(/[-\s]+/g, "-");
+    .replace(/[-\s]+/g, '-');
 
   return slug.toLowerCase();
 }

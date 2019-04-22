@@ -1,13 +1,13 @@
-import anchorme from "anchorme";
-import { distanceInWords } from "date-fns";
-import { html, LitElement, TemplateResult } from "lit-element";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import anchorme from 'anchorme';
+import { distanceInWords } from 'date-fns';
+import { html, LitElement, TemplateResult } from 'lit-element';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
-import { apiClient } from "../../core/services/api-client";
-import { languageService } from "../../core/services/language-service";
-import { placeholder } from "../../shared/placeholder";
-import like from "../../utils/icons/like";
-import retweet from "../../utils/icons/retweet";
+import { apiClient } from '../../core/services/api-client';
+import { languageService } from '../../core/services/language-service';
+import { placeholder } from '../../shared/placeholder';
+import like from '../../utils/icons/like';
+import retweet from '../../utils/icons/retweet';
 
 export default class TwitterFeedComponent extends LitElement {
   initialized = false;
@@ -18,7 +18,7 @@ export default class TwitterFeedComponent extends LitElement {
   }
 
   async getTweets(): Promise<void> {
-    this.tweets = await apiClient.get<{ statuses: any[] }>("/api/v1/tweet");
+    this.tweets = await apiClient.get<{ statuses: any[] }>('/api/v1/tweet');
     this.initialized = true;
     this.requestUpdate();
   }
@@ -32,9 +32,7 @@ export default class TwitterFeedComponent extends LitElement {
               <div class="content">
                 <header>
                   <strong>${tweet.user.name}</strong>
-                  <a
-                    href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}"
-                  >
+                  <a href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}">
                     <small>@${tweet.user.screen_name.toLowerCase()}</small>
                   </a>
                   -
@@ -47,18 +45,14 @@ export default class TwitterFeedComponent extends LitElement {
                 </header>
                 <div class="content">${unsafeHTML(anchorme(tweet.text))}</div>
                 <footer>
-                  <span>
-                    <i class="heart">${like}</i> ${tweet.favorite_count}
-                  </span>
-                  <span>
-                    <i class="retweet">${retweet}</i> ${tweet.retweet_count}
-                  </span>
+                  <span> <i class="heart">${like}</i> ${tweet.favorite_count} </span>
+                  <span> <i class="retweet">${retweet}</i> ${tweet.retweet_count} </span>
                 </footer>
               </div>
             </div>
           </article>
         </div>
-      `,
+      `
     );
   }
 
@@ -121,4 +115,4 @@ export default class TwitterFeedComponent extends LitElement {
   }
 }
 
-customElements.define("ez-twitter-feed", TwitterFeedComponent);
+customElements.define('ez-twitter-feed', TwitterFeedComponent);

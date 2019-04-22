@@ -9,5 +9,5 @@ export const getMe = (req: HttpRequest) =>
   of(req).pipe(
     map(req => req.user._id),
     mergeMap(UserDao.findById),
-    mergeMap(neverNullable),
+    mergeMap(neverNullable)
   );

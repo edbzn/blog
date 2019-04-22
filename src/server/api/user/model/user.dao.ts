@@ -1,7 +1,7 @@
-import { from } from "rxjs";
+import { from } from 'rxjs';
 
-import { UserPayload } from "../../authentication/effects/signup.effect";
-import { User, USER_PUBLIC_FIELDS, USER_SECURE_FIELDS } from "./user.model";
+import { UserPayload } from '../../authentication/effects/signup.effect';
+import { User, USER_PUBLIC_FIELDS, USER_SECURE_FIELDS } from './user.model';
 
 export namespace UserDao {
   export const model = new User().getModelForClass(User, {
@@ -23,7 +23,7 @@ export namespace UserDao {
       model
         .findOne({ email })
         .select(USER_SECURE_FIELDS)
-        .exec(),
+        .exec()
     );
 
   export const findById = (id: string) =>
@@ -31,7 +31,7 @@ export namespace UserDao {
       model
         .findById(id)
         .select(USER_PUBLIC_FIELDS)
-        .exec(),
+        .exec()
     );
 
   export const findAllPublic = () =>
@@ -39,6 +39,6 @@ export namespace UserDao {
       model
         .find()
         .select(USER_PUBLIC_FIELDS)
-        .exec(),
+        .exec()
     );
 }

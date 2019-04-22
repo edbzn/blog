@@ -1,8 +1,8 @@
-import { html, LitElement, property } from "lit-element";
+import { html, LitElement, property } from 'lit-element';
 
-import { router } from "../../core/router";
-import { languageService } from "../../core/services/language-service";
-import { setPageMeta } from "../../utils/set-document-meta";
+import { router } from '../../core/router';
+import { languageService } from '../../core/services/language-service';
+import { setPageMeta } from '../../utils/set-document-meta';
 
 export default class ArticlesByTagComponent extends LitElement {
   @property({ type: String })
@@ -42,7 +42,7 @@ export default class ArticlesByTagComponent extends LitElement {
             class="button is-block"
             @click="${(e: Event) => {
               e.preventDefault();
-              router.push("/");
+              router.push('/');
             }}"
           >
             ${languageService.translation.article_feed_by_tag.home_btn}
@@ -53,4 +53,4 @@ export default class ArticlesByTagComponent extends LitElement {
   }
 }
 
-customElements.define("ez-article-feed-by-tag", ArticlesByTagComponent);
+customElements.define('ez-article-feed-by-tag', ArticlesByTagComponent);
