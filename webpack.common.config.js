@@ -48,8 +48,8 @@ module.exports = {
     new WriteFilePlugin(),
     new CopyWebpackPlugin([
       {
-        from: 'node_modules/@webcomponents/webcomponentsjs',
-        to: 'assets/js/webcomponentsjs',
+        from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+        to: 'assets/js/webcomponents-bundle.js',
       },
       {
         from: 'node_modules/bulma/css/bulma.min.css',
