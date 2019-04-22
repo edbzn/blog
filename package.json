@@ -86,7 +86,7 @@
     "node-sass": "4.11.0",
     "nodemon": "1.18.11",
     "now": "15.0.6",
-    "prettier": "^1.17.0",
+    "prettier": "1.17.0",
     "sass-loader": "7.1.0",
     "source-map-loader": "0.2.4",
     "style-loader": "0.23.1",
@@ -100,7 +100,7 @@
     "webpack-cli": "3.3.0",
     "webpack-dev-server": "3.3.1",
     "webpack-merge": "4.2.1",
-    "workbox-webpack-plugin": "^4.3.0",
+    "workbox-webpack-plugin": "4.3.0",
     "write-file-webpack-plugin": "4.5.0"
   }
 }
