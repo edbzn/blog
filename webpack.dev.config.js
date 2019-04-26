@@ -4,13 +4,13 @@ const merge = require('webpack-merge');
 const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common.config');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = merge(common, {
   plugins: [
-    new WebpackBuildNotifierPlugin({
+    new WebpackNotifierPlugin({
       title: 'Codamit',
-      logo: path.resolve(
+      contentImage: path.resolve(
         __dirname,
         'src',
         ' client',
@@ -19,10 +19,10 @@ module.exports = merge(common, {
         'icons',
         'icon-96x96.png'
       ),
-      suppressSuccess: true,
     }),
     new BundleAnalyzerPlugin({
-      openAnalyzer: false,
+      openAnalyzer: true,
+      analyzerPort: 8082,
     }),
     new HtmlWebpackPlugin({
       title: 'Codamit [WDS] - [HMR]',
@@ -35,5 +35,7 @@ module.exports = merge(common, {
   ],
   devServer: {
     historyApiFallback: true,
+    compress: true,
+    hot: true,
   },
 });
