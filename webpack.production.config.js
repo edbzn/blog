@@ -58,7 +58,7 @@ module.exports = merge(common, {
       runtimeCaching: [
         {
           urlPattern: new RegExp('https://api.codamit.com'),
-          handler: 'StaleWhileRevalidate',
+          handler: 'NetworkFirst',
         },
         {
           urlPattern: new RegExp('https://www.dropbox.com'),
