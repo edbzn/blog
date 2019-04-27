@@ -8,6 +8,7 @@
   "scripts": {
     "start": "npm run start:api:prod",
     "watch": "concurrently \"webpack-dev-server --config=webpack.dev.config.js --inline --hot\" \"nodemon --config nodemon.server.json\"",
+    "prewatch": "npm install",
     "build:client": "webpack ---progress --config=webpack.production.config.js --mode production",
     "start:api:dev": "ts-node --require dotenv/config src/server/index.ts --config tsconfig.server.json dotenv_config_path=./.env",
     "start:api:prod": "ts-node --project tsconfig.server.json --require dotenv/config ./src/server/index.ts dotenv_config_path=.env.production",
