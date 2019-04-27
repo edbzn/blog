@@ -21,11 +21,7 @@ module.exports = {
       },
       {
         test: /\.scss|sass$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.css$/,
@@ -46,36 +42,46 @@ module.exports = {
   },
   plugins: [
     new WriteFilePlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-        to: 'assets/js/webcomponents-bundle.js',
-      },
-      {
-        from: 'node_modules/bulma/css/bulma.min.css',
-        to: 'assets/css/bulma.min.css',
-      },
-      {
-        from: 'node_modules/simplemde/src/css/simplemde.css',
-        to: 'assets/css/simplemde.css',
-      },
-      {
-        from: 'node_modules/simplemde/debug/simplemde.css',
-        to: 'assets/css/debug-simplemde.css',
-      },
-      {
-        from: 'src/client/assets',
-        to: 'assets',
-      },
-      {
-        from: 'src/client/favicon.ico',
-      },
-      {
-        from: 'src/client/robots.txt',
-      },
-      {
-        from: 'src/client/manifest.json',
-      },
-    ]),
+    new CopyWebpackPlugin(
+      [
+        {
+          from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+          to: 'assets/js/webcomponents-bundle.js',
+          cache: true,
+        },
+        {
+          from: 'node_modules/bulma/css/bulma.min.css',
+          to: 'assets/css/bulma.min.css',
+          cache: true,
+        },
+        {
+          from: 'node_modules/simplemde/src/css/simplemde.css',
+          to: 'assets/css/simplemde.css',
+          cache: true,
+        },
+        {
+          from: 'node_modules/simplemde/debug/simplemde.css',
+          to: 'assets/css/debug-simplemde.css',
+          cache: true,
+        },
+        {
+          from: 'src/client/assets',
+          to: 'assets',
+          cache: true,
+        },
+        {
+          from: 'src/client/favicon.ico',
+          cache: true,
+        },
+        {
+          from: 'src/client/robots.txt',
+          cache: true,
+        },
+        {
+          from: 'src/client/manifest.json',
+          cache: true,
+        },
+      ],
+    ),
   ],
 };
