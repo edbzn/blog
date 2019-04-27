@@ -1,4 +1,4 @@
-export type ReactionType = 'love' | 'poney' | 'mark';
+export type ReactionType = 'heart' | 'unicorn' | 'mark';
 
 export interface ArticleReaction {
   count: number;
@@ -10,10 +10,10 @@ export interface ArticleReactions {
 
 export const defaultReactions: ArticleReactions = {
   types: {
-    love: {
+    heart: {
       count: 0,
     },
-    poney: {
+    unicorn: {
       count: 0,
     },
     mark: {
