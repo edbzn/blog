@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit-element';
 
 import heart from '../../utils/icons/heart';
+import { translate } from '../directives/translate.directive';
 import { router } from '../router';
 import { authService } from '../services/authentication-service';
-import { languageService } from '../services/language-service';
 
 export default class Footer extends LitElement {
   static get styles() {
@@ -31,7 +31,7 @@ export default class Footer extends LitElement {
   render() {
     return html`
       <footer>
-        <span>${languageService.translate(['footer', 'credentials'])}</span>
+        <span>${translate('footer.credentials')}</span>
         <a
           href="/admin"
           title="Zone privilégiée"

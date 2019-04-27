@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { css, html, LitElement, property, TemplateResult } from 'lit-element';
 
+import { translate } from '../../core/directives/translate.directive';
 import { router } from '../../core/router';
 import { apiClient } from '../../core/services/api-client';
 import { errorHandlerService } from '../../core/services/error-handler-service';
@@ -208,38 +209,35 @@ export default class ArticleFeed extends LitElement {
             <a
               class="card-footer-item"
               href="${articleUri}"
-              title="${languageService.translate(['article_feed', 'read'])} ${article.title}"
+              title="${translate('article_feed.read')} ${article.title}"
               @click="${(e: Event) => {
                 e.preventDefault();
                 router.push(`${articleUri}`);
               }}"
             >
-              ${languageService.translate(['article_feed', 'read'])}
+              ${translate('article_feed.read')}
             </a>
             ${this.adminMode
               ? html`
                   <a
                     class="card-footer-item"
                     href="${`/admin/draft?id=${article._id}`}"
-                    title="${languageService.translate(['article_feed', 'edit'])} ${article.title}"
+                    title="${translate('article_feed.edit')} ${article.title}"
                     @click="${(e: Event) => {
                       e.preventDefault();
                       const url = `/admin/draft?id=${article._id}`;
                       router.push(url);
                     }}"
                   >
-                    ${languageService.translate(['article_feed', 'edit'])}
+                    ${translate('article_feed.edit')}
                   </a>
                   <a
                     class="card-footer-item"
                     type="button"
-                    title="${languageService.translate([
-                      'article_feed',
-                      'remove',
-                    ])} ${article.title}"
+                    title="${translate('article_feed.remove')} ${article.title}"
                     @click="${this.removeArticle.bind(this, article)}"
                   >
-                    ${languageService.translate(['article_feed', 'remove'])}
+                    ${translate('article_feed.remove')}
                   </a>
                 `
               : html``}
@@ -271,13 +269,13 @@ export default class ArticleFeed extends LitElement {
               image: true,
             })}
         <button
-          title="${languageService.translate(['article_feed', 'more'])}"
+          title="${translate('article_feed.more')}"
           class="button load-more is-fullwidth ${this.loading ? 'is-loading' : ''}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >
           ${this.articleRemaining
-            ? languageService.translate(['article_feed', 'more'])
+            ? translate('article_feed.more')
             : html`
                 <span class="load-complete">${check}</span>
               `}

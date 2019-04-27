@@ -34,17 +34,21 @@ class LanguageService {
 
   translate(path: (string | number)[]): string | undefined {
     if (!this.languageLoaded) {
-      console.warn(
+      errorHandlerService.throw(
         'Trying to translate at path ' + path.toString() + ' but language was not loaded'
       );
     }
 
-    return (
-      path.reduce(
-        (acc, property) => (acc && acc[property] ? acc[property] : null),
-        this._translation || {}
-      ) || ''
+    const translation = path.reduce(
+      (acc, property) => (acc && acc[property] ? acc[property] : null),
+      this._translation
     );
+    
+    if (!(typeof translation === 'string')) {
+      console.warn(`Translation not found at path "${path.join('.')}"`);
+    }
+
+    return translation;
   }
 
   getLang(): string {

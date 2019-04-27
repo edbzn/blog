@@ -1,7 +1,7 @@
 import { css, html, LitElement, property } from 'lit-element';
 
+import { translate } from '../../core/directives/translate.directive';
 import { router } from '../../core/router';
-import { languageService } from '../../core/services/language-service';
 import { setPageMeta } from '../../utils/set-document-meta';
 
 export default class ArticlesByTagComponent extends LitElement {
@@ -48,7 +48,7 @@ export default class ArticlesByTagComponent extends LitElement {
               router.push('/');
             }}"
           >
-            ${languageService.translate(['article_feed_by_tag', 'home_btn'])}
+            ${translate('article_feed_by_tag.home_btn')}
           </a>
         </section>
       </ez-page>

@@ -1,6 +1,6 @@
-import { css, html, LitElement, property } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
 
-import { languageService } from '../../core/services/language-service';
+import { translate } from '../../core/directives/translate.directive';
 
 export default class ProfileComponent extends LitElement {
   static get styles() {
@@ -54,9 +54,7 @@ export default class ProfileComponent extends LitElement {
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <section class="hero is-light is-medium">
         <div class="hero-body">
-          <div
-            class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered"
-          >
+          <div class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered">
             <div class="column is-narrow">
               <figure
                 class="avatar"
@@ -66,7 +64,7 @@ export default class ProfileComponent extends LitElement {
             <div class="column presentation is-full-mobile">
               <h1 class="title">Edouard Bozon</h1>
               <h2 class="subtitle">
-                ${languageService.translate(['profile', 'description'])}
+                ${translate('profile.description')}
               </h2>
               <div class="follow-me">
                 <iframe

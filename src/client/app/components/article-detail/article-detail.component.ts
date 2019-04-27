@@ -1,6 +1,7 @@
 import { distanceInWords, format } from 'date-fns';
 import { css, html, LitElement, property } from 'lit-element';
 
+import { translate } from '../../core/directives/translate.directive';
 import { router } from '../../core/router';
 import { apiClient } from '../../core/services/api-client';
 import { errorHandlerService } from '../../core/services/error-handler-service';
@@ -108,7 +109,7 @@ export default class ArticleDetail extends LitElement {
           <div class="publication">
             ${tags(article)}
             <span class="article-date">
-              ${languageService.translate(['article_detail', 'published_at'])}
+              ${translate('article_detail.published_at')}
               ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
                 locale: languageService.dateFnsLocale,
               })}
@@ -123,7 +124,7 @@ export default class ArticleDetail extends LitElement {
               router.push('/');
             }}"
           >
-            ${languageService.translate(['article_detail', 'home_btn'])}
+            ${translate('article_detail.home_btn')}
           </a>
           <ez-comment articleId=${article._id}></ez-comment>
           <div class="profile">
@@ -133,7 +134,7 @@ export default class ArticleDetail extends LitElement {
             ></figure>
             <div class="presentation has-text-dark">
               <strong>Edouard Bozon</strong><br />
-              <span>${languageService.translate(['profile', 'description'])}</span>
+              <span>${translate('profile.description')}</span>
               <div class="follow-me">
                 <iframe
                   src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
