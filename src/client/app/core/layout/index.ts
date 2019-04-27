@@ -1,3 +1,3 @@
-import './footer.component';
-import './navbar.component';
-import './page.component';
+export * from './footer.component';
+export * from './navbar.component';
+export * from './page.component';

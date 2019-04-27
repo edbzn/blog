@@ -68,7 +68,7 @@ export default class Login extends LitElement {
                       authService.setUser(user);
                       router.push('/admin');
                     } catch (e) {
-                      errorHandlerService.throwAndRedirect(e);
+                      errorHandlerService.throw(e);
                     }
                   }}"
                 >
@@ -125,7 +125,7 @@ export default class Login extends LitElement {
                       authService.setUser(user);
                       router.push('/admin');
                     } catch (e) {
-                      errorHandlerService.throwAndRedirect(e);
+                      errorHandlerService.throw(e);
                     }
                   }}"
                 >

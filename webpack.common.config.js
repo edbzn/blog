@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 
 module.exports = {
-  entry: './src/client/index',
+  entry: path.resolve(__dirname, 'src', 'client', 'index'),
   mode: 'development',
   devtool: 'inline-source-map',
   module: {
@@ -22,9 +22,9 @@ module.exports = {
       {
         test: /\.scss|sass$/,
         use: [
-          'style-loader', // creates style nodes from JS strings
-          'css-loader', // translates CSS into CommonJS
-          'sass-loader', // compiles Sass to CSS, using Node Sass by default
+          'style-loader',
+          'css-loader',
+          'sass-loader',
         ],
       },
       {

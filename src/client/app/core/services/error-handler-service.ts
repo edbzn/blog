@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser';
-import { router } from '../router';
 
 class ErrorHandler {
   private error: string | null = null;
@@ -29,11 +28,6 @@ class ErrorHandler {
 
     this.error = error;
     throw error;
-  }
-
-  throwAndRedirect(error: string): void {
-    this.throw(error);
-    router.push('/error');
   }
 
   getLastError(): string | null {

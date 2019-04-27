@@ -169,7 +169,7 @@ export default class ArticleFeed extends LitElement {
         );
         this.requestUpdate();
       } catch (error) {
-        errorHandlerService.throwAndRedirect(error);
+        errorHandlerService.throw(error);
       }
     }
   }

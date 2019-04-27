@@ -43,7 +43,7 @@ export default class ArticleDetail extends LitElement {
       this.article = await this.getArticle();
       this.posterUrl = this.article.posterUrl as string;
     } catch (error) {
-      errorHandlerService.throwAndRedirect(error);
+      errorHandlerService.throw(error);
     }
   }
 
