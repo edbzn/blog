@@ -2,15 +2,16 @@ import { IUser } from '../../components/login/types';
 import { apiClient } from './api-client';
 import { errorHandlerService } from './error-handler-service';
 
+const AUTHORIZATION = 'authorization';
+
 class Authentication {
-  static readonly AUTHORIZATION = 'authorization';
 
   user: IUser | null;
 
   authenticated = false;
 
   constructor() {
-    const token = this.getCookie(Authentication.AUTHORIZATION);
+    const token = this.getCookie(AUTHORIZATION);
 
     if (token) {
       this.login(token);
@@ -20,18 +21,21 @@ class Authentication {
         .then(user => {
           this.setUser(user);
         })
-        .catch(e => errorHandlerService.throw(e));
+        .catch(() => {
+          this.logout();
+        });
     }
   }
 
   login(token: string): void {
-    this.createCookie(Authentication.AUTHORIZATION, token);
+    this.createCookie(AUTHORIZATION, token);
     apiClient.authenticateRequests(token);
     this.authenticated = true;
   }
 
   logout(): void {
     apiClient.deAuthenticateRequests();
+    this.removeCookie(AUTHORIZATION);
     this.authenticated = false;
     this.user = null;
   }
@@ -41,11 +45,15 @@ class Authentication {
   }
 
   private createCookie(name: string, value: string): void {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    this.removeCookie(name);
 
     let cookie = `${name}=` + value;
-    cookie += ';max-age=' + (60 * 60 * 24).toString() + ';'; // 24h
+    cookie += ';max-age=' + ((60 * 60 * 24) * 7).toString() + ';'; // 1 week
     document.cookie = cookie;
+  }
+
+  private removeCookie(name: string): void {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
   private getCookie(name: string): string | undefined {
