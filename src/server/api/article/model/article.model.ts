@@ -3,6 +3,7 @@ import { MongooseDocument } from 'mongoose';
 import { arrayProp, post, prop, Typegoose } from 'typegoose';
 
 import { ArticleLanguage } from './article-language';
+import { defaultReactions, ArticleReactions } from './article-reactions';
 
 export type ArticleDocument = Article & MongooseDocument;
 
@@ -46,6 +47,9 @@ export class Article extends Typegoose {
 
   @prop({ enum: ArticleLanguage, default: ArticleLanguage.FR })
   lang: ArticleLanguage;
+
+  @prop({ default: defaultReactions })
+  reactions: ArticleReactions = defaultReactions;
 
   /**
    * Automatically mapped by mongoose
