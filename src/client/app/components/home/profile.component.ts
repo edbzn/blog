@@ -3,9 +3,6 @@ import { css, html, LitElement, property } from 'lit-element';
 import { languageService } from '../../core/services/language-service';
 
 export default class ProfileComponent extends LitElement {
-  @property({ type: Object })
-  profile: { name: string; avatarUrl: string; description: string };
-
   static get styles() {
     return css`
       .profile {
@@ -57,17 +54,19 @@ export default class ProfileComponent extends LitElement {
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <section class="hero is-light is-medium">
         <div class="hero-body">
-          <div class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered">
+          <div
+            class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered"
+          >
             <div class="column is-narrow">
               <figure
                 class="avatar"
-                style="background-image: url('${this.profile.avatarUrl}')"
+                style="background-image: url('/assets/images/portrait.jpg')"
               ></figure>
             </div>
             <div class="column presentation is-full-mobile">
-              <h1 class="title">${this.profile.name}</h1>
+              <h1 class="title">Edouard Bozon</h1>
               <h2 class="subtitle">
-                ${languageService.translation.profile.description}
+                ${languageService.translate(['profile', 'description'])}
               </h2>
               <div class="follow-me">
                 <iframe

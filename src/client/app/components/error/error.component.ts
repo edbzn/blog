@@ -2,6 +2,7 @@ import { html, LitElement, property, css } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import { router } from '../../core/router';
+import { languageService } from '../../core/services/language-service';
 
 export default class Error extends LitElement {
   @property({ type: String })
@@ -41,7 +42,7 @@ export default class Error extends LitElement {
               window.history.back();
             }}
           >
-            Page précédente
+            ${languageService.translate(['error', 'go_back'])}
           </a>
           <a
             class="button"
@@ -51,7 +52,7 @@ export default class Error extends LitElement {
               router.push('/');
             }}
           >
-            Accueil
+            ${languageService.translate(['error', 'go_home'])}
           </a>
         </section>
       </ez-page>

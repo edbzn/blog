@@ -6,7 +6,6 @@ import { languageService } from '../../core/services/language-service';
 import { ResourceCollection } from '../../utils/collection';
 import { Comment } from './types';
 
-
 export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
   articleId: string | null = null;
@@ -118,8 +117,8 @@ export default class ArticleCommentComponent extends LitElement {
           }}"
         >
           ${!this.showEditor
-            ? languageService.translation.article_detail.leave_comment_btn
-            : languageService.translation.article_detail.stop_comment_btn}
+            ? languageService.translate(['article_detail', 'leave_comment_btn'])
+            : languageService.translate(['article_detail', 'stop_comment_btn'])}
         </button>
         ${this.showEditor
           ? html`
@@ -142,17 +141,19 @@ export default class ArticleCommentComponent extends LitElement {
                       : null
                   }
                   <div class="field">
-                    <label for="name">${
-                      languageService.translation.article_detail.name_label
-                    }</label
+                    <label for="name">${languageService.translate([
+                      'article_detail',
+                      'name_label',
+                    ])}</label
                     <div class="control">
                       <input class="input" name="name" id="name" type="text" required />
                     </div>
                   </div>
                   <div class="field">
-                    <label for="comment">${
-                      languageService.translation.article_detail.comment_label
-                    }</label
+                    <label for="comment">${languageService.translate([
+                      'article_detail',
+                      'comment_label',
+                    ])}</label
                     <div class="control">
                       <textarea class="textarea ${
                         this.loading
@@ -164,7 +165,7 @@ export default class ArticleCommentComponent extends LitElement {
                     </div>
                   </div>
                   <button type="submit" ?disabled=${!this.isFormValid()} class="button">
-                    ${languageService.translation.article_detail.comment_btn}
+                    ${languageService.translate(['article_detail', 'comment_btn'])}
                   </button>
                 </form>
               `

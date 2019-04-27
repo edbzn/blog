@@ -48,7 +48,7 @@ export default class ArticlesByTagComponent extends LitElement {
               router.push('/');
             }}"
           >
-            ${languageService.translation.article_feed_by_tag.home_btn}
+            ${languageService.translate(['article_feed_by_tag', 'home_btn'])}
           </a>
         </section>
       </ez-page>

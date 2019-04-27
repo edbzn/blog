@@ -8,7 +8,6 @@ import { languageService } from '../../core/services/language-service';
 import { placeholder } from '../../shared/placeholder';
 import { tags } from '../../shared/tags';
 import { debounce } from '../../utils/debounce';
-import { profileConfiguration } from '../../utils/profile-config';
 import { setPageMeta } from '../../utils/set-document-meta';
 import { Article } from '../admin/types';
 
@@ -109,7 +108,7 @@ export default class ArticleDetail extends LitElement {
           <div class="publication">
             ${tags(article)}
             <span class="article-date">
-              ${languageService.translation.article_detail.published_at}
+              ${languageService.translate(['article_detail', 'published_at'])}
               ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
                 locale: languageService.dateFnsLocale,
               })}
@@ -124,17 +123,17 @@ export default class ArticleDetail extends LitElement {
               router.push('/');
             }}"
           >
-            ${languageService.translation.article_detail.home_btn}
+            ${languageService.translate(['article_detail', 'home_btn'])}
           </a>
           <ez-comment articleId=${article._id}></ez-comment>
           <div class="profile">
             <figure
               class="avatar"
-              style="background-image: url('${profileConfiguration.avatarUrl}')"
+              style="background-image: url('/assets/images/portrait.jpg')"
             ></figure>
             <div class="presentation has-text-dark">
-              <strong>${profileConfiguration.name}</strong><br />
-              <span>${languageService.translation.profile.description}</span>
+              <strong>Edouard Bozon</strong><br />
+              <span>${languageService.translate(['profile', 'description'])}</span>
               <div class="follow-me">
                 <iframe
                   src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"

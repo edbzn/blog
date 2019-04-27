@@ -14,9 +14,7 @@ class LanguageService {
 
   private _dateFnsLocale: any;
 
-  get translation(): any {
-    return this._translation;
-  }
+  private languageLoaded = false;
 
   get dateFnsLocale(): any {
     return this._dateFnsLocale;
@@ -29,8 +27,24 @@ class LanguageService {
       .then(translation => {
         this._translation = translation;
         this._dateFnsLocale = this.lang === 'fr' ? frLocale : enLocale;
+        this.languageLoaded = true;
       })
       .catch(err => errorHandlerService.throw(err));
+  }
+
+  translate(path: (string | number)[]): string | undefined {
+    if (!this.languageLoaded) {
+      console.warn(
+        'Trying to translate at path ' + path.toString() + ' but language was not loaded'
+      );
+    }
+
+    return (
+      path.reduce(
+        (acc, property) => (acc && acc[property] ? acc[property] : null),
+        this._translation || {}
+      ) || ''
+    );
   }
 
   getLang(): string {

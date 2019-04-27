@@ -22,5 +22,9 @@
   },
   "footer": {
     "credentials": "Fait avec"
+  },
+  "error": {
+    "go_back": "Précédent",
+    "go_home": "Accueil"
   }
 }

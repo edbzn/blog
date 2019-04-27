@@ -208,35 +208,38 @@ export default class ArticleFeed extends LitElement {
             <a
               class="card-footer-item"
               href="${articleUri}"
-              title="${languageService.translation.article_feed.read} ${article.title}"
+              title="${languageService.translate(['article_feed', 'read'])} ${article.title}"
               @click="${(e: Event) => {
                 e.preventDefault();
                 router.push(`${articleUri}`);
               }}"
             >
-              ${languageService.translation.article_feed.read}
+              ${languageService.translate(['article_feed', 'read'])}
             </a>
             ${this.adminMode
               ? html`
                   <a
                     class="card-footer-item"
                     href="${`/admin/draft?id=${article._id}`}"
-                    title="${languageService.translation.article_feed.edit} ${article.title}"
+                    title="${languageService.translate(['article_feed', 'edit'])} ${article.title}"
                     @click="${(e: Event) => {
                       e.preventDefault();
                       const url = `/admin/draft?id=${article._id}`;
                       router.push(url);
                     }}"
                   >
-                    ${languageService.translation.article_feed.edit}
+                    ${languageService.translate(['article_feed', 'edit'])}
                   </a>
                   <a
                     class="card-footer-item"
                     type="button"
-                    title="${languageService.translation.article_feed.remove} ${article.title}"
+                    title="${languageService.translate([
+                      'article_feed',
+                      'remove',
+                    ])} ${article.title}"
                     @click="${this.removeArticle.bind(this, article)}"
                   >
-                    ${languageService.translation.article_feed.remove}
+                    ${languageService.translate(['article_feed', 'remove'])}
                   </a>
                 `
               : html``}
@@ -268,13 +271,13 @@ export default class ArticleFeed extends LitElement {
               image: true,
             })}
         <button
-          title="${languageService.translation.article_feed.more}"
+          title="${languageService.translate(['article_feed', 'more'])}"
           class="button load-more is-fullwidth ${this.loading ? 'is-loading' : ''}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >
           ${this.articleRemaining
-            ? languageService.translation.article_feed.more
+            ? languageService.translate(['article_feed', 'more'])
             : html`
                 <span class="load-complete">${check}</span>
               `}

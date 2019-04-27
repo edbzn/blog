@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
 
-import { profileConfiguration } from '../../utils/profile-config';
 import { setPageMeta } from '../../utils/set-document-meta';
 
 export default class Home extends LitElement {
@@ -28,7 +27,7 @@ export default class Home extends LitElement {
     return html`
       <link href="assets/css/bulma.min.css" rel="stylesheet" />
       <ez-navbar></ez-navbar>
-      <ez-profile .profile="${profileConfiguration}"></ez-profile>
+      <ez-profile></ez-profile>
       <ez-page .navbar="${false}">
         <ez-article-feed></ez-article-feed>
         <ez-twitter-feed></ez-twitter-feed>

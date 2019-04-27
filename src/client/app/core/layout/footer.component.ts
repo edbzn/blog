@@ -31,7 +31,7 @@ export default class Footer extends LitElement {
   render() {
     return html`
       <footer>
-        <span>${languageService.translation.footer.credentials}</span>
+        <span>${languageService.translate(['footer', 'credentials'])}</span>
         <a
           href="/admin"
           title="Zone privilégiée"
