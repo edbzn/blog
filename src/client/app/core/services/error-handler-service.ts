@@ -22,9 +22,13 @@ class ErrorHandler {
     }
   }
 
-  throw(error: string): void {
+  throw(error: any): void {
+    if (!(error instanceof Error)) {
+      error = new Error(error);
+    }
+
     this.error = error;
-    throw new Error(error);
+    throw error;
   }
 
   throwAndRedirect(error: string): void {
