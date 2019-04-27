@@ -207,6 +207,8 @@ export default class DraftComponent extends LitElement {
       }
 
       .draft-configuration {
+        position: sticky;
+        top: 16px;
         background: #eee;
         padding: 16px;
         border-radius: 6px;
@@ -268,7 +270,7 @@ export default class DraftComponent extends LitElement {
                   <div class="columns section">
                     <div class="column is-one-third">
                       ${html`
-                        <div class="draft-configuration">
+                        <div class="draft-configuration card">
                           <div class="field">
                             <label class="label" for="title">Title</label>
                             <input
