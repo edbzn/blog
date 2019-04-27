@@ -55,18 +55,25 @@ module.exports = merge(common, {
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
+      importWorkboxFrom: 'local',
+      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4mb
       runtimeCaching: [
         {
-          urlPattern: new RegExp('https://api.codamit.com'),
+          urlPattern: new RegExp('^https://api.codamit.com/'),
           handler: 'NetworkFirst',
+          options: {
+            cacheName: 'api-cache',
+            fetchOptions: {
+              mode: 'cors',
+            },
+          },
         },
         {
-          urlPattern: new RegExp('https://www.dropbox.com'),
+          urlPattern: new RegExp('^https://www.dropbox.com/'),
           handler: 'CacheFirst',
-        },
-        {
-          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-          handler: 'CacheFirst',
+          options: {
+            cacheName: 'image-cache',
+          },
         },
       ],
     }),
