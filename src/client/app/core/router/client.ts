@@ -12,7 +12,7 @@ import {
 import { errorHandlerService } from '../services/error-handler-service';
 
 export const clientRoutes = routerGroup()
-  .use('/', async (_req, resp) => {
+  .use('/', async (req, resp) => {
     await loadHome();
 
     render(
@@ -23,7 +23,7 @@ export const clientRoutes = routerGroup()
     );
     resp.end();
   })
-  .use('/login', async (_req, resp) => {
+  .use('/login', async (req, resp) => {
     await loadLogin();
 
     render(

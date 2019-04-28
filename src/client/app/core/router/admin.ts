@@ -6,7 +6,7 @@ import { loadAdmin } from '../../../lazyload';
 import { actions, states } from '../../components/admin/draft.stream';
 
 export const adminRoutes = routerGroup()
-  .use('/', async (_req, resp) => {
+  .use('/', async (req, resp) => {
     await loadAdmin();
 
     render(
