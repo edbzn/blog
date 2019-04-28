@@ -8,6 +8,9 @@ import {
 class ScrollRestorationService {
   scrollMap = new Map<string, number>();
 
+  private RESTORATION_DELAY = 300;
+  private restorationRef: number;
+
   constructor() {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -25,11 +28,12 @@ class ScrollRestorationService {
 
   restoreScrollPosition = (navigation: ProuterNavigationEvent): void => {
     const { newPath } = navigation;
+    window.clearTimeout(this.restorationRef);
 
     if (this.scrollMap.has(newPath)) {
-      setTimeout(() => {
+      this.restorationRef = window.setTimeout(() => {
         window.scroll({ top: this.scrollMap.get(newPath) });
-      }, 300);
+      }, this.RESTORATION_DELAY);
     } else {
       window.scroll({ top: 0 });
     }

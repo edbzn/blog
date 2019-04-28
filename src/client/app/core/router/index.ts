@@ -2,7 +2,7 @@ import { browserRouter } from 'prouter';
 
 import { scrollRestorationService } from '../services';
 import { adminRoutes } from './admin';
-import { clientRoutes } from './client';
+import { publicRoutes } from './public';
 import { notFoundHandler } from './not-found-handler';
 
 export const appSelector = document.getElementById('app')!;
@@ -10,7 +10,7 @@ export const router = browserRouter();
 
 router
   .use('*', scrollRestorationService.registerScrollPosition)
-  .use('', clientRoutes)
+  .use('', publicRoutes)
   .use('/admin', adminRoutes)
   .use('*', notFoundHandler)
   .listen();

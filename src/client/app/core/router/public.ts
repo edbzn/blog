@@ -11,7 +11,7 @@ import {
 } from '../../../lazyload';
 import { errorHandlerService } from '../services/error-handler-service';
 
-export const clientRoutes = routerGroup()
+export const publicRoutes = routerGroup()
   .use('/', async (req, resp) => {
     await loadHome();
 
