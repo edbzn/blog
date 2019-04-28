@@ -1,3 +1,4 @@
+import { defaultReactions } from '../../../../server/api/article/model/article-reactions';
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
 import { Article, Draft } from './types';
 
@@ -25,6 +26,7 @@ export const initialState = (): DraftState => ({
     metaTitle: null,
     metaDescription: null,
     lang: ArticleLanguage.FR,
+    reactions: defaultReactions,
   },
   error: null,
   draftLoaded: false,

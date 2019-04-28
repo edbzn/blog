@@ -90,67 +90,6 @@ export default class ArticleDetail extends LitElement {
       .calculateRemainingHandler as EventListenerOrEventListenerObject);
   }
 
-  showArticleDetail() {
-    const article = this.article!;
-
-    return html`
-      <article class="content is-medium">
-        <header class="header">
-          ${tags(article)}
-          <span class="article-date"
-            >${format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
-              locale: languageService.dateFnsLocale,
-            })}</span
-          >
-        </header>
-        <h1 class="title">${article.title}</h1>
-        <ez-article-content .content="${article.html}"></ez-article-content>
-        <footer class="section article-footer">
-          <div class="publication">
-            ${tags(article)}
-            <span class="article-date">
-              ${translate('article_detail.published_at')}
-              ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
-                locale: languageService.dateFnsLocale,
-              })}
-              ${languageService.getLang() === 'en' ? ' ago' : null}
-            </span>
-          </div>
-          <a
-            href="/"
-            class="button is-block back-to-home"
-            @click="${(e: Event) => {
-              e.preventDefault();
-              router.push('/');
-            }}"
-          >
-            ${translate('article_detail.home_btn')}
-          </a>
-          <ez-comment articleId=${article._id}></ez-comment>
-          <div class="profile">
-            <figure
-              class="avatar"
-              style="background-image: url('/assets/images/portrait.jpg')"
-            ></figure>
-            <div class="presentation has-text-dark">
-              <strong>Edouard Bozon</strong><br />
-              <span>${translate('profile.description')}</span>
-              <div class="follow-me">
-                <iframe
-                  src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
-                  title="Follow me"
-                  width="148"
-                  height="26"
-                  style="margin-top: 12px; border: 0; overflow: hidden;"
-                ></iframe>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </article>
-    `;
-  }
-
   static get styles() {
     return css`
       :host {
@@ -277,6 +216,68 @@ export default class ArticleDetail extends LitElement {
           padding: 3rem 0.8rem;
         }
       }
+    `;
+  }
+
+  showArticleDetail() {
+    const article = this.article!;
+
+    return html`
+      <article class="content is-medium">
+        <header class="header">
+          ${tags(article)}
+          <span class="article-date"
+            >${format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+              locale: languageService.dateFnsLocale,
+            })}</span
+          >
+        </header>
+        <h1 class="title">${article.title}</h1>
+        <ez-article-content .content="${article.html}"></ez-article-content>
+        <footer class="section article-footer">
+          <div class="publication">
+            ${tags(article)}
+            <span class="article-date">
+              ${translate('article_detail.published_at')}
+              ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
+                locale: languageService.dateFnsLocale,
+              })}
+              ${languageService.getLang() === 'en' ? ' ago' : null}
+            </span>
+          </div>
+          <ez-article-reactions .article=${article}></ez-article-reactions>
+          <a
+            href="/"
+            class="button is-block back-to-home"
+            @click="${(e: Event) => {
+              e.preventDefault();
+              router.push('/');
+            }}"
+          >
+            ${translate('article_detail.home_btn')}
+          </a>
+          <ez-article-comments articleId=${article._id}></ez-article-comments>
+          <div class="profile">
+            <figure
+              class="avatar"
+              style="background-image: url('/assets/images/portrait.jpg')"
+            ></figure>
+            <div class="presentation has-text-dark">
+              <strong>Edouard Bozon</strong><br />
+              <span>${translate('profile.description')}</span>
+              <div class="follow-me">
+                <iframe
+                  src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
+                  title="Follow me"
+                  width="148"
+                  height="26"
+                  style="margin-top: 12px; border: 0; overflow: hidden;"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </article>
     `;
   }
 

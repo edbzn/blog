@@ -186,6 +186,7 @@ export default class DraftComponent extends LitElement {
       metaTitle: draft.metaTitle,
       metaDescription: draft.metaDescription,
       lang: draft.lang,
+      reactions: draft.reactions,
     };
   }
 

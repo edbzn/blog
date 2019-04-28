@@ -24,6 +24,9 @@ export const loadArticleDetail = () =>
     import(
       /* webpackChunkName: "app-article" */ './app/components/article-detail/article-content.component'
     ),
+    import(
+      /* webpackChunkName: "app-article" */ './app/components/article-detail/article-reactions.component'
+    ),
   ]);
 
 export const loadArticlesByTag = () =>

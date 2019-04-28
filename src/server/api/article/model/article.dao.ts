@@ -55,6 +55,8 @@ export namespace ArticleDao {
     article.metaTitle = body.metaTitle;
     article.metaDescription = body.metaDescription;
     article.lang = body.lang as ArticleLanguage;
+    article.slug = body.slug;
+    article.reactions = body.reactions;
 
     return from(model.create(article));
   };

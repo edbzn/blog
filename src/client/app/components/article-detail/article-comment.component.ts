@@ -192,4 +192,4 @@ export default class ArticleCommentComponent extends LitElement {
   }
 }
 
-customElements.define('ez-comment', ArticleCommentComponent);
+customElements.define('ez-article-comments', ArticleCommentComponent);
