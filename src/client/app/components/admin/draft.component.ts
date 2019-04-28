@@ -74,7 +74,7 @@ export default class DraftComponent extends LitElement {
       if (this.isDraft()) {
         const article = await this.actions.post(draft);
         const route = `/admin/draft?id=${article._id}`;
-        navigate(route);
+        navigate(route)();
       } else {
         await this.actions.update(this.state.id as string, draft as Article);
       }

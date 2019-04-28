@@ -66,7 +66,7 @@ export default class Login extends LitElement {
                       authService.login(token);
                       const user = await this.getMe();
                       authService.setUser(user);
-                      navigate('/admin');
+                      navigate('/admin')();
                     } catch (e) {
                       errorHandlerService.throw(e);
                     }
@@ -123,7 +123,7 @@ export default class Login extends LitElement {
                       authService.login(token);
                       const user = await this.getMe();
                       authService.setUser(user);
-                      navigate('/admin');
+                      navigate('/admin')();
                     } catch (e) {
                       errorHandlerService.throw(e);
                     }
