@@ -25,7 +25,7 @@ export default class Home extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       <ez-navbar></ez-navbar>
       <ez-profile></ez-profile>
       <ez-page .navbar="${false}">

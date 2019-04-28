@@ -223,7 +223,7 @@ export default class ArticleDetail extends LitElement {
     const article = this.article!;
 
     return html`
-      <article class="content is-medium">
+      <article class="content">
         <header class="header">
           ${tags(article)}
           <span class="article-date"
@@ -246,11 +246,7 @@ export default class ArticleDetail extends LitElement {
             </span>
           </div>
           <ez-article-reactions .article=${article}></ez-article-reactions>
-          <a
-            href="/"
-            class="button is-block back-to-home"
-            @click="${navigate('/')}"
-          >
+          <a href="/" class="button is-block back-to-home" @click="${navigate('/')}">
             ${translate('article_detail.home_btn')}
           </a>
           <ez-article-comments articleId=${article._id}></ez-article-comments>
@@ -280,7 +276,7 @@ export default class ArticleDetail extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       <ez-navbar></ez-navbar>
       ${this.posterUrl
         ? html`

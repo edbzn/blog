@@ -50,8 +50,8 @@ module.exports = {
           cache: true,
         },
         {
-          from: 'node_modules/bulma/css/bulma.min.css',
-          to: 'assets/css/bulma.min.css',
+          from: 'node_modules/bulma/css/bulma.css',
+          to: 'assets/css/bulma.css',
           cache: true,
         },
         {

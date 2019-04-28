@@ -6,15 +6,15 @@
   },
   "plugins": ["lit"],
   "rules": {
-    "lit/no-duplicate-template-bindings": "error",
-    "lit/no-legacy-template-syntax": "error",
-    "lit/no-template-bind": "error",
-    "lit/no-template-map": "error",
-    "lit/no-useless-template-literals": "error",
-    "lit/attribute-value-entities": "error",
-    "lit/binding-positions": "error",
-    "lit/no-property-change-update": "error",
-    "lit/no-invalid-html": "error",
-    "lit/no-value-attribute": "error"
+    "lit/no-duplicate-template-bindings": 1,
+    "lit/no-legacy-template-syntax": 1,
+    "lit/no-template-bind": 1,
+    "lit/no-template-map": 1,
+    "lit/no-useless-template-literals": 1,
+    "lit/attribute-value-entities": 1,
+    "lit/binding-positions": 1,
+    "lit/no-property-change-update": 1,
+    "lit/no-invalid-html": 1,
+    "lit/no-value-attribute": 1
   }
 }

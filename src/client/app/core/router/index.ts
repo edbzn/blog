@@ -16,5 +16,3 @@ router
   .listen();
 
 router.on('navigation', scrollRestorationService.restoreScrollPosition);
-
-

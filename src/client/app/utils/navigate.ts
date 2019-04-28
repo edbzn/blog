@@ -1,4 +1,4 @@
-import { router } from "../core/router";
+import { router } from '../core/router';
 
 // @todo params & query mapping
 export const navigate = (link: string) => (e?: Event) => {
@@ -7,4 +7,4 @@ export const navigate = (link: string) => (e?: Event) => {
   }
 
   router.push(link);
-}
+};

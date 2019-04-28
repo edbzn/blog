@@ -15,7 +15,7 @@ export default class Page extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       ${this.navbar
         ? html`
             <ez-navbar></ez-navbar>

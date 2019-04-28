@@ -5,7 +5,6 @@ import { errorHandlerService } from './error-handler-service';
 const AUTHORIZATION = 'authorization';
 
 class Authentication {
-
   user: IUser | null;
 
   authenticated = false;
@@ -48,7 +47,7 @@ class Authentication {
     this.removeCookie(name);
 
     let cookie = `${name}=` + value;
-    cookie += ';max-age=' + ((60 * 60 * 24) * 7).toString() + ';'; // 1 week
+    cookie += ';max-age=' + (60 * 60 * 24 * 7).toString() + ';'; // 1 week
     document.cookie = cookie;
   }
 

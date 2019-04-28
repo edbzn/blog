@@ -37,7 +37,7 @@ export default class Login extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       <ez-page>
         <section class="section">
           ${this.showSignup

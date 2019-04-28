@@ -51,7 +51,7 @@ export default class ProfileComponent extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       <section class="hero is-light is-medium">
         <div class="hero-body">
           <div class="profile columns is-tablet is-desktop is-vcentered is-multiline is-centered">

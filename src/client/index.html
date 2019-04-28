@@ -52,8 +52,8 @@
 
     <base href="/" />
 
-    <link href="assets/css/bulma.min.css" rel="stylesheet" />
-
+    <link href="/assets/css/bulma.css" rel="stylesheet" />
+    <link href="/assets/css/atom.css" rel="stylesheet" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-47975149-8"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -69,7 +69,7 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register(
-            'sw.js',
+            '/sw.js',
             {
               scope: '/',
             },
@@ -80,7 +80,7 @@
         });
       }
     </script>
-    <script src="assets/js/webcomponents-bundle.js"></script>
+    <script src="/assets/js/webcomponents-bundle.js"></script>
     <style>
       .holder {
         position: absolute;

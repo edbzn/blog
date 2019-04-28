@@ -100,7 +100,7 @@ export default class TwitterFeedComponent extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       ${!this.initialized
         ? html`
             <section class="section twitter">

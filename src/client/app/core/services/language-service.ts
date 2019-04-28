@@ -43,7 +43,7 @@ class LanguageService {
       (acc, property) => (acc && acc[property] ? acc[property] : null),
       this._translation
     );
-    
+
     if (!(typeof translation === 'string')) {
       console.warn(`Translation not found at path "${path.join('.')}"`);
     }

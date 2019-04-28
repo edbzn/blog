@@ -50,11 +50,7 @@ export default class NavBar extends LitElement {
   render() {
     return html`
       <nav>
-        <a
-          href="/"
-          @click=${navigate('/')}
-          >Codamit - @edouardbozon</a
-        >
+        <a href="/" @click=${navigate('/')}>Codamit - @edouardbozon</a>
         <span class="socials">
           <a title="Github profile" href="${this.githubUrl}">${github}</a>
           <a title="Twitter profile" href="${this.twitterUrl}">${twitter}</a>

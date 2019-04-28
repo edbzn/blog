@@ -89,16 +89,14 @@ export default class ArticleReactionsComponent extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
+      <link href="assets/css/bulma.css" rel="stylesheet" />
       <section class="reactions">
         ${Object.entries(this.article!.reactions.types).map(
           ([type, reaction]) => html`
             <div class="reaction">
               <button
                 .disabled="${!this.allowed[<ReactionType>type]}"
-                class="button ${!this.allowed[<ReactionType>type]
-                  ? 'is-primary'
-                  : ''} is-rounded"
+                class="button ${!this.allowed[<ReactionType>type] ? 'is-primary' : ''} is-rounded"
                 type="button is-large"
                 @click="${() => this.addReaction(type as ReactionType)}"
               >

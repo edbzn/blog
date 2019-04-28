@@ -11,7 +11,6 @@ import 'prismjs/components/prism-nginx';
 import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-typescript';
 
-
 export default class ArticleContent extends LitElement {
   @property({ type: String })
   content: string;
@@ -65,8 +64,8 @@ export default class ArticleContent extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.min.css" rel="stylesheet" />
-      <link href="assets/css/atom.css" rel="stylesheet" />
+      <link href="/assets/css/bulma.css" rel="stylesheet" />
+      <link href="/assets/css/atom.css" rel="stylesheet" />
       <div class="content is-medium">${unsafeHTML(this.content)}</div>
     `;
   }
