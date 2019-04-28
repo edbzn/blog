@@ -89,7 +89,7 @@ export default class ArticleReactionsComponent extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
+      
       <section class="reactions">
         ${Object.entries(this.article!.reactions.types).map(
           ([type, reaction]) => html`

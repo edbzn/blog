@@ -249,7 +249,7 @@ export default class DraftComponent extends LitElement {
       />
       <link href="assets/css/simplemde.css" rel="stylesheet" />
       <link href="assets/css/debug-simplemde.css" rel="stylesheet" />
-      <link href="assets/css/bulma.css" rel="stylesheet" />
+      
       <ez-navbar></ez-navbar>
       <form
         @submit="${this.handleSubmit}"

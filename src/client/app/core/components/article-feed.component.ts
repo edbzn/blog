@@ -242,7 +242,7 @@ export default class ArticleFeed extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
+      
       <section class="section feed">
         <header class="feed-header">
           <h4 class="subtitle uppercase">articles</h4>

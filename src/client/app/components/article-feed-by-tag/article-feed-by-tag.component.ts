@@ -36,7 +36,7 @@ export default class ArticlesByTagComponent extends LitElement {
     const { tag } = this;
 
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
+      
       <ez-page>
         <ez-article-feed .tags=${[tag]}></ez-article-feed>
         <section class="section last">

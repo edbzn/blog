@@ -276,7 +276,7 @@ export default class ArticleDetail extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
+      
       <ez-navbar></ez-navbar>
       ${this.posterUrl
         ? html`

@@ -5,7 +5,7 @@ import { navigate } from '../../utils/navigate';
 export default class Admin extends LitElement {
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
+      
       <style>
         :host {
           display: block;

@@ -36,13 +36,22 @@ export default class NavBar extends LitElement {
         height: 24px;
       }
 
-      a {
+      .logo-btn {
         color: rgb(180, 180, 180);
         text-decoration: none;
+        display: flex;
+        align-items: center;
       }
 
       .socials a {
         padding-left: 1rem;
+      }
+
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        margin-right: 12px;
       }
     `;
   }
@@ -50,7 +59,10 @@ export default class NavBar extends LitElement {
   render() {
     return html`
       <nav>
-        <a href="/" @click=${navigate('/')}>Codamit - @edouardbozon</a>
+        <a href="/" @click=${navigate('/')} class="logo-btn">
+          <img src="/assets/images/portrait.jpg" class="logo">
+          Codamit - @edouardbozon
+        </a>
         <span class="socials">
           <a title="Github profile" href="${this.githubUrl}">${github}</a>
           <a title="Twitter profile" href="${this.twitterUrl}">${twitter}</a>
