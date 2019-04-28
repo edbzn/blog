@@ -1,17 +1,16 @@
 import { format } from 'date-fns';
 import { css, html, LitElement, property, TemplateResult } from 'lit-element';
 
-import { translate } from '../../core/directives/translate.directive';
-import { router } from '../../core/router';
-import { apiClient } from '../../core/services/api-client';
-import { errorHandlerService } from '../../core/services/error-handler-service';
-import { languageService } from '../../core/services/language-service';
-import { placeholder } from '../../shared/placeholder';
-import { tags } from '../../shared/tags';
+import { Article } from '../../components/admin/types';
+import { translate } from '../directives/translate.directive';
+import { apiClient } from '../services/api-client';
+import { errorHandlerService } from '../services/error-handler-service';
+import { languageService } from '../services/language-service';
 import { ResourceCollection } from '../../utils/collection';
 import check from '../../utils/icons/check';
 import { navigate } from '../../utils/navigate';
-import { Article } from '../admin/types';
+import { placeholder } from '../../shared/placeholder';
+import { tags } from '../../shared/tags';
 
 export default class ArticleFeed extends LitElement {
   static get styles() {

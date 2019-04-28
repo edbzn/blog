@@ -2,13 +2,11 @@ import { html, render } from 'lit-html';
 import { routerGroup } from 'prouter';
 
 import { appSelector, router } from '.';
-import {
-  loadArticleDetail,
-  loadArticlesByTag,
-  loadError,
-  loadHome,
-  loadLogin,
-} from '../../../lazyload';
+import { loadArticleDetail } from '../../components/article-detail/lazy';
+import { loadArticlesByTag } from '../../components/article-feed-by-tag/lazy';
+import { loadError } from '../../components/error/lazy';
+import { loadHome } from '../../components/home/lazy';
+import { loadLogin } from '../../components/login/lazy';
 import { errorHandlerService } from '../services/error-handler-service';
 
 export const publicRoutes = routerGroup()

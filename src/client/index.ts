@@ -1,3 +1,3 @@
 import './app/core/services';
 import './app/core/router';
-import './app/core/layout';
+import './app/core/components';

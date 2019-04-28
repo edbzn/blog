@@ -2,8 +2,8 @@ import { html, render } from 'lit-html';
 import { routerGroup } from 'prouter';
 
 import { appSelector } from '.';
-import { loadAdmin } from '../../../lazyload';
 import { actions, states } from '../../components/admin/draft.stream';
+import { loadAdmin } from '../../components/admin/lazy';
 
 export const adminRoutes = routerGroup()
   .use('/', async (req, resp) => {
