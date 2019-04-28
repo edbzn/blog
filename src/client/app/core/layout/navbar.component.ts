@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit-element';
 
 import github from '../../utils/icons/github';
 import twitter from '../../utils/icons/twitter';
-import { router } from '../router';
+import { navigate } from '../../utils/navigate';
 
 export default class NavBar extends LitElement {
   twitterUrl = 'https://twitter.com/edouardbozon';
@@ -52,10 +52,7 @@ export default class NavBar extends LitElement {
       <nav>
         <a
           href="/"
-          @click=${(e: Event) => {
-            e.preventDefault();
-            router.push('/');
-          }}
+          @click=${navigate('/')}
           >Codamit - @edouardbozon</a
         >
         <span class="socials">

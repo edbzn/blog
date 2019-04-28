@@ -1,7 +1,7 @@
 import { css, html, LitElement, property } from 'lit-element';
 
 import { translate } from '../../core/directives/translate.directive';
-import { router } from '../../core/router';
+import { navigate } from '../../utils/navigate';
 import { setPageMeta } from '../../utils/set-document-meta';
 
 export default class ArticlesByTagComponent extends LitElement {
@@ -40,14 +40,7 @@ export default class ArticlesByTagComponent extends LitElement {
       <ez-page>
         <ez-article-feed .tags=${[tag]}></ez-article-feed>
         <section class="section last">
-          <a
-            href="/"
-            class="button is-block"
-            @click="${(e: Event) => {
-              e.preventDefault();
-              router.push('/');
-            }}"
-          >
+          <a href="/" class="button is-block" @click="${navigate('/')}">
             ${translate('article_feed_by_tag.home_btn')}
           </a>
         </section>

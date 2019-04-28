@@ -2,10 +2,10 @@ import { css, html, LitElement } from 'lit-element';
 
 import { CredentialsPayload } from '../../../../server/api/authentication/effects/login.effect';
 import { UserPayload } from '../../../../server/api/authentication/effects/signup.effect';
-import { router } from '../../core/router';
 import { apiClient } from '../../core/services/api-client';
 import { authService } from '../../core/services/authentication-service';
 import { errorHandlerService } from '../../core/services/error-handler-service';
+import { navigate } from '../../utils/navigate';
 import { IUser } from './types';
 
 export default class Login extends LitElement {
@@ -66,7 +66,7 @@ export default class Login extends LitElement {
                       authService.login(token);
                       const user = await this.getMe();
                       authService.setUser(user);
-                      router.push('/admin');
+                      navigate('/admin');
                     } catch (e) {
                       errorHandlerService.throw(e);
                     }
@@ -123,7 +123,7 @@ export default class Login extends LitElement {
                       authService.login(token);
                       const user = await this.getMe();
                       authService.setUser(user);
-                      router.push('/admin');
+                      navigate('/admin');
                     } catch (e) {
                       errorHandlerService.throw(e);
                     }

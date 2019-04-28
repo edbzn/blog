@@ -2,13 +2,13 @@ import { distanceInWords, format } from 'date-fns';
 import { css, html, LitElement, property } from 'lit-element';
 
 import { translate } from '../../core/directives/translate.directive';
-import { router } from '../../core/router';
 import { apiClient } from '../../core/services/api-client';
 import { errorHandlerService } from '../../core/services/error-handler-service';
 import { languageService } from '../../core/services/language-service';
 import { placeholder } from '../../shared/placeholder';
 import { tags } from '../../shared/tags';
 import { debounce } from '../../utils/debounce';
+import { navigate } from '../../utils/navigate';
 import { setPageMeta } from '../../utils/set-document-meta';
 import { Article } from '../admin/types';
 
@@ -249,10 +249,7 @@ export default class ArticleDetail extends LitElement {
           <a
             href="/"
             class="button is-block back-to-home"
-            @click="${(e: Event) => {
-              e.preventDefault();
-              router.push('/');
-            }}"
+            @click="${navigate('/')}"
           >
             ${translate('article_detail.home_btn')}
           </a>

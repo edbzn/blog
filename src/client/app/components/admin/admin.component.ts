@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit-element';
 
-import { router } from '../../core/router';
+import { navigate } from '../../utils/navigate';
 
 export default class Admin extends LitElement {
   render() {
@@ -18,10 +18,7 @@ export default class Admin extends LitElement {
             class="button is-primary block"
             href="/admin/draft"
             title="Start writing"
-            @click=${(e: Event) => {
-              e.preventDefault();
-              router.push(`/admin/draft`);
-            }}
+            @click=${navigate(`/admin/draft`)}
           >
             Start a new draft
           </a>

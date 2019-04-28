@@ -2,9 +2,9 @@ import * as flyd from 'flyd';
 import { css, html, LitElement, property } from 'lit-element';
 
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
-import { router } from '../../core/router';
 import { errorHandlerService } from '../../core/services/error-handler-service';
 import { slugify } from '../../shared/slugify';
+import { navigate } from '../../utils/navigate';
 import { DraftActions } from './draft.actions';
 import { DraftState } from './draft.initialState';
 import { Article, Draft } from './types';
@@ -74,7 +74,7 @@ export default class DraftComponent extends LitElement {
       if (this.isDraft()) {
         const article = await this.actions.post(draft);
         const route = `/admin/draft?id=${article._id}`;
-        router.push(route);
+        navigate(route);
       } else {
         await this.actions.update(this.state.id as string, draft as Article);
       }
@@ -400,10 +400,7 @@ export default class DraftComponent extends LitElement {
                                     class="button is-primary is-block"
                                     href="${articleUri}"
                                     title="Lire ${this.state.draft.title}"
-                                    @click="${(e: Event) => {
-                                      e.preventDefault();
-                                      router.push(articleUri as string);
-                                    }}"
+                                    @click="${navigate(articleUri!)}"
                                   >
                                     👁 Prévisualisation
                                   </a>

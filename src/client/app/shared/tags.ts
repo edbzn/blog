@@ -1,7 +1,7 @@
 import { html } from 'lit-element';
 
 import { Article } from '../components/admin/types';
-import { router } from '../core/router';
+import { navigate } from '../utils/navigate';
 
 export const tags = (article: Article, adminMode = false) => html`
   <style>
@@ -23,10 +23,7 @@ export const tags = (article: Article, adminMode = false) => html`
           <a
             href="/tag/${tag}"
             ?title=${tag + ' articles'}
-            @click="${(e: Event) => {
-              e.preventDefault();
-              router.push(`/tag/${tag}`);
-            }}"
+            @click="${navigate(`/tag/${tag}`)}"
             class="article-tag tag is-light"
           >
             ${tag}

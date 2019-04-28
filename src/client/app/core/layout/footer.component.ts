@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit-element';
 
 import heart from '../../utils/icons/heart';
+import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
-import { router } from '../router';
 import { authService } from '../services/authentication-service';
 
 export default class Footer extends LitElement {
@@ -35,10 +35,7 @@ export default class Footer extends LitElement {
         <a
           href="/admin"
           title="Zone privilégiée"
-          @click=${(e: Event) => {
-            e.preventDefault();
-            router.push(authService.authenticated ? '/admin' : '/login');
-          }}
+          @click=${navigate(authService.authenticated ? '/admin' : '/login')}
         >
           <i class="heart">${heart}</i>
         </a>

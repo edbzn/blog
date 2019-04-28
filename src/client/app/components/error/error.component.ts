@@ -3,6 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import { translate } from '../../core/directives/translate.directive';
 import { router } from '../../core/router';
+import { navigate } from '../../utils/navigate';
 
 export default class Error extends LitElement {
   @property({ type: String })
@@ -34,24 +35,7 @@ export default class Error extends LitElement {
           <div class="notification is-danger">
             ${unsafeHTML(this.message)}
           </div>
-          <a
-            class="button"
-            href=""
-            @click=${(e: Event) => {
-              e.preventDefault();
-              window.history.back();
-            }}
-          >
-            ${translate('error.go_back')}
-          </a>
-          <a
-            class="button"
-            href="/"
-            @click=${(e: Event) => {
-              e.preventDefault();
-              router.push('/');
-            }}
-          >
+          <a class="button" href="/" @click=${navigate('/')}>
             ${translate('error.go_home')}
           </a>
         </section>

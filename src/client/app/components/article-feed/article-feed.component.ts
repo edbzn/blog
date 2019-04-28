@@ -10,6 +10,7 @@ import { placeholder } from '../../shared/placeholder';
 import { tags } from '../../shared/tags';
 import { ResourceCollection } from '../../utils/collection';
 import check from '../../utils/icons/check';
+import { navigate } from '../../utils/navigate';
 import { Article } from '../admin/types';
 
 export default class ArticleFeed extends LitElement {
@@ -210,10 +211,7 @@ export default class ArticleFeed extends LitElement {
               class="card-footer-item"
               href="${articleUri}"
               title="${translate('article_feed.read')} ${article.title}"
-              @click="${(e: Event) => {
-                e.preventDefault();
-                router.push(`${articleUri}`);
-              }}"
+              @click="${navigate(articleUri)}"
             >
               ${translate('article_feed.read')}
             </a>
@@ -223,11 +221,7 @@ export default class ArticleFeed extends LitElement {
                     class="card-footer-item"
                     href="${`/admin/draft?id=${article._id}`}"
                     title="${translate('article_feed.edit')} ${article.title}"
-                    @click="${(e: Event) => {
-                      e.preventDefault();
-                      const url = `/admin/draft?id=${article._id}`;
-                      router.push(url);
-                    }}"
+                    @click="${navigate(`/admin/draft?id=${article._id}`)}"
                   >
                     ${translate('article_feed.edit')}
                   </a>

@@ -1,12 +1,9 @@
 import { html, render } from 'lit-html';
 import { routerGroup } from 'prouter';
 
-import { appSelector, router } from '.';
+import { appSelector } from '.';
 import { loadAdmin } from '../../../lazyload';
 import { actions, states } from '../../components/admin/draft.stream';
-import { unAuthenticatedErrorMsg } from '../../utils/unauthenticated-error';
-import { authService } from '../services/authentication-service';
-import { errorHandlerService } from '../services/error-handler-service';
 
 export const adminRoutes = routerGroup()
   .use('/', async (_req, resp) => {
@@ -35,13 +32,4 @@ export const adminRoutes = routerGroup()
       appSelector
     );
     resp.end();
-  })
-  .use('*', (_req, resp, next) => {
-    if (!authService.authenticated) {
-      errorHandlerService.throw(unAuthenticatedErrorMsg);
-      router.push('/error');
-      resp.end();
-      return;
-    }
-    next();
   });
