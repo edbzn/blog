@@ -1,5 +1,6 @@
 import * as enLocale from 'date-fns/locale/en';
 import * as frLocale from 'date-fns/locale/fr';
+import { ProuterNextMiddleware, ProuterRequest, ProuterResponse } from 'prouter';
 
 import { errorHandlerService } from './error-handler-service';
 
@@ -23,13 +24,6 @@ class LanguageService {
   constructor() {
     const lang = navigator.language.split('-')[0];
     this.lang = lang.match(/[en|fr]/) ? (lang as Language) : this.default;
-    this.loadLang()
-      .then(translation => {
-        this._translation = translation;
-        this._dateFnsLocale = this.lang === 'fr' ? frLocale : enLocale;
-        this.languageLoaded = true;
-      })
-      .catch(err => errorHandlerService.throw(err));
   }
 
   translate(path: (string | number)[]): string | undefined {
@@ -55,8 +49,24 @@ class LanguageService {
     return this.lang;
   }
 
-  private loadLang() {
-    return import(`../../i18n/${this.lang}.json`);
+  loadLangMiddleware = async (
+    req: ProuterRequest,
+    res: ProuterResponse,
+    next: ProuterNextMiddleware
+  ) => {
+    await this.loadLang();
+    next();
+  };
+
+  private async loadLang() {
+    try {
+      const translation = await import(`../../i18n/${this.lang}.json`);
+      this._translation = translation;
+      this._dateFnsLocale = this.lang === 'fr' ? frLocale : enLocale;
+      this.languageLoaded = true;
+    } catch (error) {
+      errorHandlerService.throw(error);
+    }
   }
 }
 
