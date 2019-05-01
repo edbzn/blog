@@ -22,7 +22,7 @@
         ]
       },
       {
-        "source": "**/*.@(js|css)",
+        "source": "/sw.js",
         "headers": [
           {
             "key": "Cache-Control",
@@ -34,9 +34,7 @@
   },
   "alias": [
     "codamit.com",
-    "www.codamit.com",
-    "blog.codamit.com",
-    "www.blog.codamit.com"
+    "www.codamit.com"
   ],
   "files": ["dist/client"]
 }
