@@ -84,7 +84,7 @@
     "@typescript-eslint/parser": "1.7.0",
     "babel-loader": "8.0.5",
     "babel-plugin-template-html-minifier": "2.3.0",
-    "clean-webpack-plugin": "2.0.1",
+    "clean-webpack-plugin": "2.0.2",
     "concurrently": "4.1.0",
     "copy-webpack-plugin": "5.0.3",
     "css-loader": "2.1.1",
