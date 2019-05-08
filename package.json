@@ -43,7 +43,7 @@
     "@marblejs/middleware-jwt": "2.1.0",
     "@marblejs/middleware-logger": "2.1.0",
     "@marblejs/middleware-cors": "2.1.0",
-    "@sentry/browser": "5.1.1",
+    "@sentry/browser": "5.2.0",
     "@webcomponents/webcomponentsjs": "2.2.10",
     "anchorme": "1.1.2",
     "bcrypt": "3.0.6",
