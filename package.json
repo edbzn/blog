@@ -39,7 +39,7 @@
     "@akanass/rx-http-request": "3.1.0",
     "@marblejs/core": "2.1.0",
     "@marblejs/middleware-body": "2.1.0",
-    "@marblejs/middleware-io": "2.1.0",
+    "@marblejs/middleware-io": "2.1.1",
     "@marblejs/middleware-jwt": "2.1.0",
     "@marblejs/middleware-logger": "2.1.0",
     "@marblejs/middleware-cors": "2.1.0",
