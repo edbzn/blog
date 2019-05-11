@@ -6,9 +6,10 @@ export default class ProfileComponent extends LitElement {
   static get styles() {
     return css`
       section {
-        padding: 8rem 0;
-        padding-top: 3.2rem;
-        background: linear-gradient(rgb(233, 233, 233), 80%, white);
+        padding: 5rem 0;
+        margin-bottom: 42px;
+        background: #eee;
+        font-family: 'IBM Plex Sans', sans-serif;
       }
 
       .page-wrapper {
@@ -21,15 +22,26 @@ export default class ProfileComponent extends LitElement {
       }
 
       .title {
+        margin: 0;
         font-size: 2.6em;
+        line-height: 80px;
+      }
+
+      .me,
+      .job {
+        display: block;
       }
 
       .subtitle {
+        margin-top: 36px;
         font-size: 1.2em;
+        font-weight: 400;
       }
 
       .job {
-        font-size: 6rem;
+        margin-left: -11px;
+        font-size: 9rem;
+        font-weight: 400;
       }
     `;
   }
@@ -39,7 +51,7 @@ export default class ProfileComponent extends LitElement {
       <section>
         <div class="page-wrapper">
           <h1 class="title">
-            Edouard Bozon <br>
+            <span class="me">Edouard Bozon</span>
             <span class="job">Developer</span>
           </h1>
           <h2 class="subtitle">

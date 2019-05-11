@@ -11,7 +11,7 @@ import 'prismjs/components/prism-nginx';
 import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-typescript';
 
-export default class ArticleContent extends LitElement {
+export default class ArticleContentComponent extends LitElement {
   @property({ type: String })
   content: string;
 
@@ -25,10 +25,12 @@ export default class ArticleContent extends LitElement {
     return css`
       :host {
         display: block;
+        font-size: 1.3rem;
       }
 
       pre[class*='language-'] {
         margin: 2em 0 !important;
+        line-height: 1.1;
       }
 
       :not(pre) > code[class*='language-'],
@@ -52,6 +54,16 @@ export default class ArticleContent extends LitElement {
         vertical-align: inherit;
       }
 
+      code {
+        font-size: 1rem;
+      }
+
+      blockquote {
+        font-family: 'IBM Plex Serif', serif;
+        font-style: italic;
+        margin: 3rem 3rem;
+      }
+
       :not(pre) > code[class*='language-'] {
         background: rgba(255, 229, 100, 0.2) !important;
         text-shadow: none;
@@ -64,11 +76,10 @@ export default class ArticleContent extends LitElement {
 
   render() {
     return html`
-      <link href="/assets/css/bulma.css" rel="stylesheet" />
       <link href="/assets/css/atom.css" rel="stylesheet" />
-      <div class="content is-medium">${unsafeHTML(this.content)}</div>
+      <div class="content">${unsafeHTML(this.content)}</div>
     `;
   }
 }
 
-customElements.define('ez-article-content', ArticleContent);
+customElements.define('ez-article-content', ArticleContentComponent);

@@ -66,9 +66,11 @@ export default class TwitterFeedComponent extends LitElement {
 
   static get styles() {
     return css`
-      .uppercase {
+      .subtitle {
         text-transform: uppercase;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
       }
+
       .retweet svg,
       .heart svg {
         width: 18px;
@@ -100,11 +102,10 @@ export default class TwitterFeedComponent extends LitElement {
 
   render() {
     return html`
-      
       ${!this.initialized
         ? html`
             <section class="section twitter">
-              <h4 class="subtitle uppercase">tweets</h4>
+              <h4 class="subtitle">tweets</h4>
               ${placeholder({
                 count: 4,
                 minLines: 1,

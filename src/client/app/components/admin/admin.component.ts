@@ -5,7 +5,6 @@ import { navigate } from '../../utils/navigate';
 export default class Admin extends LitElement {
   render() {
     return html`
-      
       <style>
         :host {
           display: block;

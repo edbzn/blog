@@ -37,7 +37,6 @@ export default class Login extends LitElement {
 
   render() {
     return html`
-      
       <ez-page>
         <section class="section">
           ${this.showSignup

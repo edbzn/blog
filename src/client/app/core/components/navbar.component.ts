@@ -60,7 +60,7 @@ export default class NavBar extends LitElement {
     return html`
       <nav>
         <a href="/" @click=${navigate('/')} class="logo-btn">
-          <img src="/assets/images/portrait.jpg" class="logo">
+          <img src="/assets/images/portrait.jpg" class="logo" />
           Codamit - @edouardbozon
         </a>
         <span class="socials">

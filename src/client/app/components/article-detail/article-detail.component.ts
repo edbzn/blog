@@ -104,8 +104,12 @@ export default class ArticleDetail extends LitElement {
         background-position: center center;
       }
 
+      figure {
+        margin: 0;
+      }
+
       .content .title {
-        font-size: 3.2em;
+        font-size: 3.4em;
       }
 
       .header {
@@ -156,6 +160,10 @@ export default class ArticleDetail extends LitElement {
         font-size: 14px;
       }
 
+      .content {
+        margin-top: 40px;
+      }
+
       .content .publication {
         display: flex;
         align-items: center;
@@ -183,6 +191,7 @@ export default class ArticleDetail extends LitElement {
 
       .time-remaining > div {
         height: 4px;
+        background-color: #40a8ff;
         transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
       }
 
@@ -229,12 +238,12 @@ export default class ArticleDetail extends LitElement {
           <span class="article-date"
             >${format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
               locale: languageService.dateFnsLocale,
-            })}</span
-          >
+            })}
+          </span>
         </header>
         <h1 class="title">${article.title}</h1>
         <ez-article-content .content="${article.html}"></ez-article-content>
-        <footer class="section article-footer">
+        <footer class="article-footer">
           <div class="publication">
             ${tags(article)}
             <span class="article-date">
@@ -246,29 +255,11 @@ export default class ArticleDetail extends LitElement {
             </span>
           </div>
           <ez-article-reactions .article=${article}></ez-article-reactions>
-          <a href="/" class="button is-block back-to-home" @click="${navigate('/')}">
+          <a href="/" class="button back-to-home" @click="${navigate('/')}">
             ${translate('article_detail.home_btn')}
           </a>
           <ez-article-comments articleId=${article._id}></ez-article-comments>
-          <div class="profile">
-            <figure
-              class="avatar"
-              style="background-image: url('/assets/images/portrait.jpg')"
-            ></figure>
-            <div class="presentation has-text-dark">
-              <strong>Edouard Bozon</strong><br />
-              <span>${translate('profile.description')}</span>
-              <div class="follow-me">
-                <iframe
-                  src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
-                  title="Follow me"
-                  width="148"
-                  height="26"
-                  style="margin-top: 12px; border: 0; overflow: hidden;"
-                ></iframe>
-              </div>
-            </div>
-          </div>
+          <ez-article-author></ez-article-author>
         </footer>
       </article>
     `;
@@ -276,7 +267,6 @@ export default class ArticleDetail extends LitElement {
 
   render() {
     return html`
-      
       <ez-navbar></ez-navbar>
       ${this.posterUrl
         ? html`
@@ -286,10 +276,10 @@ export default class ArticleDetail extends LitElement {
             <div class="poster"></div>
           `}
       <div class="time-remaining">
-        <div class="has-background-info" style="width: ${this.percentRemaining + '%'};"></div>
+        <div style="width: ${this.percentRemaining + '%'};"></div>
       </div>
       <ez-page .navbar="${false}">
-        <section class="section meta-container">
+        <section class="meta-container">
           ${this.article
             ? this.showArticleDetail()
             : placeholder({

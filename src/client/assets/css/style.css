@@ -4,5 +4,6 @@ html, body {
 }
 
 body {
-  font-family: Georgia, Cambria, sans-serif;
+  font-family: 'IBM Plex Serif', Cambria, sans-serif;
+  color: #111;
 }

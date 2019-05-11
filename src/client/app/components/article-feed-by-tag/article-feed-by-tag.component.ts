@@ -36,7 +36,6 @@ export default class ArticlesByTagComponent extends LitElement {
     const { tag } = this;
 
     return html`
-      
       <ez-page>
         <ez-article-feed .tags=${[tag]}></ez-article-feed>
         <section class="section last">

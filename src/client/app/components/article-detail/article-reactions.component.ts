@@ -89,7 +89,6 @@ export default class ArticleReactionsComponent extends LitElement {
 
   render() {
     return html`
-      
       <section class="reactions">
         ${Object.entries(this.article!.reactions.types).map(
           ([type, reaction]) => html`

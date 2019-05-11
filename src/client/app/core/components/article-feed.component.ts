@@ -15,60 +15,92 @@ import { tags } from '../../shared/tags';
 export default class ArticleFeed extends LitElement {
   static get styles() {
     return css`
-      .uppercase {
+      .subtitle {
         text-transform: uppercase;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
       }
+
       .poster {
         height: 200px;
+        margin: 0;
         background-color: #eee;
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
       }
+
       .card {
         margin-bottom: 1.5rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
       }
+
       .card:last-child {
         margin-bottom: 0;
       }
+
       .article-date {
         margin-right: 12px;
         font-weight: 100;
         text-transform: capitalize;
       }
-      .card-header-title {
-        justify-content: space-between;
+
+      .card-header {
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
       }
+
+      .card-header-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+      }
+
+      .card-header,
+      .card-content,
+      .card-footer {
+        padding: 12px;
+      }
+
       .lang {
         font-size: 12px;
         margin-right: 4px;
       }
+
       .load-complete {
         width: 24px;
       }
+
       .load-more {
         height: 62px;
       }
+
       .feed-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1.5rem;
       }
+
       .feed-header h4 {
         margin-bottom: 0 !important;
       }
+
       .feed-header .tag {
         text-transform: capitalize;
       }
+
       @media screen and (max-width: 600px) {
         .feed .card-header-title {
           align-items: initial;
           flex-direction: column;
         }
+
         .card-header-title .article-date {
           margin-bottom: 4px;
         }
+
         .feed.section {
           padding: 2rem 0.8rem;
         }
@@ -180,7 +212,7 @@ export default class ArticleFeed extends LitElement {
 
       return html`
         <article class="card">
-          <header class="card-header article-header">
+          <header class="card-header">
             <p class="card-header-title">
               <span class="article-date">
                 <span class="lang">[${article.lang.toUpperCase()}]</span>
@@ -242,10 +274,9 @@ export default class ArticleFeed extends LitElement {
 
   render() {
     return html`
-      
-      <section class="section feed">
+      <section class="section">
         <header class="feed-header">
-          <h4 class="subtitle uppercase">articles</h4>
+          <h4 class="subtitle">articles</h4>
           ${this.tags.length > 0
             ? html`
                 <span class="tag is-primary is-medium">${this.tags[0]}</span>

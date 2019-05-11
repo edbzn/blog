@@ -107,7 +107,6 @@ export default class ArticleCommentComponent extends LitElement {
 
   render() {
     return html`
-      
       <div>
         <button
           type="button"
@@ -123,47 +122,51 @@ export default class ArticleCommentComponent extends LitElement {
         </button>
         ${this.showEditor
           ? html`
-                <form name="postComment" @submit=${this.postComment} @input=${() =>
-              this.update(new Map())}>
-                  ${
-                    this.error
-                      ? html`
-                          <div class="notification is-danger">
-                            <button
-                              class="delete"
-                              @click="${() => {
-                                this.error = null;
-                                this.requestUpdate();
-                              }}"
-                            ></button>
-                            ${this.error}
-                          </div>
-                        `
-                      : null
-                  }
-                  <div class="field">
-                    <label for="name">${translate('article_detail.name_label')}</label
-                    <div class="control">
-                      <input class="input" name="name" id="name" type="text" required />
-                    </div>
+              <form
+                name="postComment"
+                @submit=${this.postComment}
+                @input=${() => this.update(new Map())}
+              >
+                ${this.error
+                  ? html`
+                      <div class="notification is-danger">
+                        <button
+                          class="delete"
+                          @click="${() => {
+                            this.error = null;
+                            this.requestUpdate();
+                          }}"
+                        ></button>
+                        ${this.error}
+                      </div>
+                    `
+                  : null}
+                <div class="field">
+                  <label for="name">${translate('article_detail.name_label')}</label>
+                  <div class="control">
+                    <input class="input" name="name" id="name" type="text" required />
                   </div>
-                  <div class="field">
-                    <label for="comment">${translate('article_detail.comment_label')}</label
-                    <div class="control">
-                      <textarea class="textarea ${
-                        this.loading
-                          ? html`
-                              is-loading
-                            `
-                          : null
-                      }" name="comment" id="comment" required></textarea>
-                    </div>
+                </div>
+                <div class="field">
+                  <label for="comment">${translate('article_detail.comment_label')}</label>
+                  <div class="control">
+                    <textarea
+                      class="textarea ${this.loading
+                        ? html`
+                            is-loading
+                          `
+                        : null}"
+                      name="comment"
+                      id="comment"
+                      required
+                    ></textarea>
                   </div>
-                  <button type="submit" ?disabled=${!this.isFormValid()} class="button">
-                    ${translate('article_detail.comment_btn')}
-                  </button>
-                </form>
-              `
+                </div>
+                <button type="submit" ?disabled=${!this.isFormValid()} class="button">
+                  ${translate('article_detail.comment_btn')}
+                </button>
+              </form>
+            `
           : null}
         <section class="comments">
           ${this.commentCollection !== null
