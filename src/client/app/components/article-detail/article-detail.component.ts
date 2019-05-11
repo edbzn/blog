@@ -98,7 +98,7 @@ export default class ArticleDetail extends LitElement {
       }
 
       .poster {
-        height: 50vh;
+        height: 45vh;
         background-color: #eee;
         background-size: cover;
         background-position: center center;
@@ -154,7 +154,7 @@ export default class ArticleDetail extends LitElement {
         font-size: 0.8em;
       }
 
-      .article-date {
+      .date {
         text-transform: capitalize;
         font-weight: 100;
         font-size: 14px;
@@ -171,7 +171,7 @@ export default class ArticleDetail extends LitElement {
         margin-bottom: 3rem;
       }
 
-      .content .publication .article-date {
+      .content .publication .date {
         text-transform: initial;
       }
 
@@ -181,7 +181,7 @@ export default class ArticleDetail extends LitElement {
         padding-right: 0;
       }
 
-      .time-remaining {
+      .timeline {
         height: 4px;
         position: sticky;
         top: 0;
@@ -189,7 +189,7 @@ export default class ArticleDetail extends LitElement {
         background: rgba(155, 155, 155, 0.48);
       }
 
-      .time-remaining > div {
+      .timeline > div {
         height: 4px;
         background-color: #40a8ff;
         transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
@@ -218,10 +218,10 @@ export default class ArticleDetail extends LitElement {
           align-items: initial;
           flex-direction: column-reverse;
         }
-        .article-date {
+        .date {
           margin-bottom: 4px;
         }
-        .meta-container.section {
+        .container.section {
           padding: 3rem 0.8rem;
         }
       }
@@ -235,8 +235,8 @@ export default class ArticleDetail extends LitElement {
       <article class="content">
         <header class="header">
           ${tags(article)}
-          <span class="article-date"
-            >${format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+          <span class="date"
+            >${format(new Date(article.publishedAt!), 'dddd DD MMMM YYYY', {
               locale: languageService.dateFnsLocale,
             })}
           </span>
@@ -246,9 +246,9 @@ export default class ArticleDetail extends LitElement {
         <footer class="article-footer">
           <div class="publication">
             ${tags(article)}
-            <span class="article-date">
+            <span class="date">
               ${translate('article_detail.published_at')}
-              ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
+              ${distanceInWords(new Date(article.publishedAt!), new Date(), {
                 locale: languageService.dateFnsLocale,
               })}
               ${languageService.getLang() === 'en' ? ' ago' : null}
@@ -275,11 +275,11 @@ export default class ArticleDetail extends LitElement {
         : html`
             <div class="poster"></div>
           `}
-      <div class="time-remaining">
+      <div class="timeline">
         <div style="width: ${this.percentRemaining + '%'};"></div>
       </div>
       <ez-page .navbar="${false}">
-        <section class="meta-container">
+        <section class="container">
           ${this.article
             ? this.showArticleDetail()
             : placeholder({

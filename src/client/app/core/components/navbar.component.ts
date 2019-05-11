@@ -23,6 +23,7 @@ export default class NavBar extends LitElement {
         box-sizing: border-box;
         color: rgb(180, 180, 180);
         background: rgb(34, 34, 34);
+        font-family: 'IBM Plex Sans', sans-serif;
       }
 
       h1 {
@@ -61,7 +62,7 @@ export default class NavBar extends LitElement {
       <nav>
         <a href="/" @click=${navigate('/')} class="logo-btn">
           <img src="/assets/images/portrait.jpg" class="logo" />
-          Codamit - @edouardbozon
+          Codamit - Tech Blog
         </a>
         <span class="socials">
           <a title="Github profile" href="${this.githubUrl}">${github}</a>

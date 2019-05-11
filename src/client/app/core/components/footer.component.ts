@@ -15,7 +15,8 @@ export default class Footer extends LitElement {
         box-sizing: border-box;
         padding: 2rem;
         color: #313131;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+        font-family: 'IBM Plex Sans', sans-serif;
       }
 
       .heart svg {

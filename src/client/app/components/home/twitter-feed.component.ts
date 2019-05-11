@@ -26,9 +26,9 @@ export default class TwitterFeedComponent extends LitElement {
   showTweets(): TemplateResult[] {
     return this.tweets.statuses.map(
       (tweet: any) => html`
-        <div class="box">
-          <article class="media">
-            <div class="media-content">
+        
+          <article class="card">
+            <div class="card-content">
               <div class="content">
                 <header>
                   <strong>${tweet.user.name}</strong>
@@ -59,7 +59,6 @@ export default class TwitterFeedComponent extends LitElement {
               </div>
             </div>
           </article>
-        </div>
       `
     );
   }
@@ -88,12 +87,22 @@ export default class TwitterFeedComponent extends LitElement {
         margin-right: 10px;
       }
 
-      .section.twitter {
+      .twitter {
         padding-top: 0;
       }
 
+      .card {
+        margin-bottom: 1.5rem;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+
+      .card-content {
+        padding: 12px;
+      }
+
       @media screen and (max-width: 600px) {
-        .twitter.section {
+        .twitter {
           padding: 1rem 0.8rem;
         }
       }
@@ -104,7 +113,7 @@ export default class TwitterFeedComponent extends LitElement {
     return html`
       ${!this.initialized
         ? html`
-            <section class="section twitter">
+            <section class="twitter">
               <h4 class="subtitle">tweets</h4>
               ${placeholder({
                 count: 4,
@@ -117,7 +126,7 @@ export default class TwitterFeedComponent extends LitElement {
           `
         : this.initialized && this.tweets.statuses.length > 0
         ? html`
-            <section class="section twitter">
+            <section class="twitter">
               <h4 class="subtitle uppercase">tweets</h4>
               ${this.showTweets()}
             </section>

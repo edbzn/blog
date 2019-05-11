@@ -13,7 +13,7 @@ export default class ProfileComponent extends LitElement {
       }
 
       .page-wrapper {
-        max-width: 780px !important;
+        max-width: 780px;
         margin: 0px auto;
       }
 
@@ -23,25 +23,13 @@ export default class ProfileComponent extends LitElement {
 
       .title {
         margin: 0;
-        font-size: 2.6em;
-        line-height: 80px;
-      }
-
-      .me,
-      .job {
-        display: block;
+        font-size: 2.6rem;
       }
 
       .subtitle {
-        margin-top: 36px;
-        font-size: 1.2em;
-        font-weight: 400;
-      }
-
-      .job {
-        margin-left: -11px;
-        font-size: 9rem;
-        font-weight: 400;
+        margin-top: 0px;
+        font-size: 2rem;
+        font-weight: 100;
       }
     `;
   }
@@ -50,10 +38,7 @@ export default class ProfileComponent extends LitElement {
     return html`
       <section>
         <div class="page-wrapper">
-          <h1 class="title">
-            <span class="me">Edouard Bozon</span>
-            <span class="job">Developer</span>
-          </h1>
+          <h1 class="title">Edouard Bozon</h1>
           <h2 class="subtitle">
             ${translate('profile.description')}
           </h2>

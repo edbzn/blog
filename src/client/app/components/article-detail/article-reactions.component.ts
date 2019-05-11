@@ -7,7 +7,7 @@ import { Article } from '../admin/types';
 const createReactionKey = (article: Article, reaction: ReactionType) =>
   'reaction_' + article._id + '_' + reaction;
 
-const allowed = (article: Article, reaction: ReactionType) =>
+const isAllowed = (article: Article, reaction: ReactionType) =>
   localStorage.getItem(createReactionKey(article, reaction)) === null;
 
 const disallow = (article: Article, reaction: ReactionType) =>
@@ -26,14 +26,14 @@ export default class ArticleReactionsComponent extends LitElement {
 
   firstUpdated() {
     this.allowed = {
-      heart: allowed(this.article, 'heart'),
-      unicorn: allowed(this.article, 'unicorn'),
-      mark: allowed(this.article, 'mark'),
+      heart: isAllowed(this.article, 'heart'),
+      unicorn: isAllowed(this.article, 'unicorn'),
+      mark: isAllowed(this.article, 'mark'),
     };
   }
 
   async addReaction(reaction: ReactionType): Promise<void> {
-    if (!allowed(this.article, reaction)) {
+    if (!isAllowed(this.article, reaction)) {
       return;
     }
 

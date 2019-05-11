@@ -23,6 +23,7 @@ export default class ArticlesByTagComponent extends LitElement {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
       }
+
       @media screen and (max-width: 600px) {
         .last {
           padding: 2rem 0.8rem;
@@ -39,7 +40,7 @@ export default class ArticlesByTagComponent extends LitElement {
       <ez-page>
         <ez-article-feed .tags=${[tag]}></ez-article-feed>
         <section class="section last">
-          <a href="/" class="button is-block" @click="${navigate('/')}">
+          <a href="/" class="button" @click="${navigate('/')}">
             ${translate('article_feed_by_tag.home_btn')}
           </a>
         </section>

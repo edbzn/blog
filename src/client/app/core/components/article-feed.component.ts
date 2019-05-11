@@ -27,6 +27,11 @@ export default class ArticleFeed extends LitElement {
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
+        transition: 150ms ease;
+      }
+
+      .poster figure {
+        transition: 150ms ease;
       }
 
       .card {
@@ -73,7 +78,17 @@ export default class ArticleFeed extends LitElement {
       }
 
       .load-more {
+        display: block;
+        width: 100%;
         height: 62px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .load-more:hover {
+        cu
       }
 
       .feed-header {
@@ -294,7 +309,7 @@ export default class ArticleFeed extends LitElement {
             })}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more is-fullwidth ${this.loading ? 'is-loading' : ''}"
+          class="button load-more ${this.loading ? 'is-loading' : ''}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >
