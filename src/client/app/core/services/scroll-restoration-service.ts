@@ -8,7 +8,7 @@ import {
 class ScrollRestorationService {
   scrollMap = new Map<string, number>();
 
-  private RESTORATION_DELAY = 300;
+  private RESTORATION_DELAY = 800;
   private restorationRef: number;
 
   constructor() {
@@ -31,8 +31,10 @@ class ScrollRestorationService {
     window.clearTimeout(this.restorationRef);
 
     if (this.scrollMap.has(newPath)) {
+      const top = this.scrollMap.get(newPath);
+      this.scrollMap.delete(newPath);
       this.restorationRef = window.setTimeout(() => {
-        window.scroll({ top: this.scrollMap.get(newPath) });
+        window.scroll({ top });
       }, this.RESTORATION_DELAY);
     } else {
       window.scroll({ top: 0 });
