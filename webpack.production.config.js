@@ -75,6 +75,13 @@ module.exports = merge(common, {
             cacheName: 'image-cache',
           },
         },
+        {
+          urlPattern: new RegExp('^https://fonts.googleapis.com/'),
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'font-cache',
+          },
+        },
       ],
     }),
   ],
