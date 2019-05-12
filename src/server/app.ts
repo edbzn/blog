@@ -11,6 +11,7 @@ const middlewares = [
     origin: Config.frontAppDomains,
     allowHeaders: ['Content-Type', 'Origin', 'Authorization'],
     methods: ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE'],
+    maxAge: 86400000, // 1 day
   }),
   logger$({ silent: false }),
   bodyParser$(),
