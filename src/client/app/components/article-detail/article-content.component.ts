@@ -54,6 +54,18 @@ export default class ArticleContentComponent extends LitElement {
         vertical-align: inherit;
       }
 
+      :not(pre) > code[class*='language-'] {
+        background: rgba(255, 229, 100, 0.2) !important;
+        text-shadow: none;
+        color: #1a1a1a;
+        padding: 0.15em 0.2em 0.05em;
+        border-radius: 0px !important;
+      }
+
+      h2, h3, h4 {
+        margin-top: 40px;
+      }
+
       code {
         font-size: 1rem;
       }
@@ -61,15 +73,29 @@ export default class ArticleContentComponent extends LitElement {
       blockquote {
         font-family: 'IBM Plex Serif', serif;
         font-style: italic;
+        font-size: 2rem;
         margin: 3rem 3rem;
+        color: #777;
       }
 
-      :not(pre) > code[class*='language-'] {
-        background: rgba(255, 229, 100, 0.2) !important;
-        text-shadow: none;
-        color: #1a1a1a;
-        padding: 0.15em 0.2em 0.05em;
-        border-radius: 0px !important;
+      blockquote p {
+        quotes: '„ ' ' “';
+      }
+
+      blockquote p::before {
+        content: open-quote;
+      }
+      blockquote p::after {
+        content: close-quote;
+      }
+
+      a {
+        color: #40a8ff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
       }
     `;
   }
