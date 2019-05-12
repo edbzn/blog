@@ -1,5 +1,5 @@
 import anchorme from 'anchorme';
-import { distanceInWords } from 'date-fns';
+import { distanceInWordsToNow } from 'date-fns';
 import { css, html, LitElement, TemplateResult } from 'lit-element';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
@@ -26,45 +26,56 @@ export default class TwitterFeedComponent extends LitElement {
   showTweets(): TemplateResult[] {
     return this.tweets.statuses.map(
       (tweet: any) => html`
-        
-          <article class="card">
-            <div class="card-content">
-              <div class="content">
-                <header>
-                  <strong>${tweet.user.name}</strong>
-                  <a href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}">
-                    <small>@${tweet.user.screen_name.toLowerCase()}</small>
-                  </a>
-                  -
-                  <small>
-                    Il y a
-                    ${distanceInWords(new Date(tweet.created_at), new Date(), {
-                      locale: languageService.dateFnsLocale,
-                    })}
-                  </small>
-                </header>
-                <div class="content">
-                  ${unsafeHTML(anchorme(tweet.text))}
-                </div>
-                <footer>
-                  <span>
-                    <i class="heart">${like}</i>
-                    ${tweet.favorite_count}
-                  </span>
-                  <span>
-                    <i class="retweet">${retweet}</i>
-                    ${tweet.retweet_count}
-                  </span>
-                </footer>
-              </div>
+        <article class="card">
+          <div class="card-content">
+            <header>
+              <strong>${tweet.user.name}</strong>
+              <a href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}">
+                <small>@${tweet.user.screen_name.toLowerCase()}</small>
+              </a>
+              -
+              <small>
+                Il y a
+                ${distanceInWordsToNow(new Date(tweet.created_at), {
+                  locale: languageService.dateFnsLocale,
+                })}
+              </small>
+            </header>
+            <div class="tweet-content">
+              ${unsafeHTML(anchorme(tweet.text))}
             </div>
-          </article>
+            <footer>
+              <span>
+                <i class="heart">${like}</i>
+                ${tweet.favorite_count}
+              </span>
+              <span>
+                <i class="retweet">${retweet}</i>
+                ${tweet.retweet_count}
+              </span>
+            </footer>
+          </div>
+        </article>
       `
     );
   }
 
   static get styles() {
     return css`
+      :host {
+        display: block;
+        font-family: 'IBM Plex Sans', sans-serif;
+      }
+
+      a {
+        color: #40a8ff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
       .subtitle {
         text-transform: uppercase;
         font-family: 'IBM Plex Sans Condensed', sans-serif;
@@ -99,6 +110,25 @@ export default class TwitterFeedComponent extends LitElement {
 
       .card-content {
         padding: 12px;
+      }
+
+      .tweet-content {
+        margin: 10px 0;
+      }
+
+      footer {
+        display: flex;
+      }
+
+      footer span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      footer span i {
+        height: 18px;
+        margin-right: 8px;
       }
 
       @media screen and (max-width: 600px) {

@@ -1,4 +1,4 @@
-import { distanceInWords, format } from 'date-fns';
+import { distanceInWordsToNow, format } from 'date-fns';
 import { css, html, LitElement, property } from 'lit-element';
 
 import { translate } from '../../core/directives/translate.directive';
@@ -206,6 +206,34 @@ export default class ArticleDetail extends LitElement {
         margin-bottom: 1.1em !important;
       }
 
+      .button {
+        color: #222;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+        height: 42px;
+        line-height: 42px;
+        margin-top: 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
+        color: #222;
+        font-size: 0.8rem;
+        transition: 150ms ease;
+      }
+
+      .button:hover {
+        background: #eee;
+      }
+
+      .button:focus {
+        outline: none;
+        border: 2px solid #eee;
+      }
+
       @media screen and (max-width: 600px) {
         .content .title {
           font-size: 2.75em;
@@ -249,7 +277,7 @@ export default class ArticleDetail extends LitElement {
             ${tags(article)}
             <span class="date">
               ${translate('article_detail.published_at')}
-              ${distanceInWords(new Date(article.publishedAt!), new Date(), {
+              ${distanceInWordsToNow(new Date(article.publishedAt!), {
                 locale: languageService.dateFnsLocale,
               })}
               ${languageService.getLang() === 'en' ? ' ago' : null}

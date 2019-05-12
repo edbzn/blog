@@ -22,7 +22,9 @@ class ScrollRestorationService {
     res: ProuterResponse,
     next: ProuterNextMiddleware
   ): void => {
-    this.scrollMap.set(window.location.pathname, window.scrollY);
+    if (window.location.pathname === '/') {
+      this.scrollMap.set(window.location.pathname, window.scrollY);
+    }
     next();
   };
 

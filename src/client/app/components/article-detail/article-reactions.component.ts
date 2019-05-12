@@ -83,6 +83,15 @@ export default class ArticleReactionsComponent extends LitElement {
         padding: 12px;
         width: 84px;
         height: 54px;
+        cursor: pointer;
+        border: 1px solid #eee;
+        border-radius: 20px;
+        color: #222;
+        text-align: center;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     `;
   }

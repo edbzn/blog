@@ -1,8 +1,16 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement, css } from 'lit-element';
 
 import { translate } from '../../core/directives/translate.directive';
 
 export default class ArticleAuthorComponent extends LitElement {
+  static get styles() {
+    return css`
+      .presentation {
+        font-family: 'IBM Plex Sans', sans-serif;
+      }
+    `;
+  }
+
   render() {
     return html`
       <div class="profile">
@@ -10,7 +18,7 @@ export default class ArticleAuthorComponent extends LitElement {
           class="avatar"
           style="background-image: url('/assets/images/portrait.jpg')"
         ></figure>
-        <div class="presentation has-text-dark">
+        <div class="presentation">
           <strong>Edouard Bozon</strong><br />
           <span>${translate('profile.description')}</span>
           <div class="follow-me">

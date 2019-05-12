@@ -69,17 +69,26 @@ export default class ArticleFeed extends LitElement {
         margin-bottom: 0;
       }
 
-      .article-date {
+      .left {
         margin-right: 12px;
-        font-weight: 100;
+        font-weight: 200;
         text-transform: capitalize;
+      }
+
+      .left:not(.lang) {
+        font-size: 0.9rem;
+      }
+
+      .lang {
+        font-size: 0.9rem;
+        margin-right: 4px;
       }
 
       .card-header {
         font-family: 'IBM Plex Sans Condensed', sans-serif;
       }
 
-      .card-header-title {
+      .card-header-inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -93,11 +102,6 @@ export default class ArticleFeed extends LitElement {
         padding: 12px;
       }
 
-      .lang {
-        font-size: 12px;
-        margin-right: 4px;
-      }
-
       .load-complete svg {
         width: 24px;
         fill: #666;
@@ -106,7 +110,7 @@ export default class ArticleFeed extends LitElement {
       .load-more {
         display: block;
         width: 100%;
-        height: 62px;
+        height: 42px;
         border: 1px solid #eee;
         border-radius: 6px;
         background: #fff;
@@ -147,12 +151,12 @@ export default class ArticleFeed extends LitElement {
       }
 
       @media screen and (max-width: 600px) {
-        .feed .card-header-title {
+        .feed .card-header-inner {
           align-items: initial;
           flex-direction: column;
         }
 
-        .card-header-title .article-date {
+        .card-header-inner .left {
           margin-bottom: 4px;
         }
 
@@ -274,8 +278,8 @@ export default class ArticleFeed extends LitElement {
         >
           <article class="card">
             <header class="card-header">
-              <p class="card-header-title">
-                <span class="article-date">
+              <p class="card-header-inner">
+                <span class="left">
                   <span class="lang">[${article.lang.toUpperCase()}]</span>
                   ${article.published
                     ? format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {

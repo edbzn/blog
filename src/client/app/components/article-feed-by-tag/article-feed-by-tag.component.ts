@@ -34,14 +34,14 @@ export default class ArticlesByTagComponent extends LitElement {
         text-align: center;
         display: block;
         width: 100%;
-        height: 62px;
-        line-height: 62px;
-        margin-top: 20px;
+        height: 42px;
+        line-height: 42px;
+        margin-top: 10px;
         border: 1px solid #eee;
         border-radius: 6px;
         background: #fff;
         cursor: pointer;
-        font-family: 'IBM Plex Sans', sans-serif;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
         color: #222;
         font-size: 0.8rem;
         transition: 150ms ease;

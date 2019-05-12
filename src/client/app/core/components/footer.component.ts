@@ -21,7 +21,7 @@ export default class Footer extends LitElement {
       }
 
       .heart svg {
-        padding-left: 6px;
+        margin-left: 6px;
         width: 14px;
         position: relative;
         top: 2px;

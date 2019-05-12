@@ -33,7 +33,7 @@ export default class ArticleContentComponent extends LitElement {
       }
 
       .content {
-        margin-bottom: 40px;
+        margin-bottom: 3rem;
       }
 
       pre[class*='language-'] {
@@ -85,7 +85,6 @@ export default class ArticleContentComponent extends LitElement {
         font-style: italic;
         font-size: 2rem;
         margin: 3rem 3rem;
-        color: #777;
       }
 
       blockquote p {
