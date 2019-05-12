@@ -24,6 +24,38 @@ export default class ArticlesByTagComponent extends LitElement {
         padding-bottom: 0 !important;
       }
 
+      ez-article-feed {
+        margin-top: 42px;
+      }
+
+      .button {
+        color: #222;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+        height: 62px;
+        line-height: 62px;
+        margin-top: 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        font-family: 'IBM Plex Sans', sans-serif;
+        color: #222;
+        font-size: 0.8rem;
+        transition: 150ms ease;
+      }
+
+      .button:hover {
+        background: #eee;
+      }
+
+      .button:focus {
+        outline: none;
+        border: 2px solid #eee;
+      }
+
       @media screen and (max-width: 600px) {
         .last {
           padding: 2rem 0.8rem;
@@ -39,11 +71,9 @@ export default class ArticlesByTagComponent extends LitElement {
     return html`
       <ez-page>
         <ez-article-feed .tags=${[tag]}></ez-article-feed>
-        <section class="section last">
-          <a href="/" class="button" @click="${navigate('/')}">
-            ${translate('article_feed_by_tag.home_btn')}
-          </a>
-        </section>
+        <a href="/" class="button" @click="${navigate('/')}">
+          ${translate('article_feed_by_tag.home_btn')}
+        </a>
       </ez-page>
     `;
   }

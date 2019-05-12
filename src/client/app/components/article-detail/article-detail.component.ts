@@ -155,9 +155,10 @@ export default class ArticleDetail extends LitElement {
       }
 
       .date {
+        font-family: 'IBM Plex Sans', sans-serif;
         text-transform: capitalize;
-        font-weight: 100;
-        font-size: 14px;
+        font-weight: 400;
+        font-size: 0.8rem;
       }
 
       .content {

@@ -28,6 +28,14 @@ export default class ArticleContentComponent extends LitElement {
         font-size: 1.3rem;
       }
 
+      iframe {
+        border: none;
+      }
+
+      .content {
+        margin-bottom: 40px;
+      }
+
       pre[class*='language-'] {
         margin: 2em 0 !important;
         line-height: 1.1;
@@ -62,7 +70,9 @@ export default class ArticleContentComponent extends LitElement {
         border-radius: 0px !important;
       }
 
-      h2, h3, h4 {
+      h2,
+      h3,
+      h4 {
         margin-top: 40px;
       }
 

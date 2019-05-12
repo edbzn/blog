@@ -15,9 +15,27 @@ import { tags } from '../../shared/tags';
 export default class ArticleFeed extends LitElement {
   static get styles() {
     return css`
+      :host {
+        display: block;
+      }
+
       .subtitle {
         text-transform: uppercase;
         font-family: 'IBM Plex Sans Condensed', sans-serif;
+      }
+
+      .tag.is-primary {
+        height: 32px;
+        line-height: 32px;
+        font-size: 1rem;
+        background: #40a8ff;
+        color: #fff;
+        transition: none;
+        border-radius: 8px;
+      }
+
+      .tag.is-primary:hover {
+        background: #40a8ff;
       }
 
       .poster {
@@ -27,10 +45,6 @@ export default class ArticleFeed extends LitElement {
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
-        transition: 150ms ease;
-      }
-
-      .poster figure {
         transition: 150ms ease;
       }
 
@@ -48,7 +62,7 @@ export default class ArticleFeed extends LitElement {
       }
 
       .card:hover {
-        box-shadow: 0 0 4px rgba(34, 34, 34, 0.2);
+        box-shadow: 0 0 3px rgba(34, 34, 34, 0.2);
       }
 
       .card:last-child {
@@ -84,8 +98,9 @@ export default class ArticleFeed extends LitElement {
         margin-right: 4px;
       }
 
-      .load-complete {
+      .load-complete svg {
         width: 24px;
+        fill: #666;
       }
 
       .load-more {
@@ -96,6 +111,9 @@ export default class ArticleFeed extends LitElement {
         border-radius: 6px;
         background: #fff;
         cursor: pointer;
+        font-family: 'IBM Plex Sans', sans-serif;
+        color: #222;
+        font-size: 0.8rem;
         transition: 150ms ease;
       }
 
@@ -108,6 +126,11 @@ export default class ArticleFeed extends LitElement {
         border: 2px solid #eee;
       }
 
+      .load-more[disabled] {
+        background: #fff;
+        cursor: default;
+      }
+
       .feed-header {
         display: flex;
         justify-content: space-between;
@@ -116,7 +139,7 @@ export default class ArticleFeed extends LitElement {
       }
 
       .feed-header h4 {
-        margin-bottom: 0 !important;
+        margin: 0;
       }
 
       .feed-header .tag {

@@ -13,9 +13,10 @@ export default class Footer extends LitElement {
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        padding: 2rem;
+        padding-top: 4rem;
+        padding-bottom: 2rem;
         color: #313131;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-family: 'IBM Plex Sans', sans-serif;
       }
 
