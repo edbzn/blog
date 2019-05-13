@@ -15,60 +15,151 @@ import { tags } from '../../shared/tags';
 export default class ArticleFeedComponent extends LitElement {
   static get styles() {
     return css`
-      .uppercase {
-        text-transform: uppercase;
+      :host {
+        display: block;
       }
+
+      .subtitle {
+        text-transform: uppercase;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
+      }
+
+      .tag.is-primary {
+        height: 32px;
+        line-height: 32px;
+        font-size: 1rem;
+        background: #40a8ff;
+        color: #fff;
+        transition: none;
+        border-radius: 8px;
+      }
+
+      .tag.is-primary:hover {
+        background: #40a8ff;
+      }
+
       .poster {
         height: 200px;
+        margin: 0;
         background-color: #eee;
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
+        transition: 150ms ease;
       }
-      .card {
+
+      .card-link {
+        display: block;
         margin-bottom: 1.5rem;
+        color: #222;
+        text-decoration: none;
       }
+
+      .card {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        transition: 150ms ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 0 3px rgba(34, 34, 34, 0.2);
+      }
+
       .card:last-child {
         margin-bottom: 0;
       }
-      .article-date {
+
+      .left {
         margin-right: 12px;
-        font-weight: 100;
+        font-weight: 200;
         text-transform: capitalize;
       }
-      .card-header-title {
-        justify-content: space-between;
+
+      .left:not(.lang) {
+        font-size: 0.9rem;
       }
+
       .lang {
-        font-size: 12px;
+        font-size: 0.9rem;
         margin-right: 4px;
       }
-      .load-complete {
+
+      .card-header {
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
+      }
+
+      .card-header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+      }
+
+      .card-header,
+      .card-content,
+      .card-footer {
+        padding: 12px;
+      }
+
+      .load-complete svg {
         width: 24px;
+        fill: #666;
       }
+
       .load-more {
-        height: 62px;
+        display: block;
+        width: 100%;
+        height: 42px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        font-family: 'IBM Plex Sans', sans-serif;
+        color: #222;
+        font-size: 0.8rem;
+        transition: 150ms ease;
       }
+
+      .load-more:hover {
+        background: #eee;
+      }
+
+      .load-more:focus {
+        outline: none;
+        border: 2px solid #eee;
+      }
+
+      .load-more[disabled] {
+        background: #fff;
+        cursor: default;
+      }
+
       .feed-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1.5rem;
       }
+
       .feed-header h4 {
-        margin-bottom: 0 !important;
+        margin: 0;
       }
+
       .feed-header .tag {
         text-transform: capitalize;
       }
+
       @media screen and (max-width: 600px) {
-        .feed .card-header-title {
+        .feed .card-header-inner {
           align-items: initial;
           flex-direction: column;
         }
-        .card-header-title .article-date {
+
+        .card-header-inner .left {
           margin-bottom: 4px;
         }
+
         .feed.section {
           padding: 2rem 0.8rem;
         }
@@ -179,73 +270,72 @@ export default class ArticleFeedComponent extends LitElement {
       const articleUri = `/article/${article.slug}`;
 
       return html`
-        <article class="card">
-          <header class="card-header article-header">
-            <p class="card-header-title">
-              <span class="article-date">
-                <span class="lang">[${article.lang.toUpperCase()}]</span>
-                ${article.published
-                  ? format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
-                      locale: languageService.dateFnsLocale,
-                    })
-                  : ``}
-              </span>
-              ${tags(article, this.adminMode)}
-            </p>
-          </header>
-          ${article.posterUrl
-            ? html`
-                <figure
-                  class="poster card-image"
-                  style="background-image: url('${article.posterUrl}')"
-                ></figure>
-              `
-            : ``}
-          <div class="card-content">
-            <h3 class="title">${article.title}</h3>
-            <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
-          </div>
-          <footer class="card-footer">
-            <a
-              class="card-footer-item"
-              href="${articleUri}"
-              title="${translate('article_feed.read')} ${article.title}"
-              @click="${navigate(articleUri)}"
-            >
-              ${translate('article_feed.read')}
-            </a>
+        <a
+          class="card-link"
+          href="${articleUri}"
+          title="${translate('article_feed.read')} ${article.title}"
+          @click="${navigate(articleUri)}"
+        >
+          <article class="card">
+            <header class="card-header">
+              <p class="card-header-inner">
+                <span class="left">
+                  <span class="lang">[${article.lang.toUpperCase()}]</span>
+                  ${article.published
+                    ? format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+                        locale: languageService.dateFnsLocale,
+                      })
+                    : ``}
+                </span>
+                ${tags(article, this.adminMode)}
+              </p>
+            </header>
+            ${article.posterUrl
+              ? html`
+                  <figure
+                    class="poster card-image"
+                    style="background-image: url('${article.posterUrl}')"
+                  ></figure>
+                `
+              : ``}
+            <div class="card-content">
+              <h3 class="title">${article.title}</h3>
+              <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
+            </div>
+
             ${this.adminMode
               ? html`
-                  <a
-                    class="card-footer-item"
-                    href="${`/admin/draft?id=${article._id}`}"
-                    title="${translate('article_feed.edit')} ${article.title}"
-                    @click="${navigate(`/admin/draft?id=${article._id}`)}"
-                  >
-                    ${translate('article_feed.edit')}
-                  </a>
-                  <a
-                    class="card-footer-item"
-                    type="button"
-                    title="${translate('article_feed.remove')} ${article.title}"
-                    @click="${this.removeArticle.bind(this, article)}"
-                  >
-                    ${translate('article_feed.remove')}
-                  </a>
+                  <footer class="card-footer">
+                    <a
+                      class="card-footer-item"
+                      href="${`/admin/draft?id=${article._id}`}"
+                      title="${translate('article_feed.edit')} ${article.title}"
+                      @click="${navigate(`/admin/draft?id=${article._id}`)}"
+                    >
+                      ${translate('article_feed.edit')}
+                    </a>
+                    <a
+                      class="card-footer-item"
+                      type="button"
+                      title="${translate('article_feed.remove')} ${article.title}"
+                      @click="${this.removeArticle.bind(this, article)}"
+                    >
+                      ${translate('article_feed.remove')}
+                    </a>
+                  </footer>
                 `
               : html``}
-          </footer>
-        </article>
+          </article>
+        </a>
       `;
     });
   }
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
-      <section class="section feed">
+      <section class="section">
         <header class="feed-header">
-          <h4 class="subtitle uppercase">articles</h4>
+          <h4 class="subtitle">articles</h4>
           ${this.tags.length > 0
             ? html`
                 <span class="tag is-primary is-medium">${this.tags[0]}</span>
@@ -263,7 +353,7 @@ export default class ArticleFeedComponent extends LitElement {
             })}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more is-fullwidth ${this.loading ? 'is-loading' : ''}"
+          class="button load-more ${this.loading ? 'is-loading' : ''}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >

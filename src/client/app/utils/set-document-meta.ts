@@ -39,10 +39,6 @@ const setTitle = (opts: MetaDataOpts): void => {
     title = 'Codamit - Tech Blog';
   }
 
-  if (title.length > 55) {
-    console.warn('Title too long for crawlers ' + title);
-  }
-
   const prefix = process.env.NODE_ENV !== 'production' ? '[DEV] - ' : '';
   document.title = `${prefix}${title}`;
 };

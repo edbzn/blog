@@ -80,7 +80,7 @@ export default class ArticleCommentComponent extends LitElement {
       :host {
         display: block;
         margin-top: 0.6rem;
-        margin-bottom: 4rem;
+        margin-bottom: 3rem;
       }
 
       form[name='postComment'] {
@@ -89,7 +89,31 @@ export default class ArticleCommentComponent extends LitElement {
       }
 
       .button {
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
+        color: #222;
+        text-decoration: none;
+        text-align: center;
+        display: block;
         width: 100%;
+        height: 42px;
+        line-height: 42px;
+        margin-top: 10px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        color: #222;
+        font-size: 0.8rem;
+        transition: 150ms ease;
+      }
+
+      .button:hover {
+        background: #eee;
+      }
+
+      .button:focus {
+        outline: none;
+        border: 2px solid #eee;
       }
 
       .comments {
@@ -107,7 +131,6 @@ export default class ArticleCommentComponent extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
       <div>
         <button
           type="button"
@@ -123,47 +146,51 @@ export default class ArticleCommentComponent extends LitElement {
         </button>
         ${this.showEditor
           ? html`
-                <form name="postComment" @submit=${this.postComment} @input=${() =>
-              this.update(new Map())}>
-                  ${
-                    this.error
-                      ? html`
-                          <div class="notification is-danger">
-                            <button
-                              class="delete"
-                              @click="${() => {
-                                this.error = null;
-                                this.requestUpdate();
-                              }}"
-                            ></button>
-                            ${this.error}
-                          </div>
-                        `
-                      : null
-                  }
-                  <div class="field">
-                    <label for="name">${translate('article_detail.name_label')}</label
-                    <div class="control">
-                      <input class="input" name="name" id="name" type="text" required />
-                    </div>
+              <form
+                name="postComment"
+                @submit=${this.postComment}
+                @input=${() => this.update(new Map())}
+              >
+                ${this.error
+                  ? html`
+                      <div class="notification is-danger">
+                        <button
+                          class="delete"
+                          @click="${() => {
+                            this.error = null;
+                            this.requestUpdate();
+                          }}"
+                        ></button>
+                        ${this.error}
+                      </div>
+                    `
+                  : null}
+                <div class="field">
+                  <label for="name">${translate('article_detail.name_label')}</label>
+                  <div class="control">
+                    <input class="input" name="name" id="name" type="text" required />
                   </div>
-                  <div class="field">
-                    <label for="comment">${translate('article_detail.comment_label')}</label
-                    <div class="control">
-                      <textarea class="textarea ${
-                        this.loading
-                          ? html`
-                              is-loading
-                            `
-                          : null
-                      }" name="comment" id="comment" required></textarea>
-                    </div>
+                </div>
+                <div class="field">
+                  <label for="comment">${translate('article_detail.comment_label')}</label>
+                  <div class="control">
+                    <textarea
+                      class="textarea ${this.loading
+                        ? html`
+                            is-loading
+                          `
+                        : null}"
+                      name="comment"
+                      id="comment"
+                      required
+                    ></textarea>
                   </div>
-                  <button type="submit" ?disabled=${!this.isFormValid()} class="button">
-                    ${translate('article_detail.comment_btn')}
-                  </button>
-                </form>
-              `
+                </div>
+                <button type="submit" ?disabled=${!this.isFormValid()} class="button">
+                  ${translate('article_detail.comment_btn')}
+                </button>
+              </form>
+            `
           : null}
         <section class="comments">
           ${this.commentCollection !== null

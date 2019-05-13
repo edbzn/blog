@@ -1,4 +1,4 @@
-import { distanceInWords, format } from 'date-fns';
+import { distanceInWordsToNow, format } from 'date-fns';
 import { css, html, LitElement, property } from 'lit-element';
 
 import { translate } from '../../core/directives/translate.directive';
@@ -98,14 +98,18 @@ export default class ArticleDetail extends LitElement {
       }
 
       .poster {
-        height: 50vh;
+        height: 45vh;
         background-color: #eee;
         background-size: cover;
         background-position: center center;
       }
 
+      figure {
+        margin: 0;
+      }
+
       .content .title {
-        font-size: 3.2em;
+        font-size: 3.4em;
       }
 
       .header {
@@ -150,10 +154,15 @@ export default class ArticleDetail extends LitElement {
         font-size: 0.8em;
       }
 
-      .article-date {
+      .date {
+        font-family: 'IBM Plex Sans', sans-serif;
         text-transform: capitalize;
-        font-weight: 100;
-        font-size: 14px;
+        font-weight: 400;
+        font-size: 0.8rem;
+      }
+
+      .content {
+        margin-top: 40px;
       }
 
       .content .publication {
@@ -163,7 +172,7 @@ export default class ArticleDetail extends LitElement {
         margin-bottom: 3rem;
       }
 
-      .content .publication .article-date {
+      .content .publication .date {
         text-transform: initial;
       }
 
@@ -173,7 +182,7 @@ export default class ArticleDetail extends LitElement {
         padding-right: 0;
       }
 
-      .time-remaining {
+      .timeline {
         height: 4px;
         position: sticky;
         top: 0;
@@ -181,8 +190,9 @@ export default class ArticleDetail extends LitElement {
         background: rgba(155, 155, 155, 0.48);
       }
 
-      .time-remaining > div {
+      .timeline > div {
         height: 4px;
+        background-color: #40a8ff;
         transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
       }
 
@@ -194,6 +204,34 @@ export default class ArticleDetail extends LitElement {
       .content table:not(:last-child),
       .content ul:not(:last-child) {
         margin-bottom: 1.1em !important;
+      }
+
+      .button {
+        color: #222;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+        height: 42px;
+        line-height: 42px;
+        margin-top: 20px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
+        color: #222;
+        font-size: 0.8rem;
+        transition: 150ms ease;
+      }
+
+      .button:hover {
+        background: #eee;
+      }
+
+      .button:focus {
+        outline: none;
+        border: 2px solid #eee;
       }
 
       @media screen and (max-width: 600px) {
@@ -209,10 +247,10 @@ export default class ArticleDetail extends LitElement {
           align-items: initial;
           flex-direction: column-reverse;
         }
-        .article-date {
+        .date {
           margin-bottom: 4px;
         }
-        .meta-container.section {
+        .container.section {
           padding: 3rem 0.8rem;
         }
       }
@@ -226,49 +264,31 @@ export default class ArticleDetail extends LitElement {
       <article class="content">
         <header class="header">
           ${tags(article)}
-          <span class="article-date"
-            >${format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+          <span class="date"
+            >${format(new Date(article.publishedAt!), 'dddd DD MMMM YYYY', {
               locale: languageService.dateFnsLocale,
-            })}</span
-          >
+            })}
+          </span>
         </header>
         <h1 class="title">${article.title}</h1>
         <ez-article-content .content="${article.html}"></ez-article-content>
-        <footer class="section article-footer">
+        <footer class="article-footer">
           <div class="publication">
             ${tags(article)}
-            <span class="article-date">
+            <span class="date">
               ${translate('article_detail.published_at')}
-              ${distanceInWords(new Date(article.publishedAt as string), new Date(), {
+              ${distanceInWordsToNow(new Date(article.publishedAt!), {
                 locale: languageService.dateFnsLocale,
               })}
               ${languageService.getLang() === 'en' ? ' ago' : null}
             </span>
           </div>
           <ez-article-reactions .article=${article}></ez-article-reactions>
-          <a href="/" class="button is-block back-to-home" @click="${navigate('/')}">
+          <a href="/" class="button back-to-home" @click="${navigate('/')}">
             ${translate('article_detail.home_btn')}
           </a>
           <ez-article-comments articleId=${article._id}></ez-article-comments>
-          <div class="profile">
-            <figure
-              class="avatar"
-              style="background-image: url('/assets/images/portrait.jpg')"
-            ></figure>
-            <div class="presentation has-text-dark">
-              <strong>Edouard Bozon</strong><br />
-              <span>${translate('profile.description')}</span>
-              <div class="follow-me">
-                <iframe
-                  src="https://platform.twitter.com/widgets/follow_button.html?screen_name=edouardbozon&show_screen_name=true&show_count=false"
-                  title="Follow me"
-                  width="148"
-                  height="26"
-                  style="margin-top: 12px; border: 0; overflow: hidden;"
-                ></iframe>
-              </div>
-            </div>
-          </div>
+          <ez-article-author></ez-article-author>
         </footer>
       </article>
     `;
@@ -276,7 +296,6 @@ export default class ArticleDetail extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
       <ez-navbar></ez-navbar>
       ${this.posterUrl
         ? html`
@@ -285,11 +304,11 @@ export default class ArticleDetail extends LitElement {
         : html`
             <div class="poster"></div>
           `}
-      <div class="time-remaining">
-        <div class="has-background-info" style="width: ${this.percentRemaining + '%'};"></div>
+      <div class="timeline">
+        <div style="width: ${this.percentRemaining + '%'};"></div>
       </div>
       <ez-page .navbar="${false}">
-        <section class="section meta-container">
+        <section class="container">
           ${this.article
             ? this.showArticleDetail()
             : placeholder({

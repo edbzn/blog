@@ -28,7 +28,6 @@ export default class Error extends LitElement {
 
   render() {
     return html`
-      <link href="assets/css/bulma.css" rel="stylesheet" />
       <ez-page>
         <section class="section">
           <h1 class="title">Something bad happened!</h1>

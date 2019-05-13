@@ -11,7 +11,7 @@ import 'prismjs/components/prism-nginx';
 import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-typescript';
 
-export default class ArticleContent extends LitElement {
+export default class ArticleContentComponent extends LitElement {
   @property({ type: String })
   content: string;
 
@@ -25,10 +25,20 @@ export default class ArticleContent extends LitElement {
     return css`
       :host {
         display: block;
+        font-size: 1.3rem;
+      }
+
+      iframe {
+        border: none;
+      }
+
+      .content {
+        margin-bottom: 3rem;
       }
 
       pre[class*='language-'] {
         margin: 2em 0 !important;
+        line-height: 1.1;
       }
 
       :not(pre) > code[class*='language-'],
@@ -59,16 +69,52 @@ export default class ArticleContent extends LitElement {
         padding: 0.15em 0.2em 0.05em;
         border-radius: 0px !important;
       }
+
+      h2,
+      h3,
+      h4 {
+        margin-top: 40px;
+      }
+
+      code {
+        font-size: 1rem;
+      }
+
+      blockquote {
+        font-family: 'IBM Plex Serif', serif;
+        font-style: italic;
+        font-size: 2rem;
+        margin: 3rem 3rem;
+      }
+
+      blockquote p {
+        quotes: '„ ' ' “';
+      }
+
+      blockquote p::before {
+        content: open-quote;
+      }
+      blockquote p::after {
+        content: close-quote;
+      }
+
+      a {
+        color: #40a8ff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
     `;
   }
 
   render() {
     return html`
-      <link href="/assets/css/bulma.css" rel="stylesheet" />
       <link href="/assets/css/atom.css" rel="stylesheet" />
-      <div class="content is-medium">${unsafeHTML(this.content)}</div>
+      <div class="content">${unsafeHTML(this.content)}</div>
     `;
   }
 }
 
-customElements.define('ez-article-content', ArticleContent);
+customElements.define('ez-article-content', ArticleContentComponent);

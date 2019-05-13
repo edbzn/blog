@@ -50,11 +50,6 @@ module.exports = {
           cache: true,
         },
         {
-          from: 'node_modules/bulma/css/bulma.css',
-          to: 'assets/css/bulma.css',
-          cache: true,
-        },
-        {
           from: 'node_modules/simplemde/src/css/simplemde.css',
           to: 'assets/css/simplemde.css',
           cache: true,

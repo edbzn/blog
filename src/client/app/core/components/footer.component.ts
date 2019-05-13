@@ -13,13 +13,15 @@ export default class FooterComponent extends LitElement {
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        padding: 2rem;
+        padding-top: 4rem;
+        padding-bottom: 2rem;
         color: #313131;
         font-size: 0.8rem;
+        font-family: 'IBM Plex Sans', sans-serif;
       }
 
       .heart svg {
-        padding-left: 6px;
+        margin-left: 6px;
         width: 14px;
         position: relative;
         top: 2px;
