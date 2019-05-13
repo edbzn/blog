@@ -82,7 +82,7 @@
     "@types/uuid": "3.4.4",
     "@typescript-eslint/eslint-plugin": "1.9.0",
     "@typescript-eslint/parser": "1.9.0",
-    "babel-loader": "8.0.5",
+    "babel-loader": "8.0.6",
     "babel-plugin-template-html-minifier": "3.0.0",
     "clean-webpack-plugin": "2.0.2",
     "concurrently": "4.1.0",
