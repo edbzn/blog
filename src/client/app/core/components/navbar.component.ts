@@ -4,7 +4,7 @@ import github from '../../utils/icons/github';
 import twitter from '../../utils/icons/twitter';
 import { navigate } from '../../utils/navigate';
 
-export default class NavBar extends LitElement {
+export default class Component extends LitElement {
   twitterUrl = 'https://twitter.com/edouardbozon';
   githubUrl = 'https://github.com/edouardbozon';
 
@@ -60,4 +60,4 @@ export default class NavBar extends LitElement {
   }
 }
 
-customElements.define('ez-navbar', NavBar);
+customElements.define('ez-navbar', Component);

@@ -5,7 +5,7 @@ import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
 import { authService } from '../services/authentication-service';
 
-export default class Footer extends LitElement {
+export default class FooterComponent extends LitElement {
   static get styles() {
     return css`
       footer {
@@ -44,4 +44,4 @@ export default class Footer extends LitElement {
   }
 }
 
-customElements.define('ez-footer', Footer);
+customElements.define('ez-footer', FooterComponent);

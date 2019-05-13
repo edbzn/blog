@@ -1,6 +1,6 @@
 import { css, html, LitElement, property } from 'lit-element';
 
-export default class Page extends LitElement {
+export default class PageComponent extends LitElement {
   @property({ type: Boolean })
   navbar = true;
 
@@ -27,4 +27,4 @@ export default class Page extends LitElement {
   }
 }
 
-customElements.define('ez-page', Page);
+customElements.define('ez-page', PageComponent);

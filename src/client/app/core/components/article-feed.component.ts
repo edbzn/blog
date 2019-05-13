@@ -12,7 +12,7 @@ import { navigate } from '../../utils/navigate';
 import { placeholder } from '../../shared/placeholder';
 import { tags } from '../../shared/tags';
 
-export default class ArticleFeed extends LitElement {
+export default class ArticleFeedComponent extends LitElement {
   static get styles() {
     return css`
       .uppercase {
@@ -278,4 +278,4 @@ export default class ArticleFeed extends LitElement {
   }
 }
 
-customElements.define('ez-article-feed', ArticleFeed);
+customElements.define('ez-article-feed', ArticleFeedComponent);
