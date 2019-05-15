@@ -1,11 +1,11 @@
 import { distanceInWordsToNow, format } from 'date-fns';
 import { css, html, LitElement, property } from 'lit-element';
+import { nothing } from 'lit-html';
 
 import { translate } from '../../core/directives/translate.directive';
 import { apiClient } from '../../core/services/api-client';
 import { errorHandlerService } from '../../core/services/error-handler-service';
 import { languageService } from '../../core/services/language-service';
-import { placeholder } from '../../shared/placeholder';
 import { tags } from '../../shared/tags';
 import { debounce } from '../../utils/debounce';
 import { navigate } from '../../utils/navigate';
@@ -309,15 +309,7 @@ export default class ArticleDetail extends LitElement {
       </div>
       <ez-page .navbar="${false}">
         <section class="container">
-          ${this.article
-            ? this.showArticleDetail()
-            : placeholder({
-                count: 1,
-                minLines: 200,
-                maxLines: 300,
-                box: false,
-                image: false,
-              })}
+          ${this.article ? this.showArticleDetail() : nothing}
         </section>
       </ez-page>
     `;

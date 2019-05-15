@@ -1,4 +1,5 @@
 import { css, html, LitElement, property } from 'lit-element';
+import { nothing } from 'lit-html';
 
 import { ReactionType } from '../../../../server/api/article/model/article-reactions';
 import { apiClient, errorHandlerService } from '../../core/services';
@@ -104,7 +105,9 @@ export default class ArticleReactionsComponent extends LitElement {
             <div class="reaction">
               <button
                 .disabled="${!this.allowed[<ReactionType>type]}"
-                class="button ${!this.allowed[<ReactionType>type] ? 'is-primary' : ''} is-rounded"
+                class="button ${!this.allowed[<ReactionType>type]
+                  ? 'is-primary'
+                  : nothing} is-rounded"
                 type="button is-large"
                 @click="${() => this.addReaction(type as ReactionType)}"
               >

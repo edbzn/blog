@@ -21,7 +21,8 @@
     "comment_label": "Comment"
   },
   "footer": {
-    "credentials": "Made with"
+    "credentials": "Made with",
+    "credentials2": "<a href=\"https://github.com/Edouardbozon/codamit\">Source code is open</a>"
   },
   "error": {
     "go_back": "Back",

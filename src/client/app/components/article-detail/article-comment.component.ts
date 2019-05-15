@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import * as frLocale from 'date-fns/locale/fr';
 import { css, html, LitElement, property } from 'lit-element';
+import { nothing } from 'lit-html';
 
 import { translate } from '../../core/directives/translate.directive';
 import { apiClient } from '../../core/services/api-client';
@@ -164,7 +165,7 @@ export default class ArticleCommentComponent extends LitElement {
                         ${this.error}
                       </div>
                     `
-                  : null}
+                  : nothing}
                 <div class="field">
                   <label for="name">${translate('article_detail.name_label')}</label>
                   <div class="control">
@@ -179,7 +180,7 @@ export default class ArticleCommentComponent extends LitElement {
                         ? html`
                             is-loading
                           `
-                        : null}"
+                        : nothing}"
                       name="comment"
                       id="comment"
                       required
@@ -191,7 +192,7 @@ export default class ArticleCommentComponent extends LitElement {
                 </button>
               </form>
             `
-          : null}
+          : nothing}
         <section class="comments">
           ${this.commentCollection !== null
             ? this.commentCollection.collection.map(

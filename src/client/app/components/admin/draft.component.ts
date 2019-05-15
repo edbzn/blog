@@ -8,6 +8,7 @@ import { navigate } from '../../utils/navigate';
 import { DraftActions } from './draft.actions';
 import { DraftState } from './draft.initialState';
 import { Article, Draft } from './types';
+import { nothing } from 'lit-html';
 
 export default class DraftComponent extends LitElement {
   @property({ type: Object })
@@ -266,7 +267,7 @@ export default class DraftComponent extends LitElement {
                         style="background-image: url('${this.state.draft.posterUrl}')"
                       ></div>
                     `
-                  : html``}
+                  : nothing}
                 <div class="container">
                   <div class="columns section">
                     <div class="column is-one-third">
@@ -405,7 +406,7 @@ export default class DraftComponent extends LitElement {
                                     👁 Prévisualisation
                                   </a>
                                 `
-                              : ''}
+                              : nothing}
                           </div>
                         </div>
                       `}

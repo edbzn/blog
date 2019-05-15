@@ -1,11 +1,11 @@
 import anchorme from 'anchorme';
 import { distanceInWordsToNow } from 'date-fns';
 import { css, html, LitElement, TemplateResult } from 'lit-element';
+import { repeat } from 'lit-html/directives/repeat';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import { apiClient } from '../../core/services/api-client';
 import { languageService } from '../../core/services/language-service';
-import { placeholder } from '../../shared/placeholder';
 import like from '../../utils/icons/like';
 import retweet from '../../utils/icons/retweet';
 
@@ -23,41 +23,44 @@ export default class TwitterFeedComponent extends LitElement {
     this.requestUpdate();
   }
 
-  showTweets(): TemplateResult[] {
-    return this.tweets.statuses.map(
-      (tweet: any) => html`
-        <article class="card">
-          <div class="card-content">
-            <header>
-              <strong>${tweet.user.name}</strong>
-              <a href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}">
-                <small>@${tweet.user.screen_name.toLowerCase()}</small>
-              </a>
-              -
-              <small>
-                Il y a
-                ${distanceInWordsToNow(new Date(tweet.created_at), {
-                  locale: languageService.dateFnsLocale,
-                })}
-              </small>
-            </header>
-            <div class="tweet-content">
-              ${unsafeHTML(anchorme(tweet.text))}
+  showTweets(): TemplateResult {
+    return html`
+      ${repeat(
+        this.tweets.statuses,
+        (tweet: any) => html`
+          <article class="card">
+            <div class="card-content">
+              <header>
+                <strong>${tweet.user.name}</strong>
+                <a href="https://twitter.com/${tweet.user.screen_name.toLowerCase()}">
+                  <small>@${tweet.user.screen_name.toLowerCase()}</small>
+                </a>
+                -
+                <small>
+                  Il y a
+                  ${distanceInWordsToNow(new Date(tweet.created_at), {
+                    locale: languageService.dateFnsLocale,
+                  })}
+                </small>
+              </header>
+              <div class="tweet-content">
+                ${unsafeHTML(anchorme(tweet.text))}
+              </div>
+              <footer>
+                <span>
+                  <i class="heart">${like}</i>
+                  ${tweet.favorite_count}
+                </span>
+                <span>
+                  <i class="retweet">${retweet}</i>
+                  ${tweet.retweet_count}
+                </span>
+              </footer>
             </div>
-            <footer>
-              <span>
-                <i class="heart">${like}</i>
-                ${tweet.favorite_count}
-              </span>
-              <span>
-                <i class="retweet">${retweet}</i>
-                ${tweet.retweet_count}
-              </span>
-            </footer>
-          </div>
-        </article>
-      `
-    );
+          </article>
+        `
+      )}
+    `;
   }
 
   static get styles() {
@@ -145,13 +148,9 @@ export default class TwitterFeedComponent extends LitElement {
         ? html`
             <section class="twitter">
               <h4 class="subtitle">tweets</h4>
-              ${placeholder({
-                count: 4,
-                minLines: 1,
-                maxLines: 3,
-                box: true,
-                image: false,
-              })}
+              ${html`
+                Loading...
+              `}
             </section>
           `
         : this.initialized && this.tweets.statuses.length > 0

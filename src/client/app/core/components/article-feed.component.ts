@@ -1,16 +1,17 @@
 import { format } from 'date-fns';
 import { css, html, LitElement, property, TemplateResult } from 'lit-element';
+import { nothing } from 'lit-html';
+import { repeat } from 'lit-html/directives/repeat';
 
 import { Article } from '../../components/admin/types';
+import { tags } from '../../shared/tags';
+import { ResourceCollection } from '../../utils/collection';
+import check from '../../utils/icons/check';
+import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
 import { apiClient } from '../services/api-client';
 import { errorHandlerService } from '../services/error-handler-service';
 import { languageService } from '../services/language-service';
-import { ResourceCollection } from '../../utils/collection';
-import check from '../../utils/icons/check';
-import { navigate } from '../../utils/navigate';
-import { placeholder } from '../../shared/placeholder';
-import { tags } from '../../shared/tags';
 
 export default class ArticleFeedComponent extends LitElement {
   static get styles() {
@@ -115,7 +116,7 @@ export default class ArticleFeedComponent extends LitElement {
         border-radius: 6px;
         background: #fff;
         cursor: pointer;
-        font-family: 'IBM Plex Sans', sans-serif;
+        font-family: 'IBM Plex Sans Condensed', sans-serif;
         color: #222;
         font-size: 0.8rem;
         transition: 150ms ease;
@@ -265,70 +266,72 @@ export default class ArticleFeedComponent extends LitElement {
     }
   }
 
-  articleList(): TemplateResult[] {
-    return this.articleCollection.map((article: Article) => {
-      const articleUri = `/article/${article.slug}`;
+  articleList(): TemplateResult {
+    return html`
+      ${repeat(this.articleCollection, (article: Article) => {
+        const articleUri = `/article/${article.slug}`;
 
-      return html`
-        <a
-          class="card-link"
-          href="${articleUri}"
-          title="${translate('article_feed.read')} ${article.title}"
-          @click="${navigate(articleUri)}"
-        >
-          <article class="card">
-            <header class="card-header">
-              <p class="card-header-inner">
-                <span class="left">
-                  <span class="lang">[${article.lang.toUpperCase()}]</span>
-                  ${article.published
-                    ? format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
-                        locale: languageService.dateFnsLocale,
-                      })
-                    : ``}
-                </span>
-                ${tags(article, this.adminMode)}
-              </p>
-            </header>
-            ${article.posterUrl
-              ? html`
-                  <figure
-                    class="poster card-image"
-                    style="background-image: url('${article.posterUrl}')"
-                  ></figure>
-                `
-              : ``}
-            <div class="card-content">
-              <h3 class="title">${article.title}</h3>
-              <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
-            </div>
+        return html`
+          <a
+            class="card-link"
+            href="${articleUri}"
+            title="${translate('article_feed.read')} ${article.title}"
+            @click="${navigate(articleUri)}"
+          >
+            <article class="card">
+              <header class="card-header">
+                <p class="card-header-inner">
+                  <span class="left">
+                    <span class="lang">[${article.lang.toUpperCase()}]</span>
+                    ${article.published
+                      ? format(new Date(article.publishedAt as string), 'dddd DD MMMM YYYY', {
+                          locale: languageService.dateFnsLocale,
+                        })
+                      : nothing}
+                  </span>
+                  ${tags(article, this.adminMode)}
+                </p>
+              </header>
+              ${article.posterUrl
+                ? html`
+                    <figure
+                      class="poster card-image"
+                      style="background-image: url('${article.posterUrl}')"
+                    ></figure>
+                  `
+                : nothing}
+              <div class="card-content">
+                <h3 class="title">${article.title}</h3>
+                <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
+              </div>
 
-            ${this.adminMode
-              ? html`
-                  <footer class="card-footer">
-                    <a
-                      class="card-footer-item"
-                      href="${`/admin/draft?id=${article._id}`}"
-                      title="${translate('article_feed.edit')} ${article.title}"
-                      @click="${navigate(`/admin/draft?id=${article._id}`)}"
-                    >
-                      ${translate('article_feed.edit')}
-                    </a>
-                    <a
-                      class="card-footer-item"
-                      type="button"
-                      title="${translate('article_feed.remove')} ${article.title}"
-                      @click="${this.removeArticle.bind(this, article)}"
-                    >
-                      ${translate('article_feed.remove')}
-                    </a>
-                  </footer>
-                `
-              : html``}
-          </article>
-        </a>
-      `;
-    });
+              ${this.adminMode
+                ? html`
+                    <footer class="card-footer">
+                      <a
+                        class="card-footer-item"
+                        href="${`/admin/draft?id=${article._id}`}"
+                        title="${translate('article_feed.edit')} ${article.title}"
+                        @click="${navigate(`/admin/draft?id=${article._id}`)}"
+                      >
+                        ${translate('article_feed.edit')}
+                      </a>
+                      <a
+                        class="card-footer-item"
+                        type="button"
+                        title="${translate('article_feed.remove')} ${article.title}"
+                        @click="${this.removeArticle.bind(this, article)}"
+                      >
+                        ${translate('article_feed.remove')}
+                      </a>
+                    </footer>
+                  `
+                : nothing}
+            </article>
+          </a>
+        `;
+      })}
+    `;
   }
 
   render() {
@@ -340,20 +343,12 @@ export default class ArticleFeedComponent extends LitElement {
             ? html`
                 <span class="tag is-primary is-medium">${this.tags[0]}</span>
               `
-            : null}
+            : nothing}
         </header>
-        ${this.articleCollection
-          ? this.articleList()
-          : placeholder({
-              count: 3,
-              minLines: 1,
-              maxLines: 3,
-              box: true,
-              image: true,
-            })}
+        ${this.articleCollection ? this.articleList() : nothing}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more ${this.loading ? 'is-loading' : ''}"
+          class="button load-more ${this.loading ? 'is-loading' : nothing}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >

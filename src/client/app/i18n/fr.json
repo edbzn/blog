@@ -21,7 +21,8 @@
     "comment_label": "Commentaire"
   },
   "footer": {
-    "credentials": "Fait avec"
+    "credentials": "Fait avec",
+    "credentials2": "<a href=\"https://github.com/Edouardbozon/codamit\">Le code source de ce site est libre</a>"
   },
   "error": {
     "go_back": "Précédent",
