@@ -151,18 +151,13 @@ export default class ArticleFeedComponent extends LitElement {
         text-transform: capitalize;
       }
 
-      @media screen and (max-width: 600px) {
-        .feed .card-header-inner {
-          align-items: initial;
-          flex-direction: column;
-        }
-
+      @media screen and (max-width: 800px) {
         .card-header-inner .left {
           margin-bottom: 4px;
         }
 
-        .feed.section {
-          padding: 2rem 0.8rem;
+        .section {
+          padding: 1rem 0.8rem;
         }
       }
     `;

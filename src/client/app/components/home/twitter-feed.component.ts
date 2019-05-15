@@ -134,7 +134,7 @@ export default class TwitterFeedComponent extends LitElement {
         margin-right: 8px;
       }
 
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 800px) {
         .twitter {
           padding: 1rem 0.8rem;
         }

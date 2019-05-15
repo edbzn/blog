@@ -234,7 +234,7 @@ export default class ArticleDetail extends LitElement {
         border: 2px solid #eee;
       }
 
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 800px) {
         .content .title {
           font-size: 2.75em;
         }
@@ -250,7 +250,7 @@ export default class ArticleDetail extends LitElement {
         .date {
           margin-bottom: 4px;
         }
-        .container.section {
+        .container {
           padding: 3rem 0.8rem;
         }
       }

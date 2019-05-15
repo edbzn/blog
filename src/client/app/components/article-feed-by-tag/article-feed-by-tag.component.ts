@@ -56,7 +56,7 @@ export default class ArticlesByTagComponent extends LitElement {
         border: 2px solid #eee;
       }
 
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 800px) {
         .last {
           padding: 2rem 0.8rem;
           margin-top: -0.8rem;

@@ -31,6 +31,12 @@ export default class ProfileComponent extends LitElement {
         font-size: 2rem;
         font-weight: 100;
       }
+
+      @media screen and (max-width: 800px) {
+        .page-wrapper {
+          padding: 1rem 0.8rem;
+        }
+      }
     `;
   }
 
