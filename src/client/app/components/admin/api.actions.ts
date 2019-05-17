@@ -10,7 +10,7 @@ export interface ApiActions {
   get(id: string): Promise<Article>;
   update(id: string, draft: Article): Promise<Article>;
   post(draft: Draft): Promise<Article>;
-  uploadPoster(id: string, file: File): Promise<void>;
+  uploadPoster(slug: string, file: File): Promise<void>;
 }
 
 export const apiActions = (update: flyd.Stream<StateUpdateFunction>): ApiActions => ({
@@ -81,9 +81,10 @@ export const apiActions = (update: flyd.Stream<StateUpdateFunction>): ApiActions
         });
     });
   },
-  uploadPoster(id: string, file: File): Promise<void> {
+  uploadPoster(slug: string = 'draft', file: File): Promise<void> {
     return new Promise((resolve, reject) => {
-      const filename = id || 'draft' + '-' + uuid();
+      const filename = slug + '-' + uuid().slice(0, 5);
+
       storageService
         .upload(filename, file)
         .then(response => {

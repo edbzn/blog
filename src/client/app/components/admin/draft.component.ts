@@ -113,12 +113,13 @@ export default class DraftComponent extends LitElement {
     const target = e.target as HTMLInputElement;
 
     if (target.files instanceof FileList) {
-      const file = target.files.item(0) as File;
-      const id = this.state.id as string;
+      const file = target.files.item(0)!;
+      const { id } = this.state;
+      const { slug } = this.state.draft;
 
       try {
-        await this.actions.uploadPoster(id, file);
-        await this.actions.update(id, this.getDraft() as Article);
+        await this.actions.uploadPoster(slug, file);
+        await this.actions.update(id!, this.getDraft() as Article);
       } catch (error) {
         errorHandlerService.throw(error);
       }
