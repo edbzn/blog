@@ -1,14 +1,15 @@
-import { defaultReactions } from '../../../../server/api/article/model/article-reactions';
-import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
-import { Article, Draft } from './types';
+import { defaultReactions } from '../../../../../server/api/article/model/article-reactions';
+import { ArticleLanguage } from '../../../../../server/api/article/model/article-language';
+import { Article, Draft } from '../types';
+import { GridFSBucketReadStream } from 'mongodb';
 
 export interface DraftState {
-  id: null | string;
-  editor: null | SimpleMDE;
+  id: string | null;
+  editor: SimpleMDE | null;
   draft: Draft | Article;
   error: string | null;
-  draftLoaded: boolean;
   loading: boolean;
+  isRequestPending: boolean;
 }
 
 export const initialState = (): DraftState => ({
@@ -29,6 +30,6 @@ export const initialState = (): DraftState => ({
     reactions: defaultReactions,
   },
   error: null,
-  draftLoaded: false,
   loading: false,
+  isRequestPending: false,
 });

@@ -1,6 +1,6 @@
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
 import { slugify } from '../../shared/slugify';
-import { DraftState } from './draft.initialState';
+import { DraftState } from './store/admin.state';
 import { StateUpdateFunction } from './draft.stream';
 
 export interface FormActions {
