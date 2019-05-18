@@ -2,8 +2,9 @@ import { html, render } from 'lit-html';
 import { routerGroup } from 'prouter';
 
 import { appSelector } from '.';
-import { actions, states } from '../../components/admin/draft.stream';
 import { loadAdmin } from '../../components/admin/lazy';
+import { store } from '../store/store';
+import { loadDraft } from '../../components/admin/store/api.actions';
 
 export const adminRoutes = routerGroup()
   .use('/', async (req, resp) => {
@@ -20,14 +21,13 @@ export const adminRoutes = routerGroup()
   .use('/draft', async (req, resp) => {
     await loadAdmin();
 
-    const id = req.query.id;
-    if (id) {
-      actions.setId(id);
+    if (req.query.id) {
+      store.dispatch(loadDraft(req.query.id));
     }
 
     render(
       html`
-        <ez-draft .actions="${actions}" .states="${states}"></ez-draft>
+        <ez-draft></ez-draft>
       `,
       appSelector
     );

@@ -6,9 +6,9 @@ class StorageClient {
   private baseUrl = 'https://content.dropboxapi.com/2';
   private shareBaseUrl = 'https://api.dropboxapi.com/2';
 
-  async upload(articleUuid: string, file: File): Promise<{ path: string }> {
+  async upload(articleURI: string = 'draft', file: File): Promise<{ path: string }> {
     const extName = StorageClient.getExtname(file.name);
-    const path = '/posters/article_' + articleUuid + '__' + uuid().slice(0, 5) + '.' + extName;
+    const path = '/posters/article_' + articleURI + '__' + uuid().slice(0, 5) + '.' + extName;
     const url = this.baseUrl + '/files/upload';
     const apiArgs = {
       path: path,

@@ -1,247 +1,270 @@
-import * as flyd from 'flyd';
-import { css, html, LitElement, property } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
+import { nothing } from 'lit-html';
+import { connect } from 'pwa-helpers';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, delay, distinctUntilChanged, filter, take } from 'rxjs/operators';
 
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
 import { errorHandlerService } from '../../core/services/error-handler-service';
+import { AppState } from '../../core/store/state';
+import { store } from '../../core/store/store';
 import { slugify } from '../../shared/slugify';
 import { navigate } from '../../utils/navigate';
-import { DraftActions } from './draft.actions';
-import { DraftState } from './draft.initialState';
-import { Article, Draft } from './types';
-import { nothing } from 'lit-html';
+import { DraftState } from './store/admin.state';
+import { clearDraft, createDraft, updateDraft } from './store/api.actions';
+import {
+  dePublish,
+  editLang,
+  editMarkdown,
+  editMetaDescription,
+  editMetaTitle,
+  editSlug,
+  editTags,
+  editTitle,
+  loadEditor,
+  publish,
+} from './store/editor.actions';
+import { Article } from './types';
+import { buttonStyle } from '../../shared/button';
 
-export default class DraftComponent extends LitElement {
-  @property({ type: Object })
-  actions: DraftActions;
+export default class DraftComponent extends connect(store)(LitElement) {
+  markdownChangeSubject = new Subject<string>();
+  markdownChangeSub: Subscription;
 
-  @property({ type: Object })
-  states: flyd.Stream<DraftState>;
+  updateChangeSubject = new Subject<void>();
+  updateChangeSub: Subscription;
 
+  stateSubject = new Subject<DraftState>();
+  state$ = this.stateSubject.asObservable();
   state: DraftState;
 
-  dirty = false;
-
-  saveTimer: number;
+  stateChanged(state: AppState) {
+    this.state = state.admin;
+    this.stateSubject.next(state.admin);
+    this.requestUpdate('state');
+  }
 
   firstUpdated() {
-    this.state = this.states();
-    this.states.map(async state => {
-      this.state = state;
-      await this.requestUpdate('state');
-    });
+    if (this.isDraft()) {
+      store.dispatch(
+        loadEditor(this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement, '')
+      );
+    } else {
+      this.state$
+        .pipe(
+          filter(state => !state.loading),
+          take(1),
+          delay(1) // wait rendering
+        )
+        .subscribe(state => {
+          store.dispatch(
+            loadEditor(
+              this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
+              state.draft.markdown
+            )
+          );
+        });
+    }
 
-    this.loadAndInit();
+    this.markdownChangeSub = this.markdownChangeSubject
+      .asObservable()
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(300)
+      )
+      .subscribe(markdown => {
+        store.dispatch(editMarkdown(markdown));
+        this.updateChangeSubject.next();
+      });
+
+    this.updateChangeSub = this.updateChangeSubject
+      .asObservable()
+      .pipe(debounceTime(300))
+      .subscribe(() => {
+        const { draft } = this.state;
+        this.isDraft()
+          ? store.dispatch(createDraft(draft))
+          : store.dispatch(updateDraft(draft as Article));
+      });
   }
 
   disconnectedCallback(): void {
-    this.actions.reset();
-  }
-
-  async loadAndInit() {
-    if (!this.isDraft()) {
-      const draft = await this.actions.get(this.state.id as string);
-
-      await this.requestUpdate();
-
-      this.actions.initEditor(
-        this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
-        draft.markdown
-      );
-    } else {
-      await this.requestUpdate();
-
-      this.actions.initEditor(
-        this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
-        ''
-      );
-    }
+    this.markdownChangeSub.unsubscribe();
+    this.updateChangeSub.unsubscribe();
+    store.dispatch(clearDraft());
   }
 
   isDraft(): boolean {
     return typeof this.state.id !== 'string';
   }
 
-  shouldShowEditor(): boolean {
-    return this.state && (this.state.draftLoaded || this.isDraft());
-  }
-
-  async handleSubmit(e: Event): Promise<void> {
+  handleMarkdownChange(e: Event): void {
     e.preventDefault();
-
-    this.actions.transformMarkdownToHtml();
-    const draft = this.getDraft();
-
-    try {
-      if (this.isDraft()) {
-        const article = await this.actions.post(draft);
-        const route = `/admin/draft?id=${article._id}`;
-        navigate(route)();
-      } else {
-        await this.actions.update(this.state.id as string, draft as Article);
-      }
-    } catch (error) {
-      errorHandlerService.throw(error);
-    }
+    this.markdownChangeSubject.next(this.state.editor!.value());
   }
 
-  handleChange(e: Event): void {
-    e.preventDefault();
-    this.dirty = true;
-    this.requestUpdate();
-
-    if (this.saveTimer) {
-      window.clearTimeout(this.saveTimer);
-    }
-
-    if (
-      !this.state.draft.markdown ||
-      (this.state.draft.markdown || '').length === 0 ||
-      !this.state.draft.title
-    ) {
-      return;
-    }
-
-    const saveCallback = async () => {
-      await this.handleSubmit(e);
-      this.dirty = false;
-      this.requestUpdate();
-    };
-    this.saveTimer = window.setTimeout(saveCallback, 2000);
-  }
-
-  async handleFile(e: Event) {
+  handleFile(e: Event) {
     const target = e.target as HTMLInputElement;
 
     if (target.files instanceof FileList) {
-      const file = target.files.item(0) as File;
-      const id = this.state.id as string;
+      const file = target.files.item(0)!;
+      const { id } = this.state;
+      const { slug } = this.state.draft;
 
       try {
-        await this.actions.uploadPoster(id, file);
-        await this.actions.update(id, this.getDraft() as Article);
+        // await this.actions.uploadPoster(slug, file);
+        // await this.actions.update(id!, this.getDraft() as Article);
       } catch (error) {
         errorHandlerService.throw(error);
       }
     }
   }
 
-  async togglePublish(e: Event) {
-    const article = this.getDraft();
+  togglePublish(e: Event) {
+    const { draft } = this.state;
 
-    if (article.published) {
-      this.actions.dePublish();
+    if (draft.published) {
+      store.dispatch(dePublish());
     } else {
-      this.actions.publish();
+      store.dispatch(publish());
     }
 
-    await this.actions.update(this.state.id as string, this.getDraft() as Article);
+    this.updateChangeSubject.next();
   }
 
   handleTagsChange(e: Event): void {
-    this.actions.editTags((e.target as HTMLInputElement).value);
-    this.handleChange(e);
+    store.dispatch(editTags((e.target as HTMLInputElement).value));
+    this.updateChangeSubject.next();
   }
 
   handleTitleChange(e: Event): void {
-    this.actions.editTitle((e.target as HTMLInputElement).value);
-    this.handleChange(e);
+    store.dispatch(editTitle((e.target as HTMLInputElement).value));
+    this.updateChangeSubject.next();
   }
 
   handleMetaTitleChange(e: Event): void {
-    this.actions.editMetaTitle((e.target as HTMLInputElement).value);
-    this.handleChange(e);
+    store.dispatch(editMetaTitle((e.target as HTMLInputElement).value));
+    this.updateChangeSubject.next();
   }
 
   handleMetaDescriptionChange(e: Event): void {
-    this.actions.editMetaDescription((e.target as HTMLInputElement).value);
-    this.handleChange(e);
+    store.dispatch(editMetaDescription((e.target as HTMLInputElement).value));
+    this.updateChangeSubject.next();
   }
 
   handleLangChange(e: Event): void {
-    this.actions.editLang((e.target as HTMLInputElement).value as ArticleLanguage);
-    this.handleChange(e);
+    store.dispatch(editLang((e.target as HTMLInputElement).value as ArticleLanguage));
+    this.updateChangeSubject.next();
   }
 
   handleSlugChange(e: Event): void {
-    this.actions.editSlug((e.target as HTMLInputElement).value as ArticleLanguage);
-    this.handleChange(e);
+    store.dispatch(editSlug((e.target as HTMLInputElement).value));
+    this.updateChangeSubject.next();
   }
 
   handleRemovePoster(e: Event): void {
-    this.actions.removePoster();
-    this.handleChange(e);
-  }
-
-  getDraft(): Draft {
-    const { draft } = this.state;
-
-    return {
-      title: draft.title,
-      slug: draft.slug,
-      markdown: draft.markdown,
-      html: draft.html,
-      posterUrl: draft.posterUrl,
-      tags: draft.tags.map(tag => tag.replace(' ', '')),
-      published: draft.published,
-      publishedAt: draft.publishedAt,
-      metaTitle: draft.metaTitle,
-      metaDescription: draft.metaDescription,
-      lang: draft.lang,
-      reactions: draft.reactions,
-    };
+    // this.actions.removePoster();
+    this.updateChangeSubject.next();
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      buttonStyle,
+      css`
+        :host {
+          display: block;
+        }
 
-      .loading {
-        padding-top: 5rem;
-        text-align: center;
-        color: #4f4f4f;
-      }
+        .loading {
+          padding-top: 5rem;
+          text-align: center;
+          color: #4f4f4f;
+          font-family: 'IBM Plex Sans', Cambria, sans-serif;
+        }
 
-      .loading > .loader {
-        margin: 0 auto;
-        margin-top: 1rem;
-      }
+        .error {
+          padding: 6px 4px;
+          background: #dd4646;
+          color: #fff;
+          border-radius: 4px;
+          text-align: center;
+        }
 
-      .draft-configuration {
-        position: sticky;
-        top: 16px;
-        background: #eee;
-        padding: 16px;
-        border-radius: 6px;
-      }
+        .columns {
+          display: flex;
+          justify-content: center;
+        }
 
-      .poster {
-        height: 400px;
-        background-position: center center;
-        background-size: cover;
-        background-color: #eee;
-      }
+        .is-half {
+          width: 50%;
+        }
 
-      .right {
-        float: right;
-      }
+        .is-one-third {
+          width: 25%;
+          margin-right: 1rem;
+        }
 
-      button svg {
-        fill: #17a917;
-        width: 22px;
-        margin-right: 6px;
-      }
+        .field {
+          margin: 10px 0;
+        }
 
-      .field .button {
-        width: 100%;
-      }
-    `;
+        .field input {
+          box-sizing: border-box;
+          margin-top: 6px;
+          display: block;
+          width: 100%;
+          padding: 4px;
+          border-radius: 2px;
+          background: #eee;
+          border: 1px solid #888;
+        }
+
+        .label {
+          font-size: 0.9rem;
+        }
+
+        .loading > .loader {
+          margin: 0 auto;
+          margin-top: 1rem;
+        }
+
+        .draft-configuration {
+          position: sticky;
+          top: 16px;
+          margin-top: 26px;
+          background: #eee;
+          padding: 16px;
+          border-radius: 6px;
+          font-family: 'IBM Plex Sans', Cambria, sans-serif;
+        }
+
+        .poster {
+          height: 400px;
+          background-position: center center;
+          background-size: cover;
+          background-color: #eee;
+        }
+
+        .right {
+          float: right;
+        }
+
+        button svg {
+          fill: #17a917;
+          width: 22px;
+          margin-right: 6px;
+        }
+
+        .field .button {
+          width: 100%;
+        }
+      `,
+    ];
   }
 
   render() {
-    const articleUri =
-      this.state && this.state.draftLoaded ? `/article/${this.state.draft.slug}` : null;
+    const articleUri = !this.isDraft() ? `/article/${this.state.draft.slug}` : null;
+    const { loading } = this.state;
 
     return html`
       <link
@@ -252,12 +275,8 @@ export default class DraftComponent extends LitElement {
       <link href="assets/css/debug-simplemde.css" rel="stylesheet" />
 
       <ez-navbar></ez-navbar>
-      <form
-        @submit="${this.handleSubmit}"
-        @input="${this.handleChange}"
-        @change="${this.handleChange}"
-      >
-        ${this.shouldShowEditor()
+      <form @input="${this.handleMarkdownChange}" @change="${this.handleMarkdownChange}">
+        ${!loading
           ? html`
               <div>
                 ${this.state.draft.posterUrl
@@ -298,7 +317,7 @@ export default class DraftComponent extends LitElement {
                             />
                           </div>
                           <div class="field">
-                            <label class="label" for="tags">Tags (separated by a comma)</label>
+                            <label class="label" for="tags">Tags</label>
                             <input
                               type="text"
                               class="input"
@@ -373,7 +392,7 @@ export default class DraftComponent extends LitElement {
                           <hr />
                           <div class="field">
                             <button type="submit" class="button is-block">
-                              ${this.dirty || this.state.loading
+                              ${this.state.isRequestPending
                                 ? html`
                                     ⌛️ Sauvegarde en cours...
                                   `
@@ -408,6 +427,13 @@ export default class DraftComponent extends LitElement {
                                 `
                               : nothing}
                           </div>
+                          ${this.state.error
+                            ? html`
+                                <div class="field error">
+                                  ${this.state.error}
+                                </div>
+                              `
+                            : nothing}
                         </div>
                       `}
                     </div>
@@ -430,7 +456,8 @@ export default class DraftComponent extends LitElement {
           : html`
               <div class="loading">
                 Initialisation de l'espace temps, <br />
-                Chargement de la matrice quantique ...
+                chargement de la matrice quantique, <br />
+                décomposition de la matière.
                 <div class="loader"></div>
               </div>
             `}
