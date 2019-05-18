@@ -5,6 +5,7 @@ import { nothing } from 'lit-html';
 
 import { translate } from '../../core/directives/translate.directive';
 import { apiClient } from '../../core/services/api-client';
+import { buttonStyle } from '../../shared/button';
 import { ResourceCollection } from '../../utils/collection';
 import { Comment } from './types';
 
@@ -77,57 +78,32 @@ export default class ArticleCommentComponent extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-        margin-top: 0.6rem;
-        margin-bottom: 3rem;
-      }
+    return [
+      buttonStyle,
+      css`
+        :host {
+          display: block;
+          margin-top: 0.6rem;
+          margin-bottom: 3rem;
+        }
 
-      form[name='postComment'] {
-        font-size: 1rem;
-        margin: 2rem 0;
-      }
+        form[name='postComment'] {
+          font-size: 1rem;
+          margin: 2rem 0;
+        }
 
-      .button {
-        font-family: 'IBM Plex Sans Condensed', sans-serif;
-        color: #222;
-        text-decoration: none;
-        text-align: center;
-        display: block;
-        width: 100%;
-        height: 42px;
-        line-height: 42px;
-        margin-top: 10px;
-        border: 1px solid #eee;
-        border-radius: 6px;
-        background: #fff;
-        cursor: pointer;
-        color: #222;
-        font-size: 0.8rem;
-        transition: 150ms ease;
-      }
+        .comments {
+          margin-top: 2rem;
+          font-size: 1rem;
+        }
 
-      .button:hover {
-        background: #eee;
-      }
-
-      .button:focus {
-        outline: none;
-        border: 2px solid #eee;
-      }
-
-      .comments {
-        margin-top: 2rem;
-        font-size: 1rem;
-      }
-
-      .message header em {
-        font-weight: 100;
-        font-size: 14px;
-        text-transform: capitalize;
-      }
-    `;
+        .message header em {
+          font-weight: 100;
+          font-size: 14px;
+          text-transform: capitalize;
+        }
+      `,
+    ];
   }
 
   render() {

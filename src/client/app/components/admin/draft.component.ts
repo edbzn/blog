@@ -24,7 +24,8 @@ import {
   loadEditor,
   publish,
 } from './store/editor.actions';
-import { Article, Draft } from './types';
+import { Article } from './types';
+import { buttonStyle } from '../../shared/button';
 
 export default class DraftComponent extends connect(store)(LitElement) {
   markdownChangeSubject = new Subject<string>();
@@ -167,95 +168,98 @@ export default class DraftComponent extends connect(store)(LitElement) {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      buttonStyle,
+      css`
+        :host {
+          display: block;
+        }
 
-      .loading {
-        padding-top: 5rem;
-        text-align: center;
-        color: #4f4f4f;
-        font-family: 'IBM Plex Sans', Cambria, sans-serif;
-      }
+        .loading {
+          padding-top: 5rem;
+          text-align: center;
+          color: #4f4f4f;
+          font-family: 'IBM Plex Sans', Cambria, sans-serif;
+        }
 
-      .error {
-        padding: 6px 4px;
-        background: #dd4646;
-        color: #fff;
-        border-radius: 4px;
-        text-align: center;
-      }
+        .error {
+          padding: 6px 4px;
+          background: #dd4646;
+          color: #fff;
+          border-radius: 4px;
+          text-align: center;
+        }
 
-      .columns {
-        display: flex;
-        justify-content: center;
-      }
+        .columns {
+          display: flex;
+          justify-content: center;
+        }
 
-      .is-half {
-        width: 50%;
-      }
+        .is-half {
+          width: 50%;
+        }
 
-      .is-one-third {
-        width: 25%;
-        margin-right: 1rem;
-      }
+        .is-one-third {
+          width: 25%;
+          margin-right: 1rem;
+        }
 
-      .field {
-        margin: 10px 0;
-      }
+        .field {
+          margin: 10px 0;
+        }
 
-      .field input {
-        box-sizing: border-box;
-        margin-top: 6px;
-        display: block;
-        width: 100%;
-        padding: 4px;
-        border-radius: 2px;
-        background: #eee;
-        border: 1px solid #888;
-      }
+        .field input {
+          box-sizing: border-box;
+          margin-top: 6px;
+          display: block;
+          width: 100%;
+          padding: 4px;
+          border-radius: 2px;
+          background: #eee;
+          border: 1px solid #888;
+        }
 
-      .label {
-        font-size: 0.9rem;
-      }
+        .label {
+          font-size: 0.9rem;
+        }
 
-      .loading > .loader {
-        margin: 0 auto;
-        margin-top: 1rem;
-      }
+        .loading > .loader {
+          margin: 0 auto;
+          margin-top: 1rem;
+        }
 
-      .draft-configuration {
-        position: sticky;
-        top: 16px;
-        margin-top: 26px;
-        background: #eee;
-        padding: 16px;
-        border-radius: 6px;
-        font-family: 'IBM Plex Sans', Cambria, sans-serif;
-      }
+        .draft-configuration {
+          position: sticky;
+          top: 16px;
+          margin-top: 26px;
+          background: #eee;
+          padding: 16px;
+          border-radius: 6px;
+          font-family: 'IBM Plex Sans', Cambria, sans-serif;
+        }
 
-      .poster {
-        height: 400px;
-        background-position: center center;
-        background-size: cover;
-        background-color: #eee;
-      }
+        .poster {
+          height: 400px;
+          background-position: center center;
+          background-size: cover;
+          background-color: #eee;
+        }
 
-      .right {
-        float: right;
-      }
+        .right {
+          float: right;
+        }
 
-      button svg {
-        fill: #17a917;
-        width: 22px;
-        margin-right: 6px;
-      }
+        button svg {
+          fill: #17a917;
+          width: 22px;
+          margin-right: 6px;
+        }
 
-      .field .button {
-        width: 100%;
-      }
-    `;
+        .field .button {
+          width: 100%;
+        }
+      `,
+    ];
   }
 
   render() {

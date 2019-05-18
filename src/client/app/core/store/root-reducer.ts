@@ -1,5 +1,5 @@
-import { combineReducers } from "redux";
-import { admin } from "../../components/admin/store/admin.reducer";
+import { combineReducers } from 'redux';
+import { admin } from '../../components/admin/store/admin.reducer';
 
 function client(state = {}, action: any) {
   switch (action.type) {
@@ -8,8 +8,7 @@ function client(state = {}, action: any) {
   }
 }
 
-export const rootReducer =
-  combineReducers({
-    client,
-    admin,
-  });
+export const rootReducer = combineReducers({
+  client,
+  admin,
+});

@@ -20,7 +20,7 @@ export const adminRoutes = routerGroup()
   })
   .use('/draft', async (req, resp) => {
     await loadAdmin();
-    
+
     if (req.query.id) {
       store.dispatch(loadDraft(req.query.id));
     }
