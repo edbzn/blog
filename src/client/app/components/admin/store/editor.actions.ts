@@ -10,6 +10,7 @@ export const EDIT_SLUG = '[ADMIN] EDIT_SLUG';
 export const EDIT_TAGS = '[ADMIN] EDIT_TAGS';
 export const PUBLISH = '[ADMIN] PUBLISH';
 export const DE_PUBLISH = '[ADMIN] DE_PUBLISH';
+export const REMOVE_POSTER = '[ADMIN] REMOVE_POSTER';
 
 export const loadEditor = (element: HTMLTextAreaElement, initialValue: string) => ({
   type: LOAD_EDITOR,
@@ -71,4 +72,8 @@ export const publish = () => ({
 
 export const dePublish = () => ({
   type: DE_PUBLISH,
+});
+
+export const removePoster = () => ({
+  type: REMOVE_POSTER,
 });

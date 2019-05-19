@@ -22,6 +22,7 @@ import {
   EDIT_TITLE,
   LOAD_EDITOR_SUCCESS,
   PUBLISH,
+  REMOVE_POSTER,
 } from './editor.actions';
 
 export function admin(state = initialState(), action: any): DraftState {
@@ -163,6 +164,15 @@ export function admin(state = initialState(), action: any): DraftState {
         editor: null,
         error: null,
         id: null,
+      };
+
+    case REMOVE_POSTER:
+      return {
+        ...state,
+        draft: {
+          ...state.draft,
+          posterUrl: null,
+        }
       };
 
     case FAILURE:

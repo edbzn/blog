@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit-element';
 import { nothing } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, filter, take } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, filter, take, skipWhile } from 'rxjs/operators';
 
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
 import { errorHandlerService } from '../../core/services/error-handler-service';
@@ -11,7 +11,7 @@ import { store } from '../../core/store/store';
 import { slugify } from '../../shared/slugify';
 import { navigate } from '../../utils/navigate';
 import { DraftState } from './store/admin.state';
-import { clearDraft, createDraft, updateDraft } from './store/api.actions';
+import { clearDraft, createDraft, updateDraft, uploadPoster } from './store/api.actions';
 import {
   dePublish,
   editLang,
@@ -23,6 +23,7 @@ import {
   editTitle,
   loadEditor,
   publish,
+  removePoster,
 } from './store/editor.actions';
 import { Article } from './types';
 import { buttonStyle } from '../../shared/button';
@@ -109,15 +110,15 @@ export default class DraftComponent extends connect(store)(LitElement) {
 
     if (target.files instanceof FileList) {
       const file = target.files.item(0)!;
-      const { id } = this.state;
       const { slug } = this.state.draft;
 
-      try {
-        // await this.actions.uploadPoster(slug, file);
-        // await this.actions.update(id!, this.getDraft() as Article);
-      } catch (error) {
-        errorHandlerService.throw(error);
-      }
+      store.dispatch(uploadPoster({ slug, file }));
+      this.state$
+        .pipe(
+          skipWhile(state => state.isRequestPending),
+          take(1)
+        )
+        .subscribe(state => store.dispatch(updateDraft(state.draft as Article)));
     }
   }
 
@@ -164,7 +165,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
   }
 
   handleRemovePoster(e: Event): void {
-    // this.actions.removePoster();
+    store.dispatch(removePoster());
     this.updateChangeSubject.next();
   }
 
