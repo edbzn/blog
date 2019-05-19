@@ -4,6 +4,7 @@ import { nothing } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 
 import { Article } from '../../components/admin/types';
+import { buttonStyle } from '../../shared/button';
 import { tags } from '../../shared/tags';
 import { ResourceCollection } from '../../utils/collection';
 import check from '../../utils/icons/check';
@@ -15,7 +16,9 @@ import { languageService } from '../services/language-service';
 
 export default class ArticleFeedComponent extends LitElement {
   static get styles() {
-    return css`
+    return [
+      buttonStyle,
+      css`
       :host {
         display: block;
       }
@@ -108,34 +111,6 @@ export default class ArticleFeedComponent extends LitElement {
         fill: #666;
       }
 
-      .load-more {
-        display: block;
-        width: 100%;
-        height: 42px;
-        border: 1px solid #eee;
-        border-radius: 6px;
-        background: #fff;
-        cursor: pointer;
-        font-family: 'IBM Plex Sans Condensed', sans-serif;
-        color: #222;
-        font-size: 0.8rem;
-        transition: 150ms ease;
-      }
-
-      .load-more:hover {
-        background: #eee;
-      }
-
-      .load-more:focus {
-        outline: none;
-        border: 2px solid #eee;
-      }
-
-      .load-more[disabled] {
-        background: #fff;
-        cursor: default;
-      }
-
       .feed-header {
         display: flex;
         justify-content: space-between;
@@ -160,7 +135,7 @@ export default class ArticleFeedComponent extends LitElement {
           padding: 1rem 0.8rem;
         }
       }
-    `;
+    `];
   }
 
   @property({ type: Array })

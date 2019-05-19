@@ -26,6 +26,7 @@ import {
 } from './store/editor.actions';
 import { Article } from './types';
 import { buttonStyle } from '../../shared/button';
+import { formStyle } from '../../shared/form';
 
 export default class DraftComponent extends connect(store)(LitElement) {
   markdownChangeSubject = new Subject<string>();
@@ -170,6 +171,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
   static get styles() {
     return [
       buttonStyle,
+      formStyle,
       css`
         :host {
           display: block;
@@ -197,35 +199,13 @@ export default class DraftComponent extends connect(store)(LitElement) {
 
         .is-half {
           width: 50%;
+          max-width: 740px;
         }
 
         .is-one-third {
           width: 25%;
+          max-width: 400px;
           margin-right: 1rem;
-        }
-
-        .field {
-          margin: 10px 0;
-        }
-
-        .field input {
-          box-sizing: border-box;
-          margin-top: 6px;
-          display: block;
-          width: 100%;
-          padding: 4px;
-          border-radius: 2px;
-          background: #eee;
-          border: 1px solid #888;
-        }
-
-        .label {
-          font-size: 0.9rem;
-        }
-
-        .loading > .loader {
-          margin: 0 auto;
-          margin-top: 1rem;
         }
 
         .draft-configuration {
@@ -389,7 +369,6 @@ export default class DraftComponent extends connect(store)(LitElement) {
                               type="text"
                             />
                           </div>
-                          <hr />
                           <div class="field">
                             <button type="submit" class="button is-block">
                               ${this.state.isRequestPending
@@ -458,7 +437,6 @@ export default class DraftComponent extends connect(store)(LitElement) {
                 Initialisation de l'espace temps, <br />
                 chargement de la matrice quantique, <br />
                 décomposition de la matière.
-                <div class="loader"></div>
               </div>
             `}
       </form>

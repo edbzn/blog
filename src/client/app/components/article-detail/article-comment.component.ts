@@ -8,6 +8,7 @@ import { apiClient } from '../../core/services/api-client';
 import { buttonStyle } from '../../shared/button';
 import { ResourceCollection } from '../../utils/collection';
 import { Comment } from './types';
+import { formStyle } from '../../shared/form';
 
 export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
@@ -79,6 +80,7 @@ export default class ArticleCommentComponent extends LitElement {
 
   static get styles() {
     return [
+      formStyle,
       buttonStyle,
       css`
         :host {

@@ -7,6 +7,7 @@ import { authService } from '../../core/services/authentication-service';
 import { errorHandlerService } from '../../core/services/error-handler-service';
 import { navigate } from '../../utils/navigate';
 import { IUser } from './types';
+import { formStyle } from '../../shared/form';
 
 export default class Login extends LitElement {
   showSignup = false;
@@ -27,12 +28,15 @@ export default class Login extends LitElement {
   }
 
   static get styles() {
-    return css`
-      .section {
-        max-width: 350px;
-        margin: 0 auto;
-      }
-    `;
+    return [
+      formStyle,
+      css`
+        .section {
+          max-width: 350px;
+          margin: 0 auto;
+        }
+      `,
+    ];
   }
 
   render() {

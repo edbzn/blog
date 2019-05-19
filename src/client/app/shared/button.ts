@@ -11,9 +11,9 @@ export const buttonStyle = css`
     height: 42px;
     line-height: 42px;
     margin-top: 10px;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    background: #fff;
+    border: 1px solid #c4c4c4;
+    border-radius: 4px;
+    background: transparent;
     cursor: pointer;
     color: #222;
     font-size: 0.8rem;
@@ -21,11 +21,19 @@ export const buttonStyle = css`
   }
 
   .button:hover {
-    background: #eee;
+    outline: none;
   }
 
   .button:focus {
     outline: none;
-    border: 2px solid #eee;
+  }
+
+  .button[disabled] {
+    color: #666;
+    cursor: initial;
+  }
+
+  .button[disabled]:hover {
+    outline: none;
   }
 `;
