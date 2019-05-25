@@ -2,12 +2,23 @@ import { css, html, LitElement } from 'lit-element';
 import { nothing } from 'lit-html';
 import { connect } from 'pwa-helpers';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, delay, distinctUntilChanged, filter, take, skipWhile } from 'rxjs/operators';
+import {
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  filter,
+  skipWhile,
+  switchMapTo,
+  take,
+  tap,
+  skip,
+} from 'rxjs/operators';
 
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
-import { errorHandlerService } from '../../core/services/error-handler-service';
 import { AppState } from '../../core/store/state';
 import { store } from '../../core/store/store';
+import { buttonStyle } from '../../shared/button';
+import { formStyle } from '../../shared/form';
 import { slugify } from '../../shared/slugify';
 import { navigate } from '../../utils/navigate';
 import { DraftState } from './store/admin.state';
@@ -26,8 +37,6 @@ import {
   removePoster,
 } from './store/editor.actions';
 import { Article } from './types';
-import { buttonStyle } from '../../shared/button';
-import { formStyle } from '../../shared/form';
 
 export default class DraftComponent extends connect(store)(LitElement) {
   markdownChangeSubject = new Subject<string>();
@@ -106,6 +115,8 @@ export default class DraftComponent extends connect(store)(LitElement) {
   }
 
   handleFile(e: Event) {
+    e.preventDefault();
+
     const target = e.target as HTMLInputElement;
 
     if (target.files instanceof FileList) {
@@ -116,13 +127,14 @@ export default class DraftComponent extends connect(store)(LitElement) {
       this.state$
         .pipe(
           skipWhile(state => state.isRequestPending),
+          distinctUntilChanged((prev, next) => prev.draft.posterUrl !== next.draft.posterUrl),
           take(1)
         )
-        .subscribe(state => store.dispatch(updateDraft(state.draft as Article)));
+        .subscribe(() => this.updateChangeSubject.next());
     }
   }
 
-  togglePublish(e: Event) {
+  togglePublish() {
     const { draft } = this.state;
 
     if (draft.published) {
@@ -164,7 +176,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
     this.updateChangeSubject.next();
   }
 
-  handleRemovePoster(e: Event): void {
+  handleRemovePoster(): void {
     store.dispatch(removePoster());
     this.updateChangeSubject.next();
   }
@@ -213,7 +225,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
           position: sticky;
           top: 16px;
           margin-top: 26px;
-          background: #eee;
+          background: #f8f8f8;
           padding: 16px;
           border-radius: 6px;
           font-family: 'IBM Plex Sans', Cambria, sans-serif;
@@ -238,6 +250,10 @@ export default class DraftComponent extends connect(store)(LitElement) {
 
         .field .button {
           width: 100%;
+        }
+
+        .loader {
+          float: right;
         }
       `,
     ];
@@ -274,7 +290,16 @@ export default class DraftComponent extends connect(store)(LitElement) {
                       ${html`
                         <div class="draft-configuration card">
                           <div class="field">
-                            <label class="label" for="title">Title</label>
+                            <label class="label" for="title"
+                              >Title
+                              ${this.state.isRequestPending
+                                ? html`
+                                    <span class="loader">⌛️</span>
+                                  `
+                                : html`
+                                    <span class="loader">🔵</span>
+                                  `}
+                            </label>
                             <input
                               id="title"
                               name="title"
@@ -342,7 +367,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
                           <div class="field">
                             <button
                               class="button is-warning"
-                              ?disabled=${!this.state.draft.posterUrl}
+                              ?disabled=${!this.state.draft.posterUrl || this.isDraft()}
                               @click="${this.handleRemovePoster}"
                             >
                               Supprimer le poster
@@ -371,14 +396,12 @@ export default class DraftComponent extends connect(store)(LitElement) {
                             />
                           </div>
                           <div class="field">
-                            <button type="submit" class="button is-block">
-                              ${this.state.isRequestPending
-                                ? html`
-                                    ⌛️ Sauvegarde en cours...
-                                  `
-                                : html`
-                                    ✓ Sauvegarder
-                                  `}
+                            <button
+                              type="button"
+                              class="button is-block"
+                              @click="${() => this.updateChangeSubject.next()}"
+                            >
+                              ✓ Sauvegarder
                             </button>
                           </div>
                           <div class="field">

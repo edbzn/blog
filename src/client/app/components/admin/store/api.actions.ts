@@ -39,7 +39,7 @@ export const uploadPoster = ({ slug, file }: { slug: string; file: File }) => ({
   type: UPLOAD_POSTER,
   payload: { slug, file },
 });
-export const uploadPosterFulfilled = ({ slug, url }: { slug: string; url: string }) => ({
+export const uploadPosterFulfilled = (url: string) => ({
   type: UPLOAD_POSTER_SUCCESS,
-  payload: { slug, url },
+  payload: url,
 });

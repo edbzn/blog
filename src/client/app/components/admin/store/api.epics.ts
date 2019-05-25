@@ -68,7 +68,7 @@ const uploadPosterEpic = (action$: Observable<any>): Observable<Action> =>
     ofType(UPLOAD_POSTER),
     switchMap(({ payload: { slug, file } }) =>
       from(storageService.upload(slug, file)).pipe(
-        map(response => uploadPosterFulfilled({ slug, url: response.path })),
+        map(response => uploadPosterFulfilled(response.path)),
         catchError(err => of(failure(err)))
       )
     )

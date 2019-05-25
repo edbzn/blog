@@ -9,6 +9,8 @@ import {
   LOAD_DRAFT_SUCCESS,
   UPDATE_DRAFT,
   UPDATE_DRAFT_SUCCESS,
+  UPLOAD_POSTER,
+  UPLOAD_POSTER_SUCCESS,
 } from './api.actions';
 import {
   CONVERT_MD_TO_HTML,
@@ -41,11 +43,21 @@ export function admin(state = initialState(), action: any): DraftState {
         loading: false,
       };
 
+    case UPLOAD_POSTER:
     case CREATE_DRAFT:
     case UPDATE_DRAFT:
       return {
         ...state,
         isRequestPending: true,
+      };
+
+    case UPLOAD_POSTER_SUCCESS:
+      return {
+        ...state,
+        draft: {
+          ...state.draft,
+          posterUrl: action.payload,
+        },
       };
 
     case CREATE_DRAFT_SUCCESS:
@@ -60,7 +72,6 @@ export function admin(state = initialState(), action: any): DraftState {
     case UPDATE_DRAFT_SUCCESS:
       return {
         ...state,
-        draft: action.payload,
         isRequestPending: false,
         error: null,
       };
@@ -172,7 +183,7 @@ export function admin(state = initialState(), action: any): DraftState {
         draft: {
           ...state.draft,
           posterUrl: null,
-        }
+        },
       };
 
     case FAILURE:
