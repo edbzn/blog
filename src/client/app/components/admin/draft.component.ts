@@ -8,10 +8,9 @@ import {
   distinctUntilChanged,
   filter,
   skipWhile,
-  switchMapTo,
   take,
   tap,
-  skip,
+  withLatestFrom,
 } from 'rxjs/operators';
 
 import { ArticleLanguage } from '../../../../server/api/article/model/article-language';
@@ -37,6 +36,7 @@ import {
   removePoster,
 } from './store/editor.actions';
 import { Article } from './types';
+import { cardStyle } from '../../shared/card';
 
 export default class DraftComponent extends connect(store)(LitElement) {
   markdownChangeSubject = new Subject<string>();
@@ -49,6 +49,10 @@ export default class DraftComponent extends connect(store)(LitElement) {
   state$ = this.stateSubject.asObservable();
   state: DraftState;
 
+  isRequestPending = false;
+  requestSubject = new Subject<void>();
+  requestSub: Subscription;
+
   stateChanged(state: AppState) {
     this.state = state.admin;
     this.stateSubject.next(state.admin);
@@ -56,31 +60,16 @@ export default class DraftComponent extends connect(store)(LitElement) {
   }
 
   firstUpdated() {
-    if (this.isDraft()) {
-      store.dispatch(
-        loadEditor(this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement, '')
-      );
-    } else {
-      this.state$
-        .pipe(
-          filter(state => !state.loading),
-          take(1),
-          delay(1) // wait rendering
-        )
-        .subscribe(state => {
-          store.dispatch(
-            loadEditor(
-              this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
-              state.draft.markdown
-            )
-          );
-        });
-    }
+    this.initEditor();
 
     this.markdownChangeSub = this.markdownChangeSubject
       .asObservable()
       .pipe(
         distinctUntilChanged(),
+        tap(() => {
+          this.isRequestPending = true;
+          this.requestUpdate('isRequestPending');
+        }),
         debounceTime(300)
       )
       .subscribe(markdown => {
@@ -90,17 +79,33 @@ export default class DraftComponent extends connect(store)(LitElement) {
 
     this.updateChangeSub = this.updateChangeSubject
       .asObservable()
-      .pipe(debounceTime(300))
+      .pipe(
+        tap(() => {
+          this.isRequestPending = true;
+          this.requestUpdate('isRequestPending');
+        }),
+        debounceTime(300)
+      )
       .subscribe(() => {
+        this.requestSubject.next();
         const { draft } = this.state;
         this.isDraft()
           ? store.dispatch(createDraft(draft))
           : store.dispatch(updateDraft(draft as Article));
       });
+
+    this.requestSub = this.requestSubject
+      .asObservable()
+      .pipe(
+        withLatestFrom(this.state$),
+        filter(([, state]) => !state.isRequestPending)
+      )
+      .subscribe(() => (this.isRequestPending = false));
   }
 
   disconnectedCallback(): void {
     this.markdownChangeSub.unsubscribe();
+    this.requestSub.unsubscribe();
     this.updateChangeSub.unsubscribe();
     store.dispatch(clearDraft());
   }
@@ -109,9 +114,9 @@ export default class DraftComponent extends connect(store)(LitElement) {
     return typeof this.state.id !== 'string';
   }
 
-  handleMarkdownChange(e: Event): void {
-    e.preventDefault();
-    this.markdownChangeSubject.next(this.state.editor!.value());
+  handleMarkdownChange(_event: Event): void {
+    const markdown = this.state.editor!.value();
+    this.markdownChangeSubject.next(markdown);
   }
 
   handleFile(e: Event) {
@@ -181,8 +186,32 @@ export default class DraftComponent extends connect(store)(LitElement) {
     this.updateChangeSubject.next();
   }
 
+  private initEditor(): void {
+    if (this.isDraft()) {
+      store.dispatch(
+        loadEditor(this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement, '')
+      );
+    } else {
+      this.state$
+        .pipe(
+          filter(state => !state.loading),
+          take(1),
+          delay(1) // wait rendering
+        )
+        .subscribe(state => {
+          store.dispatch(
+            loadEditor(
+              this.shadowRoot!.getElementById('markdown') as HTMLTextAreaElement,
+              state.draft.markdown
+            )
+          );
+        });
+    }
+  }
+
   static get styles() {
     return [
+      cardStyle,
       buttonStyle,
       formStyle,
       css`
@@ -225,10 +254,11 @@ export default class DraftComponent extends connect(store)(LitElement) {
           position: sticky;
           top: 16px;
           margin-top: 26px;
-          background: #f8f8f8;
-          padding: 16px;
-          border-radius: 6px;
           font-family: 'IBM Plex Sans', Cambria, sans-serif;
+        }
+
+        .cm-comment {
+          font-family: 'Fira Code', 'Fira Mono', monospace;
         }
 
         .poster {
@@ -272,7 +302,11 @@ export default class DraftComponent extends connect(store)(LitElement) {
       <link href="assets/css/debug-simplemde.css" rel="stylesheet" />
 
       <ez-navbar></ez-navbar>
-      <form @input="${this.handleMarkdownChange}" @change="${this.handleMarkdownChange}">
+      <form
+        @change="${this.handleMarkdownChange}"
+        @input="${this.handleMarkdownChange}"
+        @keydown="${this.handleMarkdownChange}"
+      >
         ${!loading
           ? html`
               <div>
@@ -289,154 +323,156 @@ export default class DraftComponent extends connect(store)(LitElement) {
                     <div class="column is-one-third">
                       ${html`
                         <div class="draft-configuration card">
-                          <div class="field">
-                            <label class="label" for="title"
-                              >Title
-                              ${this.state.isRequestPending
-                                ? html`
-                                    <span class="loader">⌛️</span>
-                                  `
-                                : html`
-                                    <span class="loader">🔵</span>
-                                  `}
-                            </label>
-                            <input
-                              id="title"
-                              name="title"
-                              class="input"
-                              value="${this.state.draft.title}"
-                              @input="${this.handleTitleChange}"
-                              type="text"
-                              required
-                            />
-                          </div>
-                          <div class="field">
-                            <label class="label" for="slug">Slug</label>
-                            <input
-                              id="slug"
-                              name="slug"
-                              class="input"
-                              value="${this.state.draft.slug || slugify(this.title)}"
-                              @input="${this.handleSlugChange}"
-                              type="text"
-                              required
-                            />
-                          </div>
-                          <div class="field">
-                            <label class="label" for="tags">Tags</label>
-                            <input
-                              type="text"
-                              class="input"
-                              id="tags"
-                              name="tags"
-                              placeholder="architecture, test"
-                              value="${this.state.draft.tags.toString()}"
-                              @input="${this.handleTagsChange}"
-                            />
-                          </div>
-                          <div class="field">
-                            <label class="label" for="lang">Lang</label>
-                            <div class="control">
-                              <div class="select">
-                                <select required id="lang" @change="${this.handleLangChange}">
-                                  ${[ArticleLanguage.FR, ArticleLanguage.EN].map(
-                                    lang => html`
-                                      <option
-                                        value="${lang}"
-                                        ?selected="${lang === this.state.draft.lang}"
-                                        >${lang}</option
-                                      >
+                          <div class="card-content">
+                            <div class="field">
+                              <label class="label" for="title"
+                                >Title
+                                ${this.isRequestPending
+                                  ? html`
+                                      <span class="loader">⌛️</span>
                                     `
-                                  )}
-                                </select>
+                                  : html`
+                                      <span class="loader">👌</span>
+                                    `}
+                              </label>
+                              <input
+                                id="title"
+                                name="title"
+                                class="input"
+                                value="${this.state.draft.title}"
+                                @input="${this.handleTitleChange}"
+                                type="text"
+                                required
+                              />
+                            </div>
+                            <div class="field">
+                              <label class="label" for="slug">Slug</label>
+                              <input
+                                id="slug"
+                                name="slug"
+                                class="input"
+                                value="${this.state.draft.slug || slugify(this.title)}"
+                                @input="${this.handleSlugChange}"
+                                type="text"
+                                required
+                              />
+                            </div>
+                            <div class="field">
+                              <label class="label" for="tags">Tags</label>
+                              <input
+                                type="text"
+                                class="input"
+                                id="tags"
+                                name="tags"
+                                placeholder="architecture, test"
+                                value="${this.state.draft.tags.toString()}"
+                                @input="${this.handleTagsChange}"
+                              />
+                            </div>
+                            <div class="field">
+                              <label class="label" for="lang">Lang</label>
+                              <div class="control">
+                                <div class="select">
+                                  <select required id="lang" @change="${this.handleLangChange}">
+                                    ${[ArticleLanguage.FR, ArticleLanguage.EN].map(
+                                      lang => html`
+                                        <option
+                                          value="${lang}"
+                                          ?selected="${lang === this.state.draft.lang}"
+                                          >${lang}</option
+                                        >
+                                      `
+                                    )}
+                                  </select>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="field">
-                            <label class="label" for="poster">Poster</label>
-                            <input
-                              type="file"
-                              id="poster"
-                              class="input"
-                              value="${this.state.draft.posterUrl}"
-                              name="poster"
-                              accept="image/png, image/jpeg, image/gif"
-                              @input="${this.handleFile}"
-                            />
-                          </div>
-                          <div class="field">
-                            <button
-                              class="button is-warning"
-                              ?disabled=${!this.state.draft.posterUrl || this.isDraft()}
-                              @click="${this.handleRemovePoster}"
-                            >
-                              Supprimer le poster
-                            </button>
-                          </div>
-                          <div class="field">
-                            <label class="label" for="title">Meta title</label>
-                            <input
-                              id="metaTitle"
-                              name="metaTitle"
-                              value="${this.state.draft.metaTitle || ''}"
-                              @input="${this.handleMetaTitleChange}"
-                              class="input"
-                              type="text"
-                            />
-                          </div>
-                          <div class="field">
-                            <label class="label" for="metaDescription">Meta description</label>
-                            <input
-                              id="metaDescription"
-                              name="metaDescription"
-                              @input="${this.handleMetaDescriptionChange}"
-                              class="input"
-                              value="${this.state.draft.metaDescription || ''}"
-                              type="text"
-                            />
-                          </div>
-                          <div class="field">
-                            <button
-                              type="button"
-                              class="button is-block"
-                              @click="${() => this.updateChangeSubject.next()}"
-                            >
-                              ✓ Sauvegarder
-                            </button>
-                          </div>
-                          <div class="field">
-                            <button
-                              type="button"
-                              class="button is-block ${this.state.draft.published
-                                ? 'is-warning'
-                                : 'is-info'}"
-                              @click="${this.togglePublish}"
-                              ?disabled=${this.isDraft()}
-                            >
-                              ${this.state.draft.published ? '🔒 Dépublier' : '🔓 Publier'}
-                            </button>
-                          </div>
-                          <div class="field">
-                            ${this.state.id
+                            <div class="field">
+                              <label class="label" for="poster">Poster</label>
+                              <input
+                                type="file"
+                                id="poster"
+                                class="input"
+                                value="${this.state.draft.posterUrl}"
+                                name="poster"
+                                accept="image/png, image/jpeg, image/gif"
+                                @input="${this.handleFile}"
+                              />
+                            </div>
+                            <div class="field">
+                              <button
+                                class="button is-warning"
+                                ?disabled=${!this.state.draft.posterUrl || this.isDraft()}
+                                @click="${this.handleRemovePoster}"
+                              >
+                                Supprimer le poster
+                              </button>
+                            </div>
+                            <div class="field">
+                              <label class="label" for="title">Meta title</label>
+                              <input
+                                id="metaTitle"
+                                name="metaTitle"
+                                value="${this.state.draft.metaTitle || ''}"
+                                @input="${this.handleMetaTitleChange}"
+                                class="input"
+                                type="text"
+                              />
+                            </div>
+                            <div class="field">
+                              <label class="label" for="metaDescription">Meta description</label>
+                              <input
+                                id="metaDescription"
+                                name="metaDescription"
+                                @input="${this.handleMetaDescriptionChange}"
+                                class="input"
+                                value="${this.state.draft.metaDescription || ''}"
+                                type="text"
+                              />
+                            </div>
+                            <div class="field">
+                              <button
+                                type="button"
+                                class="button is-block"
+                                @click="${() => this.updateChangeSubject.next()}"
+                              >
+                                ✓ Sauvegarder
+                              </button>
+                            </div>
+                            <div class="field">
+                              <button
+                                type="button"
+                                class="button is-block ${this.state.draft.published
+                                  ? 'is-warning'
+                                  : 'is-info'}"
+                                @click="${this.togglePublish}"
+                                ?disabled=${this.isDraft()}
+                              >
+                                ${this.state.draft.published ? '🔒 Dépublier' : '🔓 Publier'}
+                              </button>
+                            </div>
+                            <div class="field">
+                              ${this.state.id
+                                ? html`
+                                    <a
+                                      class="button is-primary is-block"
+                                      href="${articleUri}"
+                                      title="Lire ${this.state.draft.title}"
+                                      @click="${navigate(articleUri!)}"
+                                    >
+                                      👁 Prévisualisation
+                                    </a>
+                                  `
+                                : nothing}
+                            </div>
+                            ${this.state.error
                               ? html`
-                                  <a
-                                    class="button is-primary is-block"
-                                    href="${articleUri}"
-                                    title="Lire ${this.state.draft.title}"
-                                    @click="${navigate(articleUri!)}"
-                                  >
-                                    👁 Prévisualisation
-                                  </a>
+                                  <div class="field error">
+                                    ${this.state.error}
+                                  </div>
                                 `
                               : nothing}
                           </div>
-                          ${this.state.error
-                            ? html`
-                                <div class="field error">
-                                  ${this.state.error}
-                                </div>
-                              `
-                            : nothing}
                         </div>
                       `}
                     </div>
