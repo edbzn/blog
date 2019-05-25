@@ -11,12 +11,16 @@ export const formStyle = css`
   .field select {
     box-sizing: border-box;
     margin-top: 6px;
-    display: block;
-    width: 100%;
-    padding: 4px;
+    display: inline-block;
+    padding: 6px 4px;
     border-radius: 2px;
     background: transparent;
     border: 1px solid #666;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
   }
 
   .field input:focus,

@@ -13,129 +13,90 @@ import { translate } from '../directives/translate.directive';
 import { apiClient } from '../services/api-client';
 import { errorHandlerService } from '../services/error-handler-service';
 import { languageService } from '../services/language-service';
+import { cardStyle } from '../../shared/card';
 
 export default class ArticleFeedComponent extends LitElement {
   static get styles() {
     return [
+      cardStyle,
       buttonStyle,
       css`
-      :host {
-        display: block;
-      }
-
-      .subtitle {
-        text-transform: uppercase;
-        font-family: 'IBM Plex Sans Condensed', sans-serif;
-      }
-
-      .tag.is-primary {
-        height: 32px;
-        line-height: 32px;
-        font-size: 1rem;
-        background: #40a8ff;
-        color: #fff;
-        transition: none;
-        border-radius: 8px;
-      }
-
-      .tag.is-primary:hover {
-        background: #40a8ff;
-      }
-
-      .poster {
-        height: 200px;
-        margin: 0;
-        background-color: #eee;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        transition: 150ms ease;
-      }
-
-      .card-link {
-        display: block;
-        margin-bottom: 1.5rem;
-        color: #222;
-        text-decoration: none;
-      }
-
-      .card {
-        border: 1px solid #eee;
-        border-radius: 8px;
-        transition: 150ms ease;
-      }
-
-      .card:hover {
-        box-shadow: 0 0 3px rgba(34, 34, 34, 0.2);
-      }
-
-      .card:last-child {
-        margin-bottom: 0;
-      }
-
-      .left {
-        margin-right: 12px;
-        font-weight: 200;
-        text-transform: capitalize;
-      }
-
-      .left:not(.lang) {
-        font-size: 0.9rem;
-      }
-
-      .lang {
-        font-size: 0.9rem;
-        margin-right: 4px;
-      }
-
-      .card-header {
-        font-family: 'IBM Plex Sans Condensed', sans-serif;
-      }
-
-      .card-header-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin: 0;
-      }
-
-      .card-header,
-      .card-content,
-      .card-footer {
-        padding: 12px;
-      }
-
-      .load-complete svg {
-        width: 24px;
-        fill: #666;
-      }
-
-      .feed-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .feed-header h4 {
-        margin: 0;
-      }
-
-      .feed-header .tag {
-        text-transform: capitalize;
-      }
-
-      @media screen and (max-width: 800px) {
-        .card-header-inner .left {
-          margin-bottom: 4px;
+        :host {
+          display: block;
         }
 
-        .section {
-          padding: 1rem 0.8rem;
+        .subtitle {
+          text-transform: uppercase;
+          font-family: 'IBM Plex Sans Condensed', sans-serif;
         }
-      }
-    `];
+
+        .tag.is-primary {
+          height: 32px;
+          line-height: 32px;
+          font-size: 1rem;
+          background: #40a8ff;
+          color: #fff;
+          transition: none;
+          border-radius: 8px;
+        }
+
+        .tag.is-primary:hover {
+          background: #40a8ff;
+        }
+
+        .poster {
+          height: 200px;
+          margin: 0;
+          background-color: #eee;
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          transition: 150ms ease;
+        }
+
+        .left {
+          margin-right: 12px;
+          font-weight: 200;
+          text-transform: capitalize;
+        }
+
+        .left:not(.lang) {
+          font-size: 0.9rem;
+        }
+
+        .lang {
+          font-size: 0.9rem;
+          margin-right: 4px;
+        }
+
+        .load-complete svg {
+          margin-top: 4px;
+          width: 24px;
+          fill: #666;
+        }
+
+        .feed-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+
+        .feed-header h4 {
+          margin: 0;
+        }
+
+        .feed-header .tag {
+          text-transform: capitalize;
+        }
+
+        @media screen and (max-width: 800px) {
+          .section {
+            padding: 1rem 0.8rem;
+          }
+        }
+      `,
+    ];
   }
 
   @property({ type: Array })
@@ -318,7 +279,7 @@ export default class ArticleFeedComponent extends LitElement {
         ${this.articleCollection ? this.articleList() : nothing}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more ${this.loading ? 'is-loading' : nothing}"
+          class="button load-more ${this.loading ? 'is-loading' : ''}"
           ?disabled="${this.articleRemaining ? false : true}"
           @click="${this.loadMore}"
         >

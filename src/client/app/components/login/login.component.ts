@@ -5,9 +5,10 @@ import { UserPayload } from '../../../../server/api/authentication/effects/signu
 import { apiClient } from '../../core/services/api-client';
 import { authService } from '../../core/services/authentication-service';
 import { errorHandlerService } from '../../core/services/error-handler-service';
+import { buttonStyle } from '../../shared/button';
+import { formStyle } from '../../shared/form';
 import { navigate } from '../../utils/navigate';
 import { IUser } from './types';
-import { formStyle } from '../../shared/form';
 
 export default class Login extends LitElement {
   showSignup = false;
@@ -30,7 +31,12 @@ export default class Login extends LitElement {
   static get styles() {
     return [
       formStyle,
+      buttonStyle,
       css`
+        .second {
+          margin-top: 50px;
+        }
+
         .section {
           max-width: 350px;
           margin: 0 auto;
@@ -92,16 +98,17 @@ export default class Login extends LitElement {
                     <input class="input" id="password" name="password" type="password" required />
                   </div>
                   <button class="button is-primary" type="submit">
-                    Signup
+                    Create account
                   </button>
                   <button
-                    class="button"
+                    class="button second"
+                    type="button"
                     @click="${() => {
                       this.showSignup = !this.showSignup;
                       this.requestUpdate();
                     }}"
                   >
-                    Login
+                    I already have an account
                   </button>
                 </form>
               `
@@ -140,8 +147,18 @@ export default class Login extends LitElement {
                     <label class="label" for="password">Password</label>
                     <input class="input" id="password" name="password" type="password" required />
                   </div>
-                  <button class="button is-primary" type="submit">
+                  <button class="button" type="submit">
                     Login
+                  </button>
+                  <button
+                    class="button second"
+                    type="button"
+                    @click="${() => {
+                      this.showSignup = true;
+                      this.requestUpdate();
+                    }}"
+                  >
+                    I don't have an account
                   </button>
                 </form>
               `}

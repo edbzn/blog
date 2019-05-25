@@ -6,6 +6,7 @@ import { translate } from '../../core/directives/translate.directive';
 import { apiClient } from '../../core/services/api-client';
 import { errorHandlerService } from '../../core/services/error-handler-service';
 import { languageService } from '../../core/services/language-service';
+import { buttonStyle } from '../../shared/button';
 import { tags } from '../../shared/tags';
 import { debounce } from '../../utils/debounce';
 import { navigate } from '../../utils/navigate';
@@ -41,7 +42,7 @@ export default class ArticleDetail extends LitElement {
   async init(): Promise<void> {
     try {
       this.article = await this.getArticle();
-      this.posterUrl = this.article.posterUrl as string;
+      this.posterUrl = this.article.posterUrl;
     } catch (error) {
       errorHandlerService.throw(error);
     }
@@ -67,11 +68,12 @@ export default class ArticleDetail extends LitElement {
 
   setPageMeta() {
     const metaTitle =
-      typeof this.article!.metaTitle === 'string' ? (this.article!.metaTitle as string) : undefined;
+      typeof this.article!.metaTitle === 'string' ? this.article!.metaTitle! : undefined;
     const metaDescription =
       typeof this.article!.metaDescription === 'string'
-        ? (this.article!.metaDescription as string)
+        ? this.article!.metaDescription!
         : undefined;
+
     const [firstSentence, secondSentence] = this.article!.html.replace(/<\/?[^>]+(>|$)/g, '')
       .slice(0, 250)
       .split('.');
@@ -91,170 +93,145 @@ export default class ArticleDetail extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        position: relative;
-        display: block;
-      }
+    return [
+      buttonStyle,
+      css`
+        :host {
+          position: relative;
+          display: block;
+        }
 
-      .poster {
-        height: 45vh;
-        background-color: #eee;
-        background-size: cover;
-        background-position: center center;
-      }
+        .poster {
+          height: 45vh;
+          background-color: #eee;
+          background-size: cover;
+          background-position: center center;
+        }
 
-      figure {
-        margin: 0;
-      }
+        figure {
+          margin: 0;
+        }
 
-      .content .title {
-        font-size: 3.4em;
-      }
-
-      .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .header .tag {
-        margin-right: 4px;
-      }
-
-      .header .tag:last-child {
-        margin-right: 0;
-      }
-
-      .profile {
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-      }
-
-      .follow-me {
-        max-height: 36px;
-      }
-
-      .avatar {
-        min-width: 110px;
-        height: 110px;
-        overflow: hidden;
-        border-radius: 100%;
-        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-        background-color: #eee;
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        margin: 0 !important;
-      }
-
-      .presentation {
-        padding-left: 1.55rem;
-        font-size: 0.8em;
-      }
-
-      .date {
-        font-family: 'IBM Plex Sans', sans-serif;
-        text-transform: capitalize;
-        font-weight: 400;
-        font-size: 0.8rem;
-      }
-
-      .content {
-        margin-top: 40px;
-      }
-
-      .content .publication {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 3rem;
-      }
-
-      .content .publication .date {
-        text-transform: initial;
-      }
-
-      .content .article-footer {
-        padding-bottom: 0;
-        padding-left: 0;
-        padding-right: 0;
-      }
-
-      .timeline {
-        height: 4px;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background: rgba(155, 155, 155, 0.48);
-      }
-
-      .timeline > div {
-        height: 4px;
-        background-color: #40a8ff;
-        transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
-      }
-
-      .content blockquote:not(:last-child),
-      .content dl:not(:last-child),
-      .content ol:not(:last-child),
-      .content p:not(:last-child),
-      .content pre:not(:last-child),
-      .content table:not(:last-child),
-      .content ul:not(:last-child) {
-        margin-bottom: 1.1em !important;
-      }
-
-      .button {
-        color: #222;
-        text-decoration: none;
-        text-align: center;
-        display: block;
-        width: 100%;
-        height: 42px;
-        line-height: 42px;
-        margin-top: 20px;
-        border: 1px solid #eee;
-        border-radius: 6px;
-        background: #fff;
-        cursor: pointer;
-        font-family: 'IBM Plex Sans Condensed', sans-serif;
-        color: #222;
-        font-size: 0.8rem;
-        transition: 150ms ease;
-      }
-
-      .button:hover {
-        background: #eee;
-      }
-
-      .button:focus {
-        outline: none;
-        border: 2px solid #eee;
-      }
-
-      @media screen and (max-width: 800px) {
         .content .title {
-          font-size: 2.75em;
+          font-size: 3.4em;
         }
 
         .header {
-          align-items: initial;
-          flex-direction: column-reverse;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
-        .content .publication {
-          align-items: initial;
-          flex-direction: column-reverse;
+
+        .header .tag {
+          margin-right: 4px;
         }
+
+        .header .tag:last-child {
+          margin-right: 0;
+        }
+
+        .profile {
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+        }
+
+        .follow-me {
+          max-height: 36px;
+        }
+
+        .avatar {
+          min-width: 110px;
+          height: 110px;
+          overflow: hidden;
+          border-radius: 100%;
+          box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+          background-color: #eee;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          margin: 0 !important;
+        }
+
+        .presentation {
+          padding-left: 1.55rem;
+          font-size: 0.8em;
+        }
+
         .date {
-          margin-bottom: 4px;
+          font-family: 'IBM Plex Sans', sans-serif;
+          text-transform: capitalize;
+          font-weight: 400;
+          font-size: 0.8rem;
         }
-        .container {
-          padding: 3rem 0.8rem;
+
+        .content {
+          margin-top: 40px;
         }
-      }
-    `;
+
+        .content .publication {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 3rem;
+        }
+
+        .content .publication .date {
+          text-transform: initial;
+        }
+
+        .content .article-footer {
+          padding-bottom: 0;
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        .timeline {
+          height: 4px;
+          position: sticky;
+          top: 0;
+          z-index: 10;
+          background: rgba(155, 155, 155, 0.48);
+        }
+
+        .timeline > div {
+          height: 4px;
+          background-color: #40a8ff;
+          transition: width cubic-bezier(0.4, 0, 0.2, 1) 200ms;
+        }
+
+        .content blockquote:not(:last-child),
+        .content dl:not(:last-child),
+        .content ol:not(:last-child),
+        .content p:not(:last-child),
+        .content pre:not(:last-child),
+        .content table:not(:last-child),
+        .content ul:not(:last-child) {
+          margin-bottom: 1.1em !important;
+        }
+
+        @media screen and (max-width: 800px) {
+          .content .title {
+            font-size: 2.75em;
+          }
+
+          .header {
+            align-items: initial;
+            flex-direction: column-reverse;
+          }
+          .content .publication {
+            align-items: initial;
+            flex-direction: column-reverse;
+          }
+          .date {
+            margin-bottom: 4px;
+          }
+          .container {
+            padding: 3rem 0.8rem;
+          }
+        }
+      `,
+    ];
   }
 
   showArticleDetail() {
@@ -284,7 +261,7 @@ export default class ArticleDetail extends LitElement {
             </span>
           </div>
           <ez-article-reactions .article=${article}></ez-article-reactions>
-          <a href="/" class="button back-to-home" @click="${navigate('/')}">
+          <a href="/" class="button" @click="${navigate('/')}">
             ${translate('article_detail.home_btn')}
           </a>
           <ez-article-comments articleId=${article._id}></ez-article-comments>
