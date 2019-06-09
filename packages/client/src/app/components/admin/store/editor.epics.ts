@@ -3,7 +3,7 @@ import { combineEpics, ofType } from 'redux-observable';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { failure } from '../../../core/store/failure.action';
+import { failure } from '../../../core/store/common.actions';
 import { AppState } from '../../../core/store/state';
 import { convertMdToHtml, EDIT_MARKDOWN, loadEditorFulfilled, LOAD_EDITOR } from './editor.actions';
 

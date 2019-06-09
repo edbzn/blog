@@ -130,34 +130,6 @@ export default class ArticleDetail extends LitElement {
           margin-right: 0;
         }
 
-        .profile {
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-        }
-
-        .follow-me {
-          max-height: 36px;
-        }
-
-        .avatar {
-          min-width: 110px;
-          height: 110px;
-          overflow: hidden;
-          border-radius: 100%;
-          box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-          background-color: #eee;
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: cover;
-          margin: 0 !important;
-        }
-
-        .presentation {
-          padding-left: 1.55rem;
-          font-size: 0.8em;
-        }
-
         .date {
           font-family: 'IBM Plex Sans', sans-serif;
           text-transform: capitalize;

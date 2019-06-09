@@ -5,8 +5,22 @@ import { translate } from '../../core/directives/translate.directive';
 export default class ArticleAuthorComponent extends LitElement {
   static get styles() {
     return css`
+      .profile {
+        display: flex;
+        align-items: center;
+      }
+
       .presentation {
         font-family: 'IBM Plex Sans', sans-serif;
+      }
+
+      figure {
+        width: 64px;
+        height: 64px;
+        background-size: contain;
+        border-radius: 50%;
+        margin: 0;
+        margin-right: 1.4rem;
       }
     `;
   }

@@ -6,10 +6,87 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 
 import { apiClient } from '../../core/services/api-client';
 import { languageService } from '../../core/services/language-service';
+import { cardStyle } from '../../shared/card';
 import like from '../../utils/icons/like';
 import retweet from '../../utils/icons/retweet';
 
 export default class TwitterFeedComponent extends LitElement {
+  static get styles() {
+    return [
+      cardStyle,
+      css`
+        :host {
+          display: block;
+          font-family: 'IBM Plex Sans', sans-serif;
+        }
+
+        a {
+          color: #40a8ff;
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        .subtitle {
+          text-transform: uppercase;
+          font-family: 'IBM Plex Sans Condensed', sans-serif;
+        }
+
+        .retweet svg,
+        .heart svg {
+          width: 18px;
+        }
+
+        .retweet svg {
+          fill: #2dae5a;
+        }
+
+        .heart svg {
+          fill: #df3e3e;
+        }
+
+        footer span {
+          margin-right: 10px;
+        }
+
+        .twitter {
+          padding-top: 0;
+        }
+
+        .tweet-content {
+          margin: 10px 0;
+        }
+
+        footer {
+          display: flex;
+        }
+
+        footer span {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+
+        footer span i {
+          height: 18px;
+          margin-right: 8px;
+        }
+
+        .card {
+          margin-bottom: 12px;
+        }
+
+        @media screen and (max-width: 800px) {
+          .twitter {
+            padding: 1rem 0.8rem;
+          }
+        }
+      `,
+    ];
+  }
+
   initialized = false;
   tweets: { statuses: any[] } = { statuses: [] };
 
@@ -60,85 +137,6 @@ export default class TwitterFeedComponent extends LitElement {
           </article>
         `
       )}
-    `;
-  }
-
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        font-family: 'IBM Plex Sans', sans-serif;
-      }
-
-      a {
-        color: #40a8ff;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      .subtitle {
-        text-transform: uppercase;
-        font-family: 'IBM Plex Sans Condensed', sans-serif;
-      }
-
-      .retweet svg,
-      .heart svg {
-        width: 18px;
-      }
-
-      .retweet svg {
-        fill: #2dae5a;
-      }
-
-      .heart svg {
-        fill: #df3e3e;
-      }
-
-      footer span {
-        margin-right: 10px;
-      }
-
-      .twitter {
-        padding-top: 0;
-      }
-
-      .card {
-        margin-bottom: 1.5rem;
-        border: 1px solid #eee;
-        border-radius: 8px;
-      }
-
-      .card-content {
-        padding: 12px;
-      }
-
-      .tweet-content {
-        margin: 10px 0;
-      }
-
-      footer {
-        display: flex;
-      }
-
-      footer span {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-
-      footer span i {
-        height: 18px;
-        margin-right: 8px;
-      }
-
-      @media screen and (max-width: 800px) {
-        .twitter {
-          padding: 1rem 0.8rem;
-        }
-      }
     `;
   }
 

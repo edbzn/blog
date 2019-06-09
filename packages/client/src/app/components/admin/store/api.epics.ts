@@ -4,7 +4,7 @@ import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { apiClient, storageService } from '../../../core/services';
-import { failure } from '../../../core/store/failure.action';
+import { failure } from '../../../core/store/common.actions';
 import { Article } from '../types';
 import {
   CREATE_DRAFT,

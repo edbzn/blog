@@ -1,4 +1,4 @@
-import { FAILURE } from '../../../core/store/failure.action';
+import { FAILURE } from '../../../core/store/common.actions';
 import { slugify } from '../../../shared/slugify';
 import { DraftState, initialState } from './admin.state';
 import {
