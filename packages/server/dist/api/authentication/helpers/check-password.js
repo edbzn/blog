@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@marblejs/core");
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
+const hash_1 = require("../helpers/hash");
+const get_user_by_email_1 = require("./get-user-by-email");
+const combineUserAndPassword = (body) => rxjs_1.forkJoin(get_user_by_email_1.getUser(body), rxjs_1.of(body.password));
+const throwIfUnauthorized = (body) => (authorized) => rxjs_1.iif(() => authorized, rxjs_1.of(body), rxjs_1.throwError(new core_1.HttpError('Unauthorized', core_1.HttpStatus.UNAUTHORIZED)));
+exports.checkPassword = (body) => combineUserAndPassword(body).pipe(operators_1.mergeMap(([user, password]) => hash_1.compare$(password, user.password)), operators_1.mergeMap(throwIfUnauthorized(body)));

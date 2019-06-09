@@ -1,0 +1,10 @@
+{
+  "restartable": "rs",
+  "watch": ["src/**/*.ts"],
+  "ext": "ts",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules"
+  ],
+  "exec": "ts-node --pretty --project tsconfig.json --require dotenv/config ./src/index.ts dotenv_config_path='../../.env'"
+}

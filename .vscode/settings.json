@@ -9,5 +9,6 @@
     "marblejs",
     "middlewares",
     "signup"
-  ]
+  ],
+  "git.ignoreLimitWarning": true
 }
