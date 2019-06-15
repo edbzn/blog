@@ -118,7 +118,7 @@
     "style-loader": "0.23.1",
     "svg-inline-loader": "0.8.0",
     "ts-loader": "6.0.2",
-    "ts-node": "8.2.0",
+    "ts-node": "8.3.0",
     "typescript": "3.5.1",
     "webpack": "4.33.0",
     "webpack-bundle-analyzer": "3.3.2",
