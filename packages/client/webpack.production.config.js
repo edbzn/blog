@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const Dotenv = require('dotenv-webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
 const common = require('./webpack.common.config');
@@ -42,13 +42,13 @@ module.exports = merge(common, {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Codamit - Tech Blog',
-      template: path.resolve(__dirname, 'src', 'client', 'index.html'),
+      template: path.resolve(__dirname, 'src', 'index.html'),
       minify: true,
       hash: true,
       chunksSortMode: 'none',
     }),
     new Dotenv({
-      path: './.env.production',
+      path: path.resolve(__dirname, '../', '../', '.env.production'),
     }),
     new HashedModuleIdsPlugin(),
     new WorkboxPlugin.GenerateSW({

@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
-    "build": "webpack ---progress --config=webpack.production.config.js --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --progress --config=webpack.production.config.js --mode production"
   },
   "dependencies": {
     "@sentry/browser": "5.3.0",
