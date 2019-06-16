@@ -1,8 +1,7 @@
 {
   "name": "codamit-client",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
+  "author": "Edouard Bozon",
+  "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
     "build": "webpack ---progress --config=webpack.production.config.js --mode production",
@@ -65,7 +64,5 @@
     "webpack-notifier": "1.7.0",
     "workbox-webpack-plugin": "4.3.1",
     "write-file-webpack-plugin": "4.5.0"
-  },
-  "author": "Edouard Bozon",
-  "license": "MIT"
+  }
 }
