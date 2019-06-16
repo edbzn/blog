@@ -4,6 +4,10 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "plugins": ["lit"],
   "rules": {
     "lit/no-duplicate-template-bindings": 1,

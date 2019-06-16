@@ -8,6 +8,7 @@
     "npm": ">= 5.0.0"
   },
   "scripts": {
+    "install": "lerna exec npm install --parallel",
     "start": "lerna run start --parallel --stream",
     "build": "lerna run build",
     "lerna": "lerna"
@@ -16,19 +17,19 @@
     "type": "git",
     "url": "git+https://github.com/Edouardbozon/codamit.git"
   },
-  "author": "edouardbozon",
+  "author": "Edouard Bozon <bozonedouard@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Edouardbozon/codamit/issues"
   },
   "homepage": "https://github.com/Edouardbozon/codamit#readme",
   "lint-staged": {
-    "src/**/*.(ts|tsx|js|jsx)": [
-      "npm run lint",
+    "**/*.(ts|tsx|js|jsx)": [
+      "eslint \"./packages/**/src/*.ts\"",
       "prettier --write",
       "git add"
     ],
-    "src/**/*.(html|scss|json)": [
+    "**/*.(html|scss|json)": [
       "prettier --write",
       "git add"
     ]
@@ -39,14 +40,15 @@
     }
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "1.9.0",
+    "@typescript-eslint/parser": "1.10.2",
+    "eslint-plugin-lit": "1.0.0",
     "nodemon": "1.19.1",
     "eslint": "5.16.0",
-    "husky": "2.4.0",
-    "lerna": "3.14.1",
-    "lint-staged": "8.2.0",
-    "now": "15.4.0",
+    "husky": "2.4.1",
+    "lerna": "3.15.0",
+    "lint-staged": "8.2.1",
+    "now": "15.5.0",
     "prettier": "1.18.2",
-    "typescript": "3.5.1"
+    "typescript": "3.5.2"
   }
 }

@@ -1,6 +1,6 @@
 import { DraftState } from '../../components/admin/store/admin.state';
 
 export interface AppState {
-  client: any;
+  client: {};
   admin: DraftState;
 }

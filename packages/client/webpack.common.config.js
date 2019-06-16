@@ -8,17 +8,7 @@ module.exports = {
   devtool: 'inline-source-map',
   module: {
     rules: [
-      {
-        test: /\.(ts|js)x?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            babelrc: true, 
-          }
-        }
-      },
+      { test: /\.tsx?$/, loader: 'ts-loader' },
       {
         test: /\.js$/,
         use: ['source-map-loader'],
@@ -48,41 +38,54 @@ module.exports = {
   },
   plugins: [
     new WriteFilePlugin(),
-    new CopyWebpackPlugin(
-      [
-        {
-          from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-          to: 'assets/js/webcomponents-bundle.js',
-          cache: true,
-        },
-        {
-          from: 'node_modules/simplemde/src/css/simplemde.css',
-          to: 'assets/css/simplemde.css',
-          cache: true,
-        },
-        {
-          from: 'node_modules/simplemde/debug/simplemde.css',
-          to: 'assets/css/debug-simplemde.css',
-          cache: true,
-        },
-        {
-          from: 'src/assets',
-          to: 'assets',
-          cache: true,
-        },
-        {
-          from: 'src/favicon.ico',
-          cache: true,
-        },
-        {
-          from: 'src/robots.txt',
-          cache: true,
-        },
-        {
-          from: 'src/manifest.json',
-          cache: true,
-        },
-      ],
-    ),
+    new CopyWebpackPlugin([
+      {
+        from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+        to: 'assets/js/webcomponents-bundle.js',
+        cache: true,
+      },
+      {
+        from: 'node_modules/simplemde/src/css/simplemde.css',
+        to: 'assets/css/simplemde.css',
+        cache: true,
+      },
+      {
+        from: 'node_modules/simplemde/debug/simplemde.css',
+        to: 'assets/css/debug-simplemde.css',
+        cache: true,
+      },
+      {
+        from: 'src/assets',
+        to: 'assets',
+        cache: true,
+      },
+      {
+        from: 'src/favicon.ico',
+        cache: true,
+      },
+      {
+        from: 'src/robots.txt',
+        cache: true,
+      },
+      {
+        from: 'src/manifest.json',
+        cache: true,
+      },
+    ]),
   ],
 };
+
+// - Here is the babel loader conf
+// - Commented since server side imports result in a compilation error
+//
+// {
+//   test: /\.(ts|js)x?$/,
+//   exclude: /node_modules/,
+//   use: {
+//     loader: 'babel-loader',
+//     options: {
+//       cacheDirectory: true,
+//       babelrc: true,
+//     }
+//   }
+// },
