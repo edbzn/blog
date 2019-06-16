@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 
@@ -37,6 +38,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist', 'client'),
   },
   plugins: [
+    new webpack.ProgressPlugin(),
     new WriteFilePlugin(),
     new CopyWebpackPlugin([
       {

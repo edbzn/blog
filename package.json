@@ -10,7 +10,7 @@
   "scripts": {
     "install": "lerna exec npm install --parallel",
     "start": "lerna run start --parallel --stream",
-    "build": "lerna run build",
+    "build": "lerna run build --parallel --stream",
     "lerna": "lerna"
   },
   "repository": {

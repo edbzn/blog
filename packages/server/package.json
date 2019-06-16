@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --config nodemon.json",
-    "start:prod": "ts-node --project tsconfig.json --require dotenv/config ./src/index.ts dotenv_config_path='../../.env.production'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build tsconfig.json"
   },
   "dependencies": {
     "@akanass/rx-http-request": "3.1.0",
