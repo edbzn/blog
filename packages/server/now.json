@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "codamit-server",
+  "builds": [
+    {
+      "src": "src/index.ts",
+      "use": "@now/node-server",
+      "config": {
+        "includeFiles": [".env"]
+      }
+    }
+  ],
+  "alias": ["api.codamit.com"]
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "codamit-client",
+  "builds": [{ "src": "package.json", "use": "@now/static-build" }],
+  "routes": [
+    { "src": "/sw.js", "headers": { "cache-control": "s-maxage=0" } },
+    { "src": ".*", "dest": "/index.html" }
+  ],
+  "alias": ["codamit.com", "www.codamit.com"]
+}

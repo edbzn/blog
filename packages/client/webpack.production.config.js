@@ -9,6 +9,7 @@ const common = require('./webpack.common.config');
 
 module.exports = merge(common, {
   mode: 'production',
+  devtool: 'nosources-source-map',
   stats: {
     colors: false,
     hash: true,
