@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
-    "build": "webpack --progress --config=webpack.production.config.js --mode production"
+    "build": "webpack --progress --config=webpack.production.config.js --mode production",
+    "now-build": "npm run build"
   },
   "dependencies": {
     "@sentry/browser": "5.3.0",
@@ -62,6 +63,7 @@
     "webpack-merge": "4.2.1",
     "webpack-notifier": "1.7.0",
     "workbox-webpack-plugin": "4.3.1",
-    "write-file-webpack-plugin": "4.5.0"
+    "write-file-webpack-plugin": "4.5.0",
+    "typescript": "3.5.2"
   }
 }
