@@ -16,7 +16,7 @@
     "anchorme": "1.1.2",
     "date-fns": "1.30.1",
     "dotenv-webpack": "1.7.0",
-    "lit-element": "2.1.0",
+    "lit-element": "2.2.0",
     "lit-html": "1.1.0",
     "prismjs": "1.16.0",
     "prouter": "10.0.4",
