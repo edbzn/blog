@@ -11,7 +11,8 @@
     "start": "lerna run start --parallel --stream",
     "build": "lerna run build:docker --parallel --stream",
     "push": "lerna run push --parallel --stream",
-    "release": "lerna run release --parallel --stream"
+    "release": "lerna run release --parallel --stream",
+    "prerelease": "npm run push"
   },
   "repository": {
     "type": "git",
