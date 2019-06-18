@@ -11,13 +11,11 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:stable AS app
+FROM nginx:1.17.0
 
-RUN rm -rf /usr/share/nginx/html/*
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /codamit-client/dist /usr/share/nginx/html
 
-COPY --from=builder /codamit-client/dist /usr/share/nginx/html/
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]

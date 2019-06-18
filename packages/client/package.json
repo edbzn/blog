@@ -5,7 +5,10 @@
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
     "build": "webpack --progress --config=webpack.production.config.js --mode production --no-color",
-    "build:docker": "docker build -t codamit-client:latest ."
+    "build:docker": "docker build -t codamit-client:latest .",
+    "push": "heroku container:push web -a codamit-client",
+    "prepush": "npm run build:docker",
+    "release": "heroku container:release web -a codamit-client"
   },
   "dependencies": {
     "@sentry/browser": "5.3.0",

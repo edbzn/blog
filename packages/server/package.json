@@ -5,7 +5,10 @@
   "scripts": {
     "start": "nodemon --config nodemon.json",
     "build": "tsc --build tsconfig.json",
-    "build:docker": "docker build -t codamit-server:latest ."
+    "build:docker": "docker build -t codamit-server:latest .",
+    "push": "heroku container:push web -a codamit-server",
+    "prepush": "npm run build:docker",
+    "release": "heroku container:release web -a codamit-server"
   },
   "dependencies": {
     "@akanass/rx-http-request": "3.1.0",
