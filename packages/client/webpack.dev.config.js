@@ -12,7 +12,6 @@ module.exports = merge(common, {
       contentImage: path.resolve(__dirname, 'assets', 'images', 'icons', 'icon-96x96.png'),
     }),
     new HtmlWebpackPlugin({
-      title: 'Codamit [WDS]',
       template: path.resolve(__dirname, 'src', 'index.dev.html'),
       chunksSortMode: 'none',
     }),

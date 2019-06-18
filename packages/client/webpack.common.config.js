@@ -8,7 +8,7 @@ module.exports = {
   devtool: 'inline-source-map',
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+      { test: /\.tsx?$/, loader: 'babel-loader' },
       {
         test: /\.js$/,
         use: ['source-map-loader'],

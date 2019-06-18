@@ -58,7 +58,6 @@
     "source-map-loader": "0.2.4",
     "style-loader": "0.23.1",
     "svg-inline-loader": "0.8.0",
-    "ts-loader": "6.0.2",
     "webpack": "4.33.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.3",
