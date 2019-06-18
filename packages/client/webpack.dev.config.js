@@ -9,7 +9,7 @@ module.exports = merge(common, {
   plugins: [
     new WebpackNotifierPlugin({
       title: 'Codamit',
-      contentImage: path.resolve(__dirname, 'src', 'assets', 'images', 'icons', 'icon-96x96.png'),
+      contentImage: path.resolve(__dirname, 'assets', 'images', 'icons', 'icon-96x96.png'),
     }),
     new HtmlWebpackPlugin({
       title: 'Codamit [WDS]',
