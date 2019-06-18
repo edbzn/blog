@@ -13,7 +13,6 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { ArticleLanguage } from '../../../../../server/src/api/article/model/article-language';
 import { AppState } from '../../core/store/state';
 import { store } from '../../core/store/store';
 import { buttonStyle } from '../../shared/button';
@@ -172,7 +171,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
   }
 
   handleLangChange(e: Event): void {
-    store.dispatch(editLang((e.target as HTMLInputElement).value as ArticleLanguage));
+    store.dispatch(editLang((e.target as HTMLInputElement).value as 'fr' | 'en'));
     this.updateChangeSubject.next();
   }
 
@@ -374,7 +373,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
                               <div class="control">
                                 <div class="select">
                                   <select required id="lang" @change="${this.handleLangChange}">
-                                    ${[ArticleLanguage.FR, ArticleLanguage.EN].map(
+                                    ${['fr', 'en'].map(
                                       lang => html`
                                         <option
                                           value="${lang}"

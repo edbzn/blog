@@ -9,22 +9,15 @@ module.exports = merge(common, {
   plugins: [
     new WebpackNotifierPlugin({
       title: 'Codamit',
-      contentImage: path.resolve(
-        __dirname,
-        'src',
-        'assets',
-        'images',
-        'icons',
-        'icon-96x96.png'
-      ),
+      contentImage: path.resolve(__dirname, 'src', 'assets', 'images', 'icons', 'icon-96x96.png'),
     }),
     new HtmlWebpackPlugin({
-      title: 'Codamit [WDS] - [HMR]',
+      title: 'Codamit [WDS]',
       template: path.resolve(__dirname, 'src', 'index.dev.html'),
       chunksSortMode: 'none',
     }),
     new Dotenv({
-      path: path.resolve('../', '../', '.env'),
+      path: path.resolve(__dirname, '.env'),
     }),
   ],
   devServer: {

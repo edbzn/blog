@@ -49,7 +49,7 @@ module.exports = merge(common, {
       chunksSortMode: 'none',
     }),
     new Dotenv({
-      path: path.resolve(__dirname, '../', '../', '.env.production'),
+      path: path.resolve(__dirname, '.env.production'),
     }),
     new HashedModuleIdsPlugin(),
     new WorkboxPlugin.GenerateSW({

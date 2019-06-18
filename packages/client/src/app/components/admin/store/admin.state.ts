@@ -1,5 +1,3 @@
-import { defaultReactions } from '../../../../../../server/src/api/article/model/article-reactions';
-import { ArticleLanguage } from '../../../../../../server/src/api/article/model/article-language';
 import { Article, Draft } from '../types';
 
 export interface DraftState {
@@ -25,8 +23,20 @@ export const initialState = (): DraftState => ({
     publishedAt: null,
     metaTitle: null,
     metaDescription: null,
-    lang: ArticleLanguage.FR,
-    reactions: defaultReactions,
+    lang: 'fr',
+    reactions: {
+      types: {
+        heart: {
+          count: 0,
+        },
+        unicorn: {
+          count: 0,
+        },
+        mark: {
+          count: 0,
+        },
+      },
+    },
   },
   error: null,
   loading: false,

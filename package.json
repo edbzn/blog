@@ -9,8 +9,7 @@
   "scripts": {
     "install": "lerna exec npm install --parallel",
     "start": "lerna run start --parallel --stream",
-    "build": "lerna run build --parallel --stream",
-    "lerna": "lerna"
+    "build": "lerna run build --parallel --stream"
   },
   "repository": {
     "type": "git",
@@ -41,12 +40,11 @@
   "devDependencies": {
     "@typescript-eslint/parser": "1.10.2",
     "eslint-plugin-lit": "1.0.0",
-    "nodemon": "1.19.1",
     "eslint": "5.16.0",
     "husky": "2.4.1",
     "lerna": "3.15.0",
     "lint-staged": "8.2.1",
-    "now": "15.5.0",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "typescript": "3.5.2"
   }
 }
