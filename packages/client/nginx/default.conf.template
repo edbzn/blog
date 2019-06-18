@@ -10,9 +10,10 @@ server {
   gzip_types        text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript;
   gzip_comp_level   9;
 
+  root /usr/share/nginx/html;
+
   location / {
-    root      /usr/share/nginx/html;
-    index     index.html index.htm;
+    index index.html index.htm;
     try_files $uri $uri/ /index.html =404;
   }
 }
