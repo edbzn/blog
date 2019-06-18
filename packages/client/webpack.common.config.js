@@ -40,6 +40,11 @@ module.exports = {
     new WriteFilePlugin(),
     new CopyWebpackPlugin([
       {
+        from: 'assets',
+        to: 'assets',
+        cache: true,
+      },
+      {
         from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
         to: 'assets/js/webcomponents-bundle.js',
         cache: true,
@@ -52,11 +57,6 @@ module.exports = {
       {
         from: 'node_modules/simplemde/debug/simplemde.css',
         to: 'assets/css/debug-simplemde.css',
-        cache: true,
-      },
-      {
-        from: 'assets',
-        to: 'assets',
         cache: true,
       },
       {
