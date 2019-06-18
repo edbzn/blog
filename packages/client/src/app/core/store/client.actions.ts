@@ -4,7 +4,7 @@ import { ResourceCollection } from '../../utils/collection';
 export const LOAD_ARTICLES = '[CLIENT] LOAD_ARTICLES';
 export const LOAD_ARTICLES_SUCCESS = '[CLIENT] LOAD_ARTICLES_SUCCESS';
 
-export const loadArticles = (limit: number, page: number) => ({
+export const loadArticles = ({ page, limit }: { page: number; limit: number }) => ({
   type: LOAD_ARTICLES,
   payload: { limit, page },
 });

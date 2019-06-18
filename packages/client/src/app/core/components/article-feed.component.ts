@@ -2,20 +2,122 @@ import { format } from 'date-fns';
 import { css, html, LitElement, property, TemplateResult } from 'lit-element';
 import { nothing } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
+import { connect } from 'pwa-helpers';
+import { Subject } from 'rxjs';
 
 import { Article } from '../../components/admin/types';
 import { buttonStyle } from '../../shared/button';
+import { cardStyle } from '../../shared/card';
 import { tags } from '../../shared/tags';
-import { ResourceCollection } from '../../utils/collection';
 import check from '../../utils/icons/check';
 import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
-import { apiClient } from '../services/api-client';
-import { errorHandlerService } from '../services/error-handler-service';
 import { languageService } from '../services/language-service';
-import { cardStyle } from '../../shared/card';
+import { loadArticles } from '../store/client.actions';
+import { ClientState } from '../store/client.state';
+import { AppState } from '../store/state';
+import { store } from '../store/store';
 
-export default class ArticleFeedComponent extends LitElement {
+export default class ArticleFeedComponent extends connect(store)(LitElement) {
+  stateSubject = new Subject<ClientState>();
+  state$ = this.stateSubject.asObservable();
+  state: ClientState;
+
+  @property({ type: Array })
+  tags = [];
+
+  @property({ type: Boolean })
+  adminMode = false;
+
+  @property({ type: Boolean })
+  loading = true;
+
+  firstUpdated() {
+    store.dispatch(loadArticles({ page: 1, limit: 8 }));
+  }
+
+  stateChanged(state: AppState) {
+    this.state = state.client;
+    this.stateSubject.next(state.client);
+    this.requestUpdate('state');
+  }
+
+  // updated(props: Map<string | number | symbol, unknown>) {
+  //   const oldTags = props.get('tags');
+  //   if (oldTags instanceof Array && oldTags !== this.tags) {
+  //     this.updateArticleCollection();
+  //   }
+  // }
+
+  // updateArticleCollection(): void {
+  //   this.getArticleCollection().then(articleCollection => {
+  //     const { collection, total } = articleCollection;
+  //     this.articleCollection = collection;
+  //     this.articleRemaining = total > this.articleCollection.length;
+  //     this.loading = false;
+  //     this.requestUpdate();
+  //   });
+  // }
+
+  // getArticleCollection(): Promise<ResourceCollection<Article>> {
+  //   return this.adminMode
+  //     ? apiClient.get<ResourceCollection<Article>>(
+  //         encodeURI(`/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}`)
+  //       )
+  //     : apiClient.get<ResourceCollection<Article>>(
+  //         encodeURI(
+  //           `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}${this.tags
+  //             .map(tag => '&tags[]=' + tag)
+  //             .toString()
+  //             .replace(',', '')}`
+  //         )
+  //       );
+  // }
+
+  // deleteArticle(id: string): Promise<void> {
+  //   return apiClient.delete(`/api/v1/article/${id}`);
+  // }
+
+  stripTagsAndTruncate(content: string): string {
+    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
+  }
+
+  // async loadMore(): Promise<void> {
+  //   if (!this.articleRemaining) {
+  //     return Promise.reject('All article are already loaded');
+  //   }
+
+  //   this.loading = true;
+
+  //   ++this.page;
+  //   const { collection, total } = (await this.getArticleCollection()) as ResourceCollection<
+  //     Article
+  //   >;
+
+  //   this.articleCollection = [...(this.articleCollection as Article[]), ...collection];
+  //   this.articleRemaining = total > this.articleCollection.length;
+  //   this.loading = false;
+  //   this.requestUpdate();
+  // }
+
+  // async removeArticle(article: Article): Promise<void> {
+  //   const articleTitle = article.title;
+  //   if (
+  //     (prompt('Enter ' + articleTitle + ' to delete the article') || '').toLowerCase() ===
+  //     articleTitle.toLowerCase()
+  //   ) {
+  //     try {
+  //       await this.deleteArticle(article._id);
+  //       this.articleCollection = (this.articleCollection || []).filter(
+  //         _article => article._id !== _article._id
+  //       );
+  //       this.requestUpdate();
+  //     } catch (error) {
+  //       errorHandlerService.throw(error);
+  //     }
+  //   }
+  // }
+
   static get styles() {
     return [
       cardStyle,
@@ -99,107 +201,9 @@ export default class ArticleFeedComponent extends LitElement {
     ];
   }
 
-  @property({ type: Array })
-  tags = [];
-
-  @property({ type: Boolean })
-  adminMode = false;
-
-  @property({ type: Array })
-  articleCollection: Article[] = [];
-
-  @property({ type: Boolean })
-  loading = true;
-
-  page = 1;
-
-  limit = 4;
-
-  articleRemaining = true;
-
-  firstUpdated() {
-    this.updateArticleCollection();
-  }
-
-  updated(props: Map<string | number | symbol, unknown>) {
-    const oldTags = props.get('tags');
-    if (oldTags instanceof Array && oldTags !== this.tags) {
-      this.updateArticleCollection();
-    }
-  }
-
-  updateArticleCollection(): void {
-    this.getArticleCollection().then(articleCollection => {
-      const { collection, total } = articleCollection;
-      this.articleCollection = collection;
-      this.articleRemaining = total > this.articleCollection.length;
-      this.loading = false;
-      this.requestUpdate();
-    });
-  }
-
-  getArticleCollection(): Promise<ResourceCollection<Article>> {
-    return this.adminMode
-      ? apiClient.get<ResourceCollection<Article>>(
-          encodeURI(`/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}`)
-        )
-      : apiClient.get<ResourceCollection<Article>>(
-          encodeURI(
-            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}${this.tags
-              .map(tag => '&tags[]=' + tag)
-              .toString()
-              .replace(',', '')}`
-          )
-        );
-  }
-
-  deleteArticle(id: string): Promise<void> {
-    return apiClient.delete(`/api/v1/article/${id}`);
-  }
-
-  stripTagsAndTruncate(content: string): string {
-    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
-  }
-
-  async loadMore(): Promise<void> {
-    if (!this.articleRemaining) {
-      return Promise.reject('All article are already loaded');
-    }
-
-    this.loading = true;
-
-    ++this.page;
-    const { collection, total } = (await this.getArticleCollection()) as ResourceCollection<
-      Article
-    >;
-
-    this.articleCollection = [...(this.articleCollection as Article[]), ...collection];
-    this.articleRemaining = total > this.articleCollection.length;
-    this.loading = false;
-    this.requestUpdate();
-  }
-
-  async removeArticle(article: Article): Promise<void> {
-    const articleTitle = article.title;
-    if (
-      (prompt('Enter ' + articleTitle + ' to delete the article') || '').toLowerCase() ===
-      articleTitle.toLowerCase()
-    ) {
-      try {
-        await this.deleteArticle(article._id);
-        this.articleCollection = (this.articleCollection || []).filter(
-          _article => article._id !== _article._id
-        );
-        this.requestUpdate();
-      } catch (error) {
-        errorHandlerService.throw(error);
-      }
-    }
-  }
-
   articleList(): TemplateResult {
     return html`
-      ${repeat(this.articleCollection, (article: Article) => {
+      ${repeat(this.state.articles, (article: Article) => {
         const articleUri = `/article/${article.slug}`;
 
         return html`
@@ -276,14 +280,14 @@ export default class ArticleFeedComponent extends LitElement {
               `
             : nothing}
         </header>
-        ${this.articleCollection ? this.articleList() : nothing}
+        ${this.state.articles.length > 0 ? this.articleList() : nothing}
         <button
           title="${translate('article_feed.more')}"
           class="button load-more ${this.loading ? 'is-loading' : ''}"
-          ?disabled="${this.articleRemaining ? false : true}"
+          ?disabled="${this.state.moreResult ? false : true}"
           @click="${this.loadMore}"
         >
-          ${this.articleRemaining
+          ${this.state.moreResult
             ? translate('article_feed.more')
             : html`
                 <span class="load-complete">${check}</span>
