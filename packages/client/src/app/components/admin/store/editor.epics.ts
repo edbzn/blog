@@ -3,11 +3,9 @@ import { combineEpics, ofType } from 'redux-observable';
 import { from, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { ArticleLanguage } from '../../../../../../server/src/api/article/model/article-language';
 import { failure } from '../../../core/store/failure.action';
 import { AppState } from '../../../core/store/state';
 import { convertMdToHtml, EDIT_MARKDOWN, loadEditorFulfilled, LOAD_EDITOR } from './editor.actions';
-
 
 const loadEditorModule$ = from(import(/* webpackChunkName: "app-editor" */ 'simplemde'));
 const loadConverterModule$ = from(import(/* webpackChunkName: "app-converter" */ 'showdown'));
@@ -16,7 +14,7 @@ const configureEditor = (element: HTMLTextAreaElement, initialValue: string, sta
   element,
   initialValue,
   lineWrapping: true,
-  spellChecker: state.admin.draft.lang === ArticleLanguage.EN ? true : false,
+  spellChecker: state.admin.draft.lang === 'fr' ? true : false,
   autoDownloadFontAwesome: true,
   forceSync: true,
   tabSize: 2,

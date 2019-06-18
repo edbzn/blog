@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 
@@ -35,10 +34,9 @@ module.exports = {
   },
   output: {
     filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist', 'client'),
+    path: path.resolve(__dirname, 'dist'),
   },
   plugins: [
-    new webpack.ProgressPlugin(),
     new WriteFilePlugin(),
     new CopyWebpackPlugin([
       {
@@ -57,7 +55,7 @@ module.exports = {
         cache: true,
       },
       {
-        from: 'src/assets',
+        from: 'assets',
         to: 'assets',
         cache: true,
       },
@@ -76,18 +74,3 @@ module.exports = {
     ]),
   ],
 };
-
-// - Here is the babel loader conf
-// - Commented since server side imports result in a compilation error
-//
-// {
-//   test: /\.(ts|js)x?$/,
-//   exclude: /node_modules/,
-//   use: {
-//     loader: 'babel-loader',
-//     options: {
-//       cacheDirectory: true,
-//       babelrc: true,
-//     }
-//   }
-// },

@@ -1,7 +1,0 @@
-
-# robotstxt.org
-
-User-agent: *
-Noindex: /login
-Noindex: /error
-Noindex: /admin

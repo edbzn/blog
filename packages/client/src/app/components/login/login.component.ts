@@ -1,7 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
 
-import { CredentialsPayload } from '../../../../../server/src/api/authentication/effects/login.effect';
-import { UserPayload } from '../../../../../server/src/api/authentication/effects/signup.effect';
 import { apiClient } from '../../core/services/api-client';
 import { authService } from '../../core/services/authentication-service';
 import { errorHandlerService } from '../../core/services/error-handler-service';
@@ -13,7 +11,7 @@ import { IUser } from './types';
 export default class Login extends LitElement {
   showSignup = false;
 
-  logUser(credentials: CredentialsPayload): Promise<{ token: string }> {
+  logUser(credentials: any): Promise<{ token: string }> {
     return apiClient.post<{ token: string }>('/api/v1/auth/login', credentials);
   }
 
@@ -21,7 +19,7 @@ export default class Login extends LitElement {
     return apiClient.get<IUser>('/api/v1/user/me');
   }
 
-  signupUser(user: UserPayload): Promise<{ user: IUser; token: string }> {
+  signupUser(user: any): Promise<{ user: IUser; token: string }> {
     return apiClient.post<{
       user: IUser;
       token: string;
@@ -63,7 +61,7 @@ export default class Login extends LitElement {
                     const password = host.getElementById('password') as HTMLInputElement;
                     const firstName = host.getElementById('firstName') as HTMLInputElement;
                     const lastName = host.getElementById('lastName') as HTMLInputElement;
-                    const signupPayload: UserPayload = {
+                    const signupPayload = {
                       email: email.value,
                       password: password.value,
                       firstName: firstName.value,
@@ -123,7 +121,7 @@ export default class Login extends LitElement {
                     const host = this.shadowRoot as ShadowRoot;
                     const email = host.getElementById('email') as HTMLInputElement;
                     const password = host.getElementById('password') as HTMLInputElement;
-                    const credentials: CredentialsPayload = {
+                    const credentials = {
                       email: email.value,
                       password: password.value,
                     };

@@ -1,17 +1,18 @@
 import { css, html, LitElement, property } from 'lit-element';
 import { nothing } from 'lit-html';
 
-import { ReactionType } from '../../../../../server/src/api/article/model/article-reactions';
 import { apiClient, errorHandlerService } from '../../core/services';
 import { Article } from '../admin/types';
 
-const createReactionKey = (article: Article, reaction: ReactionType) =>
+type ReactionType = 'heart' | 'unicorn' | 'mark';
+
+const createReactionKey = (article: Article, reaction: ReactionType): string =>
   'reaction_' + article._id + '_' + reaction;
 
-const isAllowed = (article: Article, reaction: ReactionType) =>
+const isAllowed = (article: Article, reaction: ReactionType): boolean =>
   localStorage.getItem(createReactionKey(article, reaction)) === null;
 
-const disallow = (article: Article, reaction: ReactionType) =>
+const disallow = (article: Article, reaction: ReactionType): void =>
   localStorage.setItem(createReactionKey(article, reaction), '1');
 
 export default class ArticleReactionsComponent extends LitElement {

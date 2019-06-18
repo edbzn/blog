@@ -1,5 +1,3 @@
-import { ArticleReactions } from '../../../../../server/src/api/article/model/article-reactions';
-import { ArticleLanguage } from '../../../../../server/src/api/article/model/article-language';
 import { Resource, TimeStampableResource } from '../../utils/resource';
 
 export interface Draft {
@@ -13,8 +11,20 @@ export interface Draft {
   metaTitle: string | null;
   metaDescription: string | null;
   publishedAt: string | null;
-  lang: ArticleLanguage;
-  reactions: ArticleReactions;
+  lang: 'fr' | 'en';
+  reactions: {
+    types: {
+      heart: {
+        count: number;
+      };
+      unicorn: {
+        count: number;
+      };
+      mark: {
+        count: number;
+      };
+    };
+  };
 }
 
 export interface Article extends Draft, Resource, TimeStampableResource {}

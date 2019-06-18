@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
-    "build": "webpack --progress --config=webpack.production.config.js --mode production",
-    "now-build": "npm run build"
+    "build": "webpack --progress --config=webpack.production.config.js --mode production --no-color"
   },
   "dependencies": {
     "@sentry/browser": "5.3.0",
