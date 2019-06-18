@@ -1,0 +1,31 @@
+{
+  "presets": ["@babel/env", "@babel/typescript"],
+  "plugins": [
+    ["@babel/plugin-syntax-dynamic-import"],
+    ["@babel/plugin-proposal-export-default-from"],
+    ["@babel/plugin-proposal-export-namespace-from"],
+    ["@babel/plugin-proposal-object-rest-spread"],
+    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+    ["@babel/plugin-proposal-class-properties"],
+    [
+      "template-html-minifier",
+      {
+        "modules": {
+          "lit-html": ["html"],
+          "lit-element": [
+            "html",
+            {
+              "name": "css",
+              "encapsulation": "style"
+            }
+          ]
+        },
+        "htmlMinifier": {
+          "collapseWhitespace": true,
+          "minifyJS": true,
+          "removeComments": true
+        }
+      }
+    ]
+  ]
+}

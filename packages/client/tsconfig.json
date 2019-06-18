@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "target": "es2017",
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowJs": false,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "pretty": true,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
+    "noImplicitAny": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
