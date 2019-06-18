@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
-    "build": "webpack --progress --config=webpack.production.config.js --mode production --no-color"
+    "build": "webpack --progress --config=webpack.production.config.js --mode production --no-color",
+    "build:docker": "docker build -t codamit-client:latest ."
   },
   "dependencies": {
     "@sentry/browser": "5.3.0",
