@@ -4,9 +4,15 @@ import { ResourceCollection } from '../../utils/collection';
 export const LOAD_ARTICLES = '[CLIENT] LOAD_ARTICLES';
 export const LOAD_ARTICLES_SUCCESS = '[CLIENT] LOAD_ARTICLES_SUCCESS';
 
-export const loadArticles = ({ page, limit }: { page: number; limit: number }) => ({
+export interface ArticleQuery {
+  page: number;
+  limit: number;
+  tags?: string[];
+}
+
+export const loadArticles = ({ page, limit, tags }: ArticleQuery) => ({
   type: LOAD_ARTICLES,
-  payload: { limit, page },
+  payload: { limit, page, tags },
 });
 
 export const loadArticlesFulfilled = (response: ResourceCollection<Article>) => ({

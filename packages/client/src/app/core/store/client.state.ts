@@ -5,10 +5,14 @@ export interface ClientState {
   moreResult: boolean;
   loading: boolean;
   error: null | string;
+  page: number;
+  limit: number;
 }
 
 export const initialState = (): ClientState => ({
   articles: [],
+  page: 1,
+  limit: 8,
   moreResult: true,
   loading: true,
   error: null,

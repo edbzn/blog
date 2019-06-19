@@ -5,7 +5,6 @@ import { repeat } from 'lit-html/directives/repeat';
 import { connect } from 'pwa-helpers';
 import { Subject } from 'rxjs';
 
-import { Article } from '../../components/admin/types';
 import { buttonStyle } from '../../shared/button';
 import { cardStyle } from '../../shared/card';
 import { tags } from '../../shared/tags';
@@ -13,7 +12,7 @@ import check from '../../utils/icons/check';
 import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
 import { languageService } from '../services/language-service';
-import { loadArticles } from '../store/client.actions';
+import { loadArticles, ArticleQuery } from '../store/client.actions';
 import { ClientState } from '../store/client.state';
 import { AppState } from '../store/state';
 import { store } from '../store/store';
@@ -24,30 +23,38 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   state: ClientState;
 
   @property({ type: Array })
-  tags = [];
+  tags: string[] = [];
 
   @property({ type: Boolean })
-  adminMode = false;
+  showAdminActions = false;
 
-  @property({ type: Boolean })
-  loading = true;
-
-  firstUpdated() {
-    store.dispatch(loadArticles({ page: 1, limit: 8 }));
+  firstUpdated(): void {
+    this.loadArticles();
   }
 
-  stateChanged(state: AppState) {
+  stateChanged(state: AppState): void {
     this.state = state.client;
     this.stateSubject.next(state.client);
     this.requestUpdate('state');
   }
 
-  // updated(props: Map<string | number | symbol, unknown>) {
-  //   const oldTags = props.get('tags');
-  //   if (oldTags instanceof Array && oldTags !== this.tags) {
-  //     this.updateArticleCollection();
-  //   }
-  // }
+  updated(props: Map<string | number | symbol, unknown>) {
+    const oldTags = props.get('tags');
+    if (oldTags instanceof Array && oldTags !== this.tags) {
+      this.loadArticles();
+    }
+  }
+
+  private loadArticles(): void {
+    const { page, limit } = this.state;
+    let query: ArticleQuery = { page, limit };
+
+    if (this.tags.length > 0) {
+      query.tags = this.tags;
+    }
+
+    store.dispatch(loadArticles(query));
+  }
 
   // updateArticleCollection(): void {
   //   this.getArticleCollection().then(articleCollection => {
@@ -82,23 +89,14 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
     return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
   }
 
-  // async loadMore(): Promise<void> {
-  //   if (!this.articleRemaining) {
-  //     return Promise.reject('All article are already loaded');
-  //   }
+  loadMore(): void {
+    if (!this.state.moreResult) {
+      return;
+    }
 
-  //   this.loading = true;
-
-  //   ++this.page;
-  //   const { collection, total } = (await this.getArticleCollection()) as ResourceCollection<
-  //     Article
-  //   >;
-
-  //   this.articleCollection = [...(this.articleCollection as Article[]), ...collection];
-  //   this.articleRemaining = total > this.articleCollection.length;
-  //   this.loading = false;
-  //   this.requestUpdate();
-  // }
+    this.loadArticles();
+    this.requestUpdate();
+  }
 
   // async removeArticle(article: Article): Promise<void> {
   //   const articleTitle = article.title;
@@ -203,7 +201,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
 
   articleList(): TemplateResult {
     return html`
-      ${repeat(this.state.articles, (article: Article) => {
+      ${repeat(this.state.articles, article => {
         const articleUri = `/article/${article.slug}`;
 
         return html`
@@ -224,7 +222,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
                         })
                       : nothing}
                   </span>
-                  ${tags(article, this.adminMode)}
+                  ${tags(article, this.showAdminActions)}
                 </p>
               </header>
               ${article.posterUrl
@@ -240,7 +238,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
                 <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
               </div>
 
-              ${this.adminMode
+              ${this.showAdminActions
                 ? html`
                     <footer class="card-footer">
                       <a
@@ -283,7 +281,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
         ${this.state.articles.length > 0 ? this.articleList() : nothing}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more ${this.loading ? 'is-loading' : ''}"
+          class="button load-more ${this.state.loading ? 'is-loading' : ''}"
           ?disabled="${this.state.moreResult ? false : true}"
           @click="${this.loadMore}"
         >
