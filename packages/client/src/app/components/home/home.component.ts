@@ -31,7 +31,7 @@ export default class Home extends LitElement {
       <ez-page .navbar="${false}">
         <ez-article-feed></ez-article-feed>
         <ez-twitter-feed></ez-twitter-feed>
-        <ez-github-feed></ez-github-feed>
+        <!-- <ez-github-feed></ez-github-feed> -->
       </ez-page>
     `;
   }

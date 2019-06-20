@@ -27,6 +27,7 @@ export default class ProfileComponent extends LitElement {
       }
 
       .subtitle {
+        width: 90%;
         margin-top: 0px;
         font-size: 2rem;
         font-weight: 100;

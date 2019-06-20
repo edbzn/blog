@@ -38,65 +38,16 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
     this.requestUpdate('state');
   }
 
-  updated(props: Map<string | number | symbol, unknown>) {
+  updated(props: Map<string | number | symbol, unknown>): void {
     const oldTags = props.get('tags');
     if (oldTags instanceof Array && oldTags !== this.tags) {
       this.loadArticles();
     }
   }
 
-  private loadArticles(): void {
-    const { page, limit } = this.state;
-    let query: ArticleQuery = { page, limit };
-
-    if (this.tags.length > 0) {
-      query.tags = this.tags;
-    }
-
-    store.dispatch(loadArticles(query));
-  }
-
-  // updateArticleCollection(): void {
-  //   this.getArticleCollection().then(articleCollection => {
-  //     const { collection, total } = articleCollection;
-  //     this.articleCollection = collection;
-  //     this.articleRemaining = total > this.articleCollection.length;
-  //     this.loading = false;
-  //     this.requestUpdate();
-  //   });
-  // }
-
-  // getArticleCollection(): Promise<ResourceCollection<Article>> {
-  //   return this.adminMode
-  //     ? apiClient.get<ResourceCollection<Article>>(
-  //         encodeURI(`/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}`)
-  //       )
-  //     : apiClient.get<ResourceCollection<Article>>(
-  //         encodeURI(
-  //           `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}${this.tags
-  //             .map(tag => '&tags[]=' + tag)
-  //             .toString()
-  //             .replace(',', '')}`
-  //         )
-  //       );
-  // }
-
   // deleteArticle(id: string): Promise<void> {
   //   return apiClient.delete(`/api/v1/article/${id}`);
   // }
-
-  stripTagsAndTruncate(content: string): string {
-    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
-  }
-
-  loadMore(): void {
-    if (!this.state.moreResult) {
-      return;
-    }
-
-    this.loadArticles();
-    this.requestUpdate();
-  }
 
   // async removeArticle(article: Article): Promise<void> {
   //   const articleTitle = article.title;
@@ -115,6 +66,34 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   //     }
   //   }
   // }
+
+  stripTagsAndTruncate(content: string): string {
+    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
+  }
+
+  loadMore(): void {
+    if (!this.state.moreResult) {
+      return;
+    }
+
+    this.loadArticles({ next: true });
+    this.requestUpdate();
+  }
+
+  private loadArticles({ next } = { next: false }): void {
+    const { page, limit } = this.state;
+    let query: ArticleQuery = { page, limit };
+
+    if (next) {
+      ++query.page;
+    }
+
+    if (this.tags.length > 0) {
+      query.tags = this.tags;
+    }
+
+    store.dispatch(loadArticles(query));
+  }
 
   static get styles() {
     return [
@@ -253,7 +232,9 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
                         class="card-footer-item"
                         type="button"
                         title="${translate('article_feed.remove')} ${article.title}"
-                        @click="${this.removeArticle.bind(this, article)}"
+                        @click="${() => {
+                          throw new Error('not implemented');
+                        }}"
                       >
                         ${translate('article_feed.remove')}
                       </a>

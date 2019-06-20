@@ -22,7 +22,7 @@ export default class Admin extends LitElement {
             Start a new draft
           </a>
         </section>
-        <ez-article-feed adminMode=${true}></ez-article-feed>
+        <ez-article-feed ?showAdminActions=${true}></ez-article-feed>
       </ez-page>
     `;
   }

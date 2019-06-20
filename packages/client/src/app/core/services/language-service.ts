@@ -4,7 +4,7 @@ import { ProuterNextMiddleware, ProuterRequest, ProuterResponse } from 'prouter'
 
 import { errorHandlerService } from './error-handler-service';
 
-type Language = 'fr' | 'en';
+export type Language = 'fr' | 'en';
 
 class LanguageService {
   private default: Language = 'en';
