@@ -30,6 +30,14 @@ export default class ArticleContentComponent extends LitElement {
 
       iframe {
         border: none;
+        margin: 2rem 0;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        margin: 3rem 0;
+        border-radius: 4px;
       }
 
       .content {
@@ -84,7 +92,7 @@ export default class ArticleContentComponent extends LitElement {
         font-family: 'IBM Plex Serif', serif;
         font-style: italic;
         font-size: 2rem;
-        margin: 3rem 3rem;
+        margin: 3rem;
       }
 
       blockquote p {
@@ -94,6 +102,7 @@ export default class ArticleContentComponent extends LitElement {
       blockquote p::before {
         content: open-quote;
       }
+
       blockquote p::after {
         content: close-quote;
       }
@@ -105,6 +114,16 @@ export default class ArticleContentComponent extends LitElement {
 
       a:hover {
         text-decoration: underline;
+      }
+
+      @media screen and (max-width: 800px) {
+        img {
+          margin: 3rem 0;
+        }
+
+        blockquote {
+          margin: 3rem 0;
+        }
       }
     `;
   }
