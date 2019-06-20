@@ -7,6 +7,7 @@ import { navigate } from '../../utils/navigate';
 export default class Component extends LitElement {
   twitterUrl = 'https://twitter.com/edouardbozon';
   githubUrl = 'https://github.com/edouardbozon';
+  linkedinUrl = 'https://linkedin.com/in/edouardbozon';
 
   static get styles() {
     return css`
@@ -29,6 +30,11 @@ export default class Component extends LitElement {
       h1 {
         margin: 0;
         font-size: 1.4rem;
+      }
+
+      .socials img {
+        display: inline-block;
+        height: 24px;
       }
 
       svg {
@@ -65,6 +71,9 @@ export default class Component extends LitElement {
           Codamit - Tech Blog
         </a>
         <span class="socials">
+          <a title="LinkedIn profile" href="${this.linkedinUrl}"
+            ><img class="soscial" src="/assets/images/linkedin.png"
+          /></a>
           <a title="Github profile" href="${this.githubUrl}">${github}</a>
           <a title="Twitter profile" href="${this.twitterUrl}">${twitter}</a>
         </span>
