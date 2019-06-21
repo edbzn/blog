@@ -105,7 +105,7 @@ export default class TwitterFeedComponent extends LitElement {
       ${repeat(
         this.tweets.statuses,
         (tweet: any) => html`
-          <article class="card">
+          <article class="card" no-hover>
             <div class="card-content">
               <header>
                 <strong>${tweet.user.name}</strong>

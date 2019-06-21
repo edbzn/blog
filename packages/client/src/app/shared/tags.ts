@@ -14,7 +14,7 @@ export const tags = (article: Article, adminMode = false) => html`
       font-size: 0.74rem;
       padding: 0px 4px;
       border-radius: 6px;
-      border: 1px solid #eee;
+      border: 2px solid #eee;
       line-height: 22px;
       color: #222;
       text-decoration: none;
@@ -26,7 +26,7 @@ export const tags = (article: Article, adminMode = false) => html`
     }
 
     .tag:hover {
-      border: 1px solid #eee;
+      border: 2px solid #eee;
       background: #fff;
     }
 

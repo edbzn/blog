@@ -5,6 +5,7 @@ import { repeat } from 'lit-html/directives/repeat';
 import { connect } from 'pwa-helpers';
 import { Subject } from 'rxjs';
 
+import { Article } from '../../components/admin/types';
 import { buttonStyle } from '../../shared/button';
 import { cardStyle } from '../../shared/card';
 import { tags } from '../../shared/tags';
@@ -12,7 +13,7 @@ import check from '../../utils/icons/check';
 import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
 import { languageService } from '../services/language-service';
-import { loadArticles, ArticleQuery } from '../store/client.actions';
+import { ArticleQuery, loadArticles } from '../store/client.actions';
 import { ClientState } from '../store/client.state';
 import { AppState } from '../store/state';
 import { store } from '../store/store';
@@ -21,6 +22,8 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   stateSubject = new Subject<ClientState>();
   state$ = this.stateSubject.asObservable();
   state: ClientState;
+
+  imagesLoaded: { [id: string]: boolean } = {};
 
   @property({ type: Array })
   tags: string[] = [];
@@ -35,6 +38,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   stateChanged(state: AppState): void {
     this.state = state.client;
     this.stateSubject.next(state.client);
+    this.loadPosters();
     this.requestUpdate('state');
   }
 
@@ -89,10 +93,31 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
     }
 
     if (this.tags.length > 0) {
-      query.tags = this.tags;
+      query.tag = this.tags[0];
     }
 
     store.dispatch(loadArticles(query));
+  }
+
+  loadPosters(): void {
+    this.state.articles.forEach(article => {
+      if (!article.posterUrl) {
+        return;
+      }
+
+      console.log(article);
+
+      const img = new Image();
+      img.src = article!.posterUrl;
+      img.onload = () => {
+        this.imagesLoaded = { ...this.imagesLoaded, [article._id]: true };
+        this.requestUpdate();
+      };
+      img.onerror = () => {
+        this.imagesLoaded = { ...this.imagesLoaded, [article._id]: false };
+        this.requestUpdate();
+      };
+    });
   }
 
   static get styles() {
@@ -102,6 +127,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
       css`
         :host {
           display: block;
+          font-family: 'IBM Plex Sans', sans-serif;
         }
 
         .subtitle {
@@ -126,11 +152,16 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
         .poster {
           height: 200px;
           margin: 0;
+          opacity: 0;
           background-color: #eee;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
-          transition: 150ms ease;
+          transition: opacity 0.2s ease-in-out;
+        }
+
+        .poster.loaded {
+          opacity: 1;
         }
 
         .left {
@@ -207,7 +238,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
               ${article.posterUrl
                 ? html`
                     <figure
-                      class="poster card-image"
+                      class="poster ${this.imagesLoaded[article._id] ? 'loaded' : ''}"
                       style="background-image: url('${article.posterUrl}')"
                     ></figure>
                   `
