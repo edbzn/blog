@@ -130,7 +130,7 @@ export default class ArticleContentComponent extends LitElement {
 
   render() {
     return html`
-      <link href="/assets/css/atom.css" rel="stylesheet" />
+      <link href="/assets/css/code-highlight.css" rel="stylesheet" />
       <div class="content">${unsafeHTML(this.content)}</div>
     `;
   }

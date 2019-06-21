@@ -18,9 +18,10 @@ export default class ArticleAuthorComponent extends LitElement {
         width: 64px;
         height: 64px;
         background-size: contain;
+        background-repeat: no-repeat;
         border-radius: 50%;
         margin: 0;
-        margin-right: 1.4rem;
+        margin-right: 1.5rem;
       }
     `;
   }
