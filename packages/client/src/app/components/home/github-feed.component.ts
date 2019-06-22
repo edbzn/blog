@@ -67,7 +67,6 @@ export default class GitHubFeedComponent extends LitElement {
   }
 
   showActivity(): TemplateResult {
-    console.log(this.events);
     return html`
       ${repeat(
         this.events,

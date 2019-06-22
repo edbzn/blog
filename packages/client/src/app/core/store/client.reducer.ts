@@ -1,8 +1,7 @@
-import { ClientState, initialState } from './client.state';
+import { findById } from '../../utils/findById';
 import { LOAD_ARTICLES_SUCCESS } from './client.actions';
-
-const findById = ({ _id }: { _id: string }) => <T extends { _id: string }>(target: T): boolean =>
-  _id === target._id;
+import { ClientState, initialState } from './client.state';
+import { FAILURE } from './common.actions';
 
 export function client(state = initialState(), action: any): ClientState {
   switch (action.type) {
@@ -17,6 +16,13 @@ export function client(state = initialState(), action: any): ClientState {
         articles,
         loading: false,
         moreResult: action.payload.total > articles.length,
+      };
+
+    case FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.message ? action.payload.message : action.payload,
       };
 
     default:

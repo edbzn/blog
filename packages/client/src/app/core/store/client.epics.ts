@@ -7,7 +7,12 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { Article } from '../../components/admin/types';
 import { ResourceCollection } from '../../utils/collection';
 import { apiClient } from '../services';
-import { LOAD_ARTICLES, loadArticlesFulfilled } from './client.actions';
+import {
+  LOAD_ARTICLES,
+  LOAD_ARTICLES_BY_TAG,
+  loadArticlesFulfilled,
+  loadArticlesByTagFulfilled,
+} from './client.actions';
 import { failure } from './common.actions';
 
 const loadArticlesEpic = (action$: Observable<any>): Observable<Action> =>
@@ -28,4 +33,22 @@ const loadArticlesEpic = (action$: Observable<any>): Observable<Action> =>
     )
   );
 
-export const clientEpic = combineEpics(loadArticlesEpic);
+const loadArticlesByTagEpic = (action$: Observable<any>): Observable<Action> =>
+  action$.pipe(
+    ofType(LOAD_ARTICLES_BY_TAG),
+    switchMap(action =>
+      from(
+        apiClient.get(
+          `/api/v1/article?${stringify(
+            { ...action.payload, sortDir: -1 },
+            { arrayFormat: 'bracket' }
+          )}`
+        )
+      ).pipe(
+        map(response => loadArticlesByTagFulfilled(response as ResourceCollection<Article>)),
+        catchError(err => of(failure(err)))
+      )
+    )
+  );
+
+export const clientEpic = combineEpics(loadArticlesEpic, loadArticlesByTagEpic);

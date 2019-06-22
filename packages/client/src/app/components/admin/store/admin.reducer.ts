@@ -189,7 +189,7 @@ export function admin(state = initialState(), action: any): DraftState {
     case FAILURE:
       return {
         ...state,
-        error: action.payload,
+        error: action.payload.message ? action.payload.message : action.payload,
         loading: false,
         isRequestPending: false,
       };
