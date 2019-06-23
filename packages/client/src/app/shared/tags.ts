@@ -21,13 +21,31 @@ export const tags = (article: Article, adminMode = false) => html`
       transition: 150ms ease;
     }
 
+    .tag:hover {
+      border: 2px solid #eee;
+      background: #fff;
+    }
+
     .tag:before {
       content: '#';
     }
 
-    .tag:hover {
-      border: 2px solid #eee;
-      background: #fff;
+    .is-primary {
+      background: #a7ffb6;
+      border-color: #a7ffb6;
+    }
+
+    .is-primary:hover {
+      border-color: #a7ffb6;
+    }
+
+    .is-warning {
+      background: #fffea7;
+      border-color: #fffea7;
+    }
+
+    .is-warning:hover {
+      border-color: #fffea7;
     }
 
     .tag:last-child {

@@ -1,7 +1,6 @@
 /**
  * atom-dark theme for `prism.js`
  * Based on Atom's `atom-dark` theme: https://github.com/atom/atom-dark-syntax
- * @author Joe Gibson (@gibsjose)
  */
 
 @font-face {
@@ -13,6 +12,7 @@
     url('/assets/fonts/FiraCode/ttf/FiraCode-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -24,6 +24,7 @@
     url('/assets/fonts/FiraCode/ttf/FiraCode-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -35,6 +36,7 @@
     url('/assets/fonts/FiraCode/ttf/FiraCode-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -46,7 +48,8 @@
     url('/assets/fonts/FiraCode/ttf/FiraCode-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
-} 
+  font-display: swap;
+}
 
 code[class*='language-'],
 pre[class*='language-'] {
@@ -70,7 +73,7 @@ pre[class*='language-'] {
   hyphens: none;
   font-variant-ligatures: normal;
   font-feature-settings: 'calt' 1;
-  text-rendering: optimizeLegibility; 
+  text-rendering: optimizeLegibility;
 }
 
 /* Code blocks */

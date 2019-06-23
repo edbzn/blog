@@ -9,11 +9,12 @@ export interface ArticleQuery {
   page: number;
   limit: number;
   tags?: string[];
+  includeDrafts?: boolean;
 }
 
-export const loadArticles = ({ page, limit, tags }: ArticleQuery) => ({
+export const loadArticles = ({ page, limit, tags, includeDrafts }: ArticleQuery) => ({
   type: LOAD_ARTICLES,
-  payload: { limit, page, tags },
+  payload: { limit, page, tags, includeDrafts },
 });
 
 export const loadArticlesFulfilled = (response: ResourceCollection<Article>) => ({

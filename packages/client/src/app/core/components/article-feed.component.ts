@@ -76,6 +76,9 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
     if (this.tags.length > 0) {
       query.tags = this.tags;
     }
+    if (this.showAdminActions) {
+      query.includeDrafts = true;
+    }
 
     store.dispatch(loadArticles(query));
   }
@@ -114,18 +117,17 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
           font-family: 'IBM Plex Sans Condensed', sans-serif;
         }
 
-        .tag.is-primary {
+        .tag.main {
+          display: block;
+          padding: 0 8px;
           height: 32px;
           line-height: 32px;
           font-size: 1rem;
           background: #40a8ff;
           color: #fff;
-          transition: none;
           border-radius: 8px;
-        }
-
-        .tag.is-primary:hover {
-          background: #40a8ff;
+          border: none;
+          text-transform: capitalize;
         }
 
         .poster {
@@ -177,10 +179,6 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
 
         .feed-header h4 {
           margin: 0;
-        }
-
-        .feed-header .tag {
-          text-transform: capitalize;
         }
 
         .placeholder {
@@ -320,7 +318,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
           <h4 class="subtitle">articles</h4>
           ${this.tags.length > 0
             ? html`
-                <span class="tag is-primary is-medium">${this.tags[0]}</span>
+                <span class="tag main">${this.tags[0]}</span>
               `
             : nothing}
         </header>

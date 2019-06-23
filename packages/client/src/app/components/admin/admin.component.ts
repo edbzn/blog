@@ -1,25 +1,35 @@
-import { html, LitElement } from 'lit-element';
+import { css, html, LitElement } from 'lit-element';
 
+import { buttonStyle } from '../../shared/button';
 import { navigate } from '../../utils/navigate';
 
 export default class Admin extends LitElement {
-  render() {
-    return html`
-      <style>
+  static get styles() {
+    return [
+      buttonStyle,
+      css`
         :host {
           display: block;
         }
-      </style>
+
+        .section a {
+          margin: 1.5rem 0;
+        }
+      `,
+    ];
+  }
+
+  render() {
+    return html`
       <ez-page>
         <section class="section">
-          <h1 class="title">Admin</h1>
           <a
-            class="button is-primary block"
+            class="button"
             href="/admin/draft"
             title="Start writing"
             @click=${navigate(`/admin/draft`)}
           >
-            Start a new draft
+            New draft
           </a>
         </section>
         <ez-article-feed ?showAdminActions=${true}></ez-article-feed>

@@ -16,7 +16,7 @@ const loadArticlesEpic = (action$: Observable<any>): Observable<Action> =>
     switchMap(action =>
       from(
         apiClient.get(
-          `/api/v1/article?${stringify(
+          `${action.payload.includeDrafts ? '/api/v1/draft' : '/api/v1/article'}?${stringify(
             { ...action.payload, sortDir: -1 },
             { arrayFormat: 'bracket' }
           )}`
