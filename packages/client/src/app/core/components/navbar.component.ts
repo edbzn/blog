@@ -71,8 +71,8 @@ export default class Component extends LitElement {
           Codamit - Tech Blog
         </a>
         <span class="socials">
-          <a title="LinkedIn profile" href="${this.linkedinUrl}"
-            ><img class="soscial" src="/assets/images/linkedin.png"
+          <a title="LinkedIn profile" href="${this.linkedinUrl}">
+            <img src="/assets/images/linkedin.svg"
           /></a>
           <a title="Github profile" href="${this.githubUrl}">${github}</a>
           <a title="Twitter profile" href="${this.twitterUrl}">${twitter}</a>
