@@ -2,20 +2,103 @@ import { format } from 'date-fns';
 import { css, html, LitElement, property, TemplateResult } from 'lit-element';
 import { nothing } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
+import { connect } from 'pwa-helpers';
+import { Subject } from 'rxjs';
 
-import { Article } from '../../components/admin/types';
 import { buttonStyle } from '../../shared/button';
+import { cardStyle } from '../../shared/card';
 import { tags } from '../../shared/tags';
-import { ResourceCollection } from '../../utils/collection';
 import check from '../../utils/icons/check';
 import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
-import { apiClient } from '../services/api-client';
-import { errorHandlerService } from '../services/error-handler-service';
 import { languageService } from '../services/language-service';
-import { cardStyle } from '../../shared/card';
+import { ArticleQuery, clearArticles, loadArticles } from '../store/client.actions';
+import { ClientState } from '../store/client.state';
+import { AppState } from '../store/state';
+import { store } from '../store/store';
 
-export default class ArticleFeedComponent extends LitElement {
+export default class ArticleFeedComponent extends connect(store)(LitElement) {
+  stateSubject = new Subject<ClientState>();
+  state$ = this.stateSubject.asObservable();
+  state: ClientState;
+
+  placeholders = Array(8)
+    .fill(true)
+    .map(Boolean);
+
+  imagesLoaded: { [id: string]: boolean } = {};
+
+  @property({ type: Array })
+  tags: string[] = [];
+
+  @property({ type: Boolean })
+  showAdminActions = false;
+
+  firstUpdated(): void {
+    this.loadArticles();
+  }
+
+  stateChanged(state: AppState): void {
+    this.state = state.client;
+    this.stateSubject.next(state.client);
+    this.loadPosters();
+    this.requestUpdate('state');
+  }
+
+  updated(changedProperties: Map<string | number | symbol, unknown>) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'tags') {
+        store.dispatch(clearArticles());
+        this.loadArticles();
+      }
+    });
+  }
+
+  stripTagsAndTruncate(content: string): string {
+    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
+  }
+
+  loadMore(): void {
+    if (!this.state.moreResult) {
+      return;
+    }
+
+    this.loadArticles({ next: true });
+    this.requestUpdate();
+  }
+
+  private loadArticles({ next } = { next: false }): void {
+    const { page, limit } = this.state;
+    const query: ArticleQuery = { page, limit };
+    if (next) {
+      ++query.page;
+    }
+    if (this.tags.length > 0) {
+      query.tags = this.tags;
+    }
+
+    store.dispatch(loadArticles(query));
+  }
+
+  private loadPosters(): void {
+    this.state.articles.forEach(article => {
+      if (!article.posterUrl) {
+        return;
+      }
+
+      const img = new Image();
+      img.src = article!.posterUrl;
+      img.onload = () => {
+        this.imagesLoaded = { ...this.imagesLoaded, [article._id]: true };
+        this.requestUpdate();
+      };
+      img.onerror = () => {
+        this.imagesLoaded = { ...this.imagesLoaded, [article._id]: false };
+        this.requestUpdate();
+      };
+    });
+  }
+
   static get styles() {
     return [
       cardStyle,
@@ -23,6 +106,7 @@ export default class ArticleFeedComponent extends LitElement {
       css`
         :host {
           display: block;
+          font-family: 'IBM Plex Sans', sans-serif;
         }
 
         .subtitle {
@@ -46,12 +130,21 @@ export default class ArticleFeedComponent extends LitElement {
 
         .poster {
           height: 200px;
+          background-color: #f5f5f5;
+        }
+
+        .poster > figure {
+          height: 200px;
           margin: 0;
-          background-color: #eee;
+          opacity: 0;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
-          transition: 150ms ease;
+          transition: opacity 0.2s ease-in-out;
+        }
+
+        .poster figure.loaded {
+          opacity: 1;
         }
 
         .left {
@@ -90,6 +183,51 @@ export default class ArticleFeedComponent extends LitElement {
           text-transform: capitalize;
         }
 
+        .placeholder {
+          margin-bottom: 1.5rem;
+        }
+
+        .placeholder div:nth-child(1) {
+          height: 25px;
+          width: 25%;
+          display: inline-block;
+          margin: 12px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(2) {
+          height: 25px;
+          width: 45%;
+          float: right;
+          margin: 12px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(3) {
+          height: 200px;
+          margin: 1rem 0;
+          margin-top: 0;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(4) {
+          width: 90%;
+          height: 30px;
+          margin: 12px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(5) {
+          height: 60px;
+          margin: 12px;
+          margin-bottom: 24px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
         @media screen and (max-width: 800px) {
           .section {
             padding: 1rem 0.8rem;
@@ -99,107 +237,11 @@ export default class ArticleFeedComponent extends LitElement {
     ];
   }
 
-  @property({ type: Array })
-  tags = [];
-
-  @property({ type: Boolean })
-  adminMode = false;
-
-  @property({ type: Array })
-  articleCollection: Article[] = [];
-
-  @property({ type: Boolean })
-  loading = true;
-
-  page = 1;
-
-  limit = 4;
-
-  articleRemaining = true;
-
-  firstUpdated() {
-    this.updateArticleCollection();
-  }
-
-  updated(props: Map<string | number | symbol, unknown>) {
-    const oldTags = props.get('tags');
-    if (oldTags instanceof Array && oldTags !== this.tags) {
-      this.updateArticleCollection();
-    }
-  }
-
-  updateArticleCollection(): void {
-    this.getArticleCollection().then(articleCollection => {
-      const { collection, total } = articleCollection;
-      this.articleCollection = collection;
-      this.articleRemaining = total > this.articleCollection.length;
-      this.loading = false;
-      this.requestUpdate();
-    });
-  }
-
-  getArticleCollection(): Promise<ResourceCollection<Article>> {
-    return this.adminMode
-      ? apiClient.get<ResourceCollection<Article>>(
-          encodeURI(`/api/v1/draft?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}`)
-        )
-      : apiClient.get<ResourceCollection<Article>>(
-          encodeURI(
-            `/api/v1/article?sortDir=-1&sortBy=_id&limit=${this.limit}&page=${this.page}${this.tags
-              .map(tag => '&tags[]=' + tag)
-              .toString()
-              .replace(',', '')}`
-          )
-        );
-  }
-
-  deleteArticle(id: string): Promise<void> {
-    return apiClient.delete(`/api/v1/article/${id}`);
-  }
-
-  stripTagsAndTruncate(content: string): string {
-    return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
-  }
-
-  async loadMore(): Promise<void> {
-    if (!this.articleRemaining) {
-      return Promise.reject('All article are already loaded');
-    }
-
-    this.loading = true;
-
-    ++this.page;
-    const { collection, total } = (await this.getArticleCollection()) as ResourceCollection<
-      Article
-    >;
-
-    this.articleCollection = [...(this.articleCollection as Article[]), ...collection];
-    this.articleRemaining = total > this.articleCollection.length;
-    this.loading = false;
-    this.requestUpdate();
-  }
-
-  async removeArticle(article: Article): Promise<void> {
-    const articleTitle = article.title;
-    if (
-      (prompt('Enter ' + articleTitle + ' to delete the article') || '').toLowerCase() ===
-      articleTitle.toLowerCase()
-    ) {
-      try {
-        await this.deleteArticle(article._id);
-        this.articleCollection = (this.articleCollection || []).filter(
-          _article => article._id !== _article._id
-        );
-        this.requestUpdate();
-      } catch (error) {
-        errorHandlerService.throw(error);
-      }
-    }
-  }
-
   articleList(): TemplateResult {
+    const { articles } = this.state;
+
     return html`
-      ${repeat(this.articleCollection, (article: Article) => {
+      ${repeat(articles, article => {
         const articleUri = `/article/${article.slug}`;
 
         return html`
@@ -220,15 +262,17 @@ export default class ArticleFeedComponent extends LitElement {
                         })
                       : nothing}
                   </span>
-                  ${tags(article, this.adminMode)}
+                  ${tags(article, this.showAdminActions)}
                 </p>
               </header>
               ${article.posterUrl
                 ? html`
-                    <figure
-                      class="poster card-image"
-                      style="background-image: url('${article.posterUrl}')"
-                    ></figure>
+                    <div class="poster">
+                      <figure
+                        class="${this.imagesLoaded[article._id] ? 'loaded' : ''}"
+                        style="background-image: url('${article.posterUrl}')"
+                      ></figure>
+                    </div>
                   `
                 : nothing}
               <div class="card-content">
@@ -236,7 +280,7 @@ export default class ArticleFeedComponent extends LitElement {
                 <p>${this.stripTagsAndTruncate(article.html) + '...'}</p>
               </div>
 
-              ${this.adminMode
+              ${this.showAdminActions
                 ? html`
                     <footer class="card-footer">
                       <a
@@ -251,7 +295,9 @@ export default class ArticleFeedComponent extends LitElement {
                         class="card-footer-item"
                         type="button"
                         title="${translate('article_feed.remove')} ${article.title}"
-                        @click="${this.removeArticle.bind(this, article)}"
+                        @click="${() => {
+                          throw new Error('not implemented');
+                        }}"
                       >
                         ${translate('article_feed.remove')}
                       </a>
@@ -266,6 +312,8 @@ export default class ArticleFeedComponent extends LitElement {
   }
 
   render() {
+    const { moreResult, loading, page } = this.state;
+
     return html`
       <section class="section">
         <header class="feed-header">
@@ -276,14 +324,26 @@ export default class ArticleFeedComponent extends LitElement {
               `
             : nothing}
         </header>
-        ${this.articleCollection ? this.articleList() : nothing}
+        ${loading && page === 1
+          ? this.placeholders.map(
+              () => html`
+                <div class="card placeholder" no-hover>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              `
+            )
+          : this.articleList()}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more ${this.loading ? 'is-loading' : ''}"
-          ?disabled="${this.articleRemaining ? false : true}"
+          class="button load-more ${this.state.loading ? 'is-loading' : ''}"
+          ?disabled="${moreResult ? false : true}"
           @click="${this.loadMore}"
         >
-          ${this.articleRemaining
+          ${this.state.moreResult
             ? translate('article_feed.more')
             : html`
                 <span class="load-complete">${check}</span>

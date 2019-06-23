@@ -1,6 +1,6 @@
 {
   "profile": {
-    "description": "I build things using computers."
+    "description": "TypeScript guy with functional reactive flavor since every thing has its time."
   },
   "article_feed": {
     "read": "Lire",
@@ -22,7 +22,7 @@
   },
   "footer": {
     "credentials": "Fait avec",
-    "credentials2": "<a href=\"https://github.com/Edouardbozon/codamit\">Le code source de ce site est libre</a>"
+    "credentials2": "<a href=\"https://github.com/Edouardbozon/codamit\">tard le soir.</a>"
   },
   "error": {
     "go_back": "Précédent",

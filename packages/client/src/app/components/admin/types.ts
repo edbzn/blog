@@ -1,3 +1,4 @@
+import { Language } from '../../core/services';
 import { Resource, TimeStampableResource } from '../../utils/resource';
 
 export interface Draft {
@@ -11,7 +12,7 @@ export interface Draft {
   metaTitle: string | null;
   metaDescription: string | null;
   publishedAt: string | null;
-  lang: 'fr' | 'en';
+  lang: Language;
   reactions: {
     types: {
       heart: {

@@ -28,11 +28,14 @@ export default class ArticleDetail extends LitElement {
 
   calculateRemainingHandler: EventListenerOrEventListenerObject | null = null;
 
+  posterLoaded = false;
+
   firstUpdated(): void {
     this.init()
       .then(() => {
         this.handleScrollChange();
         this.setPageMeta();
+        this.loadPoster();
       })
       .catch(e => {
         errorHandlerService.throw(e);
@@ -87,6 +90,22 @@ export default class ArticleDetail extends LitElement {
     });
   }
 
+  loadPoster(): void {
+    const img = new Image();
+
+    if (this.article!.posterUrl) {
+      img.src = this.article!.posterUrl;
+      img.onload = () => {
+        this.posterLoaded = true;
+        this.requestUpdate();
+      };
+      img.onerror = () => {
+        this.posterLoaded = false;
+        this.requestUpdate();
+      };
+    }
+  }
+
   disconnectedCallback(): void {
     this.removeEventListener('scroll', this
       .calculateRemainingHandler as EventListenerOrEventListenerObject);
@@ -110,6 +129,12 @@ export default class ArticleDetail extends LitElement {
 
         figure {
           margin: 0;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
+        }
+
+        figure.loaded {
+          opacity: 1;
         }
 
         .content .title {
@@ -128,34 +153,6 @@ export default class ArticleDetail extends LitElement {
 
         .header .tag:last-child {
           margin-right: 0;
-        }
-
-        .profile {
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-        }
-
-        .follow-me {
-          max-height: 36px;
-        }
-
-        .avatar {
-          min-width: 110px;
-          height: 110px;
-          overflow: hidden;
-          border-radius: 100%;
-          box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-          background-color: #eee;
-          background-position: center center;
-          background-repeat: no-repeat;
-          background-size: cover;
-          margin: 0 !important;
-        }
-
-        .presentation {
-          padding-left: 1.55rem;
-          font-size: 0.8em;
         }
 
         .date {
@@ -272,21 +269,24 @@ export default class ArticleDetail extends LitElement {
   }
 
   render() {
+    const { posterLoaded, posterUrl, percentRemaining, article } = this;
+
     return html`
       <ez-navbar></ez-navbar>
-      ${this.posterUrl
+      ${posterUrl
         ? html`
-            <figure class="poster" style="background-image: url('${this.posterUrl}')"></figure>
+            <figure
+              class="poster ${posterLoaded ? 'loaded' : ''}"
+              style="background-image: url('${posterUrl}')"
+            ></figure>
           `
-        : html`
-            <div class="poster"></div>
-          `}
+        : nothing}
       <div class="timeline">
-        <div style="width: ${this.percentRemaining + '%'};"></div>
+        <div style="width: ${percentRemaining + '%'};"></div>
       </div>
       <ez-page .navbar="${false}">
         <section class="container">
-          ${this.article ? this.showArticleDetail() : nothing}
+          ${article ? this.showArticleDetail() : nothing}
         </section>
       </ez-page>
     `;

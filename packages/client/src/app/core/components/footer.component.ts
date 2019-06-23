@@ -14,8 +14,8 @@ export default class FooterComponent extends LitElement {
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        padding-top: 4rem;
-        padding-bottom: 2rem;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
         color: #313131;
         font-size: 0.75rem;
         font-family: 'IBM Plex Sans', sans-serif;
@@ -24,7 +24,7 @@ export default class FooterComponent extends LitElement {
       .heart svg {
         margin-left: 6px;
         margin-right: 6px;
-        width: 14px;
+        width: 12px;
         position: relative;
         top: 2px;
         fill: #df3e3e;
@@ -34,10 +34,6 @@ export default class FooterComponent extends LitElement {
         color: #222;
         text-decoration: none;
       }
-
-      a:hover {
-        text-decoration: underline;
-      }
     `;
   }
 
@@ -45,11 +41,7 @@ export default class FooterComponent extends LitElement {
     return html`
       <footer>
         <span>${translate('footer.credentials')}</span>
-        <a
-          href="/admin"
-          title="Zone privilégiée"
-          @click=${navigate(authService.authenticated ? '/admin' : '/login')}
-        >
+        <a href="/admin" @click=${navigate(authService.authenticated ? '/admin' : '/login')}>
           <i class="heart">${heart}</i>
         </a>
         ${unsafeHTML(getTranslation('footer.credentials2'))}

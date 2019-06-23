@@ -14,6 +14,10 @@ export const cardStyle = css`
     transition: 150ms ease;
   }
 
+  .card[no-hover]:hover {
+    box-shadow: none;
+  }
+
   .card:hover {
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
   }

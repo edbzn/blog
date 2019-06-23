@@ -13,9 +13,11 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { Language } from '../../core/services';
 import { AppState } from '../../core/store/state';
 import { store } from '../../core/store/store';
 import { buttonStyle } from '../../shared/button';
+import { cardStyle } from '../../shared/card';
 import { formStyle } from '../../shared/form';
 import { slugify } from '../../shared/slugify';
 import { navigate } from '../../utils/navigate';
@@ -35,7 +37,6 @@ import {
   removePoster,
 } from './store/editor.actions';
 import { Article } from './types';
-import { cardStyle } from '../../shared/card';
 
 export default class DraftComponent extends connect(store)(LitElement) {
   markdownChangeSubject = new Subject<string>();
@@ -118,7 +119,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
     this.markdownChangeSubject.next(markdown);
   }
 
-  handleFile(e: Event) {
+  handleFile(e: Event): void {
     e.preventDefault();
 
     const target = e.target as HTMLInputElement;
@@ -138,7 +139,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
     }
   }
 
-  togglePublish() {
+  togglePublish(): void {
     const { draft } = this.state;
 
     if (draft.published) {
@@ -171,7 +172,7 @@ export default class DraftComponent extends connect(store)(LitElement) {
   }
 
   handleLangChange(e: Event): void {
-    store.dispatch(editLang((e.target as HTMLInputElement).value as 'fr' | 'en'));
+    store.dispatch(editLang((e.target as HTMLInputElement).value as Language));
     this.updateChangeSubject.next();
   }
 
