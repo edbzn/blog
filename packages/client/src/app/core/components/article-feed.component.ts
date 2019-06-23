@@ -22,6 +22,10 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   state$ = this.stateSubject.asObservable();
   state: ClientState;
 
+  placeholders = Array(8)
+    .fill(true)
+    .map(Boolean);
+
   imagesLoaded: { [id: string]: boolean } = {};
 
   @property({ type: Array })
@@ -126,16 +130,20 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
 
         .poster {
           height: 200px;
+          background-color: #f5f5f5;
+        }
+
+        .poster > figure {
+          height: 200px;
           margin: 0;
           opacity: 0;
-          background-color: #eee;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
           transition: opacity 0.2s ease-in-out;
         }
 
-        .poster.loaded {
+        .poster figure.loaded {
           opacity: 1;
         }
 
@@ -173,6 +181,51 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
 
         .feed-header .tag {
           text-transform: capitalize;
+        }
+
+        .placeholder {
+          margin-bottom: 1.5rem;
+        }
+
+        .placeholder div:nth-child(1) {
+          height: 25px;
+          width: 25%;
+          display: inline-block;
+          margin: 12px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(2) {
+          height: 25px;
+          width: 45%;
+          float: right;
+          margin: 12px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(3) {
+          height: 200px;
+          margin: 1rem 0;
+          margin-top: 0;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(4) {
+          width: 90%;
+          height: 30px;
+          margin: 12px;
+          border-radius: 4px;
+          background: #f5f5f5;
+        }
+
+        .placeholder div:nth-child(5) {
+          height: 60px;
+          margin: 12px;
+          margin-bottom: 24px;
+          border-radius: 4px;
+          background: #f5f5f5;
         }
 
         @media screen and (max-width: 800px) {
@@ -214,10 +267,12 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
               </header>
               ${article.posterUrl
                 ? html`
-                    <figure
-                      class="poster ${this.imagesLoaded[article._id] ? 'loaded' : ''}"
-                      style="background-image: url('${article.posterUrl}')"
-                    ></figure>
+                    <div class="poster">
+                      <figure
+                        class="${this.imagesLoaded[article._id] ? 'loaded' : ''}"
+                        style="background-image: url('${article.posterUrl}')"
+                      ></figure>
+                    </div>
                   `
                 : nothing}
               <div class="card-content">
@@ -257,7 +312,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   }
 
   render() {
-    const { moreResult, articles } = this.state;
+    const { moreResult, loading, page } = this.state;
 
     return html`
       <section class="section">
@@ -269,7 +324,19 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
               `
             : nothing}
         </header>
-        ${articles.length > 0 ? this.articleList() : nothing}
+        ${loading && page === 1
+          ? this.placeholders.map(
+              () => html`
+                <div class="card placeholder" no-hover>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              `
+            )
+          : this.articleList()}
         <button
           title="${translate('article_feed.more')}"
           class="button load-more ${this.state.loading ? 'is-loading' : ''}"
