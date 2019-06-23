@@ -1,20 +1,22 @@
 import { findById } from '../../utils/findById';
-import { LOAD_ARTICLES_SUCCESS } from './client.actions';
+import { LOAD_ARTICLES, LOAD_ARTICLES_SUCCESS, CLEAR_ARTICLES } from './client.actions';
 import { ClientState, initialState } from './client.state';
 import { FAILURE } from './common.actions';
 
 export function client(state = initialState(), action: any): ClientState {
   switch (action.type) {
-    case LOAD_ARTICLES_SUCCESS:
-      const articles = [
-        ...state.articles.filter(article => !action.payload.collection.some(findById(article))),
-        ...action.payload.collection,
-      ];
-
+    case LOAD_ARTICLES:
       return {
         ...state,
-        articles,
+        loading: true,
+      };
+
+    case LOAD_ARTICLES_SUCCESS:
+      const articles = [...state.articles, ...action.payload.collection];
+      return {
+        ...state,
         loading: false,
+        articles: [...state.articles, ...action.payload.collection],
         moreResult: action.payload.total > articles.length,
       };
 
@@ -23,6 +25,12 @@ export function client(state = initialState(), action: any): ClientState {
         ...state,
         loading: false,
         error: action.payload.message ? action.payload.message : action.payload,
+      };
+
+    case CLEAR_ARTICLES:
+      return {
+        ...state,
+        articles: [],
       };
 
     default:

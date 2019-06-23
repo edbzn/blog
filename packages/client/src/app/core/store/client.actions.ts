@@ -3,18 +3,17 @@ import { ResourceCollection } from '../../utils/collection';
 
 export const LOAD_ARTICLES = '[CLIENT] LOAD_ARTICLES';
 export const LOAD_ARTICLES_SUCCESS = '[CLIENT] LOAD_ARTICLES_SUCCESS';
-export const LOAD_ARTICLES_BY_TAG = '[CLIENT] LOAD_ARTICLES_BY_TAG';
-export const LOAD_ARTICLES_BY_TAG_SUCCESS = '[CLIENT] LOAD_ARTICLES_BY_TAG_SUCCESS';
+export const CLEAR_ARTICLES = '[CLIENT] CLEAR_ARTICLES';
 
 export interface ArticleQuery {
   page: number;
   limit: number;
-  tag?: string;
+  tags?: string[];
 }
 
-export const loadArticles = ({ page, limit }: ArticleQuery) => ({
+export const loadArticles = ({ page, limit, tags }: ArticleQuery) => ({
   type: LOAD_ARTICLES,
-  payload: { limit, page },
+  payload: { limit, page, tags },
 });
 
 export const loadArticlesFulfilled = (response: ResourceCollection<Article>) => ({
@@ -22,12 +21,4 @@ export const loadArticlesFulfilled = (response: ResourceCollection<Article>) => 
   payload: response,
 });
 
-export const loadArticlesByTag = ({ page, limit, tag }: ArticleQuery) => ({
-  type: LOAD_ARTICLES,
-  payload: { limit, page, tag },
-});
-
-export const loadArticlesByTagFulfilled = (response: ResourceCollection<Article>) => ({
-  type: LOAD_ARTICLES_SUCCESS,
-  payload: response,
-});
+export const clearArticles = () => ({ type: CLEAR_ARTICLES });

@@ -5,7 +5,6 @@ import { repeat } from 'lit-html/directives/repeat';
 import { connect } from 'pwa-helpers';
 import { Subject } from 'rxjs';
 
-import { Article } from '../../components/admin/types';
 import { buttonStyle } from '../../shared/button';
 import { cardStyle } from '../../shared/card';
 import { tags } from '../../shared/tags';
@@ -13,7 +12,7 @@ import check from '../../utils/icons/check';
 import { navigate } from '../../utils/navigate';
 import { translate } from '../directives/translate.directive';
 import { languageService } from '../services/language-service';
-import { ArticleQuery, loadArticles } from '../store/client.actions';
+import { ArticleQuery, clearArticles, loadArticles } from '../store/client.actions';
 import { ClientState } from '../store/client.state';
 import { AppState } from '../store/state';
 import { store } from '../store/store';
@@ -42,34 +41,14 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
     this.requestUpdate('state');
   }
 
-  updated(props: Map<string | number | symbol, unknown>): void {
-    const oldTags = props.get('tags');
-    if (oldTags instanceof Array && oldTags !== this.tags) {
-      this.loadArticles();
-    }
+  updated(changedProperties: Map<string | number | symbol, unknown>) {
+    changedProperties.forEach((oldValue, propName) => {
+      if (propName === 'tags') {
+        store.dispatch(clearArticles());
+        this.loadArticles();
+      }
+    });
   }
-
-  // deleteArticle(id: string): Promise<void> {
-  //   return apiClient.delete(`/api/v1/article/${id}`);
-  // }
-
-  // async removeArticle(article: Article): Promise<void> {
-  //   const articleTitle = article.title;
-  //   if (
-  //     (prompt('Enter ' + articleTitle + ' to delete the article') || '').toLowerCase() ===
-  //     articleTitle.toLowerCase()
-  //   ) {
-  //     try {
-  //       await this.deleteArticle(article._id);
-  //       this.articleCollection = (this.articleCollection || []).filter(
-  //         _article => article._id !== _article._id
-  //       );
-  //       this.requestUpdate();
-  //     } catch (error) {
-  //       errorHandlerService.throw(error);
-  //     }
-  //   }
-  // }
 
   stripTagsAndTruncate(content: string): string {
     return content.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180);
@@ -86,26 +65,22 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
 
   private loadArticles({ next } = { next: false }): void {
     const { page, limit } = this.state;
-    let query: ArticleQuery = { page, limit };
-
+    const query: ArticleQuery = { page, limit };
     if (next) {
       ++query.page;
     }
-
     if (this.tags.length > 0) {
-      query.tag = this.tags[0];
+      query.tags = this.tags;
     }
 
     store.dispatch(loadArticles(query));
   }
 
-  loadPosters(): void {
+  private loadPosters(): void {
     this.state.articles.forEach(article => {
       if (!article.posterUrl) {
         return;
       }
-
-      console.log(article);
 
       const img = new Image();
       img.src = article!.posterUrl;
@@ -210,8 +185,10 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   }
 
   articleList(): TemplateResult {
+    const { articles } = this.state;
+
     return html`
-      ${repeat(this.state.articles, article => {
+      ${repeat(articles, article => {
         const articleUri = `/article/${article.slug}`;
 
         return html`
@@ -280,6 +257,8 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
   }
 
   render() {
+    const { moreResult, articles } = this.state;
+
     return html`
       <section class="section">
         <header class="feed-header">
@@ -290,11 +269,11 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
               `
             : nothing}
         </header>
-        ${this.state.articles.length > 0 ? this.articleList() : nothing}
+        ${articles.length > 0 ? this.articleList() : nothing}
         <button
           title="${translate('article_feed.more')}"
           class="button load-more ${this.state.loading ? 'is-loading' : ''}"
-          ?disabled="${this.state.moreResult ? false : true}"
+          ?disabled="${moreResult ? false : true}"
           @click="${this.loadMore}"
         >
           ${this.state.moreResult
