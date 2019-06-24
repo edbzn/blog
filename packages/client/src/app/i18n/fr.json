@@ -1,6 +1,6 @@
 {
   "profile": {
-    "description": "TypeScript guy with functional reactive flavor since every thing has its time."
+    "description": "J'utilise tous les jours Angular, Node.js et Symfony. Contributeur open source à mes heures perdues."
   },
   "article_feed": {
     "read": "Lire",
@@ -18,7 +18,8 @@
     "stop_comment_btn": "Annuler",
     "comment_btn": "Commenter",
     "name_label": "Nom",
-    "comment_label": "Commentaire"
+    "comment_label": "Commentaire",
+    "comments": "Commentaires"
   },
   "footer": {
     "credentials": "Fait avec",

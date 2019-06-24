@@ -6,9 +6,10 @@ import { nothing } from 'lit-html';
 import { translate } from '../../core/directives/translate.directive';
 import { apiClient } from '../../core/services/api-client';
 import { buttonStyle } from '../../shared/button';
+import { cardStyle } from '../../shared/card';
+import { formStyle } from '../../shared/form';
 import { ResourceCollection } from '../../utils/collection';
 import { Comment } from './types';
-import { formStyle } from '../../shared/form';
 
 export default class ArticleCommentComponent extends LitElement {
   @property({ type: String })
@@ -80,6 +81,7 @@ export default class ArticleCommentComponent extends LitElement {
 
   static get styles() {
     return [
+      cardStyle,
       formStyle,
       buttonStyle,
       css`
@@ -103,6 +105,15 @@ export default class ArticleCommentComponent extends LitElement {
           font-weight: 100;
           font-size: 14px;
           text-transform: capitalize;
+        }
+
+        .card {
+          margin-bottom: 10px;
+        }
+
+        .subtitle {
+          text-transform: uppercase;
+          font-family: 'IBM Plex Sans Condensed', sans-serif;
         }
       `,
     ];
@@ -128,7 +139,7 @@ export default class ArticleCommentComponent extends LitElement {
               <form
                 name="postComment"
                 @submit=${this.postComment}
-                @input=${() => this.update(new Map())}
+                @input=${() => this.requestUpdate()}
               >
                 ${this.error
                   ? html`
@@ -158,7 +169,7 @@ export default class ArticleCommentComponent extends LitElement {
                         ? html`
                             is-loading
                           `
-                        : nothing}"
+                        : ''}"
                       name="comment"
                       id="comment"
                       required
@@ -172,26 +183,29 @@ export default class ArticleCommentComponent extends LitElement {
             `
           : nothing}
         <section class="comments">
-          ${this.commentCollection !== null
-            ? this.commentCollection.collection.map(
-                comment => html`
-                  <article class="message">
-                    <div class="message-body is-dark">
-                      <header>
-                        <strong>${comment.author}</strong>
-                        <em>
-                          -
-                          ${format(new Date(comment.createdAt), 'ddd DD MMM YYYY', {
-                            locale: frLocale,
-                          })}
-                        </em>
-                      </header>
-                      ${comment.comment}
-                    </div>
-                  </article>
-                `
-              )
-            : null}
+          ${this.commentCollection !== null && this.commentCollection.total > 0
+            ? html`
+                <h4 class="subtitle">${translate('article_detail.comments')}</h4>
+                ${this.commentCollection.collection.map(
+                  comment => html`
+                    <article class="card" no-hover>
+                      <div class="card-content">
+                        <header>
+                          <strong>${comment.author}</strong>
+                          <em>
+                            -
+                            ${format(new Date(comment.createdAt), 'ddd DD MMM YYYY', {
+                              locale: frLocale,
+                            })}
+                          </em>
+                        </header>
+                        ${comment.comment}
+                      </div>
+                    </article>
+                  `
+                )}
+              `
+            : nothing}
         </section>
       </div>
     `;

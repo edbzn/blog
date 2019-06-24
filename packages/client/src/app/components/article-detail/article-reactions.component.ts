@@ -1,7 +1,7 @@
 import { css, html, LitElement, property } from 'lit-element';
-import { nothing } from 'lit-html';
 
 import { apiClient, errorHandlerService } from '../../core/services';
+import { buttonStyle } from '../../shared/button';
 import { Article } from '../admin/types';
 
 type ReactionType = 'heart' | 'unicorn' | 'mark';
@@ -53,49 +53,58 @@ export default class ArticleReactionsComponent extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      buttonStyle,
+      css`
+        :host {
+          display: block;
+        }
 
-      .reactions {
-        display: flex;
-        justify-content: space-around;
-        padding: 18px 0;
-        margin-bottom: 3rem;
-      }
+        .reactions {
+          display: flex;
+          justify-content: space-around;
+          padding: 18px 0;
+          margin-bottom: 3rem;
+        }
 
-      .reaction {
-        display: flex;
-        align-items: center;
-      }
+        .reaction {
+          display: flex;
+          align-items: center;
+        }
 
-      .reaction img {
-        width: 28px;
-        display: block;
-        border-radius: 50%;
-      }
+        .reaction img {
+          width: 28px;
+          display: block;
+        }
 
-      .count {
-        margin-left: 8px;
-      }
+        .count {
+          margin-left: 4px;
+        }
 
-      .button {
-        font-weight: 800;
-        padding: 12px;
-        width: 84px;
-        height: 54px;
-        cursor: pointer;
-        border: 1px solid #eee;
-        border-radius: 20px;
-        color: #222;
-        text-align: center;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    `;
+        .button {
+          font-weight: 800;
+          padding: 12px;
+          width: 84px;
+          height: 84px;
+          cursor: pointer;
+          border: 1px solid #eee;
+          border-radius: 50%;
+          color: #222;
+          text-align: center;
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .button.is-primary {
+          background: aliceblue;
+          border: 2px solid rgb(64, 168, 255);
+          color: rgb(64, 168, 255);
+          font-weight: 800;
+        }
+      `,
+    ];
   }
 
   render() {
@@ -106,9 +115,7 @@ export default class ArticleReactionsComponent extends LitElement {
             <div class="reaction">
               <button
                 .disabled="${!this.allowed[<ReactionType>type]}"
-                class="button ${!this.allowed[<ReactionType>type]
-                  ? 'is-primary'
-                  : nothing} is-rounded"
+                class="button ${!this.allowed[<ReactionType>type] ? 'is-primary' : ''} is-rounded"
                 type="button is-large"
                 @click="${() => this.addReaction(type as ReactionType)}"
               >

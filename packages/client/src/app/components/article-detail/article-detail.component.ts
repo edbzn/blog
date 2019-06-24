@@ -270,7 +270,7 @@ export default class ArticleDetail extends LitElement {
             </span>
           </div>
           <ez-article-reactions .article=${article}></ez-article-reactions>
-          <div class="previews">
+          <!-- <div class="previews">
             <a class="card-link">
               <div class="card">
                 <div class="card-content">
@@ -285,7 +285,7 @@ export default class ArticleDetail extends LitElement {
                 </div>
               </div>
             </a>
-          </div>
+          </div> -->
           <a href="/" class="button" @click="${navigate('/')}">
             ${translate('article_detail.home_btn')}
           </a>
