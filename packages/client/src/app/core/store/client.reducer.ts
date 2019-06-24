@@ -31,6 +31,7 @@ export function client(state = initialState(), action: any): ClientState {
     case CLEAR_ARTICLES:
       return {
         ...state,
+        page: 1,
         articles: [],
       };
 

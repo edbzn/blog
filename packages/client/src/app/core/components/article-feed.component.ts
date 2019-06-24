@@ -337,12 +337,14 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
           : this.articleList()}
         <button
           title="${translate('article_feed.more')}"
-          class="button load-more ${this.state.loading ? 'is-loading' : ''}"
+          class="button load-more ${loading ? 'is-loading' : ''}"
           ?disabled="${moreResult ? false : true}"
           @click="${this.loadMore}"
         >
-          ${this.state.moreResult
-            ? translate('article_feed.more')
+          ${moreResult
+            ? loading
+              ? '...'
+              : translate('article_feed.more')
             : html`
                 <span class="load-complete">${check}</span>
               `}

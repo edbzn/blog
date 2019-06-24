@@ -7,6 +7,7 @@ import { apiClient } from '../../core/services/api-client';
 import { errorHandlerService } from '../../core/services/error-handler-service';
 import { languageService } from '../../core/services/language-service';
 import { buttonStyle } from '../../shared/button';
+import { cardStyle } from '../../shared/card';
 import { tags } from '../../shared/tags';
 import { debounce } from '../../utils/debounce';
 import { navigate } from '../../utils/navigate';
@@ -113,6 +114,7 @@ export default class ArticleDetail extends LitElement {
 
   static get styles() {
     return [
+      cardStyle,
       buttonStyle,
       css`
         :host {
@@ -207,6 +209,16 @@ export default class ArticleDetail extends LitElement {
           margin-bottom: 1.1em !important;
         }
 
+        .previews .card-link {
+          width: 50%;
+          display: inline-block;
+          margin-bottom: 0;
+        }
+
+        .placeholder {
+          min-height: 100vh;
+        }
+
         @media screen and (max-width: 800px) {
           .content .title {
             font-size: 2.75em;
@@ -258,6 +270,22 @@ export default class ArticleDetail extends LitElement {
             </span>
           </div>
           <ez-article-reactions .article=${article}></ez-article-reactions>
+          <div class="previews">
+            <a class="card-link">
+              <div class="card">
+                <div class="card-content">
+                  Article précédent
+                </div>
+              </div>
+            </a>
+            <a class="card-link">
+              <div class="card">
+                <div class="card-content">
+                  Article suivant
+                </div>
+              </div>
+            </a>
+          </div>
           <a href="/" class="button" @click="${navigate('/')}">
             ${translate('article_detail.home_btn')}
           </a>
@@ -286,7 +314,11 @@ export default class ArticleDetail extends LitElement {
       </div>
       <ez-page .navbar="${false}">
         <section class="container">
-          ${article ? this.showArticleDetail() : nothing}
+          ${article
+            ? this.showArticleDetail()
+            : html`
+                <div class="placeholder"></div>
+              `}
         </section>
       </ez-page>
     `;

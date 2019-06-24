@@ -1,4 +1,5 @@
 import { css, html, LitElement, property } from 'lit-element';
+import { nothing } from 'lit-html';
 
 export default class PageComponent extends LitElement {
   @property({ type: Boolean })
@@ -7,7 +8,7 @@ export default class PageComponent extends LitElement {
   static get styles() {
     return css`
       .page-wrapper {
-        max-width: 780px !important;
+        max-width: 780px;
         margin: 0 auto;
       }
     `;
@@ -19,7 +20,7 @@ export default class PageComponent extends LitElement {
         ? html`
             <ez-navbar></ez-navbar>
           `
-        : html``}
+        : nothing}
       <main class="page-wrapper"><slot></slot></main>
       <ez-footer></ez-footer>
     `;
