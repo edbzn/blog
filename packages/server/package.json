@@ -16,7 +16,7 @@
     "@marblejs/middleware-body": "2.2.2",
     "@marblejs/middleware-cors": "2.2.2",
     "@marblejs/middleware-io": "2.2.2",
-    "@marblejs/middleware-jwt": "2.2.2",
+    "@marblejs/middleware-jwt": "2.3.1",
     "@marblejs/middleware-logger": "2.2.2",
     "bcrypt": "3.0.6",
     "chalk": "2.4.2",
