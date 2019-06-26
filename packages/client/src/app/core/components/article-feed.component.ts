@@ -246,7 +246,7 @@ export default class ArticleFeedComponent extends connect(store)(LitElement) {
           <a
             class="card-link"
             href="${articleUri}"
-            title="${translate('article_feed.read')} ${article.title}"
+            title="${translate('article_feed.read')} „ ${article.title} “"
             @click="${navigate(articleUri)}"
           >
             <article class="card">

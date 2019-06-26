@@ -1,15 +1,17 @@
 import { css, html, LitElement } from 'lit-element';
+import { nothing } from 'lit-html';
 
 import { apiClient } from '../../core/services/api-client';
 import { authService } from '../../core/services/authentication-service';
-import { errorHandlerService } from '../../core/services/error-handler-service';
 import { buttonStyle } from '../../shared/button';
+import { cardStyle } from '../../shared/card';
 import { formStyle } from '../../shared/form';
 import { navigate } from '../../utils/navigate';
 import { IUser } from './types';
 
 export default class Login extends LitElement {
   showSignup = false;
+  error: string | null = null;
 
   logUser(credentials: any): Promise<{ token: string }> {
     return apiClient.post<{ token: string }>('/api/v1/auth/login', credentials);
@@ -30,6 +32,7 @@ export default class Login extends LitElement {
     return [
       formStyle,
       buttonStyle,
+      cardStyle,
       css`
         .second {
           margin-top: 50px;
@@ -38,6 +41,10 @@ export default class Login extends LitElement {
         .section {
           max-width: 350px;
           margin: 0 auto;
+        }
+
+        .error {
+          color: #f05555;
         }
       `,
     ];
@@ -50,6 +57,13 @@ export default class Login extends LitElement {
           ${this.showSignup
             ? html`
                 <h1 class="title">Signup</h1>
+                ${this.error
+                  ? html`
+                      <div class="card error" no-hover>
+                        <div class="card-content">${this.error}</div>
+                      </div>
+                    `
+                  : nothing}
                 <form
                   class="box"
                   name="signup"
@@ -75,7 +89,8 @@ export default class Login extends LitElement {
                       authService.setUser(user);
                       navigate('/admin')();
                     } catch (e) {
-                      errorHandlerService.throw(e);
+                      this.error = e.message;
+                      this.requestUpdate();
                     }
                   }}"
                 >
@@ -112,6 +127,13 @@ export default class Login extends LitElement {
               `
             : html`
                 <h1 class="title">Login</h1>
+                ${this.error
+                  ? html`
+                      <div class="card error" no-hover>
+                        <div class="card-content">${this.error}</div>
+                      </div>
+                    `
+                  : nothing}
                 <form
                   class="box"
                   name="login"
@@ -133,7 +155,8 @@ export default class Login extends LitElement {
                       authService.setUser(user);
                       navigate('/admin')();
                     } catch (e) {
-                      errorHandlerService.throw(e);
+                      this.error = e.message;
+                      this.requestUpdate();
                     }
                   }}"
                 >
