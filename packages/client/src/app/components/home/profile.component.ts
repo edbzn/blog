@@ -1,11 +1,14 @@
 import { css, html, LitElement } from 'lit-element';
 import {
-  Scene,
-  PerspectiveCamera,
-  WebGLRenderer,
   BoxGeometry,
-  MeshBasicMaterial,
+  Color,
   Mesh,
+  MeshBasicMaterial,
+  MeshNormalMaterial,
+  PerspectiveCamera,
+  Scene,
+  SphereGeometry,
+  WebGLRenderer,
 } from 'three';
 
 import { translate } from '../../core/directives/translate.directive';
@@ -21,7 +24,6 @@ export default class ProfileComponent extends LitElement {
       section {
         padding: 5rem 0;
         margin-bottom: 42px;
-        color: #fff;
         z-index: 1;
         font-family: 'IBM Plex Sans', sans-serif;
       }
@@ -68,6 +70,8 @@ export default class ProfileComponent extends LitElement {
 
   firstUpdated() {
     const scene = new Scene();
+    scene.background = new Color(0xeeeeee);
+
     const { height } = this.shadowRoot!.host.getBoundingClientRect();
     const camera = new PerspectiveCamera(75, window.innerWidth / height, 0.1, 1000);
     const renderer = new WebGLRenderer();
@@ -76,20 +80,29 @@ export default class ProfileComponent extends LitElement {
     domElement!.classList.add('scene');
 
     renderer.setSize(window.innerWidth, height);
+
     this.shadowRoot!.prepend(renderer.domElement);
 
-    const geometry = new BoxGeometry(1, 1, 1);
-    const material = new MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new Mesh(geometry, material);
+    const boxGeo = new BoxGeometry(4, 4, 4);
+    const sphereGeo = new SphereGeometry(4, 20, 20);
 
-    scene.add(cube);
+    const material1 = new MeshNormalMaterial({ transparent: true, opacity: 0.6 });
+    const material2 = new MeshBasicMaterial({ color: '#d5d5d5', opacity: 0.5, transparent: true });
+    const cube = new Mesh(boxGeo, material2);
+    const sphere = new Mesh(sphereGeo, material1);
+    const geometries = [sphere];
+
+    scene.add(...geometries);
 
     camera.position.z = 5;
+    // camera.position.x = 10;
 
     const animate = () => {
       renderer.render(scene, camera);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      cube.rotation.x += 0.005;
+      cube.rotation.y += 0.005;
+      sphere.rotation.x += 0.008;
+      sphere.rotation.y += 0.008;
       requestAnimationFrame(animate);
     };
 
