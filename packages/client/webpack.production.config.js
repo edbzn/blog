@@ -60,7 +60,7 @@ module.exports = merge(common, {
       maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4mb
       runtimeCaching: [
         {
-          urlPattern: new RegExp('^https://api.codamit.com/'),
+          urlPattern: new RegExp('^https://www.api.codamit.dev/'),
           handler: 'NetworkFirst',
           options: {
             cacheName: 'api-cache',
