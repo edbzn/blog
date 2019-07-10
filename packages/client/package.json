@@ -45,7 +45,7 @@
     "@types/redux-logger": "3.0.7",
     "@types/showdown": "1.9.3",
     "@types/simplemde": "1.11.7",
-    "@types/uuid": "3.4.4",
+    "@types/uuid": "3.4.5",
     "@typescript-eslint/eslint-plugin": "1.11.0",
     "babel-loader": "8.0.6",
     "babel-plugin-template-html-minifier": "3.0.1",
