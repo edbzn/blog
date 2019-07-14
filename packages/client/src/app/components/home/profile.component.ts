@@ -1,15 +1,5 @@
 import { css, html, LitElement } from 'lit-element';
-import {
-  BoxGeometry,
-  Color,
-  Mesh,
-  MeshBasicMaterial,
-  MeshNormalMaterial,
-  PerspectiveCamera,
-  Scene,
-  SphereGeometry,
-  WebGLRenderer,
-} from 'three';
+import * as THREE from 'three';
 
 import { translate } from '../../core/directives/translate.directive';
 
@@ -69,43 +59,85 @@ export default class ProfileComponent extends LitElement {
   }
 
   firstUpdated() {
-    const scene = new Scene();
-    scene.background = new Color(0xeeeeee);
-
+    let camera: THREE.PerspectiveCamera,
+      scene: THREE.Scene,
+      renderer: THREE.WebGLRenderer,
+      group: THREE.Object3D | THREE.Group;
     const { height } = this.shadowRoot!.host.getBoundingClientRect();
-    const camera = new PerspectiveCamera(75, window.innerWidth / height, 0.1, 1000);
-    const renderer = new WebGLRenderer();
-    const { domElement } = renderer;
+    let mouseX = 0,
+      mouseY = 0;
+    let windowHalfX = window.innerWidth / 2;
+    let windowHalfY = 0;
 
-    domElement!.classList.add('scene');
+    const init = () => {
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / height, 1, 10000);
+      camera.position.z = 500;
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xeeeeee);
+      scene.fog = new THREE.Fog(0xeeeeee, 1, 10000);
+      const geometry = new THREE.BoxBufferGeometry(100, 100, 100);
+      const material = new THREE.MeshBasicMaterial();
+      group = new THREE.Group();
+      for (let i = 0; i < 500; i++) {
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = Math.random() * 2500 - 1000;
+        mesh.position.y = Math.random() * 2500 - 1000;
+        mesh.position.z = Math.random() * 2500 - 1000;
+        mesh.rotation.x = Math.random() * 2 * Math.PI;
+        mesh.rotation.y = Math.random() * 2 * Math.PI;
+        mesh.matrixAutoUpdate = false;
+        mesh.updateMatrix();
+        group.add(mesh);
+      }
+      scene.add(group);
 
-    renderer.setSize(window.innerWidth, height);
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, height);
+      windowHalfY = height / 2;
+      renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.shadowRoot!.prepend(renderer.domElement);
+      const { domElement } = renderer;
+      domElement!.classList.add('scene');
+      this.shadowRoot!.prepend(renderer.domElement);
 
-    const boxGeo = new BoxGeometry(4, 4, 4);
-    const sphereGeo = new SphereGeometry(4, 20, 20);
+      document.addEventListener('mousemove', onDocumentMouseMove, false);
 
-    const material1 = new MeshNormalMaterial({ transparent: true, opacity: 0.6 });
-    const material2 = new MeshBasicMaterial({ color: '#d5d5d5', opacity: 0.5, transparent: true });
-    const cube = new Mesh(boxGeo, material2);
-    const sphere = new Mesh(sphereGeo, material1);
-    const geometries = [sphere];
-
-    scene.add(...geometries);
-
-    camera.position.z = 5;
-    // camera.position.x = 10;
-
-    const animate = () => {
-      renderer.render(scene, camera);
-      cube.rotation.x += 0.005;
-      cube.rotation.y += 0.005;
-      sphere.rotation.x += 0.008;
-      sphere.rotation.y += 0.008;
-      requestAnimationFrame(animate);
+      window.addEventListener('resize', onWindowResize, false);
     };
 
+    function onWindowResize() {
+      windowHalfX = window.innerWidth / 2;
+      windowHalfY = window.innerHeight / 2;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function onDocumentMouseMove(event: { clientX: number; clientY: number }) {
+      mouseX = (event.clientX - windowHalfX) * 2;
+      mouseY = (event.clientY - windowHalfY) * 2;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      render();
+    }
+
+    function render() {
+      const time = Date.now() * 0.001;
+      const rx = Math.sin(time * 0.7) * 0.5,
+        ry = Math.sin(time * 0.3) * 0.5,
+        rz = Math.sin(time * 0.2) * 0.5;
+      camera.position.x += (mouseX - camera.position.x) * 0.0025;
+      camera.position.y += (-mouseY - camera.position.y) * 0.0025;
+      camera.lookAt(scene.position);
+      group.rotation.x = rx;
+      group.rotation.y = ry;
+      group.rotation.z = rz;
+      renderer.render(scene, camera);
+    }
+
+    init();
     animate();
   }
 
