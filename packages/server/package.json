@@ -20,7 +20,7 @@
     "@marblejs/middleware-logger": "2.3.1",
     "bcrypt": "3.0.6",
     "chalk": "2.4.2",
-    "dotenv": "8.0.0",
+    "dotenv": "8.1.0",
     "mongoose": "5.6.9",
     "rxjs": "6.5.2",
     "typegoose": "5.9.0",
