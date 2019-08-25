@@ -24,7 +24,7 @@
     "mongoose": "5.6.9",
     "rxjs": "6.5.2",
     "typegoose": "5.9.0",
-    "uuid": "3.3.2"
+    "uuid": "3.3.3"
   },
   "devDependencies": {
     "ts-node": "8.3.0",
