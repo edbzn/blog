@@ -76,9 +76,9 @@ export default class ProfileComponent extends LitElement {
       scene.background = new THREE.Color(0xeeeeee);
       scene.fog = new THREE.Fog(0xeeeeee, 1, 10000);
       const geometry = new THREE.BoxBufferGeometry(100, 100, 100);
-      const material = new THREE.MeshBasicMaterial();
+      const material = new THREE.MeshBasicMaterial({ wireframe: true });
       group = new THREE.Group();
-      for (let i = 0; i < 500; i++) {
+      for (let i = 0; i < 25; i++) {
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.x = Math.random() * 2500 - 1000;
         mesh.position.y = Math.random() * 2500 - 1000;
@@ -108,9 +108,9 @@ export default class ProfileComponent extends LitElement {
     function onWindowResize() {
       windowHalfX = window.innerWidth / 2;
       windowHalfY = window.innerHeight / 2;
-      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = window.innerWidth / height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth, height);
     }
 
     function onDocumentMouseMove(event: { clientX: number; clientY: number }) {
