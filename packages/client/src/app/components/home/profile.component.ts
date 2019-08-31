@@ -1,18 +1,27 @@
 import { css, html, LitElement } from 'lit-element';
-import * as THREE from 'three';
-
+import {
+  BoxBufferGeometry,
+  Color,
+  Fog,
+  Group,
+  Mesh,
+  MeshBasicMaterial,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+} from 'three';
 import { translate } from '../../core/directives/translate.directive';
 
 export default class ProfileComponent extends LitElement {
   animationFrameRef: number;
-  camera: THREE.PerspectiveCamera;
-  renderer: THREE.WebGLRenderer;
+  camera: PerspectiveCamera;
+  renderer: WebGLRenderer;
   mouseX: number;
   windowHalfX: number;
   windowHalfY: number;
   mouseY: number;
-  scene: THREE.Scene;
-  group: THREE.Group;
+  scene: Scene;
+  group: Group;
   height: number;
 
   static get styles() {
@@ -92,18 +101,18 @@ export default class ProfileComponent extends LitElement {
     this.windowHalfX = width / 2;
     this.windowHalfY = 0;
 
-    this.camera = new THREE.PerspectiveCamera(60, width / this.height, 1, 10000);
+    this.camera = new PerspectiveCamera(60, width / this.height, 1, 10000);
     this.camera.position.z = 500;
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xeeeeee);
-    this.scene.fog = new THREE.Fog(0xeeeeee, 1, 10000);
-    this.group = new THREE.Group();
+    this.scene = new Scene();
+    this.scene.background = new Color(0xeeeeee);
+    this.scene.fog = new Fog(0xeeeeee, 1, 10000);
+    this.group = new Group();
 
-    const geometry = new THREE.BoxBufferGeometry(200, 200, 200);
-    const material = new THREE.MeshBasicMaterial({ wireframe: true });
+    const geometry = new BoxBufferGeometry(200, 200, 200);
+    const material = new MeshBasicMaterial({ wireframe: true });
 
     for (let i = 0; i < 10; i++) {
-      const mesh = new THREE.Mesh(geometry, material);
+      const mesh = new Mesh(geometry, material);
       mesh.position.x = Math.random() * 2500 - 1000;
       mesh.position.y = Math.random() * 2500 - 1000;
       mesh.position.z = Math.random() * 2500 - 1000;
@@ -115,7 +124,7 @@ export default class ProfileComponent extends LitElement {
     }
 
     this.scene.add(this.group);
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize(width, this.height);
     this.windowHalfY = this.height / 2;
     this.renderer.setPixelRatio(window.devicePixelRatio);
