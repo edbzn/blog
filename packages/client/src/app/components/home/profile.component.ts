@@ -79,7 +79,13 @@ export default class ProfileComponent extends LitElement {
   }
 
   firstUpdated() {
-    this.initScene();
+    const width = window.innerWidth;
+
+    if (width <= 600) {
+      return;
+    }
+
+    this.initScene(width);
     this.animateScene();
   }
 
@@ -89,13 +95,7 @@ export default class ProfileComponent extends LitElement {
     window.removeEventListener('resize', this.onWindowResize);
   }
 
-  initScene() {
-    const width = window.innerWidth;
-
-    if (width <= 600) {
-      return;
-    }
-
+  initScene(width: number) {
     this.height = this.shadowRoot!.host.getBoundingClientRect().height;
     (this.mouseX = 0), (this.mouseY = 0);
     this.windowHalfX = width / 2;
