@@ -4,6 +4,17 @@ import * as THREE from 'three';
 import { translate } from '../../core/directives/translate.directive';
 
 export default class ProfileComponent extends LitElement {
+  animationFrameRef: number;
+  camera: THREE.PerspectiveCamera;
+  renderer: THREE.WebGLRenderer;
+  mouseX: number;
+  windowHalfX: number;
+  windowHalfY: number;
+  mouseY: number;
+  scene: THREE.Scene;
+  group: THREE.Group;
+  height: number;
+
   static get styles() {
     return css`
       :host {
@@ -59,87 +70,97 @@ export default class ProfileComponent extends LitElement {
   }
 
   firstUpdated() {
-    let camera: THREE.PerspectiveCamera,
-      scene: THREE.Scene,
-      renderer: THREE.WebGLRenderer,
-      group: THREE.Object3D | THREE.Group;
-    const { height } = this.shadowRoot!.host.getBoundingClientRect();
-    let mouseX = 0,
-      mouseY = 0;
-    let windowHalfX = window.innerWidth / 2;
-    let windowHalfY = 0;
-
-    const init = () => {
-      camera = new THREE.PerspectiveCamera(60, window.innerWidth / height, 1, 10000);
-      camera.position.z = 500;
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xeeeeee);
-      scene.fog = new THREE.Fog(0xeeeeee, 1, 10000);
-      const geometry = new THREE.BoxBufferGeometry(100, 100, 100);
-      const material = new THREE.MeshBasicMaterial({ wireframe: true });
-      group = new THREE.Group();
-      for (let i = 0; i < 25; i++) {
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.x = Math.random() * 2500 - 1000;
-        mesh.position.y = Math.random() * 2500 - 1000;
-        mesh.position.z = Math.random() * 2500 - 1000;
-        mesh.rotation.x = Math.random() * 2 * Math.PI;
-        mesh.rotation.y = Math.random() * 2 * Math.PI;
-        mesh.matrixAutoUpdate = false;
-        mesh.updateMatrix();
-        group.add(mesh);
-      }
-      scene.add(group);
-
-      renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(window.innerWidth, height);
-      windowHalfY = height / 2;
-      renderer.setPixelRatio(window.devicePixelRatio);
-
-      const { domElement } = renderer;
-      domElement!.classList.add('scene');
-      this.shadowRoot!.prepend(renderer.domElement);
-
-      document.addEventListener('mousemove', onDocumentMouseMove, false);
-
-      window.addEventListener('resize', onWindowResize, false);
-    };
-
-    function onWindowResize() {
-      windowHalfX = window.innerWidth / 2;
-      windowHalfY = window.innerHeight / 2;
-      camera.aspect = window.innerWidth / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, height);
-    }
-
-    function onDocumentMouseMove(event: { clientX: number; clientY: number }) {
-      mouseX = (event.clientX - windowHalfX) * 2;
-      mouseY = (event.clientY - windowHalfY) * 2;
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-      render();
-    }
-
-    function render() {
-      const time = Date.now() * 0.001;
-      const rx = Math.sin(time * 0.7) * 0.5,
-        ry = Math.sin(time * 0.3) * 0.5,
-        rz = Math.sin(time * 0.2) * 0.5;
-      camera.position.x += (mouseX - camera.position.x) * 0.0025;
-      camera.position.y += (-mouseY - camera.position.y) * 0.0025;
-      camera.lookAt(scene.position);
-      group.rotation.x = rx;
-      group.rotation.y = ry;
-      group.rotation.z = rz;
-      renderer.render(scene, camera);
-    }
-
-    init();
-    animate();
+    this.initScene();
+    this.animateScene();
   }
+
+  disconnectedCallback() {
+    cancelAnimationFrame(this.animationFrameRef);
+    document.removeEventListener('mousemove', this.onDocumentMouseMove);
+    window.removeEventListener('resize', this.onWindowResize);
+  }
+
+  initScene() {
+    const width = window.innerWidth;
+
+    if (width <= 600) {
+      return;
+    }
+
+    this.height = this.shadowRoot!.host.getBoundingClientRect().height;
+    (this.mouseX = 0), (this.mouseY = 0);
+    this.windowHalfX = width / 2;
+    this.windowHalfY = 0;
+
+    this.camera = new THREE.PerspectiveCamera(60, width / this.height, 1, 10000);
+    this.camera.position.z = 500;
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0xeeeeee);
+    this.scene.fog = new THREE.Fog(0xeeeeee, 1, 10000);
+    this.group = new THREE.Group();
+
+    const geometry = new THREE.BoxBufferGeometry(200, 200, 200);
+    const material = new THREE.MeshBasicMaterial({ wireframe: true });
+
+    for (let i = 0; i < 10; i++) {
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.x = Math.random() * 2500 - 1000;
+      mesh.position.y = Math.random() * 2500 - 1000;
+      mesh.position.z = Math.random() * 2500 - 1000;
+      mesh.rotation.x = Math.random() * 2 * Math.PI;
+      mesh.rotation.y = Math.random() * 2 * Math.PI;
+      mesh.matrixAutoUpdate = false;
+      mesh.updateMatrix();
+      this.group.add(mesh);
+    }
+
+    this.scene.add(this.group);
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(width, this.height);
+    this.windowHalfY = this.height / 2;
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+
+    const { domElement } = this.renderer;
+    domElement!.classList.add('scene');
+    this.shadowRoot!.prepend(this.renderer.domElement);
+
+    document.addEventListener('mousemove', this.onDocumentMouseMove, false);
+    window.addEventListener('resize', this.onWindowResize, false);
+  }
+
+  private renderScene() {
+    const time = Date.now() * 0.001;
+    const rx = Math.sin(time * 0.7) * 0.5,
+      ry = Math.sin(time * 0.3) * 0.5,
+      rz = Math.sin(time * 0.2) * 0.5;
+
+    this.camera.position.x += (this.mouseX - this.camera.position.x) * 0.0025;
+    this.camera.position.y += (-this.mouseY - this.camera.position.y) * 0.0025;
+    this.camera.lookAt(this.scene.position);
+
+    this.group.rotation.x = rx;
+    this.group.rotation.y = ry;
+    this.group.rotation.z = rz;
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  private animateScene = () => {
+    this.animationFrameRef = requestAnimationFrame(this.animateScene);
+    this.renderScene();
+  };
+
+  private onWindowResize = () => {
+    this.windowHalfX = window.innerWidth / 2;
+    this.windowHalfY = window.innerHeight / 2;
+    this.camera.aspect = window.innerWidth / this.height;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, this.height);
+  };
+
+  private onDocumentMouseMove = (event: { clientX: number; clientY: number }) => {
+    this.mouseX = (event.clientX - this.windowHalfX) * 2;
+    this.mouseY = (event.clientY - this.windowHalfY) * 2;
+  };
 
   render() {
     return html`
