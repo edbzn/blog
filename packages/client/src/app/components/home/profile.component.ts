@@ -95,9 +95,10 @@ export default class ProfileComponent extends LitElement {
     window.removeEventListener('resize', this.onWindowResize);
   }
 
-  initScene(width: number) {
+  private initScene(width: number) {
     this.height = this.shadowRoot!.host.getBoundingClientRect().height;
-    (this.mouseX = 0), (this.mouseY = 0);
+    this.mouseX = 0;
+    this.mouseY = 0;
     this.windowHalfX = width / 2;
     this.windowHalfY = 0;
 
