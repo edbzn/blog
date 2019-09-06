@@ -23,7 +23,7 @@
     "dotenv": "8.1.0",
     "mongoose": "5.6.9",
     "rxjs": "6.5.2",
-    "typegoose": "5.9.0",
+    "typegoose": "5.9.1",
     "uuid": "3.3.3"
   },
   "devDependencies": {
