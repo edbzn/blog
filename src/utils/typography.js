@@ -1,15 +1,17 @@
 import Typography from "typography"
+import Wordpress2016 from "typography-theme-wordpress-2016"
 
-const typography = new Typography({
-  baseFontSize: "18px",
-  headerFontFamily: [
-    "IBM Plex Sans",
-    "sans-serif",
-  ],
-  bodyFontFamily: ["IBM Plex Serif", "serif"],
-  bodyColor: '#222',
-  headerColor: '#222',
-})
+Wordpress2016.overrideThemeStyles = () => {
+  return {
+    "a.gatsby-resp-image-link": {
+      boxShadow: `none`,
+    },
+  }
+}
+
+delete Wordpress2016.googleFonts
+
+const typography = new Typography(Wordpress2016)
 
 // Hot reload typography in development.
 if (process.env.NODE_ENV !== `production`) {

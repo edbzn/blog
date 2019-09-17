@@ -1,10 +1,10 @@
+import { graphql, Link } from "gatsby"
 import React from "react"
-import { Link, graphql } from "gatsby"
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { rhythm, scale } from "../utils/typography"
+import { rhythm } from "../utils/typography"
 
 class BlogPostTemplate extends React.Component {
   render() {
@@ -22,9 +22,7 @@ class BlogPostTemplate extends React.Component {
           <header>
             <h1
               style={{
-                ...scale(1.4),
                 marginTop: rhythm(1),
-                fontFamily: `'IBM Plex Serif', serif`,
                 marginBottom: 0,
               }}
             >
@@ -32,11 +30,9 @@ class BlogPostTemplate extends React.Component {
             </h1>
             <p
               style={{
-                ...scale(-0.4),
                 display: `block`,
                 marginTop: rhythm(0.2),
                 marginBottom: rhythm(2),
-                fontFamily: `'IBM Plex Sans', sans-serif`,
               }}
             >
               {post.frontmatter.date}
@@ -58,7 +54,6 @@ class BlogPostTemplate extends React.Component {
             style={{
               display: `flex`,
               flexWrap: `wrap`,
-              fontFamily: `'IBM Plex Sans', sans-serif`,
               justifyContent: `space-between`,
               listStyle: `none`,
               padding: 0,

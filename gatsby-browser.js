@@ -1,2 +1,3 @@
+import "typeface-merriweather"
+import "typeface-montserrat"
 import "./content/assets/code-theme.css"
-import "./content/assets/style.css"

@@ -75,13 +75,6 @@ module.exports = {
       options: {
         pathToConfigModule: `src/utils/typography`,
       },
-    },
-    {
-      resolve: `gatsby-plugin-google-fonts`,
-      options: {
-        fonts: [`IBM Plex Serif`, `IBM Plex Sans`],
-        display: "swap",
-      },
-    },
+    }
   ],
 }
