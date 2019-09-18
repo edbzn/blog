@@ -1,7 +1,7 @@
 import Typography from "typography"
-import Wordpress2016 from "typography-theme-wordpress-2016"
+import wordpress2016 from "typography-theme-wordpress-2016"
 
-Wordpress2016.overrideThemeStyles = () => {
+wordpress2016.overrideThemeStyles = () => {
   return {
     "a.gatsby-resp-image-link": {
       boxShadow: `none`,
@@ -9,9 +9,12 @@ Wordpress2016.overrideThemeStyles = () => {
   }
 }
 
-delete Wordpress2016.googleFonts
+delete wordpress2016.googleFonts
 
-const typography = new Typography(Wordpress2016)
+const typography = new Typography({
+  ...wordpress2016,
+  baseLineHeight: 1.666
+})
 
 // Hot reload typography in development.
 if (process.env.NODE_ENV !== `production`) {
