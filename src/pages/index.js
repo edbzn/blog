@@ -10,10 +10,16 @@ class BlogIndex extends React.Component {
   render() {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
+    const { social, author } = this.props.data.site.siteMetadata
     const posts = data.allMarkdownRemark.edges
 
     return (
-      <Layout location={this.props.location} title={siteTitle}>
+      <Layout
+        location={this.props.location}
+        title={siteTitle}
+        social={social}
+        author={author}
+      >
         <SEO title="All posts" />
         <Bio />
         <div style={{ marginTop: rhythm(2) }}>
@@ -30,9 +36,7 @@ class BlogIndex extends React.Component {
                       marginBottom: rhythm(1 / 4),
                     }}
                   >
-                    <Link to={node.fields.slug}>
-                      {title}
-                    </Link>
+                    <Link to={node.fields.slug}>{title}</Link>
                   </h3>
                   <span>{node.frontmatter.date}</span>
                 </header>
@@ -60,6 +64,12 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        author
+        social {
+          twitter
+          github
+          linkedin
+        }
       }
     }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {

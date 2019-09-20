@@ -10,10 +10,16 @@ class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark
     const siteTitle = this.props.data.site.siteMetadata.title
+    const { social, author } = this.props.data.site.siteMetadata
     const { previous, next } = this.props.pageContext
 
     return (
-      <Layout location={this.props.location} title={siteTitle}>
+      <Layout
+        location={this.props.location}
+        title={siteTitle}
+        social={social}
+        author={author}
+      >
         <SEO
           title={post.frontmatter.title}
           description={post.frontmatter.description || post.excerpt}
@@ -62,14 +68,14 @@ class BlogPostTemplate extends React.Component {
             <li>
               {previous && (
                 <Link to={previous.fields.slug} rel="prev">
-                  ← {previous.frontmatter.title}
+                  ← {previous.frontmatter.title.slice(0, 20)}
                 </Link>
               )}
             </li>
             <li>
               {next && (
                 <Link to={next.fields.slug} rel="next">
-                  {next.frontmatter.title} →
+                  {next.frontmatter.title.slice(0, 20)} →
                 </Link>
               )}
             </li>
@@ -88,6 +94,11 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         author
+        social {
+          twitter
+          linkedin
+          github
+        }
       }
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {
