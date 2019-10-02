@@ -18,6 +18,7 @@ const Bio = () => {
       site {
         siteMetadata {
           author
+          authorDescription
           social {
             twitter
             github
@@ -28,7 +29,7 @@ const Bio = () => {
     }
   `)
 
-  const { author, social } = data.site.siteMetadata
+  const { author, social, authorDescription } = data.site.siteMetadata
   return (
     <div
       style={{
@@ -53,8 +54,7 @@ const Bio = () => {
         }}
       />
       <div style={{ margin: "0" }}>
-        I'm <strong>{author}</strong>, I live between Lyon and Chamonix. I focus
-        my work on crafting high quality apps and contributing to open source.
+        I'm <strong>{author}</strong>, {authorDescription}
         <div style={{ marginTop: rhythm(0.4) }}>
           <Social social={social} />
         </div>
