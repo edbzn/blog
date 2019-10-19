@@ -10,7 +10,7 @@ const Bio = () => {
     query BioQuery {
       avatar: file(absolutePath: { regex: "/me.jpeg/" }) {
         childImageSharp {
-          fixed(width: 50, height: 50) {
+          fixed(width: 300) {
             ...GatsbyImageSharpFixed
           }
         }
@@ -39,21 +39,25 @@ const Bio = () => {
         borderRadius: "4px",
       }}
     >
-      <Image
-        fixed={data.avatar.childImageSharp.fixed}
-        alt={author}
-        style={{
-          marginTop: rhythm(0.1),
-          marginRight: rhythm(1 / 2),
-          marginBottom: 0,
-          minWidth: 50,
-          borderRadius: `100%`,
-        }}
-        imgStyle={{
-          borderRadius: `50%`,
-        }}
-      />
-      <div style={{ margin: "0" }}>
+      <div style={{ "padding-right": rhythm(0.6) }}>
+        <Image
+          fixed={data.avatar.childImageSharp.fixed}
+          alt={author}
+          style={{
+            marginTop: rhythm(0.1),
+            marginRight: rhythm(1 / 2),
+            marginBottom: 0,
+            width: 120,
+            height: 120,
+            borderRadius: `100%`,
+            margin: 0,
+          }}
+          imgStyle={{
+            borderRadius: `50%`,
+          }}
+        />
+      </div>
+      <div>
         I'm <strong>{author}</strong>, {authorDescription}
         <div style={{ marginTop: rhythm(0.4) }}>
           <Social social={social} />
