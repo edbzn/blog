@@ -1,12 +1,11 @@
-import { Link } from "gatsby"
-import React from "react"
+import { Link } from 'gatsby';
+import React from 'react';
 
-import { rhythm } from "../utils/typography"
-import { Social } from "./social"
+import { rhythm } from '../utils/typography';
 
 class Layout extends React.Component {
   render() {
-    const { location, title, children, author, social } = this.props
+    const { location, title, children } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
     let header
 
@@ -62,7 +61,7 @@ class Layout extends React.Component {
         <header>{header}</header>
         <main>{children}</main>
         <footer>
-          © {new Date().getFullYear()} - {author}
+          © {new Date().getFullYear()} - <strong>{title}</strong>
         </footer>
       </div>
     )

@@ -6,6 +6,11 @@ wordpress2016.overrideThemeStyles = () => {
     "a.gatsby-resp-image-link": {
       boxShadow: `none`,
     },
+    "blockquote": {
+      fontWeight: 100,
+      color: `black`,
+      fontSize: 16
+    },
   }
 }
 
@@ -13,7 +18,8 @@ delete wordpress2016.googleFonts
 
 const typography = new Typography({
   ...wordpress2016,
-  baseLineHeight: 1.666
+  baseLineHeight: 1.666,
+  boldWeight: 900,
 })
 
 // Hot reload typography in development.

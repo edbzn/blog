@@ -28,11 +28,12 @@ class BlogIndex extends React.Component {
             return (
               <article
                 key={node.fields.slug}
-                style={{ marginTop: rhythm(1.6) }}
+                style={{ marginTop: rhythm(1.6), marginBottom: rhythm(1.6) }}
               >
                 <header>
                   <h3
                     style={{
+                      marginTop: 0,
                       marginBottom: rhythm(1 / 4),
                     }}
                   >
@@ -40,14 +41,6 @@ class BlogIndex extends React.Component {
                   </h3>
                   <span>{node.frontmatter.date}</span>
                 </header>
-                <section>
-                  <p
-                    style={{ marginTop: rhythm(1 / 4) }}
-                    dangerouslySetInnerHTML={{
-                      __html: node.frontmatter.description || node.excerpt,
-                    }}
-                  />
-                </section>
               </article>
             )
           })}
