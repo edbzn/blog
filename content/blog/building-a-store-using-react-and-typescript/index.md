@@ -1,18 +1,17 @@
 ---
 title: Building a store using React and TypeScript
 date: "2019-01-13T22:40:32.169Z"
-description: Meiosis is not a library, you can’t import it. It’s a powerful pattern to manage state and it works well with a lot of view’s libraries like React, Vue.js, Lit-html etc…
 ---
 
-We're going to create a reactive store using the [Meiosis](https://meiosis.js.org/) pattern.
+We're going to create a store using the [Meiosis](https://meiosis.js.org/) pattern.
 
-Meiosis is not a library, you can't import it. It's a powerful pattern to manage state and it works well with a lot of view's libraries like React, Vue.js, Lit-html etc...
+Meiosis is not a library, you can't import it. It's a powerful pattern to manage state and it works well with a lot of view's libraries like React, Vue.js, Lit-html.
 
-## Implementing a counter using Meiosis
+## Implementing a counter app
 
-Meiosis is a stream based pattern, for this example I'm using the [Flyd stream library](https://github.com/paldepind/flyd) but it's possible to not rely on any dependency by implementing the stream ourself.
+Meiosis is a stream based pattern, for this example I'm using the [Flyd stream library](https://github.com/paldepind/flyd) but it's possible to not rely on any dependency by implementing the stream by ourself.
 
-To start the first thing we can do is designing our interfaces.
+The first thing we can do is designing our interfaces.
 
 ```typescript
 export interface AppState {
@@ -25,7 +24,9 @@ export interface AppActions {
 }
 ```
 
-The store is a simple object containing our initial state and available actions. Here is the real power of Meiosis, we're dealing with plain objects and functions.
+Pretty simple signatures, right?
+
+The store is a simple object containing our initial state and available actions. Here is the real power of Meiosis, we're dealing with **plain objects and functions**.
 
 ```typescript
 export const store = {
@@ -49,7 +50,7 @@ export const store = {
 };
 ```
 
-Note that actions safely mutate the state. It's worth compared to the standard immutability approach that bring a lot of complexity between state transitions. Meiosis keeps this simple as stupid.
+Note that actions safely mutate the state. It's worth compared to the standard immutability approach that bring a lot of complexity between **state transitions**. Meiosis keeps this simple as stupid.
 
 Now let's see how to build the state stream, we need only two operators to create our stream: `map` and `scan`. The last one, `scan`, is the stream equivalent of `Array.reduce` function.
 
@@ -76,7 +77,7 @@ In summary here is how the above code example works:
 
 1. The `states` stream takes our initial state using the `scan` operator.
 2. The `update` stream emits our actions, here `increment` or `decrement`.
-3. The `states` stream handles `update` emission and patches the old state and return the new state.
+3. The `states` stream handles `update` emission and patches the old state.
 4. The new state is emitted in the `states` stream.
 
 Next to this we need to pass `actions` and `states` as props to our React app.
@@ -88,7 +89,7 @@ render(
 );
 ```
 
-The last state is available using the `stream.map` operator provided by the `states` props. Now, any dispatched action trigger a `setState` which automatically re-renders our view.
+The current state is available using the `stream.map` operator provided by the `states` props. Now, when an action is dispatched a `setState` is triggered which automatically re-renders our view.
 
 ```tsx
 class App extends React.Component<AppProps, AppState> {
@@ -127,9 +128,7 @@ class App extends React.Component<AppProps, AppState> {
 
 ## Benefits
 
-With Meiosis we're importing nothing to the view, **actions** and **states** are passed to our app as **props**. We're not maintaining a bunch of dependencies, we have a full control on what's going on in our application.
-
-**It's transparent**, state managers like Redux are doing a lot of stuff behind the scene. As you saw Meiosis can be fully implemented in a couples of 30 lines of code. It really forces you to think about how to design the state and not how to deal with tools.
+With Meiosis we're importing nothing to the view, **actions** and **states** are passed to our app as **props**. It means that our React app doesn't rely on our store implementation. **It's transparent**, state managers like Redux are doing a lot of stuff behind the scene. As you saw Meiosis can be fully implemented in a couples of 30 lines of code. It really forces you to think about how to design the state and not how to deal with tools.
 
 * We have a root state in our app which is the single source of truth.
 * The code is deterministic, we can run it many times it's gonna re-render exactly the same thing.
@@ -137,12 +136,9 @@ With Meiosis we're importing nothing to the view, **actions** and **states** are
 
 ## Final note
 
-Meiosis offers a [small package](https://github.com/foxdonut/meiosis-tracer) to time travel across states like the Redux extension, it's a good catch for development purpose.
-
-I highly recommend you to visit the [Meiosis website](https://meiosis.js.org), there is good tutorials and examples on it. They go deeper than I did, it's really interesting.
-
-I'm not trying to convince you to drop the state manager you're actually using, but learning Meiosis can helps you to understand a way better what state managers are bringing to you.
-
-It's also a good way to go deeper into functional programming.
+I'm not trying to convince you to drop state manager libraries, but learning Meiosis can helps you to understand exactly what state managers are trying to solve for you. It's also a good way to go deeper into functional programming.
 
 Here is the [complete working example](https://codesandbox.io/s/0193mp6kmp) of our store implementation.
+
+I highly recommend you to visit the [Meiosis website](https://meiosis.js.org), they go deeper than I did, it's really interesting. They also offer a [small package](https://github.com/foxdonut/meiosis-tracer) to time travel across states like the Redux Chrome extension, it's a good catch for development purpose.
+
