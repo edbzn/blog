@@ -9,7 +9,7 @@ In this post I will show you a **simple way** to organize your own state logic u
 
 ## How to cook the rabbit
 
-A data store is a **service** that manage a single entity type. It's responsible of storing, manipulating, and exposing the entity to the rest of the application.
+A data store is a **service** that manage a single data type. It's responsible of storing, manipulating, and exposing the data to the rest of the application.
 
 ```ts
 @Injectable({ providedIn: 'root' })
@@ -22,7 +22,7 @@ export class BookStore {
 }
 ```
 
-We are using a `BehaviorSubject` to store the current state and an `Observable` to expose it.
+We use a `BehaviorSubject` to store the current state and an `Observable` to publicly expose data.
 
 > The BehaviorSubject holds the value that needs to be shared with other components. These components subscribe to the observable without the ability to change the value.
 
@@ -39,9 +39,9 @@ export class BookService {
 }
 ```
 
-The `BookStore` needs to interact with a **communication layer**, the `BookService` that encapsulate HTTP logic.
+We can add a **communication layer**, the `BookService` that encapsulates HTTP logic.
 
-Back to the `BookStore`, we can update the state using the `next` method from the internal `_books` collection.
+Back to the `BookStore`, we can fetch the data and emit a new state using the `next` function.
 
 ```ts
 @Injectable({ providedIn: 'root' })
@@ -60,7 +60,7 @@ export class BookStore {
 }
 ```
 
-Now the component can load books at initialization.
+Now the component can use the store to load books at initialization.
 
 ```ts
 @Component({
@@ -72,23 +72,23 @@ Now the component can load books at initialization.
   `,
 })
 export class AppComponent implements OnInit {
-  readonly books$: Observable<Book[]> = this.bookStore.books$
+  readonly books$: Observable<Book[]> = this.bookStore.books$;
 
   constructor(private bookStore: BookStore) {}
 
   ngOnInit() {
     this.bookStore
       .getBooks()
-      .subscribe({ error: () => /* @todo should probably handle error */ })
+      .subscribe({ error: () => /* @todo should probably handle error */ });
   }
 
   trackById(index: number, book: Book) {
-    return book.id
+    return book.id;
   }
 }
 ```
 
-Every time the `books$` observable emits a new state, all observers are updated in reaction, which means that the view will always be synchronized with the state.
+Each time the `books$` observable emits a new state, all observers are updated in order, which means that the view will always be synchronized with the state.
 
 ```ts
 @Component({
@@ -117,6 +117,6 @@ export class AppBook implements OnInit {
 
 ### Cons
 
-- Scalability, as the application grow, the number of service increase and it can rapidly become a big spaghetti dish.
+- Scalability, as the application grow, the number of service increase and it tends to rapidly become a big spaghetti dish.
 - Testability, testing the store is not trivial because it does a lot of different things.
 - Strictness, this pattern doesn't come with strict rules to ensure a kind of global coherence.

@@ -4,7 +4,7 @@ module.exports = {
     author: `Edouard Bozon`,
     description: `My technical blog where I share stuff about code, architecture and best practices. I'm mainly focused around JavaScript and TypeScript world.`,
     authorDescription:
-      'I live between Lyon and Chamonix. I focus my work on building high quality apps and contributing to open source.',
+      'I live between Lyon and Chamonix in French Alps. I focus my work on building high quality apps and contributing to open source.',
     siteUrl: `https://www.codamit.dev`,
     social: {
       twitter: `https://twitter.com/edouardbozon`,
