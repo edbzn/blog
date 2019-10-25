@@ -1,17 +1,17 @@
-import { graphql, Link } from "gatsby"
-import React from "react"
+import { graphql, Link } from 'gatsby';
+import React from 'react';
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+import Bio from '../components/bio';
+import Layout from '../components/layout';
+import SEO from '../components/seo';
+import { rhythm } from '../utils/typography';
 
 class BlogIndex extends React.Component {
   render() {
-    const { data } = this.props
-    const siteTitle = data.site.siteMetadata.title
-    const { social, author } = this.props.data.site.siteMetadata
-    const posts = data.allMarkdownRemark.edges
+    const { data } = this.props;
+    const siteTitle = data.site.siteMetadata.title;
+    const { social, author } = this.props.data.site.siteMetadata;
+    const posts = data.allMarkdownRemark.edges;
 
     return (
       <Layout
@@ -24,7 +24,7 @@ class BlogIndex extends React.Component {
         <Bio />
         <div style={{ marginTop: rhythm(2) }}>
           {posts.map(({ node }) => {
-            const title = node.frontmatter.title || node.fields.slug
+            const title = node.frontmatter.title || node.fields.slug;
             return (
               <article
                 key={node.fields.slug}
@@ -42,15 +42,15 @@ class BlogIndex extends React.Component {
                   <span>{node.frontmatter.date}</span>
                 </header>
               </article>
-            )
+            );
           })}
         </div>
       </Layout>
-    )
+    );
   }
 }
 
-export default BlogIndex
+export default BlogIndex;
 
 export const pageQuery = graphql`
   query {
@@ -80,4 +80,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

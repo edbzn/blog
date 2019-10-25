@@ -1,15 +1,15 @@
 ---
-title: Building a store using React and TypeScript
-date: "2019-01-13T22:40:32.169Z"
+title: Building a store using React and Meiosis
+date: '2019-01-13T22:40:32.169Z'
 ---
 
-We're going to create a store using the [Meiosis](https://meiosis.js.org/) pattern.
+We're going to create a store using React and [Meiosis](https://meiosis.js.org/).
 
-Meiosis is not a library, you can't import it. It's a powerful pattern to manage state and it works well with a lot of view's libraries like React, Vue.js, Lit-html.
+Meiosis is not a library, you can't import it. It's a powerful pattern to manage state and it works well with view's libraries like React, Vue.js, Lit-html.
 
 ## Implementing a counter app
 
-Meiosis is a stream based pattern, for this example I'm using the [Flyd stream library](https://github.com/paldepind/flyd) but it's possible to not rely on any dependency by implementing the stream by ourself.
+Meiosis is a stream based pattern, for this example I'm using the [Flyd stream library](https://github.com/paldepind/flyd). Note that is possible to not rely on any dependency by implementing the stream yourself.
 
 The first thing we can do is designing our interfaces.
 
@@ -31,7 +31,7 @@ The store is a simple object containing our initial state and available actions.
 ```typescript
 export const store = {
   initialState: (): AppState => ({
-    count: 0
+    count: 0,
   }),
   actions: (update: StreamUpdate): AppActions => ({
     increment() {
@@ -45,8 +45,8 @@ export const store = {
         --state.count;
         return state;
       });
-    }
-  })
+    },
+  }),
 };
 ```
 
@@ -85,7 +85,7 @@ Next to this we need to pass `actions` and `states` as props to our React app.
 ```tsx
 render(
   <App actions={actions} states={states} />,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 ```
 
@@ -130,9 +130,9 @@ class App extends React.Component<AppProps, AppState> {
 
 With Meiosis we're importing nothing to the view, **actions** and **states** are passed to our app as **props**. It means that our React app doesn't rely on our store implementation. **It's transparent**, state managers like Redux are doing a lot of stuff behind the scene. As you saw Meiosis can be fully implemented in a couples of 30 lines of code. It really forces you to think about how to design the state and not how to deal with tools.
 
-* We have a root state in our app which is the single source of truth.
-* The code is deterministic, we can run it many times it's gonna re-render exactly the same thing.
-* We know exactly what's going to happen because all of the code was written by ourself.
+- We have a root state in our app which is the single source of truth.
+- The code is deterministic, we can run it many times it's gonna re-render exactly the same thing.
+- We know exactly what's going to happen because all of the code was written by ourself.
 
 ## Final note
 
@@ -141,4 +141,3 @@ I'm not trying to convince you to drop state manager libraries, but learning Mei
 Here is the [complete working example](https://codesandbox.io/s/0193mp6kmp) of our store implementation.
 
 I highly recommend you to visit the [Meiosis website](https://meiosis.js.org), they go deeper than I did, it's really interesting. They also offer a [small package](https://github.com/foxdonut/meiosis-tracer) to time travel across states like the Redux Chrome extension, it's a good catch for development purpose.
-

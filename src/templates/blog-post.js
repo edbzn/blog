@@ -1,17 +1,17 @@
-import { graphql, Link } from "gatsby"
-import React from "react"
+import { graphql, Link } from 'gatsby';
+import React from 'react';
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+import Bio from '../components/bio';
+import Layout from '../components/layout';
+import SEO from '../components/seo';
+import { rhythm } from '../utils/typography';
 
 class BlogPostTemplate extends React.Component {
   render() {
-    const post = this.props.data.markdownRemark
-    const siteTitle = this.props.data.site.siteMetadata.title
-    const { social, author } = this.props.data.site.siteMetadata
-    const { previous, next } = this.props.pageContext
+    const post = this.props.data.markdownRemark;
+    const siteTitle = this.props.data.site.siteMetadata.title;
+    const { social, author } = this.props.data.site.siteMetadata;
+    const { previous, next } = this.props.pageContext;
 
     return (
       <Layout
@@ -20,10 +20,7 @@ class BlogPostTemplate extends React.Component {
         social={social}
         author={author}
       >
-        <SEO
-          title={post.frontmatter.title}
-          description={post.excerpt}
-        />
+        <SEO title={post.frontmatter.title} description={post.excerpt} />
         <article>
           <header>
             <h1
@@ -67,14 +64,22 @@ class BlogPostTemplate extends React.Component {
           >
             <li>
               {previous && (
-                <Link to={previous.fields.slug} rel="prev" title={previous.frontmatter.title}>
+                <Link
+                  to={previous.fields.slug}
+                  rel="prev"
+                  title={previous.frontmatter.title}
+                >
                   ← Previous post
                 </Link>
               )}
             </li>
             <li>
               {next && (
-                <Link to={next.fields.slug} rel="next" title={next.frontmatter.title}>
+                <Link
+                  to={next.fields.slug}
+                  rel="next"
+                  title={next.frontmatter.title}
+                >
                   Next post →
                 </Link>
               )}
@@ -82,11 +87,11 @@ class BlogPostTemplate extends React.Component {
           </ul>
         </nav>
       </Layout>
-    )
+    );
   }
 }
 
-export default BlogPostTemplate
+export default BlogPostTemplate;
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
@@ -111,4 +116,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

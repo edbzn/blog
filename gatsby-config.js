@@ -3,8 +3,9 @@ module.exports = {
     title: `codamit.dev`,
     author: `Edouard Bozon`,
     description: `My technical blog where I share stuff about code, architecture and best practices. I'm mainly focused around JavaScript and TypeScript world.`,
-    authorDescription: "I live between Lyon and Chamonix. I focus my work on crafting high quality apps and contributing to open source.",
-    siteUrl: `https://wwww.codamit.dev`,
+    authorDescription:
+      'I live between Lyon and Chamonix. I focus my work on building high quality apps and contributing to open source.',
+    siteUrl: `https://www.codamit.dev`,
     social: {
       twitter: `https://twitter.com/edouardbozon`,
       github: `https://github.com/edouardbozon`,
@@ -76,6 +77,6 @@ module.exports = {
       options: {
         pathToConfigModule: `src/utils/typography`,
       },
-    }
+    },
   ],
-}
+};

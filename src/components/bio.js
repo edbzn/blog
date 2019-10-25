@@ -1,9 +1,9 @@
-import { graphql, useStaticQuery } from "gatsby"
-import Image from "gatsby-image"
-import React from "react"
+import { graphql, useStaticQuery } from 'gatsby';
+import Image from 'gatsby-image';
+import React from 'react';
 
-import { rhythm } from "../utils/typography"
-import { Social } from "./social"
+import { rhythm } from '../utils/typography';
+import { Social } from './social';
 
 const Bio = () => {
   const data = useStaticQuery(graphql`
@@ -27,19 +27,19 @@ const Bio = () => {
         }
       }
     }
-  `)
+  `);
 
-  const { author, social, authorDescription } = data.site.siteMetadata
+  const { author, social, authorDescription } = data.site.siteMetadata;
   return (
     <div
       style={{
         display: `flex`,
         padding: `${(0, rhythm(0.4))}`,
-        border: "1px solid #eee",
-        borderRadius: "4px",
+        border: '1px solid #eee',
+        borderRadius: '4px',
       }}
     >
-      <div style={{ "padding-right": rhythm(0.6) }}>
+      <div style={{ 'padding-right': rhythm(0.6) }}>
         <Image
           fixed={data.avatar.childImageSharp.fixed}
           alt={author}
@@ -64,7 +64,7 @@ const Bio = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Bio
+export default Bio;
