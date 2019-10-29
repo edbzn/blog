@@ -21,7 +21,7 @@
     "bcrypt": "3.0.6",
     "chalk": "2.4.2",
     "dotenv": "8.1.0",
-    "mongoose": "5.7.3",
+    "mongoose": "5.7.5",
     "rxjs": "6.5.2",
     "typegoose": "5.9.0",
     "uuid": "3.3.3"
