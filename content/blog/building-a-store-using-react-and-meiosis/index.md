@@ -138,6 +138,14 @@ With Meiosis we're importing nothing to the view, **actions** and **states** are
 
 I'm not trying to convince you to drop state manager libraries, but learning Meiosis can helps you to understand exactly what state managers are trying to solve for you. It's also a good way to go deeper into functional programming.
 
-Here is the [complete working example](https://codesandbox.io/s/0193mp6kmp) of our store implementation.
-
 I highly recommend you to visit the [Meiosis website](https://meiosis.js.org), they go deeper than I did, it's really interesting. They also offer a [small package](https://github.com/foxdonut/meiosis-tracer) to time travel across states like the Redux Chrome extension, it's a good catch for development purpose.
+
+Here is the [complete working example](https://codesandbox.io/s/0193mp6kmp) of our counter app.
+
+<iframe
+  src="https://codesandbox.io/embed/0193mp6kmp?fontsize=14"
+  style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+  title="Meiosis state pattern using React"
+  allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb"
+  sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
+></iframe>
