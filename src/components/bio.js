@@ -39,7 +39,7 @@ const Bio = () => {
         borderRadius: '4px',
       }}
     >
-      <div style={{ 'padding-right': rhythm(0.6) }}>
+      <div style={{ paddingRight: rhythm(0.6) }}>
         <Image
           fixed={data.avatar.childImageSharp.fixed}
           alt={author}
