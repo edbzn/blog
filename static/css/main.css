@@ -1,0 +1,9 @@
+a {
+  box-shadow: none;
+  transition: box-shadow ease 200ms;
+}
+
+a:focus,
+a:hover {
+  box-shadow: 0 1px 0 0 currentColor;
+}
