@@ -23,6 +23,7 @@ const Bio = () => {
             twitter
             github
             linkedin
+            mail
           }
         }
       }
@@ -34,21 +35,20 @@ const Bio = () => {
     <div
       style={{
         display: `flex`,
-        padding: `${(0, rhythm(0.4))}`,
-        border: '1px solid #eee',
+        padding: `${(0, rhythm(0.7))}`,
+        border: '2px solid #eee',
         borderRadius: '4px',
       }}
     >
-      <div style={{ paddingRight: rhythm(0.6) }}>
+      <div style={{ paddingRight: rhythm(0.7) }}>
         <Image
           fixed={data.avatar.childImageSharp.fixed}
           alt={author}
           style={{
-            marginTop: rhythm(0.1),
-            marginRight: rhythm(1 / 2),
+            marginTop: rhythm(0.4),
             marginBottom: 0,
-            width: 120,
-            height: 120,
+            width: 80,
+            height: 80,
             borderRadius: `100%`,
             margin: 0,
           }}
@@ -58,7 +58,9 @@ const Bio = () => {
         />
       </div>
       <div>
-        I'm <strong>{author}</strong>, {authorDescription}
+        <p style={{ margin: 0, fontSize: 14, fontWeight: 'lighter' }}>
+          {authorDescription}
+        </p>
         <div style={{ marginTop: rhythm(0.4) }}>
           <Social social={social} />
         </div>

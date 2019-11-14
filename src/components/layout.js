@@ -1,11 +1,12 @@
 import { Link } from 'gatsby';
 import React from 'react';
 
+import rss from '../../content/assets/icons/rss.svg';
 import { rhythm } from '../utils/typography';
 
 class Layout extends React.Component {
   render() {
-    const { location, title, children } = this.props;
+    const { location, title, children, author } = this.props;
     const rootPath = `${__PATH_PREFIX__}/`;
     let header;
 
@@ -15,6 +16,8 @@ class Layout extends React.Component {
           style={{
             marginBottom: rhythm(1.5),
             marginTop: 0,
+            fontFamily: "'Merriweather', 'Georgia', serif",
+            fontSize: rhythm(0.9),
           }}
         >
           <Link
@@ -35,6 +38,7 @@ class Layout extends React.Component {
           style={{
             marginBottom: rhythm(1.5),
             marginTop: 0,
+            fontSize: rhythm(0.9),
           }}
         >
           <Link
@@ -61,7 +65,20 @@ class Layout extends React.Component {
         <header>{header}</header>
         <main>{children}</main>
         <footer>
-          © {new Date().getFullYear()} - <strong>{title}</strong>
+          © {new Date().getFullYear()} - <strong>{title}</strong> - {author} -{' '}
+          <a href="/rss.xml">
+            <img
+              src={rss}
+              alt="RSS feed icon"
+              style={{
+                width: 20,
+                marginBottom: -5,
+                marginRight: 4,
+                marginLeft: 4,
+              }}
+            />{' '}
+            RSS feed
+          </a>
         </footer>
       </div>
     );

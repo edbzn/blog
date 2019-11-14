@@ -2,14 +2,15 @@ module.exports = {
   siteMetadata: {
     title: `codamit.dev`,
     author: `Edouard Bozon`,
-    description: `Engineering blog where I share my knowledge about web technologies. I mainly focus my work around JavaScript ecosystem.`,
+    description: `Tech blog about web technologies, I share stuff mainly about JavaScript ecosystem.`,
     authorDescription:
-      'I live between Lyon and Chamonix in French Alps. I focus my work on building high quality apps and contributing to open source.',
+      "I'm Edouard Bozon, I live in Lyon, France. I focus my work on building better JavaScript apps and contributing to open source. Also freelancer, actually looking for a mission. Let's talk together!",
     siteUrl: `https://www.codamit.dev`,
     social: {
       twitter: `https://twitter.com/edouardbozon`,
       github: `https://github.com/edouardbozon`,
       linkedin: `https://www.linkedin.com/in/edouardbozon`,
+      mail: `bozonedouard@gmail.com`,
     },
   },
   plugins: [
@@ -57,7 +58,60 @@ module.exports = {
         trackingId: `UA-47975149-8`,
       },
     },
-    `gatsby-plugin-feed`,
+    {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+                site_url: siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.edges.map(edge => {
+                return Object.assign({}, edge.node.frontmatter, {
+                  description: edge.node.excerpt,
+                  date: edge.node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  custom_elements: [{ 'content:encoded': edge.node.html }],
+                });
+              });
+            },
+            query: `
+              {
+                allMarkdownRemark(
+                  sort: { order: DESC, fields: [frontmatter___date] },
+                ) {
+                  edges {
+                    node {
+                      excerpt
+                      html
+                      fields { slug }
+                      frontmatter {
+                        title
+                        date
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            output: '/rss.xml',
+            title: "codamit.dev's RSS Feed",
+            match: '^/blog/',
+          },
+        ],
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
