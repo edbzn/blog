@@ -1,3 +1,3 @@
 import 'typeface-merriweather';
 import 'typeface-montserrat';
-import './content/assets/code-theme.css';
+import './static/code-theme.css';
