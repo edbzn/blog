@@ -3,8 +3,7 @@ title: Layout components in Angular
 date: '2019-11-16T12:13:45.573Z'
 ---
 
-
-When building JavaScript applications we usually separate components in different layers, each one responsible of its own concern. You've certainly hear about presentational components, container components, or the less well known layout components?
+When building JavaScript applications we usually separate components in different layers, each one responsible of its own concern. You've certainly hear about presentational components, container components, or the less well known, layout components?
 
 > Let me try to explain to you, what is a layout component in Angular, and how to build modular applications using this technique.
 
@@ -30,7 +29,7 @@ import { Component } from '@angular/core';
 export class AppComponent {}
 ```
 
-Then we need to declare top level routes. Note that lazy loading is used to improve initial load performance.
+Then we need to declare routes at top level. Note that lazy loading is used to improve initial load performance.
 
 ```ts
 import { Route } from '@angular/router';
@@ -39,12 +38,13 @@ export const APP_ROUTES: Route[] = [
   {
     path: '',
     redirectTo: '/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
-  }
+    loadChildren: () =>
+      import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+  },
 ];
 ```
 
@@ -56,6 +56,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { APP_ROUTES } from './routes';
+import { AppComponent } from './app.component.ts';
 
 @NgModule({
   imports: [BrowserModule, RouterModule.forRoot(APP_ROUTES)],
@@ -82,7 +83,7 @@ import { Component } from '@angular/core';
 export class MainLayoutComponent {}
 ```
 
-The nested `<router-outlet>` is declared in `MainLayoutComponent`. The router will pass-through this layout component to resolve the child component, the final route, that matches the URL.
+The nested `<router-outlet>` is declared in the `MainLayoutComponent`. The router will pass-through this layout component to resolve the child component that matches the URL.
 
 ```ts
 import { Route } from '@angular/router';
