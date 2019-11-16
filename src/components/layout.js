@@ -14,7 +14,7 @@ class Layout extends React.Component {
       header = (
         <h1
           style={{
-            marginBottom: rhythm(1.5),
+            marginBottom: 0,
             marginTop: 0,
             fontFamily: "'Merriweather', 'Georgia', serif",
             fontSize: rhythm(0.9),
@@ -34,23 +34,41 @@ class Layout extends React.Component {
       );
     } else {
       header = (
-        <h3
+        <div
           style={{
-            marginBottom: rhythm(1.5),
-            marginTop: 0,
-            fontSize: rhythm(0.9),
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
+          <h3
+            style={{
+              marginBottom: 0,
+              marginTop: 0,
+              fontSize: rhythm(0.9),
+            }}
+          >
+            <Link
+              style={{
+                boxShadow: `none`,
+                color: `inherit`,
+              }}
+              to={`/`}
+            >
+              {title}
+            </Link>
+          </h3>
           <Link
             style={{
               boxShadow: `none`,
               color: `inherit`,
+              fontSize: 13,
             }}
             to={`/`}
           >
-            {title}
+            ← back to home
           </Link>
-        </h3>
+        </div>
       );
     }
     return (
@@ -58,15 +76,29 @@ class Layout extends React.Component {
         style={{
           marginLeft: `auto`,
           marginRight: `auto`,
+          marginTop: rhythm(1),
+          marginBottom: rhythm(2),
           maxWidth: rhythm(26),
-          padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
         }}
       >
-        <header>{header}</header>
-        <main>{children}</main>
-        <footer>
+        <header
+          style={{
+            background: '#fff',
+            paddingBottom: 18,
+            paddingTop: 18,
+          }}
+        >
+          {header}
+        </header>
+        <main style={{ marginTop: rhythm(1) }}>{children}</main>
+        <footer style={{ marginTop: rhythm(2) }}>
           © {new Date().getFullYear()} - <strong>{title}</strong> - {author} -{' '}
-          <a href="/rss.xml">
+          <a
+            href="/rss.xml"
+            style={{
+              boxShadow: `none`,
+            }}
+          >
             <img
               src={rss}
               alt="RSS feed icon"

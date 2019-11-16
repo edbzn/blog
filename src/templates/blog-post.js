@@ -51,7 +51,6 @@ class BlogPostTemplate extends React.Component {
             <Bio />
           </footer>
         </article>
-
         <nav style={{ marginTop: rhythm(2) }}>
           <ul
             style={{
@@ -67,28 +66,18 @@ class BlogPostTemplate extends React.Component {
                 <Link
                   to={previous.fields.slug}
                   rel="prev"
-                  title={previous.frontmatter.title}
-                >
-                  ← Previous post
+                  >
+                  ← {previous.frontmatter.title}
                 </Link>
               )}
-            </li>
-            <li>
-              <Link
-                to={'/'}
-                title="Home"
-              >
-                Home
-              </Link>
             </li>
             <li>
               {next && (
                 <Link
                   to={next.fields.slug}
                   rel="next"
-                  title={next.frontmatter.title}
-                >
-                  Next post →
+                  >
+                  {next.frontmatter.title} →
                 </Link>
               )}
             </li>

@@ -7,3 +7,7 @@ a:focus,
 a:hover {
   box-shadow: 0 1px 0 0 currentColor;
 }
+
+a.gatsby-resp-image-link {
+  box-shadow: none;
+}

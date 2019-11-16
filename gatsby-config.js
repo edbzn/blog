@@ -4,7 +4,7 @@ module.exports = {
     author: `Edouard Bozon`,
     description: `Tech blog about web development, JavaScript ecosystem, best practices, and architectures.`,
     authorDescription:
-      "I'm Edouard, I come from French Alps, now I live in Lyon. I focus my work on building better JavaScript apps and contributing to open source. Looking for a passionate developer? Let's talk together!",
+      "I'm Edouard, I live in Lyon, France. I play with Angular and Node.js almost everyday. I focus my work on building better JavaScript apps and contributing to open source. Looking for a passionate developer? Let's talk together.",
     siteUrl: `https://www.codamit.dev`,
     social: {
       twitter: `https://twitter.com/edouardbozon`,
@@ -34,9 +34,6 @@ module.exports = {
         plugins: [
           {
             resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 590,
-            },
           },
           {
             resolve: `gatsby-remark-responsive-iframe`,
