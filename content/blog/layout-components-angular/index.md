@@ -128,4 +128,4 @@ Here is an interacting example created by [Josip Bojčić](https://github.com/jb
   title="Layout components"
 ></iframe>
 
-There is [an other approach](https://stackblitz.com/github/jbojcic1/angular-routing-example/tree/routing-reuse-layout-example-3-with-subscribing-to-route-events) using router events. Using this approach doesn't use a nested `<router-outlet>` in a dedicated layout component, but I prefer the layout component way because it feels less hacky and more declarative.
+There is [an other approach](https://stackblitz.com/github/jbojcic1/angular-routing-example/tree/routing-reuse-layout-example-3-with-subscribing-to-route-events) using router events. This approach doesn't come with a nested `<router-outlet>` in a dedicated layout component, but I prefer the layout component way because it feels less hacky and more robust.

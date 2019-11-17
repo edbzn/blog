@@ -1,3 +1,4 @@
+import { Disqus, CommentCount } from 'gatsby-plugin-disqus';
 import { graphql, Link } from 'gatsby';
 import React from 'react';
 
@@ -10,8 +11,13 @@ class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark;
     const siteTitle = this.props.data.site.siteMetadata.title;
-    const { social, author } = this.props.data.site.siteMetadata;
+    const { social, author, siteUrl } = this.props.data.site.siteMetadata;
     const { previous, next } = this.props.pageContext;
+    const disqusConfig = {
+      url: `${siteUrl + window.location.pathname}`,
+      identifier: post.id,
+      title: post.title,
+    };
 
     return (
       <Layout
@@ -43,12 +49,11 @@ class BlogPostTemplate extends React.Component {
           </header>
           <section
             dangerouslySetInnerHTML={{ __html: post.html }}
-            style={{
-              marginBottom: rhythm(2),
-            }}
+            style={{ marginBottom: rhythm(2) }}
           />
           <footer>
             <Bio />
+            <Disqus style={{ marginTop: rhythm(2) }} config={disqusConfig} />
           </footer>
         </article>
         <nav style={{ marginTop: rhythm(2) }}>
@@ -63,20 +68,14 @@ class BlogPostTemplate extends React.Component {
           >
             <li>
               {previous && (
-                <Link
-                  to={previous.fields.slug}
-                  rel="prev"
-                  >
+                <Link to={previous.fields.slug} rel="prev">
                   ← {previous.frontmatter.title}
                 </Link>
               )}
             </li>
             <li>
               {next && (
-                <Link
-                  to={next.fields.slug}
-                  rel="next"
-                  >
+                <Link to={next.fields.slug} rel="next">
                   {next.frontmatter.title} →
                 </Link>
               )}
@@ -96,6 +95,7 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         author
+        siteUrl
         social {
           twitter
           linkedin
