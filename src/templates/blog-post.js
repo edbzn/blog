@@ -1,4 +1,4 @@
-import { Disqus, CommentCount } from 'gatsby-plugin-disqus';
+import { Disqus } from 'gatsby-plugin-disqus';
 import { graphql, Link } from 'gatsby';
 import React from 'react';
 
