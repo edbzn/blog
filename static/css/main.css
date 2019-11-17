@@ -19,3 +19,11 @@ a.gatsby-resp-image-link {
   border-radius: 4px;
   overflow: hidden;
 }
+
+a.anchor {
+  margin-left: -24px;
+}
+
+a.anchor:hover {
+  box-shadow: none;
+}
