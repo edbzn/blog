@@ -58,14 +58,7 @@ class Layout extends React.Component {
               {title}
             </Link>
           </h3>
-          <Link
-            style={{
-              boxShadow: `none`,
-              color: `inherit`,
-              fontSize: 13,
-            }}
-            to={`/`}
-          >
+          <Link style={{ fontSize: 13 }} to={`/`}>
             ← back to home
           </Link>
         </div>

@@ -3,15 +3,15 @@ title: Layout components in Angular
 date: '2019-11-16T12:13:45.573Z'
 ---
 
-When building JavaScript applications we usually separate components in different layers, each one responsible of its own concern. You've certainly hear about presentational components, container components, or the less well known, layout components?
+When building JavaScript applications we usually separate components in different layers, each one responsible of its own concern. You've certainly heard about presentational components, container components, or the less well known, layout components?
 
-> Let me try to explain to you, what is a layout component in Angular, and how to build modular applications using this technique.
+> Let me try to explain, what is a layout component in Angular, and how to build modular applications using this technique.
 
-Layout components are used to hold common layout composition. This design enables you to reuse layouts across different parts of your application. It will also simplify underlying components and enforce the single responsibility principle.
+Layout components are used to hold common layout composition. This design enables to reuse layouts across different parts of your application. It will also simplify underlying components and enforce the single responsibility principle.
 
 ## The view layer architecture
 
-The schema below illustrates the component three using a layout component. Layout components are realizable using the nested `<router-outlet>` technique.
+The schema below illustrates the component tree using a layout component. Layout components are realizable using the nested `<router-outlet>` technique.
 
 ![layout schema](./layout-component.png)
 
@@ -29,7 +29,7 @@ import { Component } from '@angular/core';
 export class AppComponent {}
 ```
 
-Then we need to declare routes at top level. Note that lazy loading is used to improve initial load performance.
+Then we need to declare top level routes. Note that lazy loading is used to improve initial load performance.
 
 ```ts
 import { Route } from '@angular/router';
@@ -45,6 +45,13 @@ export const APP_ROUTES: Route[] = [
     loadChildren: () =>
       import('./dashboard/dashboard.module').then(m => m.DashboardModule),
   },
+
+  /* No layout routes */
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  /* Not found redirection */
+  { path: '**', redirectTo: '' },
 ];
 ```
 
@@ -83,7 +90,7 @@ import { Component } from '@angular/core';
 export class MainLayoutComponent {}
 ```
 
-The nested `<router-outlet>` is declared in the `MainLayoutComponent`. The router will pass-through this layout component to resolve the child component that matches the URL.
+The nested `<router-outlet>` is declared in the `MainLayoutComponent`. The router will pass-through this layout component to resolve the child component.
 
 ```ts
 import { Route } from '@angular/router';
@@ -105,6 +112,20 @@ export const DASHBOARD_ROUTES: Route[] = [
 ];
 ```
 
-The piece of code above stick all together, layout and container are combined in a declarative way using the routes three.
+The piece of code above stick all together, layout and container are combined in a declarative way using the routes tree.
 
 Imagine we want to swap the `MainLayoutComponent` with a new `SidebarLayoutComponent`. We can easily achieve this without changing the `DashboardComponent` template.
+
+Note that using this technique, when the user navigates between routes, layout components are re-created only when you navigate between routes from different layouts.
+
+## Resources
+
+Here is an interacting example created by [Josip Bojčić](https://github.com/jbojcic1).
+
+<iframe
+  src="https://layout-components.stackblitz.io"
+  class="iframe"
+  title="Layout components"
+></iframe>
+
+There is [an other approach](https://stackblitz.com/github/jbojcic1/angular-routing-example/tree/routing-reuse-layout-example-3-with-subscribing-to-route-events) using router events. Using this approach doesn't use a nested `<router-outlet>` in a dedicated layout component, but I prefer the layout component way because it feels less hacky and more declarative.
