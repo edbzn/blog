@@ -135,5 +135,6 @@ module.exports = {
         shortname: `codamit-dev`,
       },
     },
+    `gatsby-plugin-sitemap`
   ],
 };
