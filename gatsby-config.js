@@ -144,5 +144,6 @@ module.exports = {
         policy: [{ userAgent: '*', allow: '/' }]
       }
     },
+    `gatsby-plugin-remove-trailing-slashes`,
   ],
 };
