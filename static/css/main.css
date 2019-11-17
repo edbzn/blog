@@ -27,3 +27,18 @@ a.anchor {
 a.anchor:hover {
   box-shadow: none;
 }
+
+#gatsby-focus-wrapper > div {
+  padding: 0 1rem;
+}
+
+@media screen and (max-width: 640px) {
+  .bio {
+    flex-direction: column;
+  }
+
+  .avatar {
+    margin: 0 auto;
+    margin-bottom: 6px;
+  }
+}

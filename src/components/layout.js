@@ -34,14 +34,7 @@ class Layout extends React.Component {
       );
     } else {
       header = (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <h3
+        <h3
             style={{
               marginBottom: 0,
               marginTop: 0,
@@ -58,10 +51,6 @@ class Layout extends React.Component {
               {title}
             </Link>
           </h3>
-          <Link style={{ fontSize: 13 }} to={`/`}>
-            ← back to home
-          </Link>
-        </div>
       );
     }
     return (
