@@ -135,6 +135,14 @@ module.exports = {
         shortname: `codamit-dev`,
       },
     },
-    `gatsby-plugin-sitemap`
+    `gatsby-plugin-sitemap`,
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://www.codamit.dev',
+        sitemap: 'https://www.codamit.dev/sitemap.xml',
+        policy: [{ userAgent: '*', allow: '/' }]
+      }
+    },
   ],
 };
