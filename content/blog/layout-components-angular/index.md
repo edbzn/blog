@@ -112,11 +112,9 @@ export const DASHBOARD_ROUTES: Route[] = [
 ];
 ```
 
-The piece of code above stick all together, layout and container are combined in a declarative way using the routes tree.
+The piece of code above stick all together, layout and container are combined in a declarative way using the routes tree. Imagine we want to swap the `MainLayoutComponent` with an other layout, we can easily achieve this without refactoring the `DashboardComponent` template, which is pretty cool.
 
-Imagine we want to swap the `MainLayoutComponent` with a new `SidebarLayoutComponent`. We can easily achieve this without changing the `DashboardComponent` template.
-
-Note that using this technique, when the user navigates between routes, layout components are re-created only when you navigate between routes from different layouts.
+Note that using this technique, the router re-creates layout components only when the user navigates between routes from different layouts.
 
 ## Resources
 
