@@ -33,6 +33,15 @@ module.exports = {
       options: {
         plugins: [
           {
+            resolve: `@raae/gatsby-remark-oembed`,
+            options: {
+              usePrefix: true,
+              providers: {
+                include: ['Twitter'],
+              },
+            },
+          },
+          {
             resolve: `gatsby-remark-images`,
           },
           {
@@ -143,8 +152,8 @@ module.exports = {
       options: {
         host: 'https://www.codamit.dev',
         sitemap: 'https://www.codamit.dev/sitemap.xml',
-        policy: [{ userAgent: '*', allow: '/' }]
-      }
+        policy: [{ userAgent: '*', allow: '/' }],
+      },
     },
     `gatsby-plugin-remove-trailing-slashes`,
   ],
