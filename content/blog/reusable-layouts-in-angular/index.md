@@ -1,5 +1,5 @@
 ---
-title: Layout components in Angular
+title: Reusable layouts in Angular
 date: '2019-11-16T12:13:45.573Z'
 ---
 
