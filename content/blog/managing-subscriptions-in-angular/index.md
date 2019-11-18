@@ -3,22 +3,22 @@ title: Managing subscriptions in Angular
 date: '2019-11-18T12:13:45.573Z'
 ---
 
-Before diving in how to manage subscriptions, let's try to define them.
+Before diving into managing subscriptions, let's define what they are.
 
 In fact the Subscription represents the connection between the Observable and the Observer. When we `.subscribe()`, the Observable starts pushing values to the connected Observer.
 
 ![Subscription schema](./subscription.png)
 
-That's why Observables are lazy, they don't produce any value before `.subscribe()` is called. Once the Subscription is made, the Observable emits values until we `.unsubscribe()`.
+That's why Observables are lazy, they don't produce any value before we `.subscribe()` to them. Once the Subscription is made the Observable emits values until `.unsubscribe()` is called.
 
 > A Subscription essentially just has an unsubscribe() function to release resources or cancel Observable executions.
 
-It means that if we forget to unsubscribe, the Observable will continue to produce values over and over, even if they aren't used anymore. It creates memory leaks that implies weird behaviors and finally breaks you're application very quickly.
+It means that if we forget to unsubscribe, the Observable will produce values over and over, consuming indefinitely more resources. These memory leaks cause weird side effects and finally crash the entire application.
 
-![](./milk.mp4)
+![Beer leak](./beer.gif)
 
-## Unsubscribe explicitly
+Now you know, don't mess with subscriptions.
 
-```
+## Concretely in Angular
 
-```
+Observables are everywhere, we use them to know when and what to do. Listening form changes, fetching data... all that stuff operates in Observables so managing Subscriptions is challenging when building Angular applications.
