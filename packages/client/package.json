@@ -11,7 +11,7 @@
     "release": "heroku container:release web -a codamit-client"
   },
   "dependencies": {
-    "@sentry/browser": "5.6.1",
+    "@sentry/browser": "5.9.1",
     "@webcomponents/webcomponentsjs": "2.3.0",
     "anchorme": "1.1.2",
     "date-fns": "1.30.1",
