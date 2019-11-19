@@ -5745,7 +5745,7 @@ gatsby-page-utils@^0.0.31:
     lodash "^4.17.15"
     micromatch "^3.1.10"
 
-gatsby-plugin-disqus@^1.1.4:
+gatsby-plugin-disqus@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-disqus/-/gatsby-plugin-disqus-1.1.4.tgz#1b0bd7c13551ccbca15203af5be52ce4a72d3295"
   integrity sha512-S0CNfwk+31nyXkTVKW6qQAEuIjj0A7moSlQdS1xypVvQoMzcz56JNRnYXB1NPLCbUESFcIn1JnlQKBCX9Kk8eA==
@@ -5807,7 +5807,7 @@ gatsby-plugin-page-creator@^2.1.31:
     lodash "^4.17.15"
     micromatch "^3.1.10"
 
-gatsby-plugin-preload-fonts@^1.0.17:
+gatsby-plugin-preload-fonts@1.0.17:
   version "1.0.17"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-preload-fonts/-/gatsby-plugin-preload-fonts-1.0.17.tgz#a2c61f550e56e2caa564608fe447d1daaf72c9d4"
   integrity sha512-eOyWfY/izrA9tcyjk9pXPUv/xL31QkRm3yAHb1pkEGE8aYi0olhzN3yfWHDzJiEMfXAxHlESwXwGo3uoPvevFQ==
@@ -5826,14 +5826,14 @@ gatsby-plugin-react-helmet@3.1.15:
   dependencies:
     "@babel/runtime" "^7.7.2"
 
-gatsby-plugin-remove-trailing-slashes@^2.1.14:
+gatsby-plugin-remove-trailing-slashes@2.1.14:
   version "2.1.14"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-remove-trailing-slashes/-/gatsby-plugin-remove-trailing-slashes-2.1.14.tgz#3895e8559f12e740284f70a45da0bdbdcab9a597"
   integrity sha512-4vpUZ+OZhRLbXgYihFfo6JdTUs+T//namG11xF6W28tVUuXj68rgCnCJ9Eeq7ScgZyWE0LRTzOJ87zF1jUSwmQ==
   dependencies:
     "@babel/runtime" "^7.7.2"
 
-gatsby-plugin-robots-txt@^1.5.0:
+gatsby-plugin-robots-txt@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-robots-txt/-/gatsby-plugin-robots-txt-1.5.0.tgz#3b7d04dd475da138d5613171c3a36f500568369e"
   integrity sha512-gm59CjF0pUS0/U7JUX6988NQrE7CNljnb2CGFCl655iq1K6PF+bimuYNGrIy8N/19OEmK9kl/d1Xx+V+ooZN7Q==
@@ -5867,7 +5867,7 @@ gatsby-plugin-sharp@2.3.2:
     svgo "1.3.2"
     uuid "^3.3.3"
 
-gatsby-plugin-sitemap@^2.2.21:
+gatsby-plugin-sitemap@2.2.21:
   version "2.2.21"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-sitemap/-/gatsby-plugin-sitemap-2.2.21.tgz#0449c9972bd6ecf04aa023b517b7a4660dacedea"
   integrity sha512-AoeV45ELGoDh8N5IXrJrb5EquC+soC6bhRBQZ4/TZqjc1zY0b8VMDo8hkrDrQsyRCA8mXDWJd08Aj1qj4fmUjQ==
@@ -5893,7 +5893,7 @@ gatsby-react-router-scroll@^2.1.16:
     scroll-behavior "^0.9.10"
     warning "^3.0.0"
 
-gatsby-remark-autolink-headers@^2.1.18:
+gatsby-remark-autolink-headers@2.1.18:
   version "2.1.18"
   resolved "https://registry.yarnpkg.com/gatsby-remark-autolink-headers/-/gatsby-remark-autolink-headers-2.1.18.tgz#351c9365093c37e4f8b9f6861158ae1a2ac9bec3"
   integrity sha512-KhROkHoSnY4sQE0cKbyr57qIUeGigQNfgRDCHmyHbFf9G0df0dv1mIv5yjbp/zYAWzzAdCtrkMBoQ3MYuLdgjQ==
