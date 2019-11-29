@@ -136,7 +136,7 @@ With Meiosis we're importing nothing to the view, **actions** and **states** are
 
 ## Final note
 
-I'm not trying to convince you to drop state manager libraries, but learning Meiosis can helps you to understand exactly what state managers are trying to solve for you. It's also a good way to go deeper into functional programming.
+I'm not trying to convince you to drop Redux or something else, but learning Meiosis can helps you to understand exactly what state managers are trying to solve. It's also a good way to go deeper into functional programming.
 
 I highly recommend you to visit the [Meiosis website](https://meiosis.js.org), they go deeper than I did, it's really interesting. They also offer a [small package](https://github.com/foxdonut/meiosis-tracer) to time travel across states like the Redux Chrome extension, it's a good catch for development purpose.
 
