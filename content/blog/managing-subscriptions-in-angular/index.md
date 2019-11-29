@@ -17,17 +17,19 @@ As we usually do with `.addEventListener(...)` or `setInterval(...)`, the Observ
 
 ![Beer leak](./beer.gif)
 
-We usually think that memory leaks are hidden and imperceptible. It's totally false, an application that contains memory leaks become quickly unusable before it entirely crashes.
+We usually think that memory leaks are hidden and imperceptible. It's totally false, an application that has memory leaks becomes quickly unusable before it entirely crashes.
 
-It affects final users directly resulting in a poor experience. Nobody will reuse your buggy service, so don't mess with subscriptions.
+It directly affects final users and results in a poor experience. Nobody will reuse your buggy application so don't mess with subscriptions.
 
 ## Concretely in Angular
 
-To illustrate how to manage Subscription in Angular
+There are many ways to manage Subscriptions in Angular. The following example uses a `BookService` which exposes a long-lived Observable `availableBooks$` that emits a book list in real time.
+
+Next to this we want to display the list in a component and automatically update the view whenever the list changed.
 
 #### Common pitfall
 
-This implementation has a memory leak, the subscription is not managed.
+Let's start by the bad way, this implementation has a memory leak, the subscription is not managed.
 
 ```ts
 @Component({
@@ -51,15 +53,15 @@ export class BookListComponent implements OnInit {
     });
   }
 
-  trackById(index: number, book: Book) {
+  trackById(index: number, book: Book): string {
     return book.id;
   }
 }
 ```
 
-If this component is destroyed the Subscription keep alive.
+When this component is destroyed the Observable keeps running forever, consuming more resources each time the component is recreated.
 
-#### Subscription reference
+#### Referenced Subscription
 
 Here is the common memory safe approach using a Subscription reference.
 
@@ -91,17 +93,17 @@ export class BookListComponent implements OnInit, OnDestroy {
     this._subscription.unsubscribe();
   }
 
-  trackById(index: number, book: Book) {
+  trackById(index: number, book: Book): string {
     return book.id;
   }
 }
 ```
 
-The Subscription is managed manually and requires extra work from the developer.
+The Subscription is managed manually and requires extra work from the developer. The implementation looses its reactivity in favor of imperative programming with side-effects which is exactly what we want to avoid.
 
 #### Subject + takeUntil way
 
-An other approach is to use a Subject to notify whenever the component is destroyed in combination with to `takeUntil` operator to cleanup the Observable.
+An other approach is to use a Subject to notify whenever the component is destroyed in combination with `takeUntil` operator to cleanup the Observable execution.
 
 ```ts
 @Component({
@@ -121,7 +123,7 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   constructor(private bookService: BookService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.bookService.availableBooks$
       .pipe(
         tap(books => {
@@ -132,23 +134,23 @@ export class BookListComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._destroy$.next();
   }
 
-  trackById(index: number, book: Book) {
+  trackById(index: number, book: Book): string {
     return book.id;
   }
 }
 ```
 
-No need to call `this._destroy$.complete()` because the Subject with no subscriber is just a function.
+This implementation still looks bad because some extra logic needs to be added to cleanup the Observable execution.
 
-This implementation still looks bad because we need to add extra logic to cleanup the execution.
+> Note that no need to call `this._destroy$.complete()` when destroyed because the Subject with no subscriber is just a function.
 
 #### Async pipe way
 
-Angular comes with a powerful pipe `async` that manage the Subscription for us.
+Angular natively comes with the powerful `async` pipe to manage view Subscriptions effortlessly.
 
 ```ts
 @Component({
@@ -166,17 +168,17 @@ export class BookListComponent {
 
   constructor(private bookService: BookService) {}
 
-  trackById(index: number, book: Book) {
+  trackById(index: number, book: Book): string {
     return book.id;
   }
 }
 ```
 
-This approach looks significantly better. It removes a lot of code:
+This approach removes a lot of code and looks significantly better.
 
-- no property check in the template, `*ngIf="books"` removed in favor of `async`.
-- no additional property, the intend is clear through the `books$` property.
-- automated unsubscribe handled by the pipe.
+- no additional checks in the template.
+- no additional component property.
+- automated un-subscription handled by the pipe.
 
 #### Decorator way
 
