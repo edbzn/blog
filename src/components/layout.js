@@ -35,22 +35,22 @@ class Layout extends React.Component {
     } else {
       header = (
         <h3
+          style={{
+            marginBottom: 0,
+            marginTop: 0,
+            fontSize: rhythm(0.9),
+          }}
+        >
+          <Link
             style={{
-              marginBottom: 0,
-              marginTop: 0,
-              fontSize: rhythm(0.9),
+              boxShadow: `none`,
+              color: `inherit`,
             }}
+            to={`/`}
           >
-            <Link
-              style={{
-                boxShadow: `none`,
-                color: `inherit`,
-              }}
-              to={`/`}
-            >
-              {title}
-            </Link>
-          </h3>
+            {title}
+          </Link>
+        </h3>
       );
     }
     return (
@@ -73,26 +73,35 @@ class Layout extends React.Component {
           {header}
         </header>
         <main style={{ marginTop: rhythm(1) }}>{children}</main>
-        <footer style={{ marginTop: rhythm(2) }}>
-          © {new Date().getFullYear()} - <strong>{title}</strong> - {author} -{' '}
-          <a
-            href="/rss.xml"
-            style={{
-              boxShadow: `none`,
-            }}
-          >
-            <img
-              src={rss}
-              alt="RSS feed icon"
+        <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
+          <div style={{ textAlign: 'center' }}>
+            © {new Date().getFullYear()} - <strong>{title}</strong> - {author} -
+            <a
+              href="/rss.xml"
               style={{
-                width: 20,
-                marginBottom: -5,
-                marginRight: 4,
-                marginLeft: 4,
+                boxShadow: `none`,
               }}
-            />{' '}
-            RSS feed
-          </a>
+            >
+              <img
+                src={rss}
+                alt="RSS feed icon"
+                style={{
+                  width: 14,
+                  marginBottom: -2,
+                  marginRight: 4,
+                  marginLeft: 6,
+                }}
+              />{' '}
+              RSS feed
+            </a>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            This website is under{' '}
+            <a href="https://creativecommons.org/licenses/by-sa/4.0">
+              CC BY-SA 4.0
+            </a>{' '}
+            license
+          </div>
         </footer>
       </div>
     );

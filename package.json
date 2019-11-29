@@ -42,7 +42,7 @@
   "devDependencies": {
     "prettier": "1.19.1"
   },
-  "license": "MIT",
+  "license": "CC-BY-SA-4.0",
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",

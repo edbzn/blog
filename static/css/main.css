@@ -28,6 +28,17 @@ a.anchor:hover {
   box-shadow: none;
 }
 
+twitter-widget {
+  margin: 2.25em auto !important;
+}
+
+p > img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px;
+  margin: 2.25em auto !important;
+}
+
 #gatsby-focus-wrapper > div {
   padding: 0 1rem;
 }
