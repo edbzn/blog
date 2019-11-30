@@ -11,11 +11,11 @@ A Subscription represents the connection between an Observable and an Observer. 
 
 ![Subscription schema](./subscription.png)
 
-Observables are lazy which means that they don't push any value before the system `.subscribe()` to them. Once the system subscribes, the Observable push one or multiple values to the connected Observer.
+By default Observables are lazy, which means they don't produce any value before the system `.subscribe()` to them. Once the system subscribes, the Observable push one or more values to the connected Observer.
 
-As we usually do with Event Listeners or `setInterval()` function, the Observable execution needs to be stopped to avoid memory leaks. The Subscription has one important method `.unsubscribe()` that disposes the resource.
+As we usually do with event listeners or `setInterval()` function, the Observable execution needs to be stopped to avoid memory leaks. The Subscription has one important method `.unsubscribe()` that disposes the resource.
 
-We usually think that memory leaks are hidden and imperceptible. By the way it's completely wrong. An application that leak becomes quickly unusable before it entirely crashes.
+We usually think that memory leaks are hidden and imperceptible. By the way it's completely wrong, in this situation the application becomes quickly unusable before it crashes.
 
 ![Beer leak](./beer.gif)
 
@@ -35,7 +35,7 @@ Let's start by the bad way, this implementation has a memory leak.
 @Component({
   selector: 'book-list',
   template: `
-    <ul *ngIf="books">
+    <ul *ngIf="books.length">
       <li *ngFor="let book of books; trackBy: trackById">
         {{ book.title }}
       </li>
@@ -43,12 +43,14 @@ Let's start by the bad way, this implementation has a memory leak.
   `,
 })
 export class BookListComponent implements OnInit {
-  books: Book[];
+  books: Book[] = [];
 
   constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
-    this.bookService.availableBooks$.subscribe(list => {
+    // highlight-start
+    this.bookService.availableBooks$.subscribe(list => { // <- memory leak
+      // highlight-end
       this.books = list;
     });
   }
@@ -69,7 +71,7 @@ To fix the leak there is a common approach using a Subscription reference.
 @Component({
   selector: 'book-list',
   template: `
-    <ul *ngIf="books">
+    <ul *ngIf="books.length">
       <li *ngFor="let book of books; trackBy: trackById">
         {{ book.title }}
       </li>
@@ -81,7 +83,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   private _subscription: Subscription;
   // highlight-end
 
-  books: Book[];
+  books: Book[] = [];
 
   constructor(private bookService: BookService) {}
 
@@ -115,7 +117,7 @@ An other approach is to use a `Subject` to notify whenever the component is dest
 @Component({
   selector: 'book-list',
   template: `
-    <ul *ngIf="books">
+    <ul *ngIf="books.length">
       <li *ngFor="let book of books; trackBy: trackById">
         {{ book.title }}
       </li>
@@ -125,7 +127,7 @@ An other approach is to use a `Subject` to notify whenever the component is dest
 export class BookListComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>(); // highlight-line
 
-  books: Book[];
+  books: Book[] = [];
 
   constructor(private bookService: BookService) {}
 
@@ -160,7 +162,6 @@ This implementation still looks bad because some extra logic needs to be added t
 
 Angular natively comes with the powerful `async` pipe to manage view Subscriptions effortlessly.
 
-- No additional `*ngIf` checks in the template.
 - No extraneous component property.
 - Automated subscription management.
 
@@ -168,9 +169,9 @@ Angular natively comes with the powerful `async` pipe to manage view Subscriptio
 @Component({
   selector: 'book-list',
   template: `
-    <ul>
-      // highlight-start
-      <li *ngFor="let book of books$ | async; trackBy: trackById">
+    // highlight-start
+    <ul *ngIf="books$ | async as books">
+      <li *ngFor="let book of books; trackBy: trackById">
         // highlight-end
         {{ book.title }}
       </li>
@@ -178,7 +179,9 @@ Angular natively comes with the powerful `async` pipe to manage view Subscriptio
   `,
 })
 export class BookListComponent {
+  // highlight-start
   books$: Observable<Book[]> = this.bookService.availableBooks$;
+  // highlight-end
 
   constructor(private bookService: BookService) {}
 
@@ -188,29 +191,42 @@ export class BookListComponent {
 }
 ```
 
-This approach removes a lot of code and looks significantly better.
+This approach removes a lot of code and looks significantly better. I want to emphases that it's important to minimize view subscriptions using the `as` keyword.
+
+Sometimes we need more than one Subscription in the view context. In this case instead doing this.
+
+```html
+<ng-container *ngIf="book$ | async as book">
+  <div *ngIf="category$ | async as category">
+    {{ book.title }} {{ category.name }}
+  </div>
+</ng-container>
+```
+
+Consider the following for readability.
+
+```html
+<div *ngIf="{ book: book$ | async, category: category$ | async } as vm;">
+  {{ vm.book.title }} {{ vm.category.name }}
+</div>
+```
 
 #### 👍🏼 Operator + Decorator (voodoo magic)
 
-An other way to manage Subscription is to use a dedicated operator + decorator. There are a bunch of third party libraries offering this kind of utils such as:
+An other way to manage Subscriptions is to use a dedicated operator or decorator or both. There are a bunch of libraries offering these kind of utils such as:
 
 - [Mindspace-io rxjs-utils](https://github.com/ThomasBurleson/mindspace-utils/blob/master/lib/utils/src/lib/rxjs/README.md)
 - [Wishtack Rx-Scavenger](https://github.com/wishtack/wishtack-steroids/tree/master/packages/rx-scavenger)
-- [Ngneat until-destroy](https://github.com/ngneat/until-destroy) (Ivy support)
+- [Ngneat until-destroy](https://github.com/ngneat/until-destroy)
 
-Pick one that fit your need. In this example I used the last until-destroy library. I also introduced the `OnPush` change detection strategy to show you a more advanced code example with performance in mind.
+In this example I used the `@ngneat/until-destroy` library. I also introduced the `OnPush` change detection strategy to show you a more advanced code example with performance in mind.
 
 ```ts
-// highlight-start
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ChangeDetectionStrategy } from '@angular/core';
-// highlight-end
-
 @UntilDestroy() // highlight-line
 @Component({
   selector: 'book-list',
   template: `
-    <ul *ngIf="books">
+    <ul *ngIf="books.length">
       <li *ngFor="let book of books; trackBy: trackById">
         {{ book.title }}
       </li>
@@ -221,7 +237,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
   // highlight-end
 })
 export class BookListComponent implements OnInit, OnDestroy {
-  books: Book[];
+  books: Book[] = [];
 
   constructor(
     private bookService: BookService,
@@ -252,16 +268,15 @@ export class BookListComponent implements OnInit, OnDestroy {
 }
 ```
 
-Note that when using a custom operator the `ngOnDestroy` lifecycle hook needs to be implemented or it will instantly throw an error.
+Note that when using a custom operator the `ngOnDestroy` lifecycle hook needs to be implemented otherwise it will instantly throw an error.
 
 ## Some rules to follow
 
 - Avoid logic in `.subscribe()`.
 - Avoid subscription in services.
 - Avoid nested subscribes.
-- Don’t pass streams to components directly to decouple components.
-- Use `book$ | async as book` to minimize view subscriptions.
-- Delegate subscription management as much as you can.
+- Use `books$ | async as books` to minimize view subscriptions.
+- Delegate subscriptions management as much as you can.
 
 `oembed: https://twitter.com/Michael_Hladky/status/1180316203937681410`
 
