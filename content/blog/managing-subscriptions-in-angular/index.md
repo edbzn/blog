@@ -27,7 +27,7 @@ There are many ways to manage Subscriptions in Angular. The following example us
 
 Next to this imagine we want to display this list and automatically update the view whenever the Observable emits a change.
 
-#### ❌ Common pitfall
+#### 👎🏼 Common pitfall
 
 Let's start by the bad way, this implementation has a memory leak.
 
@@ -63,7 +63,7 @@ export class BookListComponent implements OnInit {
 
 When this component is destroyed the Observable keeps running forever, consuming more resources each time the component is recreated.
 
-#### 👎🏼 Referenced Subscription
+#### 👍🏼 Referenced Subscription
 
 To fix the leak there is a common approach using a Subscription reference.
 
@@ -109,7 +109,7 @@ export class BookListComponent implements OnInit, OnDestroy {
 
 The Subscription is manually managed and requires some extra work from the developer. This implementation looses the reactivity in favor of imperative programming with side-effects which is exactly what we want to avoid.
 
-#### 👎🏼 Subject + takeUntil
+#### 👍🏼👍🏼 private subject + takeUntil
 
 An other approach is to use a `Subject` to notify whenever the component is destroyed in combination with `takeUntil` operator to cleanup the Observable execution.
 
@@ -154,11 +154,11 @@ export class BookListComponent implements OnInit, OnDestroy {
 }
 ```
 
-This implementation still looks bad because some extra logic needs to be added to cleanup the Observable execution.
-
 > Note that we don't need to call `this._destroy$.complete()` when component is destroyed because a Subject with no subscriber is just a function.
 
-#### 👍🏼 Async pipe
+This implementation still needs some extra logic to cleanup the Observable execution but we can handle many Subscriptions by using `takeUntil(this._destroy$)` operator.
+
+#### 👍🏼👍🏼👍🏼 Async pipe
 
 Angular natively comes with the powerful `async` pipe to manage view Subscriptions effortlessly.
 
@@ -191,9 +191,9 @@ export class BookListComponent {
 }
 ```
 
-This approach removes a lot of code and looks significantly better. I want to emphases that it's important to minimize view subscriptions using the `as` keyword.
+This approach removes a lot of code and looks significantly better. I want to emphasize that it's important to minimize view subscriptions using the `as` keyword.
 
-Sometimes we need more than one Subscription in the view context. In this case instead doing this.
+Sometimes we need more than one Subscription in the view context. In this case instead of doing this imbrication.
 
 ```html
 <ng-container *ngIf="book$ | async as book">
@@ -206,12 +206,43 @@ Sometimes we need more than one Subscription in the view context. In this case i
 Consider the following for readability.
 
 ```html
-<div *ngIf="{ book: book$ | async, category: category$ | async } as vm;">
+<div *ngIf="{ book: book$ | async, category: category$ | async } as vm">
   {{ vm.book.title }} {{ vm.category.name }}
 </div>
 ```
 
-#### 👍🏼 Operator + Decorator (voodoo magic)
+Or even better, you can combine streams before you subscribe.
+
+```ts
+@Component({
+  selector: 'book-list',
+  template: `
+    <div *ngIf="bookWithCategory$ | async as vm">
+      {{ vm.book.title }} {{ vm.category.name }}
+    </div>
+  `,
+})
+export class BookListComponent {
+  // highlight-start
+  bookWithCategory$ = combineLatest([
+    this.bookService.book$,
+    this.categoryService.category$,
+  ]).pipe(
+    map(([book, category]) => ({
+      book,
+      category,
+    }))
+  );
+  // highlight-end
+
+  constructor(
+    private bookService: BookService,
+    private categoryService: CategoryService
+  ) {}
+}
+```
+
+#### 👍🏼👍🏼👍🏼 Operator + Decorator (voodoo magic)
 
 An other way to manage Subscriptions is to use a dedicated operator or decorator or both. There are a bunch of libraries offering these kind of utils such as:
 
@@ -268,16 +299,16 @@ export class BookListComponent implements OnInit, OnDestroy {
 }
 ```
 
-Note that when using a custom operator the `ngOnDestroy` lifecycle hook needs to be implemented otherwise it will instantly throw an error.
+Note that when using this custom operator the `ngOnDestroy` lifecycle hook needs to be implemented otherwise it will instantly throw an error.
 
-## Some rules to follow
+## Some best practices to follow
 
 - Avoid logic in `.subscribe()`.
 - Avoid subscription in services.
 - Avoid nested subscribes.
 - Use `books$ | async as books` to minimize view subscriptions.
-- Delegate subscriptions management as much as you can.
+- Delegate Subscriptions management as much as you can.
 
 `oembed: https://twitter.com/Michael_Hladky/status/1180316203937681410`
 
-I would close this post with this smart quote from Michael Hladky. I strongly suggest you to follow this guy if you're interested in the Reactive X world, he's consistently publishing interesting stuff.
+I will close this post with this smart quote from Michael Hladky. I strongly suggest you to follow this guy if you're interested in the Reactive X world, he's consistently publishing interesting stuff.
