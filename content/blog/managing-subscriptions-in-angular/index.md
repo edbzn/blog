@@ -191,32 +191,16 @@ Consider the following for readability.
 </div>
 ```
 
-Or even better, you can combine streams in the component using operators and subscribe to one Observable in the view.
+// @todo stuff about shareReplay({ refCount: 1, })
 
-```ts
-@Component({
-  selector: 'book-list',
-  template: `
-    <div *ngIf="bookWithCategory$ | async as vm">
-      {{ vm.book.title }} {{ vm.category.name }}
-    </div>
-  `,
-})
-export class BookListComponent {
-  // highlight-start
-  bookWithCategory$ = combineLatest([ // <- Combine book and category
-    this.bookService.book$,
-    this.categoryService.category$,
-  ]).pipe(
-    map(([book, category]) => ({ // <- Map to an object for convenience
-      book,
-      category,
-    }))
-  );
-  // highlight-end
-
-  /* ... */
-}
+```html
+<div>{{ (books$ | async)?.length }}</div>
+<ul *ngIf="books$ | async as books">
+  <li *ngFor="let book of books">
+    // highlight-end
+    {{ book.title }}
+  </li>
+</ul>
 ```
 
 #### 👍🏼👍🏼👍🏼 Operator + Decorator (voodoo magic)
@@ -270,15 +254,73 @@ Using this annotation we don't care about subscriptions anymore, which is good t
 
 ## Some best practices to follow
 
-// @todo add examples
+✖️ Avoid nested `.subscribe()`.
 
-- Avoid nested subscribes.
-- Avoid code in constructor.
-- Avoid logic in `.subscribe()`.
-- Avoid subscription in services.
-- Use `books$ | async as books` to minimize view subscriptions.
-- Delegate Subscriptions management as much as you can.
+```ts
+observableA().subscribe(result => {
+  observableB(result).subscribe(success => {
+    /* ... */
+  });
+});
+```
+
+✔️ Consider flattening operators instead.
+
+```ts
+observableA()
+  .pipe(mergeMap(result => observableB(result)))
+  .subscribe(success => {
+    /* ... */
+  });
+```
+
+✖️ Avoid `.subscribe()` in constructors.
+
+```ts
+@Component({
+  /* ... */
+})
+export class BookListComponent {
+  private _subscription: Subscription;
+  books: Book[] = [];
+
+  constructor(private bookService: BookService) {
+    this._subscription = this.bookService.availableBooks$.subscribe(books => {
+      this.books = books;
+    });
+  }
+}
+```
+
+✔️ Use lifecycle hooks instead.
+
+```ts
+@Component({
+  /* ... */
+})
+export class BookListComponent implements OnInit {
+  private _subscription: Subscription;
+  books: Book[] = [];
+
+  constructor(private bookService: BookService) {}
+
+  ngOnInit(): void {
+    this._subscription = this.bookService.availableBooks$.subscribe(books => {
+      this.books = books;
+    });
+  }
+}
+```
+
+✖️ Avoid logic in `.subscribe()`.
+
+```ts
+```
+
+Avoid subscription in services.
+Use `books$ | async as books` to minimize view subscriptions.
+Delegate Subscriptions management as much as you can.
 
 `oembed: https://twitter.com/Michael_Hladky/status/1180316203937681410`
 
-I will close this post with this smart quote from Michael Hladky. I strongly suggest you to follow this guy if you're interested in the Reactive X world, he's consistently publishing interesting stuff.
+I will close this post with this smart quote from Michael Hladky.
