@@ -7,8 +7,8 @@ module.exports = {
       "I'm Edouard Bozon, I live in Lyon, France. I play almost everyday with Angular and Node. I focus my work on building better JavaScript apps and contributing to open source. Looking for a passionate developer? Let's talk together.",
     siteUrl: `https://www.codamit.dev`,
     social: {
-      twitter: `https://twitter.com/edouardbozon`,
-      github: `https://github.com/edouardbozon`,
+      twitter: `https://twitter.com/edbzn`,
+      github: `https://github.com/edbzn`,
       linkedin: `https://www.linkedin.com/in/edouardbozon`,
       mail: `bozonedouard@gmail.com`,
     },
