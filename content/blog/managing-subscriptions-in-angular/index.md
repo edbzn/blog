@@ -1,6 +1,6 @@
 ---
 title: Managing subscriptions in Angular
-date: '2019-12-10T12:13:45.573Z'
+date: '2019-12-14T00:00:00.000Z'
 ---
 
 Observables are everywhere in Angular and a lot of stuff operates using them. In fact **they are used to know when and what to do**.
@@ -12,6 +12,8 @@ Before jumping in the main subject let's define the Subscription. A Subscription
 By default Observables are lazy, which means they don't produce any value before the system `.subscribe()` to them. Once the system subscribes, the Observable can start pushing values to the connected Observer.
 
 As we usually do with event listeners or `setInterval()` function, the Observable execution needs to be stopped to avoid memory leaks. The Subscription has one important method `.unsubscribe()` that disposes the resource.
+
+![Demo unsubscribe](./demo.png)
 
 We usually think that memory leaks are hidden and imperceptible. It's completely wrong, in the real world the application becomes quickly unusable before it crashes. This problem directly affects final users and results in a poor experience.
 
@@ -45,7 +47,8 @@ export class BookListComponent implements OnInit {
 
   ngOnInit(): void {
     // highlight-start
-    this.bookService.availableBooks$.subscribe(list => { // <- memory leak
+    this.bookService.availableBooks$.subscribe(list => {
+      // <- memory leak
       // highlight-end
       this.books = list;
     });
@@ -197,8 +200,7 @@ Consider the following for readability.
 <div>{{ (books$ | async)?.length }}</div>
 <ul *ngIf="books$ | async as books">
   <li *ngFor="let book of books">
-    // highlight-end
-    {{ book.title }}
+    // highlight-end {{ book.title }}
   </li>
 </ul>
 ```

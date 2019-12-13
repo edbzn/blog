@@ -1,6 +1,6 @@
 ---
 title: Reusable layouts in Angular
-date: '2019-11-16T12:13:45.573Z'
+date: '2019-11-16T00:00:00.000Z'
 ---
 
 When building JavaScript applications we usually separate components in different layers, each one responsible of its own concern. You've certainly heard about presentational components, container components, or the less well known, layout components?

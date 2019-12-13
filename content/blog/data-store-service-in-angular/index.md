@@ -1,6 +1,6 @@
 ---
 title: Data store service in Angular
-date: '2018-12-10T12:13:45.573Z'
+date: '2018-12-10T00:00:00.000Z'
 ---
 
 Managing state is challenging when building modern web applications.

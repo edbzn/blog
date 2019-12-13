@@ -1,6 +1,6 @@
 ---
 title: Building a store using React and Meiosis
-date: '2019-03-13T22:40:32.169Z'
+date: '2019-03-13T00:00:00.000Z'
 ---
 
 We're going to create a store using React and [Meiosis](https://meiosis.js.org/).
