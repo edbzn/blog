@@ -5,7 +5,7 @@ date: '2019-12-14T00:00:00.000Z'
 
 Observables are everywhere in Angular and a lot of stuff operates using them. In fact **they are used to know when and what to do**.
 
-Before jumping in the main subject let's define the Subscription. A Subscription represents the connection between an Observable and an Observer. It's an object that **holds the Observable execution**.
+Before jumping let's have a look to the Subscription. A Subscription represents the connection between an Observable and an Observer. It's an object that **holds the Observable execution**.
 
 ![Subscription schema](./subscription.png)
 
@@ -15,13 +15,15 @@ As we usually do with event listeners or `setInterval()` function, the Observabl
 
 ![Demo unsubscribe](./demo.png)
 
-We usually think that memory leaks are hidden and imperceptible. It's completely wrong, in the real world the application becomes quickly unusable before it crashes. This problem directly affects final users and results in a poor experience.
+People usually think that memory leaks are hidden and imperceptible. By the way it's wrong. In real world applications this cause weird behaviors, before it entirely crashes.
 
 ![Beer leak](./beer.gif)
 
+At the end it affects and degrades the whole user's experience , that's why managing Subscription is quite critical.
+
 ## Concretely in Angular
 
-There are many ways to manage Subscriptions in Angular. The following example uses a `BookService` which exposes a long-lived Observable `availableBooks$` that emits available books in real time.
+In Angular Subscriptions live close to the component lifecycle. In the following example the `BookService` exposes a long-lived Observable `availableBooks$` that emits available books in real time.
 
 Next to this imagine we want to display this list and automatically update the view whenever the Observable emits a change in the books list.
 
@@ -47,8 +49,7 @@ export class BookListComponent implements OnInit {
 
   ngOnInit(): void {
     // highlight-start
-    this.bookService.availableBooks$.subscribe(list => {
-      // <- memory leak
+    this.bookService.availableBooks$.subscribe(list => { // <- memory leak
       // highlight-end
       this.books = list;
     });
@@ -56,11 +57,11 @@ export class BookListComponent implements OnInit {
 }
 ```
 
-The Observable keeps running forever in the background even when the component is destroyed. Each time component is recreated the leak becomes bigger.
+The Observable keeps running forever in the background even when the component is destroyed. Each time component is recreated the leak becomes much bigger.
 
 #### 👍🏼 Referenced Subscription
 
-To avoid memory leaks the most common approach is using a Subscription reference.
+To avoid memory leaks the most common approach is to use a reference to the Subscription to `.unsubscribe()` when component get destroyed.
 
 ```ts
 @Component({
@@ -98,7 +99,7 @@ export class BookListComponent implements OnInit, OnDestroy {
 }
 ```
 
-Here the Subscription is manually managed and requires some extra work from the developer. Moreover this implementation looses the reactivity in favor of imperative programming with side-effects which is exactly what we want to avoid.
+Here the Subscription is manually managed. It requires some extra work from the developer. Moreover this implementation looses the reactivity in favor of imperative programming with side-effects which is exactly what we want to avoid.
 
 #### 👍🏼👍🏼 private subject + takeUntil
 
