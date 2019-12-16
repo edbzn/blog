@@ -17,7 +17,7 @@
     "gatsby-plugin-react-helmet": "3.1.18",
     "gatsby-plugin-remove-trailing-slashes": "2.1.17",
     "gatsby-plugin-robots-txt": "1.5.0",
-    "gatsby-plugin-sharp": "2.3.7",
+    "gatsby-plugin-sharp": "2.3.8",
     "gatsby-plugin-sitemap": "2.2.24",
     "gatsby-plugin-typography": "2.3.20",
     "gatsby-remark-autolink-headers": "2.1.21",
