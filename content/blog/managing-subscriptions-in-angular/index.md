@@ -1,35 +1,37 @@
 ---
 title: Managing subscriptions in Angular
-date: '2019-12-14T00:00:00.000Z'
+date: '2019-12-18T00:00:00.000Z'
 ---
 
-Observables are everywhere in Angular and a lot of stuff operates using them. In fact **they are used to know when and what to do**.
+Observables are everywhere in Angular, a lot of stuff operates using them. In fact **they are used to know when and what to do**.
 
-Before jumping let's have a look to the Subscription. A Subscription represents the connection between an Observable and an Observer. It's an object that **holds the Observable execution**.
+Let's have a look to the Subscription.
+
+A Subscription represents the connection between an Observable and an Observer. **It's an object that holds the Observable execution**.
 
 ![Subscription schema](./subscription.png)
 
-By default Observables are lazy, which means they don't produce any value before the system `.subscribe()` to them. Once the system subscribes, the Observable can start pushing values to the connected Observer.
+By default Observables are lazy, which means **they don't produce any value before the system subscribe to them**. Once the system subscribes, the Observable start emitting values over time to the connected Observer.
 
-As we usually do with event listeners or `setInterval()` function, the Observable execution needs to be stopped to avoid memory leaks. The Subscription has one important method `.unsubscribe()` that disposes the resource.
+As we usually do with standard functions like `removeEventListener()` or `clearInterval()` we also need to cleanup the Observable execution to avoid memory leaks.
 
 ![Demo unsubscribe](./demo.png)
 
-People usually think that memory leaks are hidden and imperceptible. By the way it's wrong. In real world applications this cause weird behaviors, before it entirely crashes.
+The Subscription has one important method `.unsubscribe()` that stop the Observable execution and dispose the resource.
+
+We usually think that memory leaks are hidden or imperceptible. Obviously it's wrong. At the end it heavily degrades user's experience, causing weird behaviors, or crashing the whole application.
 
 ![Beer leak](./beer.gif)
 
-At the end it affects and degrades the whole user's experience , that's why managing Subscription is quite critical.
+Managing subscriptions is mandatory when dealing with Angular.
 
 ## Concretely in Angular
 
-In Angular Subscriptions live close to the component lifecycle. In the following example the `BookService` exposes a long-lived Observable `availableBooks$` that emits available books in real time.
-
-Next to this imagine we want to display this list and automatically update the view whenever the Observable emits a change in the books list.
+In Angular Subscriptions live close to the component lifecycle. In the following example the `BookService` exposes a long-lived Observable `availableBooks$` that we will use to illustrate the subject.
 
 #### 👎🏼 Common pitfall
 
-Let's start by the bad way, this implementation has a memory leak.
+Let's start by the memory leak example, here the Observable is subscribed but we intentionally forgot cleaning the Subscription.
 
 ```ts
 @Component({
@@ -57,11 +59,11 @@ export class BookListComponent implements OnInit {
 }
 ```
 
-The Observable keeps running forever in the background even when the component is destroyed. Each time component is recreated the leak becomes much bigger.
+When `BookListComponent` get destroyed the `availableBooks$` Observable keeps running in the background. Each time component is recreated the leak becomes bigger.
 
 #### 👍🏼 Referenced Subscription
 
-To avoid memory leaks the most common approach is to use a reference to the Subscription to `.unsubscribe()` when component get destroyed.
+To avoid memory leaks the most common approach is to use a referenced Subscription to be able to call the `.unsubscribe()` method when the component get destroyed.
 
 ```ts
 @Component({
@@ -99,11 +101,11 @@ export class BookListComponent implements OnInit, OnDestroy {
 }
 ```
 
-Here the Subscription is manually managed. It requires some extra work from the developer. Moreover this implementation looses the reactivity in favor of imperative programming with side-effects which is exactly what we want to avoid.
+This requires extra work to clear the Observable execution. Moreover this approach is imperative, and we can do better.
 
 #### 👍🏼👍🏼 private subject + takeUntil
 
-An other approach is to use a `Subject` to notify whenever the component is destroyed in combination with `takeUntil` operator to cleanup the Observable execution.
+An other common approach is to use a `Subject` in combination with the `takeUntil` operator to notify whenever the component get destroyed to cleanup the Observable execution.
 
 ```ts
 @Component({
@@ -142,16 +144,17 @@ export class BookListComponent implements OnInit, OnDestroy {
 }
 ```
 
-Note that we don't need to call `this._destroy$.complete()` when component is destroyed because a Subject with no subscriber is just a function.
+Note that we don't need to call `.complete()` method because a Subject with no subscriber is just a function.
 
-This implementation still needs some extra logic to cleanup the Observable execution but we can handle many Subscriptions using one single operator.
+This implementation still needs some extra work but we can handle many Subscriptions using one single operator.
 
 #### 👍🏼👍🏼👍🏼 Async pipe
 
-Angular natively comes with the powerful `async` pipe to manage view Subscriptions effortlessly.
+Angular natively comes with the powerful `async` pipe to effortlessly manage view Subscriptions.
 
 - No extraneous component property.
 - Automated subscription management.
+- Automated change detection even with `OnPush`.
 
 ```ts
 @Component({
@@ -175,7 +178,7 @@ export class BookListComponent {
 }
 ```
 
-This approach removes a lot of code and looks significantly better. It's important to minimize view subscriptions using the `as` keyword.
+This approach removes a lot of code and looks significantly better. Note that it's important to minimize view subscriptions using the `as` keyword.
 
 Sometimes we need more than one Subscription in the view context. In this case instead of doing this imbrication.
 
@@ -195,7 +198,20 @@ Consider the following for readability.
 </div>
 ```
 
-// @todo stuff about shareReplay({ refCount: 1, })
+Or using the `shareReplay` operator we can multicast the Observable.
+
+```ts
+@Component({ /* ... */ })
+export class BookListComponent {
+  // highlight-start
+  books$: Observable<Book[]> = this.bookService.availableBooks$.pipe(
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+  // highlight-end
+}
+```
+
+An now we can handle many Subscriptions by sharing them.
 
 ```html
 <div>{{ (books$ | async)?.length }}</div>
@@ -206,9 +222,9 @@ Consider the following for readability.
 </ul>
 ```
 
-#### 👍🏼👍🏼👍🏼 Operator + Decorator (voodoo magic)
+#### 👍🏼👍🏼👍🏼 Third party garbage collector
 
-An other way to manage Subscriptions is to use a dedicated operator or decorator or both. There are a bunch of libraries offering these kind of utils such as:
+An other way to manage Subscriptions is to use a dedicated library that do it for us. There are a bunch of libraries offering these kind of utils such as:
 
 - [Mindspace-io rxjs-utils](https://github.com/ThomasBurleson/mindspace-utils/blob/master/lib/utils/src/lib/rxjs/README.md)
 - [Wishtack Rx-Scavenger](https://github.com/wishtack/wishtack-steroids/tree/master/packages/rx-scavenger)
@@ -253,7 +269,7 @@ export class BookListComponent implements OnInit {
 }
 ```
 
-Using this annotation we don't care about subscriptions anymore, which is good to avoid doing mistakes. The decorator manage the subscription for us.
+Using this approach we don't care about subscriptions anymore, which is good to avoid doing mistakes. The decorator manage Subscriptions for us.
 
 ## Some best practices to follow
 
@@ -280,9 +296,7 @@ observableA()
 ✖️ Avoid `.subscribe()` in constructors.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class BookListComponent {
   private _subscription: Subscription;
   books: Book[] = [];
@@ -298,9 +312,7 @@ export class BookListComponent {
 ✔️ Use lifecycle hooks instead.
 
 ```ts
-@Component({
-  /* ... */
-})
+@Component({/* ... */})
 export class BookListComponent implements OnInit {
   private _subscription: Subscription;
   books: Book[] = [];
@@ -320,7 +332,20 @@ export class BookListComponent implements OnInit {
 ```ts
 ```
 
-Avoid subscription in services.
+✖️ Avoid subscription in services.
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class SomeService {
+  currentValue: string;
+  constructor() {
+    this.getSomeObservable().subscribe(value => {
+      this.currentValue = value;
+    });
+  }
+}
+```
+
 Use `books$ | async as books` to minimize view subscriptions.
 Delegate Subscriptions management as much as you can.
 
