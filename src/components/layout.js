@@ -75,7 +75,8 @@ class Layout extends React.Component {
         <main style={{ marginTop: rhythm(1) }}>{children}</main>
         <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
           <div style={{ textAlign: 'center' }}>
-            © {new Date().getFullYear()} - <strong>{title}</strong> - {author} -
+            © {new Date().getFullYear()} - <strong>{title}</strong> - 
+            <a href="https://twitter.com/edbzn">@edbzn</a> -
             <a
               href="/rss.xml"
               style={{
