@@ -7,7 +7,7 @@ When building JavaScript applications we usually separate components in differen
 
 > Let me try to explain, what is a layout component in Angular, and how to build modular applications using this technique.
 
-Layout components are used to hold common layout composition. This design enables to reuse layouts across different parts of your application. It will also simplify underlying components and enforce the single responsibility principle.
+Layout components are used to hold common layout composition. This design enables reusing layouts across different parts of your application. It also simplify underlying components template and enforce the single responsibility principle.
 
 ## The view layer architecture
 

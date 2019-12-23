@@ -1,6 +1,6 @@
 ---
 title: Managing subscriptions in Angular
-date: '2019-12-18T00:00:00.000Z'
+date: '2019-12-22T00:00:00.000Z'
 ---
 
 > This blog post was originally a talk I gave at [Angular Lyon meetup](https://www.meetup.com/fr-FR/Angular-Lyon/). Subscribe for further cool events.
@@ -196,7 +196,7 @@ Consider the following for readability.
 </div>
 ```
 
-An other problem is when the Observable imply an heavy computation that we need to use at some different places. For example the Observable make an XHR request to get some data.
+An other problem is when the Observable implies an heavy computation needed at some different places. For example the Observable makes an XHR request to get some data.
 
 ```html
 <div *ngIf="(books$ | async)?.length as length">
