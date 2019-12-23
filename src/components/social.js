@@ -10,9 +10,8 @@ export const Social = ({ social }) => {
   return (
     <>
       <a
-        target="_blank"
-        rel="noopener noreferrer"
         href={social.twitter}
+        title="@edbzn on Twitter"
         style={{ marginRight: rhythm(0.5), boxShadow: 'none' }}
       >
         <img
@@ -22,9 +21,8 @@ export const Social = ({ social }) => {
         />
       </a>
       <a
-        target="_blank"
-        rel="noopener noreferrer"
         href={social.github}
+        title="@edbzn on GitHub"
         style={{ marginRight: rhythm(0.5), boxShadow: 'none' }}
       >
         <img
@@ -34,20 +32,21 @@ export const Social = ({ social }) => {
         />
       </a>
       <a
-        target="_blank"
-        rel="noopener noreferrer"
         href={social.linkedin}
+        title="@edouardbozon on LinkedIn"
         style={{ marginRight: rhythm(0.5), boxShadow: 'none' }}
       >
         <img
           src={linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
           alt="Linkedin profile"
           style={{ display: 'inline-block', width: 24, marginBottom: 0 }}
         />
       </a>
-      <a href={'mailto:' + social.mail} style={{ boxShadow: 'none' }}>
+      <a
+        title="Email me"
+        href={'mailto:' + social.mail}
+        style={{ boxShadow: 'none' }}
+      >
         <img
           src={gmail}
           alt="Email me"
