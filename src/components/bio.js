@@ -24,6 +24,7 @@ const Bio = () => {
             github
             linkedin
             mail
+            devto
           }
         }
       }

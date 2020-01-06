@@ -43,6 +43,30 @@ p > img {
   padding: 0 1rem;
 }
 
+.socials {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 38%;
+}
+
+.socials img {
+  width: 26px;
+  max-width: 26px;
+  max-height: 26px;
+  margin: 0;
+}
+
+.socials a {
+  display: block;
+  box-shadow: none;
+  transition: all 200ms ease;
+}
+
+.socials a:hover {
+  transform: scale(1.14);
+}
+
 @media screen and (max-width: 640px) {
   .bio {
     flex-direction: column;

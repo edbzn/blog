@@ -10,6 +10,7 @@ module.exports = {
       twitter: `https://twitter.com/edbzn`,
       github: `https://github.com/edbzn`,
       linkedin: `https://www.linkedin.com/in/edouardbozon`,
+      devto: `https://dev.to/edbzn`,
       mail: `bozonedouard@gmail.com`,
     },
   },
