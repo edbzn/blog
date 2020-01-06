@@ -8,7 +8,7 @@ import { Social } from './social';
 const Bio = () => {
   const data = useStaticQuery(graphql`
     query BioQuery {
-      avatar: file(absolutePath: { regex: "/me.jpeg/" }) {
+      avatar: file(absolutePath: { regex: "/me.jpg/" }) {
         childImageSharp {
           fixed(width: 300) {
             ...GatsbyImageSharpFixed
