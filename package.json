@@ -1,8 +1,8 @@
 {
-  "name": "blog",
-  "private": false,
-  "description": "Tech blog about web technologies",
-  "version": "0.1.0",
+  "name": "codamit.dev",
+  "private": true,
+  "description": "Source code for the tech blog https://www.codamit.dev",
+  "version": "0.0.0",
   "author": "Edouard Bozon <bozonedouard@gmail.com>",
   "dependencies": {
     "gatsby": "2.18.21",
