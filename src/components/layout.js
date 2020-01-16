@@ -1,7 +1,7 @@
 import { Link } from 'gatsby';
 import React from 'react';
 
-import rss from '../../content/assets/icons/rss.svg';
+import rss from '../../static/icons/rss.svg';
 import { rhythm } from '../utils/typography';
 
 class Layout extends React.Component {
@@ -75,7 +75,7 @@ class Layout extends React.Component {
         <main style={{ marginTop: rhythm(1) }}>{children}</main>
         <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
           <div style={{ textAlign: 'center' }}>
-            © {new Date().getFullYear()} - <strong>{title}</strong> - 
+            © {new Date().getFullYear()} - <strong>{title}</strong> -
             <a href="https://twitter.com/edbzn">@edbzn</a> -
             <a
               href="/rss.xml"

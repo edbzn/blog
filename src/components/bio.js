@@ -8,7 +8,7 @@ import { Social } from './social';
 const Bio = () => {
   const data = useStaticQuery(graphql`
     query BioQuery {
-      avatar: file(absolutePath: { regex: "/me.jpg/" }) {
+      avatar: file(absolutePath: { regex: "/images/me.jpg/" }) {
         childImageSharp {
           fixed(width: 300) {
             ...GatsbyImageSharpFixed
@@ -32,6 +32,7 @@ const Bio = () => {
   `);
 
   const { author, social, authorDescription } = data.site.siteMetadata;
+  console.log(data.avatar);
   return (
     <div
       className="bio"

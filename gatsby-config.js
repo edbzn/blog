@@ -25,8 +25,8 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/content/assets`,
-        name: `assets`,
+        path: `${__dirname}/static/images`,
+        name: `images`,
       },
     },
     {
@@ -125,12 +125,12 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `codamit.dev`,
-        short_name: `codamit.dev`,
+        short_name: `codamit`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#007acc`,
         display: `minimal-ui`,
-        icon: `content/assets/me.jpg`,
+        icon: `static/icons/icon-512x512.png`,
       },
     },
     `gatsby-plugin-offline`,
