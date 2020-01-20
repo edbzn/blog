@@ -128,7 +128,7 @@ module.exports = {
         short_name: `codamit`,
         start_url: `/`,
         background_color: `#ffffff`,
-        theme_color: `#007acc`,
+        theme_color: `#000000`,
         display: `minimal-ui`,
         icon: `static/icons/icon-512x512.png`,
       },
@@ -157,5 +157,12 @@ module.exports = {
       },
     },
     `gatsby-plugin-remove-trailing-slashes`,
+    {
+      resolve: `gatsby-plugin-nprogress`,
+      options: {
+        color: `#000000`,
+        showSpinner: false,
+    },
+  },
   ],
 };
