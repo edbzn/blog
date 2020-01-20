@@ -32,7 +32,7 @@ const Bio = () => {
   `);
 
   const { author, social, authorDescription } = data.site.siteMetadata;
-  console.log(data.avatar);
+
   return (
     <div
       className="bio"

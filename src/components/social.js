@@ -7,7 +7,7 @@ import gmail from '../../static/icons/gmail.svg';
 
 export const Social = ({ social }) => {
   return (
-    <div class="socials">
+    <div className="socials">
       <a href={social.twitter} title="@edbzn on Twitter">
         <img src={twitter} alt="Twitter profile" />
       </a>
