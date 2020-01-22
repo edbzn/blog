@@ -28,8 +28,10 @@ But imagine a real case scenario where we need to perform a side effect operatio
 
 ```ts
 class BookDAO {
-  static create({ title, description }): Promise<Book> {
-    return DB.create({ title, description }); // 👈 Book created eagerly
+  static create({ title, description }): Observable<Book> {
+    return from(
+      DB.create({ title, description } // 👈 Book created eagerly
+    );
   }
 }
 
@@ -48,9 +50,10 @@ To fix this issue we need to `defer` the operation, for creating the observable 
 ```ts
 class BookDAO {
   static create({ title, description }): Observable<Book> {
-    return defer(() => { 
-      return DB.create({ title, description }); // 👈 Book creation is deferred
-    });
+    return defer(() => from(
+        DB.create({ title, description }) // 👈 Book creation is deferred
+      );
+    );
   }
 }
 
