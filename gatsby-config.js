@@ -162,7 +162,7 @@ module.exports = {
       options: {
         color: `#000000`,
         showSpinner: true,
+      },
     },
-  },
   ],
 };

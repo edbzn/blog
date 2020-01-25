@@ -51,7 +51,8 @@ export class BookListComponent implements OnInit {
 
   ngOnInit(): void {
     // highlight-start
-    this.bookService.availableBooks$.subscribe(list => { // <- memory leak
+    this.bookService.availableBooks$.subscribe(list => {
+      // <- memory leak
       // highlight-end
       this.books = list;
     });
@@ -212,7 +213,9 @@ An other problem is when the Observable implies an heavy computation needed at s
 Using the pipe async at two different places will re-execute the XHR request twice. In this case the solution is to share the Subscription.
 
 ```ts
-@Component({ /* ... */ })
+@Component({
+  /* ... */
+})
 export class BookListComponent {
   books$: Observable<Book[]> = this.http
     .get('http://api.book.com')
