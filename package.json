@@ -41,6 +41,8 @@
     "typography-theme-wordpress-2016": "0.16.19"
   },
   "devDependencies": {
+    "husky": ">=1",
+    "lint-staged": ">=8",
     "prettier": "1.19.1"
   },
   "license": "CC-BY-SA-4.0",
@@ -52,5 +54,16 @@
     "start": "yarn develop",
     "serve": "gatsby serve",
     "heroku-postbuild": "yarn build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
