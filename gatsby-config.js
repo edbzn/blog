@@ -164,5 +164,11 @@ module.exports = {
         showSpinner: true,
       },
     },
+    {
+      resolve: `gatsby-source-instagram`,
+      options: {
+        username: `edbzn`,
+      },
+    },
   ],
 };

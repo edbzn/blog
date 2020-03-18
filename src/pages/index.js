@@ -9,9 +9,11 @@ import { rhythm } from '../utils/typography';
 class BlogIndex extends React.Component {
   render() {
     const { data } = this.props;
-    const siteTitle = data.site.siteMetadata.title;
-    const { social, author } = this.props.data.site.siteMetadata;
-    const posts = data.allMarkdownRemark.edges;
+    const { siteMetadata } = data.site;
+    const siteTitle = siteMetadata.title;
+    const { social, author } = siteMetadata;
+    const blogPosts = data.allMarkdownRemark.edges;
+    const instagramPosts = data.allInstaNode.edges;
 
     return (
       <Layout
@@ -22,8 +24,8 @@ class BlogIndex extends React.Component {
       >
         <SEO title="All posts" />
         <Bio />
-        <div style={{ marginTop: rhythm(2) }}>
-          {posts.map(({ node }) => {
+        <section style={{ marginTop: rhythm(2) }}>
+          {blogPosts.map(({ node }) => {
             const title = node.frontmatter.title || node.fields.slug;
             return (
               <article
@@ -44,7 +46,31 @@ class BlogIndex extends React.Component {
               </article>
             );
           })}
-        </div>
+        </section>
+        <section
+          style={{
+            marginTop: rhythm(2),
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            alignContent: 'space-around',
+          }}
+        >
+          {instagramPosts.map(({ node }) => (
+            <a href={node.original} key={node.id} style={{ boxShadow: 'none' }}>
+              <img
+                style={{
+                  maxWidth: 150,
+                  maxHeight: 200,
+                  margin: 0,
+                }}
+                src={node.preview}
+                alt={node.caption}
+              />
+            </a>
+          ))}
+        </section>
       </Layout>
     );
   }
@@ -54,6 +80,17 @@ export default BlogIndex;
 
 export const pageQuery = graphql`
   query {
+    allInstaNode {
+      edges {
+        node {
+          id
+          preview
+          original
+          timestamp
+          caption
+        }
+      }
+    }
     site {
       siteMetadata {
         title
