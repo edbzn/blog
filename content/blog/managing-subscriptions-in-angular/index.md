@@ -51,8 +51,7 @@ export class BookListComponent implements OnInit {
 
   ngOnInit(): void {
     // highlight-start
-    this.bookService.availableBooks$.subscribe(list => {
-      // <- memory leak
+    this.bookService.availableBooks$.subscribe((list) => { // <- memory leak
       // highlight-end
       this.books = list;
     });
@@ -86,7 +85,7 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // highlight-start
-    this._subscription = this.bookService.availableBooks$.subscribe(books => {
+    this._subscription = this.bookService.availableBooks$.subscribe((books) => {
       // highlight-end
       this.books = books;
     });
@@ -127,7 +126,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.bookService.availableBooks$
       .pipe(
-        tap(books => {
+        tap((books) => {
           this.books = books;
         }),
         takeUntil(this._destroy$) // highlight-line
@@ -257,7 +256,7 @@ export class BookListComponent implements OnInit {
   ngOnInit(): void {
     this.books
       .pipe(untilDestroyed(this)) // highlight-line
-      .subscribe(books => (this.books = books));
+      .subscribe((books) => (this.books = books));
   }
 }
 ```

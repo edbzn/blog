@@ -102,7 +102,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidMount(): void {
-    this.props.states.map(state => {
+    this.props.states.map((state) => {
       this.setState(state);
     });
   }

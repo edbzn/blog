@@ -18,7 +18,7 @@ I want to use this function in a pipeline, let's imagine an HTTP based web appli
 ```ts
 fromRoute('/book', 'POST').pipe(
   switchMap(({ title, description }) => createBook({ title, description })),
-  map(book => ({ status: 204, body: book }))
+  map((book) => ({ status: 204, body: book }))
 );
 ```
 

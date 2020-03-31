@@ -22,9 +22,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <router-outlet></router-outlet>
-  `,
+  template: ` <router-outlet></router-outlet> `,
 })
 export class AppComponent {}
 ```
@@ -43,7 +41,7 @@ export const APP_ROUTES: Route[] = [
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
 
   /* No layout routes */

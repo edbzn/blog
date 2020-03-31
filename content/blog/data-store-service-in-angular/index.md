@@ -55,7 +55,7 @@ export class BookStore {
   getBooks(): Observable<Book[]> {
     return this.bookService
       .getBooks()
-      .pipe(tap(books => this._books.next(books))); /* 👈🏼 Update the state */
+      .pipe(tap((books) => this._books.next(books))); /* 👈🏼 Update the state */
   }
 }
 ```
