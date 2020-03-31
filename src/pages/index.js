@@ -15,6 +15,8 @@ class BlogIndex extends React.Component {
     const blogPosts = data.allMarkdownRemark.edges;
     const instagramPosts = data.allInstaNode.edges;
 
+    console.log(instagramPosts);
+
     return (
       <Layout
         location={this.props.location}
@@ -58,14 +60,20 @@ class BlogIndex extends React.Component {
           }}
         >
           {instagramPosts.map(({ node }) => (
-            <a href={node.original} key={node.id} style={{ boxShadow: 'none' }}>
+            <a
+              href={node.localFile.childImageSharp.fixed.src}
+              title={node.caption}
+              key={node.id}
+              style={{ boxShadow: 'none' }}
+            >
               <img
                 style={{
-                  maxWidth: 150,
+                  maxWidth: 156,
                   maxHeight: 200,
                   margin: 0,
+                  borderRadius: 4,
                 }}
-                src={node.preview}
+                src={node.localFile.childImageSharp.fixed.src}
                 alt={node.caption}
               />
             </a>
@@ -88,6 +96,13 @@ export const pageQuery = graphql`
           original
           timestamp
           caption
+          localFile {
+            childImageSharp {
+              fixed(width: 400, height: 400) {
+                ...GatsbyImageSharpFixed
+              }
+            }
+          }
         }
       }
     }
