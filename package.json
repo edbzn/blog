@@ -42,7 +42,7 @@
     "typography-theme-wordpress-2016": "0.16.19"
   },
   "devDependencies": {
-    "husky": "4.2.3",
+    "husky": "4.2.5",
     "lint-staged": "10.1.3",
     "prettier": "2.0.4"
   },
