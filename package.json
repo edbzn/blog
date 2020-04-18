@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "husky": "4.2.5",
-    "lint-staged": "10.1.4",
+    "lint-staged": "10.1.5",
     "prettier": "2.0.4"
   },
   "license": "CC-BY-SA-4.0",
