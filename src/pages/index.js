@@ -3,7 +3,7 @@ import React from 'react';
 
 import Bio from '../components/bio';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { SEO } from '../components/seo';
 import { rhythm } from '../utils/typography';
 
 class BlogIndex extends React.Component {
@@ -13,9 +13,6 @@ class BlogIndex extends React.Component {
     const siteTitle = siteMetadata.title;
     const { social, author } = siteMetadata;
     const blogPosts = data.allMarkdownRemark.edges;
-    const instagramPosts = data.allInstaNode.edges;
-
-    console.log(instagramPosts);
 
     return (
       <Layout
@@ -49,36 +46,6 @@ class BlogIndex extends React.Component {
             );
           })}
         </section>
-        <section
-          style={{
-            marginTop: rhythm(2),
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            alignContent: 'space-around',
-          }}
-        >
-          {instagramPosts.map(({ node }) => (
-            <a
-              href={node.localFile.childImageSharp.fixed.src}
-              title={node.caption}
-              key={node.id}
-              style={{ boxShadow: 'none' }}
-            >
-              <img
-                style={{
-                  maxWidth: 156,
-                  maxHeight: 200,
-                  margin: 0,
-                  borderRadius: 4,
-                }}
-                src={node.localFile.childImageSharp.fixed.src}
-                alt={node.caption}
-              />
-            </a>
-          ))}
-        </section>
       </Layout>
     );
   }
@@ -88,24 +55,6 @@ export default BlogIndex;
 
 export const pageQuery = graphql`
   query {
-    allInstaNode {
-      edges {
-        node {
-          id
-          preview
-          original
-          timestamp
-          caption
-          localFile {
-            childImageSharp {
-              fixed(width: 400, height: 400) {
-                ...GatsbyImageSharpFixed
-              }
-            }
-          }
-        }
-      }
-    }
     site {
       siteMetadata {
         title

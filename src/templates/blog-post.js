@@ -4,7 +4,7 @@ import React from 'react';
 
 import Bio from '../components/bio';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { SEO } from '../components/seo';
 import { rhythm } from '../utils/typography';
 
 class BlogPostTemplate extends React.Component {
