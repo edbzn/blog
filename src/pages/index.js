@@ -35,13 +35,30 @@ class BlogIndex extends React.Component {
                   <h3
                     style={{
                       marginTop: 0,
-                      marginBottom: rhythm(1 / 4),
+                      marginBottom: 0,
                     }}
                   >
                     <Link to={node.fields.slug}>{title}</Link>
                   </h3>
-                  <span>{node.frontmatter.date}</span>
                 </header>
+                <section
+                  style={{
+                    marginTop: rhythm(1 / 4),
+                    marginBottom: 0,
+                  }}
+                >
+                  <p
+                    style={{ marginBottom: 0 }}
+                    dangerouslySetInnerHTML={{
+                      __html: node.frontmatter.description || node.excerpt,
+                    }}
+                  />
+                </section>
+                <footer
+                  style={{ marginTop: rhythm(1 / 4), fontWeight: 'lighter' }}
+                >
+                  <span>{node.frontmatter.date}</span>
+                </footer>
               </article>
             );
           })}
