@@ -1,11 +1,15 @@
 module.exports = {
   siteMetadata: {
-    title: `codamit.dev`,
-    author: `Edouard Bozon`,
-    description: `Tech blog about web development, JavaScript ecosystem, best practices, and architectures.`,
-    authorDescription:
-      "I'm Edouard Bozon, I live in Lyon, France. I play almost everyday with Angular and Node. I focus my work on building better JavaScript apps and contributing to open source. Looking for a passionate developer? Let's talk together.",
     siteUrl: `https://www.codamit.dev`,
+    url: 'https://www.codamit.dev',
+    title: 'codamit.dev',
+    titleTemplate: '%s · codamit.dev',
+    author: `Edouard Bozon`,
+    description:
+      "Edouard Bozon's tech blog about web development: Angular, Node.js, TypeScript, Javascript and more!",
+    authorDescription:
+      "I'm Edouard Bozon, I live in Lyon, France. I play almost everyday with Angular and Node. I focus my work on building better JavaScript apps and contributing to open source. I'm currently freelancer.",
+    twitterUsername: '@edbzn',
     social: {
       twitter: `https://twitter.com/edbzn`,
       github: `https://github.com/edbzn`,

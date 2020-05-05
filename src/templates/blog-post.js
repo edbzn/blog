@@ -27,7 +27,11 @@ class BlogPostTemplate extends React.Component {
         social={social}
         author={author}
       >
-        <SEO title={post.frontmatter.title} description={post.excerpt} />
+        <SEO
+          title={post.frontmatter.title}
+          description={post.excerpt}
+          article={true}
+        />
         <article>
           <header>
             <h1
