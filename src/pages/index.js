@@ -55,9 +55,11 @@ class BlogIndex extends React.Component {
                   />
                 </section>
                 <footer
-                  style={{ marginTop: rhythm(1 / 4), fontWeight: 'lighter' }}
+                  style={{ marginTop: rhythm(1 / 6), fontWeight: 'lighter' }}
                 >
-                  <span>{node.frontmatter.date}</span>
+                  <span style={{ fontSize: '14px' }}>
+                    {node.frontmatter.date}
+                  </span>
                 </footer>
               </article>
             );
