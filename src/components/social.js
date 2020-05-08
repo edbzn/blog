@@ -3,7 +3,6 @@ import React from 'react';
 import github from '../../static/icons/github.svg';
 import linkedin from '../../static/icons/linkedin.svg';
 import twitter from '../../static/icons/twitter.svg';
-import gmail from '../../static/icons/gmail.svg';
 
 export const Social = ({ social }) => {
   return (
@@ -23,8 +22,12 @@ export const Social = ({ social }) => {
       <a href={social.linkedin} title="@edouardbozon on LinkedIn">
         <img src={linkedin} alt="Linkedin profile" />
       </a>
-      <a title="Email me" href={'mailto:' + social.mail}>
-        <img src={gmail} alt="Email me" />
+      <a
+        style={{ fontSize: '22px', marginTop: '-6px' }}
+        title="Email me"
+        href={'mailto:' + social.mail}
+      >
+        @
       </a>
     </div>
   );
