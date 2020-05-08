@@ -8,7 +8,7 @@ module.exports = {
     description:
       "Edouard Bozon's tech blog about web development: Angular, Node.js, TypeScript, Javascript and more!",
     authorDescription:
-      "I'm Edouard Bozon, I live in Lyon, France. I play almost everyday with Angular and Node. I focus my work on building better JavaScript apps and contributing to open source. I'm freelancer, currently looking for some interesting projects.",
+      "I'm Edouard Bozon, I play almost everyday with web technologies. I focus my work on building better JavaScript apps and contributing to open source. I'm freelancer, currently looking for interesting projects.",
     twitterUsername: '@edbzn',
     social: {
       twitter: `https://twitter.com/edbzn`,
