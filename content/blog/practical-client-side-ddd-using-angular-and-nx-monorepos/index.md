@@ -40,8 +40,8 @@ A domain is separated in the following libraries :
 | ------- | ------------------------------------------------------------------------ | ------------------- |
 | API     | Exposed code to the outside world.                                       | `ProductModule`     |
 | Core    | Domain code including data-access, state management and core components. | `ProductRepository` |
-| Feature | A set of components for a particular use-case.                           | `<product-details>` |
-| UI      | A set of dumb reusable components.                                       | `<product>`         |
+| Feature | A smart component for a particular use-case.                             | `<product-details>` |
+| UI      | A set of presentational components.                                      | `<product>`         |
 
 ### Access Restrictions
 
