@@ -11,9 +11,11 @@ Today DDD is coming in the client-side application world and I recently started 
 
 ## Shared knowledge
 
-It's counter productive to choose patterns that don't fit the team needs. That's the first point to any technological choices and especially with DDD, the knowledge should be shared by all team members.
+It's counter productive to choose patterns that don't fit the team needs. That's the first point to any technological choices and especially with DDD, the knowledge should be shared between all team members.
 
-Each team member should understand and adhere to the architectural contours of the decided stack. If some concepts aren't understand by all team member it will become a big mess over time. In this case it's better to opt for a simpler architecture.
+<img alt="shared knowledge gif" src="source.gif" style="width: 100%" />
+
+Everyone should understand and adhere to the architectural contours of the decided stack. In some case it's better to opt for a simpler architecture.
 
 ## Required toolbox
 
@@ -22,18 +24,18 @@ The first thing that comes in mind with DDD is **domain definition and layers or
 - an [Nx monorepos](https://nx.dev) to organize and manage the whole project
 - whatever CI pipeline to build, test and deploy each layer independently
 
-Since DDD is about keeping a maintainable architecture over time, I strongly discourage you to start modeling your application without these tools configured in your project.
+Since DDD is about keeping a maintainable architecture at scale, I strongly discourage you to start modeling your application without these tools configured in your project.
 
 ## Front-end complexity
 
-Building JavaScript user-interface is a complex problem nowadays, client-side code should handle things like :
+Building JavaScript user-interface is a complex problem nowadays, client-side code should handle many things like :
 
 - Defining data
-- Displaying data
-- Signaling data changes
-- Reacting to data changes
+- Managing back-end and front-end state
+- Organizing UI
+- Handling data-flow
 
-Here tools like ZoneJS, NgRx and Observables can help doing this. But at scale, it can help to take some ideas from DDD to keep our application sustainable over time.
+Here tools like ZoneJS, NgRx and Observables can help doing this. But at scale, it can help to take some ideas from DDD to keep our application more sustainable.
 
 ## Code organization
 
@@ -59,6 +61,14 @@ A domain is separated in the following libraries :
 | Core    | Domain code including data-access, state management and core components. | `ProductRepository` |
 | Feature | A smart component for a particular use-case.                             | `<product-details>` |
 | UI      | A set of presentational components.                                      | `<product>`         |
+
+#### Feature
+
+The app must import only features modules. It prevents using core implementation details. Generally it's a routed component.
+
+#### Core
+
+The core library holds all the domain logic from the application to the infrastructure layer. It should only be used by it's related feature or API layer.
 
 ### Access restrictions
 
@@ -89,7 +99,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class ProductListComponent {
   @Input()
-  productList: Product[] = [];
+  products: Product[] = [];
 }
 
 @NgModule({
