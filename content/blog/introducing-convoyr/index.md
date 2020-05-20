@@ -78,12 +78,12 @@ There is no provider configuration required and security is improved with the `m
 
 ### How Convoyr was cooked
 
-Convoyr has been built with TDD and TCR in dual programming. I recommend you to check more on [extreme programming]() and how it can help your team to resolve problems faster, better and stronger.
+Convoyr has been built with TDD and TCR in dual programming. I recommend you to check more on [extreme programming](https://guide-agile.wishtack.io/extreme-programming) which is a kind of Agile method without the bullshits. This framework can help your team to resolve problems faster, better and stronger.
 
 Technically we use both Nx and Lerna to manage the monorepos. The codebase is splitted in two main libraries :
 
-- the Core which only depends on TypeScript and RxJS
-- the Angular module which makes the glue with the framework.
+- The Core which only depends on TypeScript and RxJS.
+- The Angular module which makes the glue with the framework.
 
 Making the Core agnostic from Angular allows a further compatibility with another HTTP client.
 
@@ -164,6 +164,8 @@ export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
 };
 ```
 
-### Further
+### Further with Convoyr
 
-We're excited to announce Convoyr. I hope people will find it useful. Any contributions are welcome.
+We're excited to announce Convoyr. We have many other things to do like adding installation schematics or creating another plugins. Any ideas or contributions are welcome.
+
+I hope you will find it useful.
