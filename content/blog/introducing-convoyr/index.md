@@ -195,10 +195,10 @@ export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
 };
 ```
 
-### Further with Convoyr
+### Further in Convoyr
 
-We're excited to announce Convoyr. We have built a [demo app](https://github.com/jscutlery/convoyr) with Convoyr to see the result in live.
+We're excited to announce Convoyr. We have built a [demo app](https://github.com/jscutlery/convoyr/tree/master/apps/sandbox) with Convoyr to see the result in live, it should be online soon.
 
 We have many other things to do like adding installation schematics or creating another plugins. Any ideas or contributions are welcome. [Here is the repository](https://github.com/jscutlery/convoyr).
 
-I hope you will find it useful and thanks for reading this ! 👋🏻
+Hope you will find it useful and thanks for reading this ! 👋🏻
