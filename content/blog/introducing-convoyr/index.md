@@ -176,13 +176,11 @@ Convert JSON body keys to camel case using the `camelcase-keys` library.
 
 ```ts
 import * as camelcaseKeys from 'camelcase-keys';
-import { ConvoyrPlugin } from '@http-ext/core';
+import { ConvoyrPlugin, and, isMethod, isResponseType } from '@http-ext/core';
 
 export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
+  shouldHandleRequest: and(isMethod('GET'), isResponseType('json')),
   handler: {
-    shouldHandleRequest: ({ request }) => {
-      return request.method === 'GET' && request.responseType === 'json';
-    },
     handle({ request, next }) {
       return next.handle({ request }).pipe(
         map((response) => ({
