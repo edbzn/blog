@@ -180,11 +180,10 @@ import { ConvoyrPlugin } from '@http-ext/core';
 
 export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
   handler: {
+    shouldHandleRequest: ({ request }) => {
+      return request.method === 'GET' && request.responseType === 'json';
+    },
     handle({ request, next }) {
-      if (request.responseType !== 'json') {
-        return next.handle({ request });
-      }
-
       return next.handle({ request }).pipe(
         map((response) => ({
           ...response,
@@ -198,8 +197,8 @@ export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
 
 ### Further with Convoyr
 
-We're excited to announce Convoyr. We have built a [demo app]() with Convoyr to see the result in live.
+We're excited to announce Convoyr. We have built a [demo app](https://github.com/jscutlery/convoyr) with Convoyr to see the result in live.
 
-We have many other things to do like adding installation schematics or creating another plugins. Any ideas or contributions are welcome, just open [an issue](https://github.com/jscutlery/convoyr).
+We have many other things to do like adding installation schematics or creating another plugins. Any ideas or contributions are welcome. [Here is the repository](https://github.com/jscutlery/convoyr).
 
 I hope you will find it useful and thanks for reading this ! 👋🏻
