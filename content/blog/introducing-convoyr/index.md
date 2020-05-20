@@ -1,9 +1,9 @@
 ---
-title: Introducing Convoyr, reactive HTTP extensions for Angular
+title: Introducing Convoyr, the reactive HTTP extensions for Angular
 date: '2020-05-20T00:00:00.000Z'
 ---
 
-[Convoyr](https://github.com/jscutlery/convoyr) began with long discussions (and beers) with [@yjaaidi](https://twitter.com/yjaaidi) about the Angular community. At this time I was bored at my job and I wanted to push myself more in the open-source. We created the JScutlery organization for authoring open-source work and we started to code Convoyr.
+[Convoyr](https://github.com/jscutlery/convoyr) began with some discussions (and beers) with [@yjaaidi](https://twitter.com/yjaaidi) about the Angular community. At this time I was bored at my job and I wanted to push myself more in the open-source. Then we created the JScutlery organization for authoring open-source work and we started to code Convoyr.
 
 > Convoyr has been built with one goal in mind: helping you to focus on your apps' features instead of the transport layer's boilerplate without any trade-off.
 
@@ -74,17 +74,24 @@ Let's see the same API authentication feature using Convoyr :
 export class AppModule {}
 ```
 
-There is no provider configuration required and security is improved with the `matchOrigin` matcher function.
+There is no provider configuration required and security is improved with the `matchOrigin` function.
 
 ### How Convoyr was cooked
 
-Convoyr has been built with TDD and TCR in dual programming. That's why there's a lot of commits in the repository. Technically we use both Nx and Lerna to manage the monorepos.
+Convoyr has been built with TDD and TCR in dual programming. I recommend you to check more on [extreme programming]() and how it can help your team to resolve problems faster, better and stronger.
 
-Convoyr is splitted in two libraries : the Core and the Angular module. Making the Core agnostic from Angular allows further compatibility with another HTTP client.
+Technically we use both Nx and Lerna to manage the monorepos. The codebase is splitted in two main libraries :
+
+- the Core which only depends on TypeScript and RxJS
+- the Angular module which makes the glue with the framework.
+
+Making the Core agnostic from Angular allows a further compatibility with another HTTP client.
+
+![Convoyr Schema](./schema.png)
 
 #### Plugins
 
-Convoyr comes with a built-in plugin collection to handle complex and repetitive tasks for you.
+Convoyr also comes with a built-in plugin collection to handle some complex and repetitive tasks for you.
 
 | Package                                                                                     | Description                                     |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------- |
@@ -100,7 +107,7 @@ It's easy to implement its own custom plugin to handle your needs. Here are some
 
 #### Logging requests
 
-The handler is an object where the custom logic is put.
+The handler is the object where all the custom logic is put.
 
 ```ts
 import { ConvoyrPlugin } from '@http-ext/core';
@@ -156,3 +163,7 @@ export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
   },
 };
 ```
+
+### Further
+
+We're excited to announce Convoyr. I hope people will find it useful. Any contributions are welcome.
