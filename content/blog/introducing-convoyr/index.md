@@ -215,7 +215,7 @@ export const secureUrlPlugin: ConvoyrPlugin = {
       return next.handle({
         request: {
           ...request,
-          url: request.url.replace('http://', 'https://'),
+          url: request.url.replace('http:', 'https:'),
         },
       });
     },
@@ -244,7 +244,7 @@ export const performanceProfilerPlugin: ConvoyrPlugin = {
       return next.handle({ request }).pipe(
         finalize(() => {
           const performanceEntry = getPerformanceEntry(request);
-          console.table(performanceEntry);
+          console.log(performanceEntry);
         })
       );
     },
