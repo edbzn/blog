@@ -9,7 +9,7 @@ date: '2020-05-20T00:00:00.000Z'
 
 ## Authentication with Interceptors
 
-Let's start by a concrete example, if I want to authenticate HTTP requests in Angular I should Interceptors. Here is an example grabbed from internet :
+Let's start by a concrete example, if I want to authenticate HTTP requests in Angular I should use Interceptors. Here is an example grabbed from internet :
 
 ```ts
 @Injectable()
@@ -110,7 +110,7 @@ Convoyr comes with its built-in plugins collection to handle some complex and re
 
 It's easy to implement its own custom plugin, here are some examples.
 
-#### Logging requests
+#### Response Logging
 
 The handler is the object where the plugin logic is put.
 
@@ -134,7 +134,7 @@ export const loggerPlugin: ConvoyrPlugin = {
 
 The `next.handle({ request })` function lets you access the response stream and transform it before passing it to the next plugin.
 
-#### Logging requests using Promise
+#### Logging using Promises
 
 Convoyr allows you to play with Observables, or Promises, or even synchronous calls.
 
@@ -203,7 +203,7 @@ export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
 
 #### Securing URLs
 
-It can be good to use HTTPS if the server doesn't redirect automatically.
+It should be nice to use HTTPS if the server doesn't redirect automatically.
 
 ```ts
 import { ConvoyrPlugin } from '@http-ext/core';
