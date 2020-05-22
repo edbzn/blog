@@ -117,6 +117,7 @@ The handler is the object where the plugin logic is put.
 
 ```ts
 import { ConvoyrPlugin } from '@http-ext/core';
+import { tap } from 'rxjs/operators';
 
 export const loggerPlugin: ConvoyrPlugin = {
   handler: {
@@ -182,10 +183,11 @@ export const addCustomHeaderPlugin: ConvoyrPlugin = {
 
 #### Mocking back-end response
 
-Sometimes I don't have my back-end route implemented yet and I need to mock the response.
+Sometimes I don't have any back-end route implemented yet and I need to mock the response.
 
 ```ts
 import { ConvoyrPlugin, matchOrigin, matchMethod, matchPath, and, createResponse } from '@http-ext/core';
+import { mapTo } from 'rxjs/operators';
 
 export const mockUserApiPlugin: ConvoyrPlugin = {
   shouldHandleRequest: and(
@@ -236,12 +238,8 @@ Recursively convert JSON body keys to camelcase using the `camelcase-keys` libra
 
 ```ts
 import * as camelcaseKeys from 'camelcase-keys';
-import {
-  ConvoyrPlugin,
-  and,
-  matchMethod,
-  matchResponseType,
-} from '@http-ext/core';
+import { ConvoyrPlugin, and, matchMethod, matchResponseType } from '@http-ext/core';
+import { map } from 'rxjs/operators';
 
 export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
   shouldHandleRequest: and(matchMethod('GET'), matchResponseType('json')),
@@ -286,6 +284,7 @@ Here is a profiler example for measuring network performance.
 
 ```ts
 import { ConvoyrPlugin } from '@http-ext/core';
+import { tap, finalize } from 'rxjs/operators';
 
 export const profilerPlugin: ConvoyrPlugin = {
   handler: {
