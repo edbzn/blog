@@ -31,7 +31,7 @@ export class TokenInterceptor implements HttpInterceptor {
 }
 ```
 
-Then we should provide the `TokenInterceptor` in the `AppModule` :
+Then I should provide the `TokenInterceptor` in the `AppModule` :
 
 ```ts
 @NgModule({
@@ -85,7 +85,7 @@ Convoyr has been built with TDD and TCR in dual programming. I recommend to chec
 
 #### Monorepos style
 
-Technically we use both Nx and Lerna to manage the monorepos. The codebase is splitted in different libraries :
+Technically Convoyr uses both Nx and Lerna to manage the monorepos. The codebase is splitted in different libraries :
 
 - The Core which runs declared plugins and only depends on TypeScript and RxJS.
 - The Angular module which makes the glue with the framework.
@@ -135,7 +135,7 @@ export const loggerPlugin: ConvoyrPlugin = {
 
 The `next.handle({ request })` function lets you access the response stream and transform it before passing it to the next plugin.
 
-#### Logging using Promises
+#### Using Promises
 
 Convoyr allows you to play with Observables, or Promises, or even synchronous calls.
 
@@ -146,7 +146,7 @@ export const loggerPlugin: ConvoyrPlugin = {
   handler: {
     async handle({ request, next }) {
       const response = await next.handle({ request }).toPromise();
-      console.log(`${request.method} ${request.url}`, response.body);
+      /* Here I can transform the response. */
       return response;
     },
   },
@@ -154,6 +154,62 @@ export const loggerPlugin: ConvoyrPlugin = {
 ```
 
 _However I recommend you to opt for the Observable approach since it provides a nicer API to manage asynchronous tasks._
+
+#### Setting custom headers
+
+A plugin can manipulate the request and the response stream as well.
+
+```ts
+import { ConvoyrPlugin, matchOrigin } from '@http-ext/core';
+
+export const addCustomHeaderPlugin: ConvoyrPlugin = {
+  shouldHandleRequest: matchOrigin('https://www.codamit.dev'),
+  handler: {
+    handle({ request, next }) {
+      return next.handle({
+        request: {
+          ...request,
+          headers: {
+            ...request.headers,
+            'x-custom-header': '🚀',
+          },
+        },
+      });
+    },
+  },
+};
+```
+
+#### Mocking back-end response
+
+Sometimes I don't have my back-end route implemented yet and I need to mock the response.
+
+```ts
+import { ConvoyrPlugin, matchOrigin, matchMethod, matchPath, and, createResponse } from '@http-ext/core';
+
+export const mockUserApiPlugin: ConvoyrPlugin = {
+  shouldHandleRequest: and(
+    matchOrigin('https://www.codamit.dev'),
+    matchPath('/api/users'),
+    matchMethod('GET')
+  ),
+  handler: {
+    handle({ request, next }) {
+      return next.handle({ request }).pipe(
+        mapTo(
+          createResponse({
+            body: [
+              { id: 0, fullName: 'Michel Paccard' },
+              { id: 1, fullName: 'Jacques Balmat' },
+              { id: 2, fullName: 'Edward Whymper' },
+            ],
+          })
+        )
+      );
+    },
+  },
+};
+```
 
 #### Rejecting requests to unknown origins
 
@@ -163,10 +219,10 @@ The `shouldHandleRequest` function lets you conditionally handle requests :
 import { ConvoyrPlugin, not, matchOrigin } from '@http-ext/core';
 
 export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
-  shouldHandleRequest: not(matchOrigin('https://github.com')),
+  shouldHandleRequest: not(matchOrigin('https://www.codamit.dev')),
   handler: {
     handle({ request, next }) {
-      return throwError(`🛑 requesting invalid origin. url: ${request.url}`);
+      return throwError(`🛑 Requesting invalid origin, url: ${request.url}`);
     },
   },
 };
@@ -235,11 +291,11 @@ export const profilerPlugin: ConvoyrPlugin = {
   handler: {
     handle({ request, next }) {
       const started = Date.now();
-      let status: string | null = null;
+      let status: 'ok' | 'failed' | null = null;
       return next.handle({ request }).pipe(
         tap({
-          next: (response) => (status = response.statusText),
-          error: (error) => (status = error.statusText),
+          next: (response) => (status = 'ok'),
+          error: (error) => (status = 'failed'),
         }),
         finalize(() => {
           const elapsed = Date.now() - started;
@@ -252,7 +308,7 @@ export const profilerPlugin: ConvoyrPlugin = {
 };
 ```
 
-_Instead of rawly logging the result in the console we can imagine sending those performance measures to a remote server to create rich reports._
+_Instead of rawly logging the result in the console I can imagine sending those performance measures to a remote server to create rich reports._
 
 ### Further with Convoyr
 
