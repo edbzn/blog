@@ -74,13 +74,13 @@ Let's see the same authentication feature using Convoyr :
 export class AppModule {}
 ```
 
-There is no provider configuration required and security is improved with the `matchOrigin` function.
+There is no provider configuration required and security is improved with the `matchOrigin` function as the token will never be sent to any other origin except `https://my-secure-api.com`.
 
 ## How Convoyr was cooked
 
 #### TDD and TCR
 
-Convoyr has been built with TDD and TCR in dual programming. I recommend you to check more on [extreme programming](https://guide-agile.wishtack.io/extreme-programming) which is a **kind of Agile method without the commercial bullshits**. This framework can help your team to resolve problems faster, better and stronger.
+Convoyr has been built with TDD and TCR in dual programming. I recommend to checking out [extreme programming](https://guide-agile.wishtack.io/extreme-programming) which is a **software development methodology without the Agile commercial bullshit**. This lightweight methodology can help your team to resolve problems faster, better and stronger.
 
 #### Monorepos style
 
@@ -92,7 +92,7 @@ Technically we use both Nx and Lerna to manage the monorepos. The codebase is sp
 
 ![Convoyr Schema](./schema.png)
 
-Making the Core package agnostic from Angular give us a the possibility to be compatible with another HTTP client. We can also imagine to use Convoyr in the server-side at long-therm.
+Making the Core package agnostic from Angular give us a the possibility to be compatible with other HTTP clients, platforms and environments (e.g. server side).
 
 #### Plugins
 
@@ -262,6 +262,6 @@ _Instead of rawly logging the result in the console we can imagine sending those
 
 There is a [demo app workspace](https://github.com/jscutlery/convoyr/tree/master/apps/sandbox) in our monorepos which can be used as example to start with Convoyr.
 
-We have many other things to do like adding installation schematics or creating another plugins. Any ideas or contributions are welcome.
+We have many other things to do like adding installation schematics or creating other plugins. Any ideas or contributions are welcome.
 
 Hope you will find it useful! 👋🏻
