@@ -225,7 +225,7 @@ export const secureUrlPlugin: ConvoyrPlugin = {
 
 #### Network Profiling
 
-Here is a performance profiler for measuring network performance.
+Here is a profiler example for measuring network performance.
 
 ```ts
 import { ConvoyrPlugin } from '@http-ext/core';

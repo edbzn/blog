@@ -31,6 +31,7 @@ class BlogPostTemplate extends React.Component {
           title={post.frontmatter.title}
           description={post.excerpt}
           article={true}
+          canonical={post.frontmatter.canonical}
         />
         <article>
           <header>
@@ -115,6 +116,7 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        canonical
       }
     }
   }

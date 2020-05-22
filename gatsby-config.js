@@ -1,7 +1,9 @@
+const siteUrl = `https://www.codamit.dev`;
+
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://www.codamit.dev`,
-    url: 'https://www.codamit.dev',
+    siteUrl,
+    url: siteUrl,
     title: 'codamit.dev',
     titleTemplate: '%s · codamit.dev',
     author: `Edouard Bozon`,
@@ -166,6 +168,12 @@ module.exports = {
       options: {
         color: `#000000`,
         showSpinner: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-react-helmet-canonical-urls`,
+      options: {
+        siteUrl,
       },
     },
   ],
