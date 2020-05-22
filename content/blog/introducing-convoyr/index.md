@@ -1,6 +1,7 @@
 ---
 title: Introducing Convoyr, the reactive HTTP extensions for Angular
 date: '2020-05-20T00:00:00.000Z'
+canonical: 'https://your-original-blog.com/post-goes-here'
 ---
 
 [Convoyr](https://github.com/jscutlery/convoyr) began with some discussions (and beers) with [@yjaaidi](https://twitter.com/yjaaidi) about the Angular community. At this time I was bored at my job and I wanted to push myself more in the open-source. Then we created the JScutlery organization for authoring open-source work and we started to code Convoyr.
@@ -230,31 +231,26 @@ Here is a profiler example for measuring network performance.
 ```ts
 import { ConvoyrPlugin } from '@http-ext/core';
 
-function getPerformanceEntry(request: ConvoyrRequest): PerformanceEntry {
-  const performanceEntryList = performance.getEntriesByName(
-    request.url + queryString.stringify(request.params)
-  );
-
-  return performanceEntryList[performanceEntryList.length - 1];
-}
-
-export const performanceProfilerPlugin: ConvoyrPlugin = {
+export const profilerPlugin: ConvoyrPlugin = {
   handler: {
     handle({ request, next }) {
+      const started = Date.now();
+      let status: string | null = null;
       return next.handle({ request }).pipe(
+        tap({
+          next: (response) => (status = response.statusText),
+          error: (error) => (status = error.statusText),
+        }),
         finalize(() => {
-          const performanceEntry = getPerformanceEntry(request);
-          console.log(performanceEntry);
+          const elapsed = Date.now() - started;
+          const msg = `${request.method} ${request.url} ${status} in ${elapsed}ms`;
+          console.log(msg);
         })
       );
     },
   },
 };
 ```
-
-This will log something like this :
-
-![performance log](./performance.png)
 
 _Instead of rawly logging the result in the console we can imagine sending those performance measures to a remote server to create rich reports._
 

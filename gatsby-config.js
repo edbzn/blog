@@ -114,6 +114,7 @@ module.exports = {
                       frontmatter {
                         title
                         date
+                        canonical
                       }
                     }
                   }
