@@ -159,6 +159,8 @@ export function createErrorNotifierPlugin(
 }
 ```
 
+I can use Angular services in plugins :
+
 ```ts
 @NgModule({
   imports: [
@@ -281,6 +283,8 @@ export const profilerPlugin: ConvoyrPlugin = {
 };
 ```
 
+_Instead of rawly logging the result in the console I can imagine sending those performance measures to a remote server to create rich reports._
+
 #### Mocking back-end response
 
 Sometimes I don't have any back-end route implemented yet, it can be useful to mock the response.
@@ -307,8 +311,6 @@ export const mockUserApiPlugin: ConvoyrPlugin = {
   },
 };
 ```
-
-_Instead of rawly logging the result in the console I can imagine sending those performance measures to a remote server to create rich reports._
 
 ### Further with Convoyr
 
