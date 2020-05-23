@@ -59,7 +59,7 @@ Let's see the same authentication feature using Convoyr :
 ```ts
 @NgModule({
   imports: [
-    HttpExtModule.forRoot({
+    ConvoyrModule.forRoot({
       deps: [AuthService],
       config: (auth: AuthService) => ({
         plugins: [
@@ -116,9 +116,6 @@ It's easy to implement its own custom plugin, here are some examples.
 The handler is the object where the plugin logic is put.
 
 ```ts
-import { ConvoyrPlugin } from '@http-ext/core';
-import { tap } from 'rxjs/operators';
-
 export const loggerPlugin: ConvoyrPlugin = {
   handler: {
     handle({ request, next }) {
@@ -136,22 +133,44 @@ export const loggerPlugin: ConvoyrPlugin = {
 
 The `next.handle({ request })` function lets you access the response stream and transform it before passing it to the next plugin.
 
-#### Using Promises
+#### Response notifier using Promises
 
 Convoyr allows you to play with Observables, or Promises, or even synchronous calls.
 
 ```ts
-import { ConvoyrPlugin } from '@http-ext/core';
-
-export const loggerPlugin: ConvoyrPlugin = {
-  handler: {
-    async handle({ request, next }) {
-      const response = await next.handle({ request }).toPromise();
-      /* Here I can transform the response. */
-      return response;
+export function createErrorNotifierPlugin(
+  snackbar: MatSnackBar
+): ConvoyrPlugin {
+  return {
+    handler: {
+      async handle({ request, next }) {
+        try {
+          const response = await next.handle({ request }).toPromise();
+          return response;
+        } catch (errorResponse) {
+          snackbar.open(
+            `Something wrong happened: ${errorResponse.body.error.message}`
+          );
+          throw errorResponse;
+        }
+      },
     },
-  },
-};
+  };
+}
+```
+
+```ts
+@NgModule({
+  imports: [
+    ConvoyrModule.forRoot({
+      deps: [MatSnackBar],
+      config: (snackbar: MatSnackBar) => ({
+        plugins: [createErrorNotifierPlugin(snackbar)],
+      }),
+    }),
+  ],
+})
+export class AppModule {}
 ```
 
 _However I recommend you to opt for the Observable approach since it provides a nicer API to manage asynchronous tasks._
@@ -161,8 +180,6 @@ _However I recommend you to opt for the Observable approach since it provides a 
 A plugin can manipulate the request and the response stream as well.
 
 ```ts
-import { ConvoyrPlugin, matchOrigin } from '@http-ext/core';
-
 export const addCustomHeaderPlugin: ConvoyrPlugin = {
   shouldHandleRequest: matchOrigin('https://www.codamit.dev'),
   handler: {
@@ -181,45 +198,11 @@ export const addCustomHeaderPlugin: ConvoyrPlugin = {
 };
 ```
 
-#### Mocking back-end response
-
-Sometimes I don't have any back-end route implemented yet and I need to mock the response.
-
-```ts
-import { ConvoyrPlugin, matchOrigin, matchMethod, matchPath, and, createResponse } from '@http-ext/core';
-import { mapTo } from 'rxjs/operators';
-
-export const mockUserApiPlugin: ConvoyrPlugin = {
-  shouldHandleRequest: and(
-    matchOrigin('https://www.codamit.dev'),
-    matchPath('/api/users'),
-    matchMethod('GET')
-  ),
-  handler: {
-    handle({ request, next }) {
-      return next.handle({ request }).pipe(
-        mapTo(
-          createResponse({
-            body: [
-              { id: 0, fullName: 'Michel Paccard' },
-              { id: 1, fullName: 'Jacques Balmat' },
-              { id: 2, fullName: 'Edward Whymper' },
-            ],
-          })
-        )
-      );
-    },
-  },
-};
-```
-
 #### Rejecting requests to unknown origins
 
 The `shouldHandleRequest` function lets you conditionally handle requests :
 
 ```ts
-import { ConvoyrPlugin, not, matchOrigin } from '@http-ext/core';
-
 export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
   shouldHandleRequest: not(matchOrigin('https://www.codamit.dev')),
   handler: {
@@ -237,10 +220,6 @@ export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
 Recursively convert JSON body keys to camelcase using the `camelcase-keys` library.
 
 ```ts
-import * as camelcaseKeys from 'camelcase-keys';
-import { ConvoyrPlugin, and, matchMethod, matchResponseType } from '@http-ext/core';
-import { map } from 'rxjs/operators';
-
 export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
   shouldHandleRequest: and(matchMethod('GET'), matchResponseType('json')),
   handler: {
@@ -261,8 +240,6 @@ export const camelCaseJsonKeysPlugin: ConvoyrPlugin = {
 It should be nice to use HTTPS if the server doesn't redirect automatically.
 
 ```ts
-import { ConvoyrPlugin } from '@http-ext/core';
-
 export const secureUrlPlugin: ConvoyrPlugin = {
   shouldHandleRequest: ({ request }) => request.url.startsWith('http:'),
   handler: {
@@ -283,9 +260,6 @@ export const secureUrlPlugin: ConvoyrPlugin = {
 Here is a profiler example for measuring network performance.
 
 ```ts
-import { ConvoyrPlugin } from '@http-ext/core';
-import { tap, finalize } from 'rxjs/operators';
-
 export const profilerPlugin: ConvoyrPlugin = {
   handler: {
     handle({ request, next }) {
@@ -302,6 +276,33 @@ export const profilerPlugin: ConvoyrPlugin = {
           console.log(msg);
         })
       );
+    },
+  },
+};
+```
+
+#### Mocking back-end response
+
+Sometimes I don't have any back-end route implemented yet, it can be useful to mock the response.
+
+```ts
+const usersMock = [
+  { id: 0, fullName: 'Michel Paccard' },
+  { id: 1, fullName: 'Jacques Balmat' },
+  { id: 2, fullName: 'Edward Whymper' },
+];
+
+export const mockUserApiPlugin: ConvoyrPlugin = {
+  shouldHandleRequest: and(
+    matchOrigin('https://www.codamit.dev'),
+    matchPath('/api/users'),
+    matchMethod('GET')
+  ),
+  handler: {
+    handle({ request, next }) {
+      return next
+        .handle({ request })
+        .pipe(mapTo(createResponse({ body: usersMock })));
     },
   },
 };
