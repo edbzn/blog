@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 a {
   box-shadow: none;
   transition: box-shadow ease 200ms;
@@ -40,7 +44,7 @@ p > img {
 }
 
 #gatsby-focus-wrapper > div {
-  padding: 0 1rem;
+  padding: 0 1.2rem;
 }
 
 .socials {
@@ -72,8 +76,14 @@ p > img {
     flex-direction: column;
   }
 
+  .socials {
+    margin-top: 12px;
+    justify-content: space-around;
+    width: 100%;
+  }
+
   .avatar {
     margin: 0 auto;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
   }
 }
