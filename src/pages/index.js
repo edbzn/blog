@@ -58,7 +58,11 @@ class BlogIndex extends React.Component {
                   style={{ marginTop: rhythm(1 / 6), fontWeight: 'lighter' }}
                 >
                   <span style={{ fontSize: '14px' }}>
-                    {node.frontmatter.date}
+                    {node.frontmatter.draft ? (
+                      <span>🚧 Draft 🚧</span>
+                    ) : (
+                      node.frontmatter.date
+                    )}
                   </span>
                 </footer>
               </article>
@@ -85,7 +89,10 @@ export const pageQuery = graphql`
         }
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMarkdownRemark(
+      filter: { published: { eq: true } }
+      sort: { fields: [frontmatter___date], order: DESC }
+    ) {
       edges {
         node {
           excerpt
@@ -95,6 +102,7 @@ export const pageQuery = graphql`
           frontmatter {
             date(formatString: "MMMM DD, YYYY")
             title
+            draft
           }
         }
       }

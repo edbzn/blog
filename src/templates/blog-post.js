@@ -50,7 +50,11 @@ class BlogPostTemplate extends React.Component {
                 marginBottom: rhythm(2),
               }}
             >
-              {post.frontmatter.date}
+              {post.frontmatter.draft ? (
+                <strong>🚧 Draft 🚧</strong>
+              ) : (
+                post.frontmatter.date
+              )}
             </p>
           </header>
           <section
@@ -109,7 +113,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    markdownRemark(published: { eq: true }, fields: { slug: { eq: $slug } }) {
       id
       excerpt(pruneLength: 160)
       html
@@ -117,6 +121,7 @@ export const pageQuery = graphql`
         title
         date(formatString: "MMMM DD, YYYY")
         canonical
+        draft
       }
     }
   }

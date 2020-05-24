@@ -1,6 +1,7 @@
 ---
 title: Practical client-side DDD using Angular and Nx monorepos
 date: '2020-05-08T00:00:00.000Z'
+draft: true
 ---
 
 > Disclaimer : this post is opinionated since everyone fails to clearly defines the only way to implement DDD. Sometimes it's all about perspective.

@@ -1,4 +1,5 @@
 const path = require(`path`);
+const { GraphQLBoolean } = require('gatsby/graphql');
 const { createFilePath } = require(`gatsby-source-filesystem`);
 
 exports.createPages = async ({ graphql, actions }) => {
@@ -14,6 +15,7 @@ exports.createPages = async ({ graphql, actions }) => {
         ) {
           edges {
             node {
+              published
               fields {
                 slug
               }
@@ -38,6 +40,10 @@ exports.createPages = async ({ graphql, actions }) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node;
     const next = index === 0 ? null : posts[index - 1].node;
 
+    if (!post.node.published) {
+      return;
+    }
+
     createPage({
       path: post.node.fields.slug,
       component: blogPost,
@@ -61,4 +67,22 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       value,
     });
   }
+};
+
+exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+  if ('MarkdownRemark' === type.name) {
+    return {
+      published: {
+        type: GraphQLBoolean,
+        resolve: ({ frontmatter }) => {
+          if (process.env.NODE_ENV !== 'production') {
+            return true;
+          }
+
+          return !frontmatter.draft;
+        },
+      },
+    };
+  }
+  return {};
 };
