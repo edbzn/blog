@@ -1,6 +1,6 @@
 ---
 title: Practical client-side DDD using Angular and Nx monorepos
-date: '2020-05-08T00:00:00.000Z'
+date: '2020-05-22T00:00:00.000Z'
 draft: true
 ---
 

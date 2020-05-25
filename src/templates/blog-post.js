@@ -1,9 +1,10 @@
 import { Disqus } from 'gatsby-plugin-disqus';
-import { graphql, Link } from 'gatsby';
+import { graphql } from 'gatsby';
 import React from 'react';
 
 import Bio from '../components/bio';
 import Layout from '../components/layout';
+import { PostNav } from '../components/post-nav';
 import { SEO } from '../components/seo';
 import { rhythm } from '../utils/typography';
 
@@ -66,32 +67,11 @@ class BlogPostTemplate extends React.Component {
             <Disqus style={{ marginTop: rhythm(2) }} config={disqusConfig} />
           </footer>
         </article>
-        <nav style={{ marginTop: rhythm(2) }}>
-          <ul
-            style={{
-              display: `flex`,
-              flexWrap: `wrap`,
-              justifyContent: `space-between`,
-              listStyle: `none`,
-              padding: 0,
-            }}
-          >
-            <li>
-              {previous && (
-                <Link to={previous.fields.slug} rel="prev">
-                  ← {previous.frontmatter.title}
-                </Link>
-              )}
-            </li>
-            <li>
-              {next && (
-                <Link to={next.fields.slug} rel="next">
-                  {next.frontmatter.title} →
-                </Link>
-              )}
-            </li>
-          </ul>
-        </nav>
+        <PostNav
+          style={{ marginTop: rhythm(2) }}
+          previous={previous}
+          next={next}
+        ></PostNav>
       </Layout>
     );
   }
