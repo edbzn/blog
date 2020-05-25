@@ -44,7 +44,7 @@ p > img {
 }
 
 #gatsby-focus-wrapper > div {
-  padding: 0 1.2rem;
+  padding: 0 1rem;
 }
 
 .socials {
@@ -68,7 +68,7 @@ p > img {
 }
 
 .socials a:hover {
-  transform: scale(1.14);
+  transform: rotate(10deg);
 }
 
 @media screen and (max-width: 640px) {
@@ -85,5 +85,14 @@ p > img {
   .avatar {
     margin: 0 auto;
     margin-bottom: 12px;
+  }
+
+  blockquote {
+    margin-left: 0;
+  }
+
+  ul,
+  ol {
+    padding-left: 1rem;
   }
 }
