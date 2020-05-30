@@ -89,6 +89,7 @@ pre[class*='language-'] {
 .gatsby-highlight-code-line {
   background-color: #2b2e31;
   display: block;
+  padding-left: 0.75rem;
   border-left: 0.25em solid #50fa7b;
 }
 
