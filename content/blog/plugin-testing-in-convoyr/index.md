@@ -3,7 +3,7 @@ title: Plugin Testing in Convoyr
 date: '2020-05-31T00:00:00.000Z'
 ---
 
-> Testing is a one of the most important part of any modern development workflow. Convoyr is built with a dedicated module for plugin testing, let's see how to use it.
+> Testing is a one of the most important part of any modern development workflow, that's why Convoyr is built with a dedicated module for plugin testing.
 
 ## Promise based testing
 
@@ -24,7 +24,7 @@ const addAnswerToLifePlugin: ConvoyrPlugin = {
 };
 ```
 
-All the plugin logic is hold in the handler and should be tested in prior. To do this I create a `PluginTester` for my test-case.
+All the plugin logic is hold in the handler and should be tested in prior. To do this I create an instance of `PluginTester` before each test-case.
 
 ```ts
 import { PluginTester, createPluginTester } from '@convoyr/core/testing';
@@ -70,13 +70,13 @@ it('should add answer of life in response body', async () => {
 });
 ```
 
-Finally I check if the answer to the life was added to my original empty response.
+Finally I check if my answer to life was added in the response body.
 
 _Note that I use the RxJS `toPromise` function with the `async` `await` syntax to simplify this test-case by making it synchronous like._
 
 ## Observable based testing
 
-Let's imagine an other plugin that throw if the requested origin is unknown.
+Let's imagine an other plugin that throws if the requested origin is unknown.
 
 ```ts
 export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
@@ -89,7 +89,7 @@ export const rejectUnknownOriginsPlugin: ConvoyrPlugin = {
 };
 ```
 
-Now I need to test if the observer `error` callback has been called on the response stream when the origin is rejected.
+Now I need to test if `error` callback has been called on the observer.
 
 ```ts
 describe('rejectUnknownOriginsPlugin', () => {
@@ -130,11 +130,11 @@ describe('rejectUnknownOriginsPlugin', () => {
 });
 ```
 
-I also check that the final HTTP handler has not been called since this plugin does not execute the `next` handler if the origin is unknown.
+I also check that the final HTTP handler has not been called since this plugin rejects the request if the origin doesn't match.
 
 ## Marbles testing
 
-For some more complex use-cases were the plugin emits more than one notification it could be better to do marbles testing. Take this example which retries failed requests.
+For more complex use-cases were the plugin emits more than one notification, it could be better to do marbles testing. Take this example which retries failed requests.
 
 ```ts
 const MAX_RETRY_ATTEMPTS = 3;
@@ -163,7 +163,7 @@ export const retryPlugin: ConvoyrPlugin = {
 };
 ```
 
-Note that I set the `frameTimeFactor` below to make each marble symbol representing 1 second to match the plugin time factor.
+Note that I set the `frameTimeFactor` below to make each marble symbol representing 1 second to match the plugin time-factor.
 
 ```ts
 it(
@@ -199,11 +199,11 @@ it(
 );
 ```
 
-Marbles testing makes complex asynchronous testing possible and efficient. But as you can see it's not the simplest solution, that's why I use it only if the two previous approaches are ineffective for my test-case.
+Marbles makes complex asynchronous testing possible. But as you can see it's not the simplest solution, that's why I use it only if the two previous approaches are ineffective for my test-case.
 
 ## To recapitulate
 
-There is three ways for testing a plugin :
+There's three ways to test a plugin :
 
 - the async await approach which should be the first choice since it looks like completely synchronous,
 - the spy observer approach which is useful for checking for `next`, `error` or `complete` notification.
