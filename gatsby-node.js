@@ -37,8 +37,15 @@ exports.createPages = async ({ graphql, actions }) => {
   const posts = result.data.allMarkdownRemark.edges;
 
   posts.forEach((post, index) => {
-    const previous = index === posts.length - 1 ? null : posts[index + 1].node;
-    const next = index === 0 ? null : posts[index - 1].node;
+    const hasNext = index > 0;
+    const hasPrevious = index < posts.length - 1;
+
+    const nextNode = hasNext ? posts[index - 1].node : null;
+    const previousNode = hasPrevious ? posts[index + 1].node : null;
+
+    const next = hasNext && nextNode.published ? nextNode : null;
+    const previous =
+      hasPrevious && previousNode.published ? previousNode : null;
 
     if (!post.node.published) {
       return;

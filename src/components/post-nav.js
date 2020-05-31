@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const style = {
   width: '48%',
+  margin: '0 1%',
   padding: '1rem',
   border: '2px solid rgb(238, 238, 238)',
   borderRadius: '4px',
@@ -21,6 +22,7 @@ export const PostNav = ({ previous, next }) => (
         display: `flex`,
         flexWrap: `wrap`,
         justifyContent: `space-between`,
+        alignItems: 'stretch',
         listStyle: `none`,
         padding: 0,
       }}
