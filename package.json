@@ -54,6 +54,7 @@
     "preload-fonts": "gatsby-preload-fonts",
     "start": "yarn develop",
     "serve": "gatsby serve",
+    "clean": "gatsby clean",
     "heroku-postbuild": "yarn build"
   },
   "husky": {

@@ -1,7 +1,7 @@
 ---
 title: Introducing Convoyr, the reactive HTTP extensions for Angular
 date: '2020-05-20T00:00:00.000Z'
-canonical: 'https://your-original-blog.com/post-goes-here'
+canonical: ''
 ---
 
 [Convoyr](https://github.com/jscutlery/convoyr) began with some discussions (and beers) with [@yjaaidi](https://twitter.com/yjaaidi) about the Angular community. At this time I was bored at my job and I wanted to push myself more in the open-source. Then we created the JScutlery organization for authoring open-source work and we started to code Convoyr.
