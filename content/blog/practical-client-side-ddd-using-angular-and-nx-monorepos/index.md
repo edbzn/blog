@@ -4,11 +4,11 @@ date: '2020-05-22T00:00:00.000Z'
 draft: true
 ---
 
-> Disclaimer : this post is opinionated since everyone fails to clearly defines the only way to implement DDD. Sometimes it's all about perspective.
+> Disclaimer : this post is opinionated since there is not only one way to implement client-side DDD, sometimes it's all about perspective.
 
 Some years ago I worked for the first time with Domain-Driven Design on back-end applications. I painfully discovered that managing DDD architecture requires tools and shared knowledge between team members.
 
-DDD is now coming in the client-side JavaScript world, and I recently started to work on project built with it, here are my thoughts.
+DDD is coming in the client-side world nowadays, and I recently started to work on project built with it, here are my thoughts.
 
 ## Shared knowledge
 
@@ -16,7 +16,7 @@ That's the first point to any technological choices and especially with DDD, the
 
 <img alt="shared knowledge gif" src="source.gif" style="width: 100%" />
 
-Everyone should understand and adhere to the architectural contours of the decided stack. In some case it's better to opt for a simpler architecture.
+Everyone should understand and adhere to the architectural contours of the decided stack. In another case it's worth to choose a simpler architecture.
 
 ## Required toolbox
 
@@ -32,18 +32,18 @@ The CI pipeline will help you to automatically build, test and deploy each part 
 
 ## Front-end complexity
 
-Building JavaScript user-interface is a complex problem nowadays, client-side code should handle many things like :
+Building JavaScript user-interface is a complex problem, client-side code should handle many things like :
 
 - Defining data
 - Organizing UI
-- Managing client and server state
-- Handling data-flow
+- Managing states
+- Managing data-flow
 
-Here patterns like NgRx or Observables can help doing this, but we can also take some ideas from DDD to keep our application more sustainable.
+Here patterns like NgRx or Observables can help doing this, but we can also take some ideas from DDD to keep our application more maintainable.
 
 ## Code organization
 
-One of the first idea of DDD is to separate our code in domain models. A domain is a logical piece in your software that reflect a reality. An order, a cart, a product are common domains examples.
+One of the first idea of DDD is to separate our code in domain models. A domain is a logical piece in a software that reflect a reality. An order, a cart, a product are common domains examples.
 
 The main goal behind this is to separate business concerns and keep our domains tightly coupled between each others.
 
@@ -72,11 +72,11 @@ For keeping layers tightly coupled we use [access restrictions](https://www.angu
 
 ![Access restrictions schema](ddd_2.png)
 
-Of course, we need to add interactions between domains. Obviously a cart has relations with products, but we will use an API between them to establish a clear contract that reflect the use-cases.
+Obviously we need to add interactions between domains, a cart has relations with products, but we will use an API between them to establish a clear contract that reflect the use-cases.
 
 ## Fine-grained Angular Modules
 
-In addition to libraries I use [Single Component Angular Module](https://medium.com/marmicode/your-angular-module-is-a-scam-b4136ca3917b) (SCAM). It's an architecture where each component lives in a dedicated module. It helps to finely delimit module functionality. SCAM looks like this :
+In addition I use the [Single Component Angular Module](https://medium.com/marmicode/your-angular-module-is-a-scam-b4136ca3917b) (SCAM) approach. It's an architecture where each component lives in a dedicated module. It helps to finely delimit module functionality. A SCAM looks like this :
 
 ```ts
 import { Component, Input, NgModule } from '@angular/core';
