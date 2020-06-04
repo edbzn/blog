@@ -1,7 +1,6 @@
-import { Disqus } from 'gatsby-plugin-disqus';
 import { graphql } from 'gatsby';
+import { Disqus } from 'gatsby-plugin-disqus';
 import React from 'react';
-
 import Bio from '../components/bio';
 import Layout from '../components/layout';
 import { PostNav } from '../components/post-nav';
