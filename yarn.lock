@@ -7802,10 +7802,10 @@ gatsby-page-utils@^0.2.9:
     lodash "^4.17.15"
     micromatch "^3.1.10"
 
-gatsby-plugin-disqus@1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-disqus/-/gatsby-plugin-disqus-1.1.7.tgz#66910da8be1219ab861ac96400edbed5abe33812"
-  integrity sha512-7gAoSdXzFtVJ5TjTYJv/crgq8wfKavRIxhd2UHTgsbzp3EOwqygs7u1hiko2BwGFROjmmhzkdRqCquKdo7oywg==
+gatsby-plugin-disqus@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-disqus/-/gatsby-plugin-disqus-1.2.0.tgz#8579e33b983d6de957390aef5445c99e8cb38af5"
+  integrity sha512-1Vgifach9KOCTKWmOESHbGDEAVxLwg7uJZbSyohQzBqqDzfnl42SOWJhIPCOCAtKi1GcqU4JIQiWBZmN1V0Zlg==
 
 gatsby-plugin-feed@2.5.5:
   version "2.5.5"
