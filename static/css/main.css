@@ -54,7 +54,7 @@ p > img {
 }
 
 .socials a:hover {
-  transform: rotate(10deg);
+  transform: scale(1.1);
 }
 
 @media screen and (max-width: 640px) {

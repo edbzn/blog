@@ -1,7 +1,6 @@
 import { Link } from 'gatsby';
 import React from 'react';
 import rss from '../../static/icons/rss.svg';
-import { Blacklivesmatter } from '../components/blacklivesmatter';
 import { rhythm } from '../utils/typography';
 
 class Layout extends React.Component {
@@ -72,9 +71,6 @@ class Layout extends React.Component {
         >
           {header}
         </header>
-        <div style={{ marginTop: rhythm(1) }}>
-          <Blacklivesmatter />
-        </div>
         <main style={{ marginTop: rhythm(1) }}>{children}</main>
         <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
           <div style={{ textAlign: 'center' }}>
