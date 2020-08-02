@@ -25,7 +25,9 @@ Then we can extend our component to use this mixin.
 import UserMixin from './user-mixin';
 
 export default {
+  // highlight-start
   mixins: [UserMixin],
+  // highlight-end
   data: () => ({
     isVisible: false,
   }),
@@ -42,14 +44,18 @@ Which result in the following runtime component definition.
 ```js
 export default {
   data: () => ({
+    // highlight-start
     users: [],
+    // highlight-end
     isVisible: false,
   }),
   methods: {
+    // highlight-start
     async getUsers() {
       const response = await fetch('/api/users');
       this.users = await response.json();
     },
+    // highlight-end
     toggle() {
       this.isVisible = !this.isVisible;
     },
@@ -77,11 +83,11 @@ It increases the mental charge to find what's wrong if there is a bug. Where doe
 
 The more we use mixins in a project the more it becomes hard to reason about how components and mixins are coupled.
 
-### Others alternatives we have
+### What alternatives do we have?
 
-#### Using an ES module
+#### 👍🏼 Using an ES module
 
-My preferred solution if the function isn't doing anything Vue specific is simply using an ES module to share it across components.
+The naive solution, if the function isn't doing anything Vue specific, is simply using an ES module to share your code across components.
 
 ```js
 export async function getUsers() {
@@ -100,7 +106,7 @@ Then we can just import it in our components.
 </template>
 
 <script>
-  import { getUsers } from './user';
+  import { getUsers } from './get-users';
 
   export default {
     data: () => ({
@@ -113,13 +119,17 @@ Then we can just import it in our components.
 </script>
 ```
 
-It also simplifies the way we test our function, it's more easy to test a function than a mixin, there's no need to create a test component using `@vue/test-utils`.
+This way we can easily test our `getUsers` function, because there's no need to create a test component using `@vue/test-utils`.
 
-#### Using composition API
+The big downside is that we can not compose or share logic that rely on Vue rendering, which is very limiting.
 
-The new fancy way to share code between components is using the functional [composition API](https://composition-api.vuejs.org/) which is compatible with both Vue 2 and 3. 
+#### 👍🏼👍🏼 Using the composition API
 
-After the library gets correctly installed we can create **reusable chunks of code called hooks**.
+The new fancy way to share code between components is using the [composition API](https://composition-api.vuejs.org/) which is compatible with both Vue 2 and 3. 
+
+Note that everything related to composition is just an addition to the Vue API, which means that you can incrementally build with the Composition API.
+
+After the library gets correctly installed we can create **reusable chunks of code also known as hooks**.
 
 ```js
 import { ref, onMounted } from '@vue/composition-api';
@@ -136,7 +146,7 @@ export const useGetUsers = () => {
 };
 ```
 
-Now inside the `setup` function I can call my `useGetUsers` hook and bind it to the view. Here I can compose with many hooks.
+Now inside the `setup` function I can call the `useGetUsers` function and bind it to the view.
 
 ```html
 <template>
@@ -151,11 +161,23 @@ Now inside the `setup` function I can call my `useGetUsers` hook and bind it to 
   export default {
     setup() {
       const users = useGetUsers();
-      /* Expose to template */
       return { users };
     },
   };
 </script>
 ```
 
-It's easy to use my `useGetUsers` everywhere I need it. Everything inside hooks is encapsuled. Dependencies are explicit. It scales well for a huge enterprise application.
+Everything inside my `useGetUsers` is encapsuled which means that no name collision can happen. With composition, relations are explicit. I easily know where a property come from.
+
+```js
+import { useFeatureA } from 'use-feature-a';
+import { useFeatureB } from 'use-feature-b';
+
+export default {
+  setup() {
+    return { ...useFeatureA(), ...useFeatureB() };
+  },
+};
+```
+
+As you can see it's pretty trivial to compose with hooks to create complex UIs with a higher code reusability.
