@@ -8,7 +8,7 @@ My app is composed of two Docker images, the first one is a JavaScript SPA and s
 ```docker
 FROM node:10 AS builder 
 WORKDIR /codamit-client
-COPY package*.json 
+COPY package.json 
 ./RUN npm install
 COPY ./.env.production ./.env
 COPY . .
@@ -28,7 +28,7 @@ When I run the container the `CMD` uses `dotenv` which basically map values from
 ```docker
 FROM node:10
 WORKDIR /usr/src/codamit-server
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 COPY ./.env.production ./.env
 COPY . .
