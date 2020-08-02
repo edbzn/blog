@@ -1,5 +1,5 @@
 ---
-title: Building a store using React and Meiosis
+title: Building an immutable store from scratch with React
 date: '2019-03-13T00:00:00.000Z'
 ---
 
