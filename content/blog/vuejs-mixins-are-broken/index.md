@@ -1,7 +1,9 @@
 ---
-title: Vue.js mixins are broken
+title: Vue.js Mixins are broken
 date: '2020-08-01T00:00:00.000Z'
 ---
+
+<img width="200" style="margin: auto; display: block; padding-bottom: 2.4rem" src="./logo.svg" >
 
 Vue.js comes with its mixin concept **to share logic between components**, this way we can extract common properties into a separate module.
 
@@ -125,7 +127,7 @@ The big downside is that we can not compose or share logic that rely on Vue rend
 
 #### 👍🏼👍🏼 Using the composition API
 
-The new fancy way to share code between components is using the [composition API](https://composition-api.vuejs.org/) which is compatible with both Vue 2 and 3. 
+The new fancy way to share code between components is using the [composition API](https://composition-api.vuejs.org/) which is compatible with both Vue 2 and 3.
 
 Note that everything related to composition is just an addition to the Vue API, which means that you can incrementally build with the Composition API.
 
