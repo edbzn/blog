@@ -102,9 +102,11 @@ Then we can just import it in our components.
 
 ```html
 <template>
-  <section>
-    <div v-for="user in users" :key="user.id">{{ user.name }}</div>
-  </section>
+  <div>
+    <div v-for="user in users" :key="user.id">
+      {{ user.name }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -144,7 +146,7 @@ export const useGetUsers = () => {
     users.value = await response.json();
   });
 
-  return users;
+  return { users };
 };
 ```
 
@@ -152,9 +154,11 @@ Now inside the `setup` function I can call the `useGetUsers` function and bind i
 
 ```html
 <template>
-  <section>
-    <div v-for="user in users" :key="user.id">{{ user.name }}</div>
-  </section>
+  <div>
+    <div v-for="user in users" :key="user.id">
+      {{ user.name }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -162,8 +166,7 @@ Now inside the `setup` function I can call the `useGetUsers` function and bind i
 
   export default {
     setup() {
-      const users = useGetUsers();
-      return { users };
+      return { ...useGetUsers() };
     },
   };
 </script>
