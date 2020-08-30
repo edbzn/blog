@@ -1,6 +1,6 @@
 ---
 title: Reactive Event-driven Architecture with Marble.js
-date: '2020-08-13T00:00:00.000Z'
+date: '2020-08-31T00:00:00.000Z'
 draft: true
 ---
 
@@ -43,28 +43,21 @@ The application will emit the following domain events :
 Now let's create the catalog microservice using Marble.js :
 
 ```ts
-import {
-  createMicroservice,
-  messagingListener,
-  Transport,
-} from '@marblejs/messaging';
+import { bindEagerlyTo, createServer, httpListener } from '@marblejs/core';
 import { IO } from 'fp-ts/lib/IO';
-import { getProducts$, getProduct$ } from './consumer.effect';
+import { client, ClientToken } from './client';
+import { getProducts$, getProduct$ } from './effect';
 
-const listener = messagingListener({
+const listener = httpListener({
   effects: [getProducts$, getProduct$],
 });
 
-const microservice = createMicroservice({
-  transport: Transport.AMQP,
-  options: {
-    host: 'amqp://localhost:5672',
-    queue: 'app_queue',
-  },
+const server = createServer({
   listener,
+  dependencies: [bindEagerlyTo(ClientToken)(client)],
 });
 
-const main: IO<void> = async () => await (await microservice)();
+const main: IO<void> = async () => await (await server)();
 
 main();
 ```
@@ -72,18 +65,20 @@ main();
 Marble.js offers an abstraction over the transport layer that lets you choose between [AMQP (RabbitMQ)]() and [Redis Pub/Sub]().
 
 ```ts
-import { act, matchEvent } from '@marblejs/core';
-import { MsgEffect } '@marblejs/messaging';
-import { of } from 'rxjs';
+import { r, useContext, HttpStatus } from '@marblejs/core';
+import { mapTo, mergeMapTo } from 'rxjs/operators';
+import { ClientToken } from './client';
 
-export const hello$: MsgEffect = (event$, ctx) =>
-  event$.pipe(
-    matchEvent('HELLO'),
-    act(event =>
-      of(reply(event)({
-        type: event.type,
-        payload: `Hello, ${event.payload}!`,
-      })
-    ),
-  );
+export const getRoot$ = r.pipe(
+  r.matchPath('/'),
+  r.matchType('GET'),
+  r.useEffect((req$, ctx) => {
+    const client = useContext(ClientToken)(ctx.ask);
+
+    return req$.pipe(
+      mergeMapTo(client.send({ type: 'HELLO', payload: 'John' })),
+      mapTo({ status: HttpStatus.ACCEPTED }),
+    );
+  }),
+);
 ```
