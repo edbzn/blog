@@ -1,5 +1,6 @@
 import { Link } from 'gatsby';
 import React from 'react';
+import CookieConsent from 'react-cookie-consent';
 import rss from '../../static/icons/rss.svg';
 import { rhythm } from '../utils/typography';
 
@@ -72,6 +73,22 @@ class Layout extends React.Component {
           {header}
         </header>
         <main style={{ marginTop: rhythm(1) }}>{children}</main>
+        <CookieConsent
+          location="bottom"
+          enableDeclineButton
+          flipButtons
+          acceptOnScroll
+          acceptOnScrollPercentage={50}
+          cookieName="gatsby-gdpr-google-analytics"
+          style={{
+            background: 'rgba(53, 53, 53, 0.9)',
+            fontFamily: 'Montserrat, sans-serif',
+          }}
+          buttonStyle={{ margin: 0 }}
+        >
+          This website uses cookies to analyze site traffic and improve user
+          experience.
+        </CookieConsent>
         <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
           <div style={{ textAlign: 'center' }}>
             © {new Date().getFullYear()} - <strong>{title}</strong> -
