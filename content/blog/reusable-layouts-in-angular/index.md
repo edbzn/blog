@@ -3,11 +3,11 @@ title: Reusable layouts in Angular
 date: '2019-11-16T00:00:00.000Z'
 ---
 
-When building JavaScript applications we usually separate components in different layers, each one responsible of its own concern. You've certainly heard about presentational components, container components, or the less well known, layout components?
+> Edit 2020-11-23 : I still use this trick for my Angular projects and the more I use other technologies like Nuxt.js or Next.js, the more I think this pattern helps to design great front-end architectures.
 
-> Let me try to explain, what is a layout component in Angular, and how to build modular applications using this technique.
+When building JavaScript applications we usually split components in different layers, each one responsible of its concern. You've certainly heard about presentational components, container components, or the less well known layout components?
 
-Layout components are used to hold common layout composition. This design enables reusing layouts across different parts of your application. It also simplify underlying components template and enforce the single responsibility principle.
+Layout components are used to hold common layout composition. This design enables reusing layouts across different parts of your application. It also **simplify underlying components** template and enforce the **single responsibility principle**.
 
 ## The view layer architecture
 
@@ -15,14 +15,14 @@ The schema below illustrates the component tree using a layout component. Layout
 
 ![layout schema](./layout-component.png)
 
-Now let's see what does it looks like in code. Here is the root component that instantiates the first `<router-outlet>`.
+Now let's see what does it look like in code. Here is the root `AppComponent` that instantiates the first `<router-outlet>`.
 
 ```ts
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  template: ` <router-outlet></router-outlet> `,
+  template: `<router-outlet></router-outlet>`,
 })
 export class AppComponent {}
 ```
@@ -78,11 +78,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-main-layout',
   template: `
-    <ng-container>
-      <app-navbar></app-navbar>
-      <router-outlet></router-outlet>
-      <app-footer></app-footer>
-    </ng-container>
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
   `,
 })
 export class MainLayoutComponent {}
@@ -110,13 +108,13 @@ export const DASHBOARD_ROUTES: Route[] = [
 ];
 ```
 
-The piece of code above stick all together, layout and container are combined in a declarative way using the routes tree. Imagine we want to swap the `MainLayoutComponent` with an other layout, we can easily achieve this without refactoring the `DashboardComponent` template, which is pretty cool.
+The piece of code above stick all together, layout and container components are combined in a declarative way using the router tree. Imagine we want to swap the `MainLayoutComponent` with an other layout, we can easily achieve this without refactoring the `DashboardComponent` template, which is pretty cool.
 
 Note that using this technique, the router re-creates layout components only when the user navigates between routes from different layouts.
 
 ## Resources
 
-Here is an interacting example created by [Josip Bojčić](https://github.com/jbojcic1).
+Here is an interacting example created by [Josip Bojčić](https://github.com/jbojcic1) using the nested router trick and multiple layouts.
 
 <iframe
   src="https://layout-components.stackblitz.io"
@@ -124,4 +122,4 @@ Here is an interacting example created by [Josip Bojčić](https://github.com/jb
   title="Layout components"
 ></iframe>
 
-There is [an other approach](https://stackblitz.com/github/jbojcic1/angular-routing-example/tree/routing-reuse-layout-example-3-with-subscribing-to-route-events) using router events. This approach doesn't come with a nested `<router-outlet>` in a dedicated layout component, but I prefer the layout component way because it feels less hacky and more robust.
+There is [an other approach](https://stackblitz.com/github/jbojcic1/angular-routing-example/tree/routing-reuse-layout-example-3-with-subscribing-to-route-events) using router events and router data. This approach doesn't come with a nested `<router-outlet>` but at the end it looks less robust. We cannot create multiple layouts because it relies on conditional templating.
