@@ -16,7 +16,7 @@ const style = {
 };
 
 export const PostNav = ({ previous, next }) => (
-  <nav>
+  <nav role="navigation">
     <ul
       style={{
         display: `flex`,

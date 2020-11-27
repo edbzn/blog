@@ -89,7 +89,10 @@ class Layout extends React.Component {
           This website uses cookies to analyze site traffic and improve user
           experience.
         </CookieConsent>
-        <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
+        <footer
+          role="contentinfo"
+          style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}
+        >
           <div style={{ textAlign: 'center' }}>
             © {new Date().getFullYear()} - <strong>codamit</strong>.dev -
             <a href="https://twitter.com/edbzn">@edbzn</a> -
