@@ -22,7 +22,7 @@ function terminalLog(violations) {
 
 describe('Accessibility tests', () => {
   beforeEach(() => {
-    cy.visit('/').get('main').injectAxe();
+    cy.visit('/').get('main').injectAxe().wait(500);
   });
 
   it('Has no detectable accessibility violations on home', () => {
