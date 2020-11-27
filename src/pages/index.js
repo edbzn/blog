@@ -52,7 +52,12 @@ class BlogIndex extends React.Component {
                 >
                   <span style={{ fontSize: '14px' }}>
                     {node.frontmatter.draft ? (
-                      <span>🚧 Draft 🚧</span>
+                      <span>
+                        <span role="img" aria-label="emoji" alt="wip">
+                          🚧
+                        </span>{' '}
+                        Draft
+                      </span>
                     ) : (
                       node.frontmatter.date
                     )}

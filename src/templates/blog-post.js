@@ -45,7 +45,12 @@ class BlogPostTemplate extends React.Component {
               }}
             >
               {post.frontmatter.draft ? (
-                <strong>🚧 Draft 🚧</strong>
+                <strong>
+                  <span role="img" aria-label="emoji" alt="wip">
+                    🚧
+                  </span>{' '}
+                  Draft
+                </strong>
               ) : (
                 post.frontmatter.date
               )}
