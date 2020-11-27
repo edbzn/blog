@@ -33,7 +33,7 @@
     "gatsby-transformer-sharp": "2.7.0",
     "prismjs": "1.22.0",
     "react": "17.0.1",
-    "react-cookie-consent": "5.2.0",
+    "react-cookie-consent": "6.1.0",
     "react-dom": "17.0.1",
     "react-helmet": "6.1.0",
     "react-typography": "0.16.19",
