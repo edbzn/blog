@@ -6377,7 +6377,7 @@ gatsby-plugin-feed@2.8.0:
     lodash.merge "^4.6.2"
     rss "^1.2.2"
 
-gatsby-plugin-gdpr-cookies@^1.0.10:
+gatsby-plugin-gdpr-cookies@1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-gdpr-cookies/-/gatsby-plugin-gdpr-cookies-1.0.10.tgz#a5e2e6e967d4d46ab998facd1b2bf9ab3f3c3c6a"
   integrity sha512-iDZGe++Arw6gl57B9vqXz6Vk2sBJvgKQSNU0uD7cXhqhWvht8iOdhevhEZZdAdp0QtaMgOowTq6PMqHoyN4W0A==
@@ -11779,7 +11779,7 @@ rc@^1.2.7, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-cookie-consent@^5.2.0:
+react-cookie-consent@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-cookie-consent/-/react-cookie-consent-5.2.0.tgz#c2c62e4fd77ec96d18c8dbb772e4281f0c12e131"
   integrity sha512-iRIDynmivejZgLICcpfGbQl94qLn6cjdEHZP0e+ibxzQ7t3zXzdDhsGDSYax8Qu6nGJnlv0bCBd8K0UJUQ5zwQ==
