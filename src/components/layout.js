@@ -6,13 +6,13 @@ import { rhythm } from '../utils/typography';
 
 class Layout extends React.Component {
   render() {
-    const { location, title, children } = this.props;
+    const { location, children } = this.props;
     const rootPath = `${__PATH_PREFIX__}/`;
     let header;
 
     if (location.pathname === rootPath) {
       header = (
-        <h1
+        <span
           style={{
             marginBottom: 0,
             marginTop: 0,
@@ -28,13 +28,13 @@ class Layout extends React.Component {
             }}
             to={`/`}
           >
-            {title}
+            <strong>codamit</strong>.dev
           </Link>
-        </h1>
+        </span>
       );
     } else {
       header = (
-        <h3
+        <span
           style={{
             marginBottom: 0,
             marginTop: 0,
@@ -48,9 +48,9 @@ class Layout extends React.Component {
             }}
             to={`/`}
           >
-            {title}
+            <strong>codamit</strong>.dev
           </Link>
-        </h3>
+        </span>
       );
     }
     return (
@@ -91,7 +91,7 @@ class Layout extends React.Component {
         </CookieConsent>
         <footer style={{ marginTop: rhythm(2), fontSize: 14, fontWeight: 100 }}>
           <div style={{ textAlign: 'center' }}>
-            © {new Date().getFullYear()} - <strong>{title}</strong> -
+            © {new Date().getFullYear()} - <strong>codamit</strong>.dev -
             <a href="https://twitter.com/edbzn">@edbzn</a> -
             <a
               href="/rss.xml"

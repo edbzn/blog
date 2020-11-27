@@ -30,6 +30,7 @@ export function SEO({ title, description, article, canonical }) {
         canonical ? [{ rel: 'canonical', key: canonical, href: canonical }] : []
       }
     >
+      <html lang="en" />
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
       {seo.url && <meta property="og:url" content={seo.url} />}

@@ -10,7 +10,6 @@ import { rhythm } from '../utils/typography';
 class BlogPostTemplate extends React.Component {
   render() {
     const post = this.props.data.markdownRemark;
-    const siteTitle = this.props.data.site.siteMetadata.title;
     const { social, author, siteUrl } = this.props.data.site.siteMetadata;
     const { previous, next } = this.props.pageContext;
     const { path, location } = this.props;
@@ -21,12 +20,7 @@ class BlogPostTemplate extends React.Component {
     };
 
     return (
-      <Layout
-        location={location}
-        title={siteTitle}
-        social={social}
-        author={author}
-      >
+      <Layout location={location} social={social} author={author}>
         <SEO
           title={post.frontmatter.title}
           description={post.excerpt}
@@ -82,7 +76,6 @@ export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
     site {
       siteMetadata {
-        title
         author
         siteUrl
         social {

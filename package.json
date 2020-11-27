@@ -43,9 +43,14 @@
     "typography-theme-wordpress-2016": "0.16.19"
   },
   "devDependencies": {
+    "@testing-library/cypress": "^7.0.2",
+    "axe-core": "^4.1.1",
+    "cypress": "^6.0.0",
+    "cypress-axe": "^0.12.0",
     "husky": "4.2.5",
     "lint-staged": "10.2.11",
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "start-server-and-test": "^1.11.6"
   },
   "license": "CC-BY-SA-4.0",
   "scripts": {
@@ -56,7 +61,11 @@
     "start": "yarn develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "heroku-postbuild": "yarn build"
+    "heroku-postbuild": "yarn build",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "start-server-and-test develop http://localhost:8000 cy:open",
+    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run"
   },
   "husky": {
     "hooks": {

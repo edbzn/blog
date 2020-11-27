@@ -4,7 +4,6 @@ module.exports = {
   siteMetadata: {
     siteUrl,
     url: siteUrl,
-    title: 'codamit.dev',
     titleTemplate: '%s · codamit.dev',
     author: `Edouard Bozon`,
     description:
