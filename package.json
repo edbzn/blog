@@ -19,7 +19,7 @@
     "gatsby-plugin-react-helmet-canonical-urls": "1.4.0",
     "gatsby-plugin-remove-trailing-slashes": "2.5.0",
     "gatsby-plugin-robots-txt": "1.5.3",
-    "gatsby-plugin-sharp": "2.9.0",
+    "gatsby-plugin-sharp": "2.9.1",
     "gatsby-plugin-sitemap": "2.7.0",
     "gatsby-plugin-typography": "2.7.0",
     "gatsby-remark-autolink-headers": "2.6.0",
