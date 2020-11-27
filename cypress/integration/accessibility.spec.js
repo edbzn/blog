@@ -38,6 +38,12 @@ describe('Accessibility tests', () => {
   it('Has no detectable accessibility violations on a blog post', () => {
     cy.findByText(/Data store service in Angular/i)
       .click()
-      .checkA11y(null, null, terminalLog);
+      .checkA11y(
+        null,
+        {
+          includedImpacts: ['critical', 'serious'],
+        },
+        terminalLog
+      );
   });
 });
