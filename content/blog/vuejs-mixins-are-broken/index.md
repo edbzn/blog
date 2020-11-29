@@ -3,8 +3,6 @@ title: Vue.js Mixins are broken
 date: '2020-08-01T00:00:00.000Z'
 ---
 
-<img width="200" style="margin: auto; display: block; padding-bottom: 2.4rem" src="./logo.svg" >
-
 Vue.js comes with its mixin concept **to share logic between components**, this way we can extract common properties into a separate module.
 
 ```js
@@ -69,7 +67,7 @@ At the beginning the mixin pattern seem to work well for sharing code, but it qu
 
 ### Mixins break encapsulation
 
-It's possible that some mixins cannot be used together. For example if two mixins declare the same method `doSomething()`, it will break. The last declared mixin wins. Also the component cannot define its own `doSomething()` method.
+It's possible that some mixins cannot be used together. For example if two mixins declare the same `doSomething()` method, it will break because the last declared mixin wins. In this case the component also cannot define its own `doSomething()` method.
 
 It's quite difficult to fix name collisions because we need first to refactor the mixin, then find and refactor all the consuming components and mixins, which can be very complicated in a big project.
 
@@ -125,7 +123,7 @@ Then we can just import it in our components.
 
 This way we can easily test our `getUsers` function, because there's no need to create a test component using `@vue/test-utils`.
 
-The big downside is that we can not compose or share logic that rely on Vue rendering, which is very limiting.
+The downside is that we can not share any logic that rely on Vue, which is very limiting.
 
 #### 👍🏼👍🏼 Using the composition API
 
@@ -133,7 +131,7 @@ The new fancy way to share code between components is using the [composition API
 
 Note that everything related to composition is just an addition to the Vue API, which means that you can incrementally build with the Composition API.
 
-After the library gets correctly installed we can create **reusable chunks of code also known as hooks**.
+After the library gets correctly installed we can create **reusable chunks of code** as the following.
 
 ```js
 import { ref, onMounted } from '@vue/composition-api';
@@ -185,4 +183,4 @@ export default {
 };
 ```
 
-As you can see it's pretty trivial to compose with hooks to create complex UIs with a higher code reusability.
+As you can see it's pretty trivial to use composition to create complex UIs with a higher code reusability.
