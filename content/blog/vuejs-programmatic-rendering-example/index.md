@@ -1,5 +1,5 @@
 ---
-title: A programmatic rendering case in Vue.js
+title: Vue.js programmatic rendering example
 date: '2020-08-30T00:00:00.000Z'
 ---
 
