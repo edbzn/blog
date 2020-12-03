@@ -7,9 +7,9 @@ module.exports = {
     titleTemplate: '%s · codamit.dev',
     author: `Edouard Bozon`,
     description:
-      "Edouard Bozon's tech blog about web development: Angular, Node.js, TypeScript, Javascript and more!",
+      'Tech blog authored by Edouard Bozon about web development: Angular, Node.js, TypeScript, JavaScript and more.',
     authorDescription:
-      "I'm Edouard Bozon, I play almost everyday with web technologies. I focus my work on building better JavaScript apps and contributing to open source. I'm self employed, currently working on awesome projects.",
+      "I'm Edouard Bozon, I play almost everyday with the web. I focus my work on building healthier JavaScript programs, mainly around Angular and Node.js. I'm self employed, always open to new opportunities, so let's keep in touch.",
     twitterUsername: '@edbzn',
     social: {
       twitter: `https://twitter.com/edbzn`,
