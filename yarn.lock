@@ -6670,15 +6670,14 @@ gatsby-plugin-feed@2.9.0:
     lodash.merge "^4.6.2"
     rss "^1.2.2"
 
-gatsby-plugin-gdpr-cookies@1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-gdpr-cookies/-/gatsby-plugin-gdpr-cookies-1.0.11.tgz#fdb8e49988b5ce8bac5cc79c8d8b1d8d2e42e80c"
-  integrity sha512-OLD5qWMXwdnNQXkh/eg76rcrzqencYJTxrVy93PF/0Dtu4M7arJn3jQROI87DsMuEUM+jGfHCFRrB0SnfkSgmA==
+gatsby-plugin-gdpr-cookies@1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-gdpr-cookies/-/gatsby-plugin-gdpr-cookies-1.0.14.tgz#9989bd519a897268f48b19c5aec2378d3acaf748"
+  integrity sha512-bmn51jLDZpggKKtyyziwUu+uHcgRp3wDt52+khxSeXGgdho4Hj9yoBD0MDvigYrA75ntou9wV2ciSSTw3BLTFg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     common-tags "^1.8.0"
     minimist "^1.2.5"
-    react-ga "^3.1.2"
     universal-cookie "^4.0.4"
 
 gatsby-plugin-manifest@2.8.0:
@@ -12267,11 +12266,6 @@ react-fast-compare@^3.1.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
-
-react-ga@^3.1.2:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-3.2.1.tgz#ad2a6f848cc9555d63c188d37d6e11798393e4ed"
-  integrity sha512-uRwNVd7seL2I2lZBE7et8Ul0r/xNDIQkZ43QmnMrcZwY8dNB5UgPjPJA6E18xFtArLgDK/dy/O0TzYqWCsMHDg==
 
 react-helmet@6.1.0:
   version "6.1.0"
