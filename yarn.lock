@@ -6505,10 +6505,10 @@ gatsby-plugin-feed@3.6.0:
     lodash.merge "^4.6.2"
     rss "^1.2.2"
 
-gatsby-plugin-gdpr-cookies@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-gdpr-cookies/-/gatsby-plugin-gdpr-cookies-2.0.0.tgz#7cb3a4c3c8e8b887f73359f3397d4ec6055d5323"
-  integrity sha512-qyCYgxhjJcpVKdG5fBKBlJPmjDV8J6n5UJfCmKcR4gWmJYVVZNKgEi9R1a7C8BS4dOwJ7ZvW84dSW4VqcY9b9g==
+gatsby-plugin-gdpr-cookies@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-gdpr-cookies/-/gatsby-plugin-gdpr-cookies-2.0.1.tgz#e40a15de0a4ef41059345f7614988c1f9096657e"
+  integrity sha512-GI6GQNwlOc2PRPfz3omtJIAAd8WwMGK8VMAr+Fw4Vi1p4vVRKTP2Pc4LNR6d0Vd0vwpZsQzKCbMFV7acCweFMw==
   dependencies:
     "@babel/runtime" "^7.11.2"
 
