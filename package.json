@@ -6,7 +6,7 @@
   "author": "Edouard Bozon <bozonedouard@gmail.com>",
   "dependencies": {
     "@raae/gatsby-remark-oembed": "0.1.1",
-    "gatsby": "3.8.0",
+    "gatsby": "3.8.1",
     "gatsby-image": "3.8.0",
     "gatsby-plugin-disqus": "1.2.2",
     "gatsby-plugin-feed": "3.8.0",
