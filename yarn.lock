@@ -11165,10 +11165,10 @@ rc@^1.2.7, rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-cookie-consent@6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/react-cookie-consent/-/react-cookie-consent-6.4.0.tgz#23ed02d16269ce5707851f6e7a6171951e6cc8a2"
-  integrity sha512-J//969P26NVKJmUfMu1g5s1URrBj8IQi8gr+5GNyT7+guwAx5nIfE5jrFg6FEff/cqtOlNnSOXi3ClSStJryQw==
+react-cookie-consent@6.4.1:
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/react-cookie-consent/-/react-cookie-consent-6.4.1.tgz#256916725d87d8227e1f71d6aa4a18d451dc0d40"
+  integrity sha512-dAgC2uSrUN0eXoNhEKDCHH/dL3RUs/84SPO8hRvJVz7HtPGmF+t/mQwd4V4qsGAvVqhbn0hzMdftEuiJS3iueQ==
   dependencies:
     js-cookie "^2.2.1"
     prop-types "^15.7.2"
