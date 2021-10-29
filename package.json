@@ -6,7 +6,7 @@
   "author": "Edouard Bozon <bozonedouard@gmail.com>",
   "dependencies": {
     "@raae/gatsby-remark-oembed": "0.1.1",
-    "gatsby": "4.0.1",
+    "gatsby": "4.0.2",
     "gatsby-image": "3.11.0",
     "gatsby-plugin-disqus": "1.2.3",
     "gatsby-plugin-feed": "4.0.0",
@@ -19,7 +19,7 @@
     "gatsby-plugin-react-helmet-canonical-urls": "1.4.0",
     "gatsby-plugin-remove-trailing-slashes": "4.0.0",
     "gatsby-plugin-robots-txt": "1.6.14",
-    "gatsby-plugin-sharp": "4.0.0",
+    "gatsby-plugin-sharp": "4.0.1",
     "gatsby-plugin-sitemap": "5.0.0",
     "gatsby-plugin-typography": "4.0.0",
     "gatsby-remark-autolink-headers": "5.0.0",
